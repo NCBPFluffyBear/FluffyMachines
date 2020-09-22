@@ -2,6 +2,7 @@ package me.ncbpfluffybear.fluffymachines;
 
 import me.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import me.ncbpfluffybear.fluffymachines.items.WateringCan;
+import me.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
 import me.ncbpfluffybear.fluffymachines.machines.AutoCraftingTable;
 import me.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
 import me.ncbpfluffybear.fluffymachines.utils.Events;
@@ -30,6 +31,7 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
         new HelicopterHat().register(this);
         new WateringCan().register(this);
         new WaterSprinkler().register(this);
+        new AutoAncientAltar().register(this);
 
         // Register Events Class
         getServer().getPluginManager().registerEvents(new Events(), this);

@@ -1,18 +1,16 @@
 package me.ncbpfluffybear.fluffymachines.utils;
 
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullItem;
 import me.ncbpfluffybear.fluffymachines.FluffyMachines;
+import me.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
 import me.ncbpfluffybear.fluffymachines.machines.AutoCraftingTable;
 import me.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.ItemStack;
 
 public class FluffyItems {
 
@@ -51,10 +49,19 @@ public class FluffyItems {
         Material.CRAFTING_TABLE,
         "&6Auto Crafting Table",
         "",
-        "&7Automatically crafts vanilla recipes",
+        "&7Automatically crafts &fvanilla &7recipes",
         "",
         LoreBuilderDynamic.powerBuffer(AutoCraftingTable.CAPACITY),
         LoreBuilderDynamic.powerPerTick(AutoCraftingTable.ENERGY_CONSUMPTION)
+    );
+    public static final SlimefunItemStack AUTO_ANCIENT_ALTAR = new SlimefunItemStack("AUTO_ANCIENT_ALTAR",
+        Material.ENCHANTING_TABLE,
+        "&5Auto Ancient Altar",
+        "",
+        "&7Automatically crafts &5Ancient Altar &7recipes",
+        "",
+        LoreBuilderDynamic.powerBuffer(AutoAncientAltar.CAPACITY),
+        LoreBuilderDynamic.powerPerTick(AutoAncientAltar.ENERGY_CONSUMPTION)
     );
     public static final SlimefunItemStack WATER_SPRINKER = new SlimefunItemStack("WATER_SPRINKLER",
         new CustomItem(SkullItem.fromHash("d6b13d69d1929dcf8edf99f3901415217c6a567d3a6ead12f75a4de3ed835e85"),
