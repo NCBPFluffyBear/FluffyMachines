@@ -12,9 +12,11 @@ import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import me.ncbpfluffybear.fluffymachines.utils.FluffyItems;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Slime;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -233,6 +235,7 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
 
     private void craftIfValid(Block block) {
         BlockMenu menu = BlockStorage.getInventory(block);
+        List<ItemStack> pedestalItems = new ArrayList<>();
 
         // Make sure at least 1 slot is free
         for (int outSlot : getOutputSlots()) {
@@ -245,8 +248,6 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
             }
         }
 
-        List<ItemStack> pedestalItems = new ArrayList<>();
-
         for (int slot : getInputSlots()) {
             ItemStack slotItem = menu.getItemInSlot(slot);
             if (slotItem == null || (slotItem.getType() != Material.AIR && slotItem.getAmount() == 1)) {
@@ -254,30 +255,37 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
             }
         }
 
+        // Check and append altar items
         for (int i = 0 ; i < 8 ; i++) {
             int slot = mockPedestalSlots[i];
             ItemStack pedestalItem = menu.getItemInSlot(slot);
             SlimefunItem sfPedestalItem = SlimefunItem.getByItem(pedestalItem);
             if (sfPedestalItem != null) {
-                pedestalItems.add(new SlimefunItemStack(sfPedestalItem.getID(), pedestalItem));
+                SlimefunItemStack pedestalItemStack = new SlimefunItemStack(sfPedestalItem.getID(), pedestalItem);
+                pedestalItems.add(new SlimefunItemStack(pedestalItemStack, 1));
+            } else if (!pedestalItem.hasItemMeta()) {
+                pedestalItems.add(new ItemStack(pedestalItem.getType(), 1));
             } else {
-                pedestalItems.add(pedestalItem);
+                return;
             }
         }
 
+        // Check and append catalyst
         ItemStack catalystItem = menu.getItemInSlot(mockAltarSlot);
         SlimefunItem sfCatalyst = SlimefunItem.getByItem(catalystItem);
-        ItemStack catalyst;
+        ItemStack catalyst = null;
         if (sfCatalyst != null) {
-            catalyst = new SlimefunItemStack(sfCatalyst.getID(), catalystItem);
+            SlimefunItemStack catalystStack = new SlimefunItemStack(sfCatalyst.getID(), catalystItem);
+            catalyst = new SlimefunItemStack(catalystStack, 1);
+        } else if (!catalystItem.hasItemMeta()) {
+            catalyst = new ItemStack(catalystItem.getType(), 1);
         } else {
-            catalyst = catalystItem;
+            return;
         }
 
-
-
+        // Find matching recipe
         for (AltarRecipe recipe : altarItem.getRecipes()) {
-            if (recipe.getCatalyst().equals(new ItemStack(Material.OBSIDIAN))) {
+            if (recipe.getCatalyst().equals(catalyst) && recipe.getInput().equals(pedestalItems)) {
                 removeCharge(block.getLocation(), ENERGY_CONSUMPTION);
                 for (int slot : getInputSlots()) {
                     menu.consumeItem(slot);
