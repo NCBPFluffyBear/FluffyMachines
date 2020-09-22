@@ -147,8 +147,11 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
                         double random = ThreadLocalRandom.current().nextDouble();
                         if (random <= treeSuccessChance.getValue()) {
 
+                            Material saplingMaterial = b.getType();
                             b.setType(Material.AIR);
-                            blockLocation.getWorld().generateTree(blockLocation, getTreeFromSapling(b));
+                            if (!blockLocation.getWorld().generateTree(blockLocation, getTreeFromSapling(saplingMaterial))) {
+                                b.setType(saplingMaterial);
+                            }
                             blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
                         }
                     }
@@ -208,9 +211,9 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
         return true;
     }
 
-    private static TreeType getTreeFromSapling(Block b) {
+    private static TreeType getTreeFromSapling(Material m) {
         TreeType treeType = TreeType.TREE;
-        String parseSapling = b.getType().toString()
+        String parseSapling = m.toString()
             .replace("_SAPLING", "");
 
         if (!parseSapling.equals("OAK")) {
