@@ -1,5 +1,6 @@
 package me.ncbpfluffybear.fluffymachines;
 
+import me.mrCookieSlime.Slimefun.bstats.bukkit.Metrics;
 import me.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import me.ncbpfluffybear.fluffymachines.items.WateringCan;
 import me.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
@@ -35,6 +36,8 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
         // Register Events Class
         getServer().getPluginManager().registerEvents(new Events(), this);
+
+        final Metrics metrics = new Metrics(this, 8927);
     }
 
     @Override
