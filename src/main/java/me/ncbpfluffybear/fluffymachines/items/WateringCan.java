@@ -2,6 +2,8 @@ package me.ncbpfluffybear.fluffymachines.items;
 
 import dev.j3fftw.litexpansion.Items;
 import dev.j3fftw.litexpansion.LiteXpansion;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import me.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import me.ncbpfluffybear.fluffymachines.utils.Utils;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
@@ -71,88 +73,92 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
 
                 Block b = rayResult.getHitBlock();
                 Location blockLocation = b.getLocation();
-                ItemStack item = e.getItem();
-                BlockData blockData = b.getBlockData();
 
-                // Fill if it hits water
-                if (b.getType() == Material.WATER) {
-                    updateUses(p, item, 2);
+                if (SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), blockLocation, ProtectableAction.BREAK_BLOCK)) {
 
-                    // Sugar Cane
-                } else if (b.getType() == Material.SUGAR_CANE) {
+                    ItemStack item = e.getItem();
+                    BlockData blockData = b.getBlockData();
 
-                    int distance = 2;
-                    Block above = b.getRelative(BlockFace.UP);
+                    // Fill if it hits water
+                    if (b.getType() == Material.WATER) {
+                        updateUses(p, item, 2);
 
-                    while (above.getType() == Material.SUGAR_CANE) {
+                        // Sugar Cane
+                    } else if (b.getType() == Material.SUGAR_CANE) {
 
-                        // Failsafe
-                        if (distance >= MAX_SUGAR_GROW_HEIGHT) {
-                            Utils.send(p, "&cThis sugar cane is too tall!");
-                            return;
-                        }
+                        int distance = 2;
+                        Block above = b.getRelative(BlockFace.UP);
 
-                        above = b.getRelative(BlockFace.UP, distance);
-                        distance++;
-                    }
+                        while (above.getType() == Material.SUGAR_CANE) {
 
-                    if (above.getType() == Material.AIR) {
-
-                        if (!updateUses(p, item, 1))
-                            return;
-                        blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
-                        double random = ThreadLocalRandom.current().nextDouble();
-                        if (random <= sugarCaneSuccessChance.getValue()) {
-                            above.setType(Material.SUGAR_CANE);
-                            blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
-                        }
-
-                    } else {
-                        Utils.send(p, "&cThe sugar cane is obstructed!");
-                    }
-
-                    // Crops
-                } else if (blockData instanceof Ageable) {
-
-                    Ageable crop = (Ageable) blockData;
-                    int currentAge = crop.getAge();
-                    int maxAge = crop.getMaximumAge();
-
-                    if (currentAge < maxAge && updateUses(p, item, 1)) {
-                        blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
-                        double random = ThreadLocalRandom.current().nextDouble();
-                        if (random <= cropSuccessChance.getValue()) {
-                            crop.setAge(currentAge + 1);
-                            blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
-                        }
-
-                    } else {
-                        Utils.send(p, "&cThis crop is already ready for harvest!");
-                        return;
-                    }
-
-                    b.setBlockData(blockData);
-
-                    // Trees
-                } else if (Tag.SAPLINGS.isTagged(b.getType())) {
-
-                    if (BlockStorage.hasBlockInfo(b)) {
-                        //Utils.send(p, "&cSorry, this is a Slimefun plant!");
-
-                    } else {
-
-                        if (!updateUses(p, item, 1))
-                            return;
-                        blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
-                        double random = ThreadLocalRandom.current().nextDouble();
-                        if (random <= treeSuccessChance.getValue()) {
-
-                            Material saplingMaterial = b.getType();
-                            b.setType(Material.AIR);
-                            if (!blockLocation.getWorld().generateTree(blockLocation, getTreeFromSapling(saplingMaterial))) {
-                                b.setType(saplingMaterial);
+                            // Failsafe
+                            if (distance >= MAX_SUGAR_GROW_HEIGHT) {
+                                Utils.send(p, "&cThis sugar cane is too tall!");
+                                return;
                             }
-                            blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
+
+                            above = b.getRelative(BlockFace.UP, distance);
+                            distance++;
+                        }
+
+                        if (above.getType() == Material.AIR) {
+
+                            if (!updateUses(p, item, 1))
+                                return;
+                            blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
+                            double random = ThreadLocalRandom.current().nextDouble();
+                            if (random <= sugarCaneSuccessChance.getValue()) {
+                                above.setType(Material.SUGAR_CANE);
+                                blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
+                            }
+
+                        } else {
+                            Utils.send(p, "&cThe sugar cane is obstructed!");
+                        }
+
+                        // Crops
+                    } else if (blockData instanceof Ageable) {
+
+                        Ageable crop = (Ageable) blockData;
+                        int currentAge = crop.getAge();
+                        int maxAge = crop.getMaximumAge();
+
+                        if (currentAge < maxAge && updateUses(p, item, 1)) {
+                            blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
+                            double random = ThreadLocalRandom.current().nextDouble();
+                            if (random <= cropSuccessChance.getValue()) {
+                                crop.setAge(currentAge + 1);
+                                blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
+                            }
+
+                        } else {
+                            Utils.send(p, "&cThis crop is already ready for harvest!");
+                            return;
+                        }
+
+                        b.setBlockData(blockData);
+
+                        // Trees
+                    } else if (Tag.SAPLINGS.isTagged(b.getType())) {
+
+                        if (BlockStorage.hasBlockInfo(b)) {
+                            //Utils.send(p, "&cSorry, this is a Slimefun plant!");
+
+                        } else {
+
+                            if (!updateUses(p, item, 1))
+                                return;
+                            blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
+                            double random = ThreadLocalRandom.current().nextDouble();
+                            if (random <= treeSuccessChance.getValue()) {
+
+                                Material saplingMaterial = b.getType();
+                                b.setType(Material.AIR);
+                                if (!blockLocation.getWorld().generateTree(blockLocation, getTreeFromSapling(saplingMaterial))) {
+                                    b.setType(saplingMaterial);
+                                }
+                                blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
+                            }
                         }
                     }
                 }
