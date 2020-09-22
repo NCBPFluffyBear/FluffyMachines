@@ -57,7 +57,7 @@
         <dependency>
             <groupId>com.github.TheBusyBiscuit</groupId>
             <artifactId>CS-CoreLib</artifactId>
-            <version>8081bb4fe4</version>
+            <version>v1.6.1</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -74,7 +74,7 @@
         <dependency>
             <groupId>com.github.TheBusyBiscuit</groupId>
             <artifactId>Slimefun4</artifactId>
-            <version>master-SNAPSHOT</version>
+            <version>RC-16</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -87,5 +87,25 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.J3fftw1</groupId>
+            <artifactId>LiteXpansion</artifactId>
+            <version>964a44cb27</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 </project>

@@ -3,6 +3,7 @@ package me.ncbpfluffybear.fluffymachines.utils;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
+import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -51,6 +52,10 @@ public final class Utils {
         } else {
             return (1 / ((double) Constants.CUSTOM_TICKER_DELAY / Constants.SERVER_TICK_RATE) * power);
         }
+    }
+
+    public static void send(Player p, String message) {
+        p.sendMessage(ChatColor.GRAY + "[FluffyMachines] " + ChatColors.color(message));
     }
 }
 

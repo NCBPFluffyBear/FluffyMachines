@@ -1,6 +1,10 @@
 package me.ncbpfluffybear.fluffymachines;
 
+import me.ncbpfluffybear.fluffymachines.items.HelicopterHat;
+import me.ncbpfluffybear.fluffymachines.items.WateringCan;
 import me.ncbpfluffybear.fluffymachines.machines.AutoCraftingTable;
+import me.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
+import me.ncbpfluffybear.fluffymachines.utils.Events;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
@@ -19,9 +23,16 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
         if (cfg.getBoolean("options.auto-update")) {
             // You could start an Auto-Updater for example
         }
+        getLogger().warning("Ok i know its called fluffymachines and has items dw about it");
 
         // Registering Items
         new AutoCraftingTable().register(this);
+        new HelicopterHat().register(this);
+        new WateringCan().register(this);
+        new WaterSprinkler().register(this);
+
+        // Register Events Class
+        getServer().getPluginManager().registerEvents(new Events(), this);
     }
 
     @Override
