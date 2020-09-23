@@ -1,6 +1,5 @@
 package me.ncbpfluffybear.fluffymachines.utils;
 
-import dev.j3fftw.litexpansion.Items;
 import me.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import me.ncbpfluffybear.fluffymachines.items.WateringCan;
 import org.bukkit.entity.Entity;
@@ -30,12 +29,12 @@ public class Events implements Listener {
 
     @EventHandler
     public void onWateringCanSplash(PlayerInteractEntityEvent e) {
-        e.setCancelled(true);
         Player p = e.getPlayer();
         ItemStack item = p.getInventory().getItemInMainHand();
 
         // For some reason player interact events trigger twice, probably after a method returns false
         if (wateringCan.isItem(item)) {
+            e.setCancelled(true);
             Entity target = e.getRightClicked();
             if (target instanceof Player && WateringCan.updateUses(p, item, 3)) {
                 Utils.send(p, "&bSplash!");

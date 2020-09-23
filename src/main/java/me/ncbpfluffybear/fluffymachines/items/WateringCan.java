@@ -44,7 +44,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
     public static final ItemSetting<Double> cropSuccessChance = new ItemSetting<>("crop-success-chance", 0.3);
     public static final ItemSetting<Double> treeSuccessChance = new ItemSetting<>("tree-success-chance", 0.3);
 
-    private static final int USE_INDEX = 8;
+    private static final int USE_INDEX = 7;
     private static final int MAX_SUGAR_GROW_HEIGHT = 5;
     private static final NamespacedKey usageKey = new NamespacedKey(LiteXpansion.getInstance(), "watering_can_usage");
 

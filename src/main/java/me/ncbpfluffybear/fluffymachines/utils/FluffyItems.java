@@ -38,7 +38,6 @@ public class FluffyItems {
         "&7> &eRight Click &7a water to fill your watering can",
         "&7> &eRight Click &7a plant to speed up growth.",
         "&7> &eRight Click &7a player to slow them down",
-        "&7> &eLeft Click &7to empty",
         "",
         "&aUses Left: &e0"
     );
