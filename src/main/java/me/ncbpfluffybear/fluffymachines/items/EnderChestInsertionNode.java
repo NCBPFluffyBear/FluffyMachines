@@ -3,6 +3,7 @@ package me.ncbpfluffybear.fluffymachines.items;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
@@ -89,7 +90,7 @@ public class EnderChestInsertionNode extends SlimefunItem {
             return;
         }
 
-        BlockState state = b.getRelative(face).getState();
+        BlockState state = PaperLib.getBlockState(b.getRelative(face), false).getState();
 
         if (valid && b.getRelative(face).getState() instanceof InventoryHolder) {
             Player p = Bukkit.getPlayer(UUID.fromString(BlockStorage.getLocationInfo(b.getLocation(), "owner")));
