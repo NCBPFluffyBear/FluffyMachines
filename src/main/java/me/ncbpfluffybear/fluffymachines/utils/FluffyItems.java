@@ -23,11 +23,11 @@ public class FluffyItems {
     // Items
     public static final SlimefunItemStack HELICOPTER_HAT = new SlimefunItemStack("HELICOPTER_HAT",
         Material.LEATHER_HELMET, Color.AQUA,
-        "&fHelicopter Hat",
+        "&1Helicopter Hat",
         "",
         "&7brrrrrrrrRRRRRRRR",
         "",
-        "&eFly &7to use"
+        "&eSneak &7to use"
     );
     public static final SlimefunItemStack WATERING_CAN = new SlimefunItemStack("WATERING_CAN",
         Material.GLASS_BOTTLE,
@@ -40,6 +40,24 @@ public class FluffyItems {
         "&7> &eRight Click &7a player to slow them down",
         "",
         "&aUses Left: &e0"
+    );
+    public static final SlimefunItemStack ENDER_CHEST_EXTRACTION_NODE = new SlimefunItemStack("ENDER_CHEST_EXTRACTION_NODE",
+        new CustomItem(SkullItem.fromHash("e707c7f6c3a056a377d4120028405fdd09acfcd5ae804bfde0f653be866afe39")),
+        "&6Ender Chest Extraction Node",
+        "",
+        "&7Place this on the side of an &5Ender Chest &7to bind",
+        "",
+        "&7This will move items from the facing &5Ender Chest",
+        "&7to the &6Container &7behind it"
+    );
+    public static final SlimefunItemStack ENDER_CHEST_INSERTION_NODE = new SlimefunItemStack("ENDER_CHEST_INSERTION_NODE",
+        new CustomItem(SkullItem.fromHash("7e5dc50c0186d53381d9430a2eff4c38f816b8791890c7471ffdb65ba202bc5")),
+        "&bEnder Chest Insertion Node",
+        "",
+        "&7Place this on the side of an &5Ender Chest &7to bind",
+        "",
+        "&7This will move items to the facing &5Ender Chest",
+        "&7from the &6Container &7behind it"
     );
 
 

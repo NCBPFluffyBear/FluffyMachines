@@ -40,6 +40,14 @@ import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
+/**
+ *
+ * This {@link SlimefunItem} automatically
+ * crafts vanilla recipes
+ *
+ * @author NCBPFluffyBear
+ *
+ */
 public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, EnergyNetComponent {
 
     private final int[] border = { 0, 1, 3, 5, 13, 14, 50, 51, 52, 53 };

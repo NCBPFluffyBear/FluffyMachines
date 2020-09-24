@@ -12,11 +12,9 @@ import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import me.ncbpfluffybear.fluffymachines.utils.FluffyItems;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Slime;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -39,6 +37,14 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 
+/**
+ *
+ * This {@link SlimefunItem} automatically crafts
+ * Ancient Altar recipes
+ *
+ * @author NCBPFluffyBear
+ *
+ */
 public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, EnergyNetComponent {
 
     public static final int ENERGY_CONSUMPTION = 1024;
