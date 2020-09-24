@@ -38,7 +38,7 @@ public class WaterSprinkler extends AbstractGrowthAccelerator {
     private final ItemSetting<Boolean> particles = new ItemSetting<>("particles", true);
 
     public static final int ENERGY_CONSUMPTION = 16;
-    public static final int CAPACITY = 64;
+    public static final int CAPACITY = 128;
     private static final int RADIUS = 2;
     private static final int PROGRESS_SLOT = 4;
     private static final CustomItem noWaterItem = new CustomItem(Material.BUCKET,
@@ -55,7 +55,7 @@ public class WaterSprinkler extends AbstractGrowthAccelerator {
             new ItemStack[] {
                 Items.REFINED_IRON, SlimefunItems.ELECTRIC_MOTOR, Items.REFINED_IRON,
                 new ItemStack(Material.BUCKET), Items.MACHINE_BLOCK, new ItemStack(Material.BUCKET),
-                Items.REFINED_IRON, SlimefunItems.MEDIUM_CAPACITOR, Items.REFINED_IRON
+                Items.REFINED_IRON, SlimefunItems.SMALL_CAPACITOR, Items.REFINED_IRON
             });
 
         createPreset(this, FluffyItems.WATER_SPRINKER.getImmutableMeta().getDisplayName().orElse("&bWater Sprinkler"),
