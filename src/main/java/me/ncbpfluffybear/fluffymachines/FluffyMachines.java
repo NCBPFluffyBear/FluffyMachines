@@ -1,6 +1,8 @@
 package me.ncbpfluffybear.fluffymachines;
 
 import me.mrCookieSlime.Slimefun.bstats.bukkit.Metrics;
+import me.ncbpfluffybear.fluffymachines.items.EnderChestExtractionNode;
+import me.ncbpfluffybear.fluffymachines.items.EnderChestInsertionNode;
 import me.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import me.ncbpfluffybear.fluffymachines.items.WateringCan;
 import me.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
@@ -33,6 +35,8 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
         new WateringCan().register(this);
         new WaterSprinkler().register(this);
         new AutoAncientAltar().register(this);
+        new EnderChestExtractionNode().register(this);
+        new EnderChestInsertionNode().register(this);
 
         // Register Events Class
         getServer().getPluginManager().registerEvents(new Events(), this);
