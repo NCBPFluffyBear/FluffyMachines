@@ -250,7 +250,7 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
 
         for (int slot : getInputSlots()) {
             ItemStack slotItem = menu.getItemInSlot(slot);
-            if (slotItem == null || (slotItem.getType() != Material.AIR && slotItem.getAmount() == 1)) {
+            if (slotItem == null) {
                 return;
             }
         }
