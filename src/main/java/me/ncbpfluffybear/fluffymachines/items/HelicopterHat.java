@@ -11,11 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class HelicopterHat extends SlimefunItem {
 
-    public HelicopterHat() {
-        super(FluffyItems.fluffymachines, FluffyItems.HELICOPTER_HAT, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
-            null, new ItemStack(Material.LEATHER_HELMET), null,
-            null, SlimefunItems.ADVANCED_CIRCUIT_BOARD, null
-        });
+    public HelicopterHat(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+        super(category, item, recipeType, recipe);
     }
 }

@@ -3,6 +3,8 @@ package me.ncbpfluffybear.fluffymachines.items;
 import dev.j3fftw.litexpansion.Items;
 import dev.j3fftw.litexpansion.LiteXpansion;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import me.mrCookieSlime.Slimefun.Objects.Category;
+import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import me.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import me.ncbpfluffybear.fluffymachines.utils.Utils;
@@ -48,12 +50,8 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
     private static final int MAX_SUGAR_GROW_HEIGHT = 5;
     private static final NamespacedKey usageKey = new NamespacedKey(LiteXpansion.getInstance(), "watering_can_usage");
 
-    public WateringCan() {
-        super(FluffyItems.fluffymachines, FluffyItems.WATERING_CAN, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            Items.REFINED_IRON, null, Items.REFINED_IRON,
-            Items.REFINED_IRON, new ItemStack(Material.BUCKET), Items.REFINED_IRON,
-            null, Items.REFINED_IRON, null
-        });
+    public WateringCan(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+        super(category, item, recipeType, recipe);
 
         addItemSetting(maxUses);
         addItemSetting(sugarCaneSuccessChance);

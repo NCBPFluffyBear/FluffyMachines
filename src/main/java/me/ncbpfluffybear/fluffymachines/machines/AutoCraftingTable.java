@@ -8,6 +8,8 @@ import java.util.Map;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
+import me.mrCookieSlime.Slimefun.Objects.Category;
+import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import me.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import org.bukkit.Bukkit;
@@ -59,12 +61,8 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
     public static final int ENERGY_CONSUMPTION = 256;
     public static final int CAPACITY = 2048;
 
-    public AutoCraftingTable() {
-        super(FluffyItems.fluffymachines, FluffyItems.AUTO_CRAFTING_TABLE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            SlimefunItems.REINFORCED_PLATE, SlimefunItems.ADVANCED_CIRCUIT_BOARD, SlimefunItems.REINFORCED_PLATE,
-            SlimefunItems.ADVANCED_CIRCUIT_BOARD, SlimefunItems.AUTOMATED_CRAFTING_CHAMBER, SlimefunItems.ADVANCED_CIRCUIT_BOARD,
-            SlimefunItems.REINFORCED_PLATE, SlimefunItems.ADVANCED_CIRCUIT_BOARD, SlimefunItems.REINFORCED_PLATE
-        });
+    public AutoCraftingTable(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+        super(category, item, recipeType, recipe);
 
         new BlockMenuPreset(getID(), "&6Automated Crafting Table") {
 

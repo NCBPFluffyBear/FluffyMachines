@@ -3,6 +3,8 @@ package me.ncbpfluffybear.fluffymachines.machines;
 import java.util.concurrent.ThreadLocalRandom;
 
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
+import me.mrCookieSlime.Slimefun.Objects.Category;
+import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -50,13 +52,8 @@ public class WaterSprinkler extends AbstractGrowthAccelerator {
         "&bWater detected"
     );
 
-    public WaterSprinkler() {
-        super(FluffyItems.fluffymachines, FluffyItems.WATER_SPRINKER, RecipeType.ENHANCED_CRAFTING_TABLE,
-            new ItemStack[] {
-                Items.REFINED_IRON, SlimefunItems.ELECTRIC_MOTOR, Items.REFINED_IRON,
-                new ItemStack(Material.BUCKET), Items.MACHINE_BLOCK, new ItemStack(Material.BUCKET),
-                Items.REFINED_IRON, SlimefunItems.SMALL_CAPACITOR, Items.REFINED_IRON
-            });
+    public WaterSprinkler(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+        super(category, item, recipeType, recipe);
 
         createPreset(this, FluffyItems.WATER_SPRINKER.getImmutableMeta().getDisplayName().orElse("&bWater Sprinkler"),
             blockMenuPreset -> {

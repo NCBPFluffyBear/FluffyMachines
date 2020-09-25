@@ -6,10 +6,12 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
+import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.Objects.handlers.ItemHandler;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import me.ncbpfluffybear.fluffymachines.utils.Utils;
 import org.bukkit.Bukkit;
@@ -38,13 +40,8 @@ import java.util.UUID;
  */
 public class EnderChestExtractionNode extends SlimefunItem {
 
-    public EnderChestExtractionNode() {
-        super(FluffyItems.fluffymachines, FluffyItems.ENDER_CHEST_EXTRACTION_NODE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
-            null, new ItemStack(Material.LEATHER_HELMET), null,
-            null, SlimefunItems.ADVANCED_CIRCUIT_BOARD, null},
-            FluffyItems.ENDER_CHEST_EXTRACTION_NODE
-        );
+    public EnderChestExtractionNode(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+        super(category, item, recipeType, recipe);
 
         addItemHandler(onPlace());
         addItemHandler(onInteract());
