@@ -57,5 +57,9 @@ public final class Utils {
     public static void send(Player p, String message) {
         p.sendMessage(ChatColor.GRAY + "[FluffyMachines] " + ChatColors.color(message));
     }
+
+    public static String multiBlockWarning() {
+        return "&cThis is a Multiblock machine!";
+    }
 }
 

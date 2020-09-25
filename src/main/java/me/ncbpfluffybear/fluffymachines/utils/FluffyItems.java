@@ -82,14 +82,30 @@ public class FluffyItems {
     );
     public static final SlimefunItemStack WATER_SPRINKER = new SlimefunItemStack("WATER_SPRINKLER",
         new CustomItem(SkullItem.fromHash("d6b13d69d1929dcf8edf99f3901415217c6a567d3a6ead12f75a4de3ed835e85"),
-        "Water Sprinkler"),
+            "Water Sprinkler"),
         "&bWater Sprinkler",
         "",
         "&7Sprinkly sprinkly",
         "",
-        dev.j3fftw.litexpansion.utils.LoreBuilderDynamic.powerBuffer(WaterSprinkler.CAPACITY),
-        dev.j3fftw.litexpansion.utils.LoreBuilderDynamic.powerPerTick(WaterSprinkler.ENERGY_CONSUMPTION)
+        LoreBuilderDynamic.powerBuffer(WaterSprinkler.CAPACITY),
+        LoreBuilderDynamic.powerPerTick(WaterSprinkler.ENERGY_CONSUMPTION)
     );
+    public static final SlimefunItemStack GENERATOR_CORE = new SlimefunItemStack("GENERATOR_CORE",
+        Material.BLAST_FURNACE,
+        "&7Generator Core",
+        "",
+        "&7Multiblock component of generators"
+    );
+
+    public static final SlimefunItemStack CRANK_GENERATOR = new SlimefunItemStack("CRANK_GENERATOR",
+        Material.BLAST_FURNACE,
+        "&7Crank Generator",
+        "",
+        "&eRight click &7the lever to generate power",
+        "",
+        Utils.multiBlockWarning()
+    );
+
 
     private FluffyItems() {
     }

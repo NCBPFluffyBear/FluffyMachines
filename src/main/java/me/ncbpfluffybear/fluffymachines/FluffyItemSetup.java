@@ -10,6 +10,8 @@ import me.ncbpfluffybear.fluffymachines.items.WateringCan;
 import me.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
 import me.ncbpfluffybear.fluffymachines.machines.AutoCraftingTable;
 import me.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
+import me.ncbpfluffybear.fluffymachines.multiblocks.CrankGenerator;
+import me.ncbpfluffybear.fluffymachines.multiblocks.components.GeneratorCore;
 import me.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -64,6 +66,14 @@ public final class FluffyItemSetup {
             null, SlimefunItems.ADVANCED_CIRCUIT_BOARD, null
         }).register(plugin);
 
+        new GeneratorCore(FluffyItems.fluffymachines, FluffyItems.GENERATOR_CORE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
+            new ItemStack(Material.IRON_INGOT), SlimefunItems.ELECTRO_MAGNET, new ItemStack(Material.IRON_INGOT),
+            new ItemStack(Material.IRON_INGOT), SlimefunItems.ADVANCED_CIRCUIT_BOARD, new ItemStack(Material.IRON_INGOT)
+        }).register(plugin);
+
+        // Multiblocks
+        new CrankGenerator(FluffyItems.fluffymachines, FluffyItems.CRANK_GENERATOR).register(plugin);
     }
 
 }
