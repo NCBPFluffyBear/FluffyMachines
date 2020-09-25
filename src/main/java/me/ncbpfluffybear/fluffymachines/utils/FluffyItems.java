@@ -90,6 +90,13 @@ public class FluffyItems {
         LoreBuilderDynamic.powerBuffer(WaterSprinkler.CAPACITY),
         LoreBuilderDynamic.powerPerTick(WaterSprinkler.ENERGY_CONSUMPTION)
     );
+    public static final SlimefunItemStack ITEM_OVERSTACKER = new SlimefunItemStack("ITEM_OVERSTACKER",
+        Material.PISTON,
+        "&eItem Overstacker",
+        "",
+        "&7Compresses nonstackable items"
+    );
+
     public static final SlimefunItemStack GENERATOR_CORE = new SlimefunItemStack("GENERATOR_CORE",
         Material.BLAST_FURNACE,
         "&7Generator Core",

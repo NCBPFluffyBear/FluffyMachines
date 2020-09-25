@@ -6,12 +6,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
-import me.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -156,7 +154,7 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
     }
 
     private Comparator<Integer> compareSlots(DirtyChestMenu menu) {
-        return (slot1, slot2) -> menu.getItemInSlot(slot1).getAmount() - menu.getItemInSlot(slot2).getAmount();
+        return Comparator.comparingInt(slot -> menu.getItemInSlot(slot).getAmount());
     }
 
     protected void constructMenu(BlockMenuPreset preset) {

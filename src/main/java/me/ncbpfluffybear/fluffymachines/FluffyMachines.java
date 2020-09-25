@@ -22,7 +22,6 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
         if (cfg.getBoolean("options.auto-update")) {
             // You could start an Auto-Updater for example
         }
-        getLogger().warning("Ok i know its called fluffymachines and has items dw about it");
 
         // Registering Items
         FluffyItemSetup.setup(this);
@@ -31,16 +30,6 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
         getServer().getPluginManager().registerEvents(new Events(), this);
 
         final Metrics metrics = new Metrics(this, 8927);
-
-        /*
-        metrics.addCustomChart(new Metrics.SimplePie("server_name", new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                return Bukkit.getIp();
-            }
-        }));
-
-         */
     }
 
     @Override
@@ -50,8 +39,7 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
     @Override
     public String getBugTrackerURL() {
-        // You can return a link to your Bug Tracker instead of null here
-        return null;
+        return "https://github.com/NCBPFluffyBear/FluffyMachines/issues";
     }
 
     @Override
