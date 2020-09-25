@@ -1,6 +1,5 @@
 package me.ncbpfluffybear.fluffymachines;
 
-import dev.j3fftw.litexpansion.Items;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.ncbpfluffybear.fluffymachines.items.EnderChestExtractionNode;
@@ -26,15 +25,15 @@ public final class FluffyItemSetup {
     public static void setup(@Nonnull FluffyMachines plugin) {
 
         new WateringCan(FluffyItems.fluffymachines, FluffyItems.WATERING_CAN, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            Items.REFINED_IRON, null, Items.REFINED_IRON,
-            Items.REFINED_IRON, new ItemStack(Material.BUCKET), Items.REFINED_IRON,
-            null, Items.REFINED_IRON, null
+            new ItemStack(Material.IRON_INGOT), null, new ItemStack(Material.IRON_INGOT),
+            new ItemStack(Material.IRON_INGOT), new ItemStack(Material.BUCKET), new ItemStack(Material.IRON_INGOT),
+            null, new ItemStack(Material.IRON_INGOT), null
         }).register(plugin);
 
         new WaterSprinkler(FluffyItems.fluffymachines, FluffyItems.WATER_SPRINKER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            Items.REFINED_IRON, SlimefunItems.ELECTRIC_MOTOR, Items.REFINED_IRON,
-            new ItemStack(Material.BUCKET), Items.MACHINE_BLOCK, new ItemStack(Material.BUCKET),
-            Items.REFINED_IRON, SlimefunItems.SMALL_CAPACITOR, Items.REFINED_IRON
+            new ItemStack(Material.IRON_INGOT), SlimefunItems.ELECTRIC_MOTOR, new ItemStack(Material.IRON_INGOT),
+            new ItemStack(Material.BUCKET), new ItemStack(Material.DISPENSER), new ItemStack(Material.BUCKET),
+            new ItemStack(Material.IRON_INGOT), SlimefunItems.SMALL_CAPACITOR, new ItemStack(Material.IRON_INGOT)
         }).register(plugin);
 
         new AutoCraftingTable(FluffyItems.fluffymachines, FluffyItems.AUTO_CRAFTING_TABLE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
@@ -50,13 +49,13 @@ public final class FluffyItemSetup {
         }).register(plugin);
 
         new EnderChestInsertionNode(FluffyItems.fluffymachines, FluffyItems.ENDER_CHEST_INSERTION_NODE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            SlimefunItems.ENDER_LUMP_2, SlimefunItems.ADVANCED_CIRCUIT_BOARD, SlimefunItems.ENDER_LUMP_2,
+            SlimefunItems.ENDER_LUMP_2, SlimefunItems.BASIC_CIRCUIT_BOARD, SlimefunItems.ENDER_LUMP_2,
             new ItemStack(Material.DISPENSER), new ItemStack(Material.ENDER_PEARL), new ItemStack(Material.HOPPER),
-            SlimefunItems.ENDER_LUMP_2, SlimefunItems.ADVANCED_CIRCUIT_BOARD, SlimefunItems.ENDER_LUMP_2
+            SlimefunItems.ENDER_LUMP_2, SlimefunItems.BASIC_CIRCUIT_BOARD, SlimefunItems.ENDER_LUMP_2
         }).register(plugin);
 
         new EnderChestExtractionNode(FluffyItems.fluffymachines, FluffyItems.ENDER_CHEST_EXTRACTION_NODE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            SlimefunItems.ENDER_LUMP_2, SlimefunItems.ADVANCED_CIRCUIT_BOARD, SlimefunItems.ENDER_LUMP_2,
+            SlimefunItems.ENDER_LUMP_2, SlimefunItems.BASIC_CIRCUIT_BOARD, SlimefunItems.ENDER_LUMP_2,
             new ItemStack(Material.HOPPER), new ItemStack(Material.ENDER_PEARL), new ItemStack(Material.DISPENSER),
             SlimefunItems.ENDER_LUMP_2, SlimefunItems.ADVANCED_CIRCUIT_BOARD, SlimefunItems.ENDER_LUMP_2
         }).register(plugin);

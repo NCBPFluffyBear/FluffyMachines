@@ -54,7 +54,6 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
     private final int[] inputBorder = { 9, 10, 11, 12, 13, 18, 22, 27, 31, 36, 40, 45, 46, 47, 48, 49 };
     private final int[] outputBorder = { 23, 24, 25, 26, 32, 35, 41, 42, 43, 44 };
     private final int[] mockPedestalSlots = { 19, 20, 21, 30, 39, 38, 37, 28 };
-    private final int mockAltarSlot = 29;
     private final AncientAltar altarItem = (AncientAltar) SlimefunItems.ANCIENT_ALTAR.getItem();
 
     public AutoAncientAltar(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
@@ -110,7 +109,7 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
                     }
                 }
 
-                Collections.sort(slots, compareSlots(menu));
+                slots.sort(compareSlots(menu));
 
                 int[] array = new int[slots.size()];
 
@@ -274,6 +273,7 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
         }
 
         // Check and append catalyst
+        int mockAltarSlot = 29;
         ItemStack catalystItem = menu.getItemInSlot(mockAltarSlot);
         SlimefunItem sfCatalyst = SlimefunItem.getByItem(catalystItem);
         ItemStack catalyst = null;

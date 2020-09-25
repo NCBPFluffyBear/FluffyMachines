@@ -118,12 +118,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.J3fftw1</groupId>
-            <artifactId>LiteXpansion</artifactId>
-            <version>964a44cb27</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
             <version>3.0.2</version>

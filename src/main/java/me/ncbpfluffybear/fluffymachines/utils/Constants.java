@@ -1,8 +1,6 @@
 package me.ncbpfluffybear.fluffymachines.utils;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import me.ncbpfluffybear.fluffymachines.FluffyMachines;
-import org.bukkit.NamespacedKey;
 
 public final class Constants {
 
