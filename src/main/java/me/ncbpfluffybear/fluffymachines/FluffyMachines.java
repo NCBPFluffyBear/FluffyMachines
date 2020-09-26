@@ -2,6 +2,7 @@ package me.ncbpfluffybear.fluffymachines;
 
 import lombok.SneakyThrows;
 import me.mrCookieSlime.Slimefun.bstats.bukkit.Metrics;
+import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
 import me.ncbpfluffybear.fluffymachines.utils.Events;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -19,8 +20,8 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
         // Read something from your config.yml
         Config cfg = new Config(this);
 
-        if (cfg.getBoolean("options.auto-update")) {
-            // You could start an Auto-Updater for example
+        if (cfg.getBoolean("options.auto-update") && getDescription().getVersion().startsWith("DEV - ")) {
+            new GitHubBuildsUpdater(this, getFile(), "NCBPFluffyBear/FluffyMachines/master/").start();
         }
 
         // Registering Items

@@ -132,6 +132,18 @@ public class FluffyItems {
         LoreBuilderDynamic.powerBuffer(BackpackLoader.CAPACITY),
         LoreBuilderDynamic.powerBuffer(BackpackLoader.ENERGY_CONSUMPTION)
     );
+    public static final SlimefunItemStack UPGRADED_EXPLOSIVE_PICKAXE = new SlimefunItemStack("UPGRADED_EXPLOSIVE_PICKAXE",
+        Material.DIAMOND_PICKAXE,
+        "&e&lUpgraded Explosive Pickaxe",
+        "",
+        "&7Breaks all mineable blocks in a 5x5 radius"
+    );
+    public static final SlimefunItemStack UPGRADED_EXPLOSIVE_SHOVEL = new SlimefunItemStack("UPGRADED_EXPLOSIVE_SHOVEL",
+        Material.DIAMOND_SHOVEL,
+        "&e&lUpgraded Explosive Shovel",
+        "",
+        "&7Breaks all shovelable blocks in a 5x5 radius"
+    );
 
     private FluffyItems() {
     }
