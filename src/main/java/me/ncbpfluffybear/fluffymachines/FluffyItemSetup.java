@@ -5,6 +5,8 @@ import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.ncbpfluffybear.fluffymachines.items.EnderChestExtractionNode;
 import me.ncbpfluffybear.fluffymachines.items.EnderChestInsertionNode;
 import me.ncbpfluffybear.fluffymachines.items.HelicopterHat;
+import me.ncbpfluffybear.fluffymachines.items.UpgradedExplosivePickaxe;
+import me.ncbpfluffybear.fluffymachines.items.UpgradedExplosiveShovel;
 import me.ncbpfluffybear.fluffymachines.items.WateringCan;
 import me.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
 import me.ncbpfluffybear.fluffymachines.machines.AutoCraftingTable;
@@ -73,16 +75,28 @@ public final class FluffyItemSetup {
             new ItemStack(Material.IRON_INGOT), SlimefunItems.ADVANCED_CIRCUIT_BOARD, new ItemStack(Material.IRON_INGOT)
         }).register(plugin);
 
-        new BackpackUnloader(FluffyItems.fluffymachines, FluffyItems.BACKPACK_UNLOADER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
-            new ItemStack(Material.IRON_INGOT), SlimefunItems.ELECTRO_MAGNET, new ItemStack(Material.IRON_INGOT),
-            new ItemStack(Material.IRON_INGOT), SlimefunItems.ADVANCED_CIRCUIT_BOARD, new ItemStack(Material.IRON_INGOT)
+        new BackpackLoader(FluffyItems.fluffymachines, FluffyItems.BACKPACK_LOADER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            new ItemStack(Material.ORANGE_STAINED_GLASS), new ItemStack(Material.ORANGE_STAINED_GLASS), new ItemStack(Material.ORANGE_STAINED_GLASS),
+            new ItemStack(Material.IRON_INGOT), new ItemStack(Material.HOPPER), new ItemStack(Material.IRON_INGOT),
+            SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.BIG_CAPACITOR, SlimefunItems.ELECTRIC_MOTOR
         }).register(plugin);
 
-        new BackpackLoader(FluffyItems.fluffymachines, FluffyItems.BACKPACK_LOADER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
-            new ItemStack(Material.IRON_INGOT), SlimefunItems.ELECTRO_MAGNET, new ItemStack(Material.IRON_INGOT),
-            new ItemStack(Material.IRON_INGOT), SlimefunItems.ADVANCED_CIRCUIT_BOARD, new ItemStack(Material.IRON_INGOT)
+        new BackpackUnloader(FluffyItems.fluffymachines, FluffyItems.BACKPACK_UNLOADER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            new ItemStack(Material.BROWN_STAINED_GLASS), new ItemStack(Material.BROWN_STAINED_GLASS), new ItemStack(Material.BROWN_STAINED_GLASS),
+            new ItemStack(Material.IRON_INGOT), new ItemStack(Material.DISPENSER), new ItemStack(Material.IRON_INGOT),
+            SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.BIG_CAPACITOR, SlimefunItems.ELECTRIC_MOTOR
+        }).register(plugin);
+
+        new UpgradedExplosivePickaxe(FluffyItems.fluffymachines, FluffyItems.UPGRADED_EXPLOSIVE_PICKAXE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.SYNTHETIC_EMERALD, SlimefunItems.SYNTHETIC_EMERALD, SlimefunItems.SYNTHETIC_EMERALD,
+            new ItemStack(Material.TNT), SlimefunItems.EXPLOSIVE_PICKAXE, new ItemStack(Material.TNT),
+            null, new ItemStack(Material.OBSIDIAN), null
+        }).register(plugin);
+
+        new UpgradedExplosiveShovel(FluffyItems.fluffymachines, FluffyItems.UPGRADED_EXPLOSIVE_SHOVEL, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.SYNTHETIC_EMERALD, SlimefunItems.SYNTHETIC_EMERALD, SlimefunItems.SYNTHETIC_EMERALD,
+            new ItemStack(Material.TNT), SlimefunItems.EXPLOSIVE_SHOVEL, new ItemStack(Material.TNT),
+            null, new ItemStack(Material.OBSIDIAN), null
         }).register(plugin);
 
         /* Disabled due to impracticality
