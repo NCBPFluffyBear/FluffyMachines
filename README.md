@@ -14,6 +14,10 @@ Custom item settings can be changed in `plugins/Slimefun/Items.yml`
 
 **Water Sprinkler**: Electric sprinkler that grows crows in a 2 block radius
 
+**Backpack Loader**: Moves items from inventory to backpack
+
+**Backpack Unloader**: Empties backpack into inventory
+
 ## Generators
 **Crank Generator**: Multiblock machine that generates power when clicked
 

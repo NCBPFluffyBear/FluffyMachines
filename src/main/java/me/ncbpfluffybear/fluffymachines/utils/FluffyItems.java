@@ -7,6 +7,8 @@ import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullItem;
 import me.ncbpfluffybear.fluffymachines.FluffyMachines;
 import me.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
 import me.ncbpfluffybear.fluffymachines.machines.AutoCraftingTable;
+import me.ncbpfluffybear.fluffymachines.machines.BackpackLoader;
+import me.ncbpfluffybear.fluffymachines.machines.BackpackUnloader;
 import me.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -112,7 +114,24 @@ public class FluffyItems {
         "",
         Utils.multiBlockWarning()
     );
-
+    public static final SlimefunItemStack BACKPACK_UNLOADER = new SlimefunItemStack("BACKPACK_UNLOADER",
+        Material.BROWN_STAINED_GLASS,
+        "&eBackpack Unloader",
+        "",
+        "&7Empties the contents of backpacks",
+        "",
+        LoreBuilderDynamic.powerBuffer(BackpackUnloader.CAPACITY),
+        LoreBuilderDynamic.powerBuffer(BackpackUnloader.ENERGY_CONSUMPTION)
+    );
+    public static final SlimefunItemStack BACKPACK_LOADER = new SlimefunItemStack("BACKPACK_LOADER",
+        Material.ORANGE_STAINED_GLASS,
+        "&eBackpack Loader",
+        "",
+        "&7Moves items from inventory to backpack",
+        "",
+        LoreBuilderDynamic.powerBuffer(BackpackLoader.CAPACITY),
+        LoreBuilderDynamic.powerBuffer(BackpackLoader.ENERGY_CONSUMPTION)
+    );
 
     private FluffyItems() {
     }

@@ -8,7 +8,8 @@ import me.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import me.ncbpfluffybear.fluffymachines.items.WateringCan;
 import me.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
 import me.ncbpfluffybear.fluffymachines.machines.AutoCraftingTable;
-import me.ncbpfluffybear.fluffymachines.machines.ItemOverstacker;
+import me.ncbpfluffybear.fluffymachines.machines.BackpackLoader;
+import me.ncbpfluffybear.fluffymachines.machines.BackpackUnloader;
 import me.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
 import me.ncbpfluffybear.fluffymachines.multiblocks.CrankGenerator;
 import me.ncbpfluffybear.fluffymachines.multiblocks.components.GeneratorCore;
@@ -72,6 +73,18 @@ public final class FluffyItemSetup {
             new ItemStack(Material.IRON_INGOT), SlimefunItems.ADVANCED_CIRCUIT_BOARD, new ItemStack(Material.IRON_INGOT)
         }).register(plugin);
 
+        new BackpackUnloader(FluffyItems.fluffymachines, FluffyItems.BACKPACK_UNLOADER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
+            new ItemStack(Material.IRON_INGOT), SlimefunItems.ELECTRO_MAGNET, new ItemStack(Material.IRON_INGOT),
+            new ItemStack(Material.IRON_INGOT), SlimefunItems.ADVANCED_CIRCUIT_BOARD, new ItemStack(Material.IRON_INGOT)
+        }).register(plugin);
+
+        new BackpackLoader(FluffyItems.fluffymachines, FluffyItems.BACKPACK_LOADER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
+            new ItemStack(Material.IRON_INGOT), SlimefunItems.ELECTRO_MAGNET, new ItemStack(Material.IRON_INGOT),
+            new ItemStack(Material.IRON_INGOT), SlimefunItems.ADVANCED_CIRCUIT_BOARD, new ItemStack(Material.IRON_INGOT)
+        }).register(plugin);
+
         /* Disabled due to impracticality
         new ItemOverstacker(FluffyItems.fluffymachines, FluffyItems.ITEM_OVERSTACKER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
             new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
@@ -82,6 +95,8 @@ public final class FluffyItemSetup {
 
         // Multiblocks
         new CrankGenerator(FluffyItems.fluffymachines, FluffyItems.CRANK_GENERATOR).register(plugin);
+
+        // Items
     }
 
 }
