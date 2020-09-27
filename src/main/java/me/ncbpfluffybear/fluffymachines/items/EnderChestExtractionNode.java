@@ -26,6 +26,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
+import java.lang.reflect.Type;
 import java.util.UUID;
 
 /**

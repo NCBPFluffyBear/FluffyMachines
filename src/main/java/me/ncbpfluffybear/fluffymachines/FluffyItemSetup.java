@@ -2,6 +2,7 @@ package me.ncbpfluffybear.fluffymachines;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
+import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.ncbpfluffybear.fluffymachines.items.EnderChestExtractionNode;
 import me.ncbpfluffybear.fluffymachines.items.EnderChestInsertionNode;
 import me.ncbpfluffybear.fluffymachines.items.HelicopterHat;
@@ -24,15 +25,18 @@ import javax.annotation.Nonnull;
 public final class FluffyItemSetup {
 
     private FluffyItemSetup() {}
+    private static final SlimefunItemStack circuitBoard = SlimefunItems.ADVANCED_CIRCUIT_BOARD;
+    private static final ItemStack orangeGlass = new ItemStack(Material.ORANGE_STAINED_GLASS);
+
 
     public static void setup(@Nonnull FluffyMachines plugin) {
-
+        
         new WateringCan(FluffyItems.fluffymachines, FluffyItems.WATERING_CAN, RecipeType.ENHANCED_CRAFTING_TABLE,
             new ItemStack[] {
-                new ItemStack(Material.IRON_INGOT), null, new ItemStack(Material.IRON_INGOT),
-                new ItemStack(Material.IRON_INGOT), new ItemStack(Material.BUCKET), new ItemStack(Material.IRON_INGOT),
-                null, new ItemStack(Material.IRON_INGOT), null
-            }).register(plugin);
+            new ItemStack(Material.IRON_INGOT), null, new ItemStack(Material.IRON_INGOT),
+            new ItemStack(Material.IRON_INGOT), new ItemStack(Material.BUCKET), new ItemStack(Material.IRON_INGOT),
+            null, new ItemStack(Material.IRON_INGOT), null
+        }).register(plugin);
 
         new WaterSprinkler(FluffyItems.fluffymachines, FluffyItems.WATER_SPRINKER, RecipeType.ENHANCED_CRAFTING_TABLE
             , new ItemStack[] {
@@ -43,10 +47,9 @@ public final class FluffyItemSetup {
 
         new AutoCraftingTable(FluffyItems.fluffymachines, FluffyItems.AUTO_CRAFTING_TABLE,
             RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            SlimefunItems.REINFORCED_PLATE, SlimefunItems.ADVANCED_CIRCUIT_BOARD, SlimefunItems.REINFORCED_PLATE,
-            SlimefunItems.ADVANCED_CIRCUIT_BOARD, SlimefunItems.AUTOMATED_CRAFTING_CHAMBER,
-            SlimefunItems.ADVANCED_CIRCUIT_BOARD,
-            SlimefunItems.REINFORCED_PLATE, SlimefunItems.ADVANCED_CIRCUIT_BOARD, SlimefunItems.REINFORCED_PLATE
+            SlimefunItems.REINFORCED_PLATE, circuitBoard, SlimefunItems.REINFORCED_PLATE,
+            circuitBoard, SlimefunItems.AUTOMATED_CRAFTING_CHAMBER, circuitBoard,
+            SlimefunItems.REINFORCED_PLATE, circuitBoard, SlimefunItems.REINFORCED_PLATE
         }).register(plugin);
 
         new AutoAncientAltar(FluffyItems.fluffymachines, FluffyItems.AUTO_ANCIENT_ALTAR,
@@ -67,30 +70,26 @@ public final class FluffyItemSetup {
             RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
             SlimefunItems.ENDER_LUMP_2, SlimefunItems.BASIC_CIRCUIT_BOARD, SlimefunItems.ENDER_LUMP_2,
             new ItemStack(Material.HOPPER), new ItemStack(Material.ENDER_PEARL), new ItemStack(Material.DISPENSER),
-            SlimefunItems.ENDER_LUMP_2, SlimefunItems.ADVANCED_CIRCUIT_BOARD, SlimefunItems.ENDER_LUMP_2
+            SlimefunItems.ENDER_LUMP_2, circuitBoard, SlimefunItems.ENDER_LUMP_2
         }).register(plugin);
 
         new HelicopterHat(FluffyItems.fluffymachines, FluffyItems.HELICOPTER_HAT, RecipeType.ENHANCED_CRAFTING_TABLE,
             new ItemStack[] {
-                new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
-                new ItemStack(Material.IRON_INGOT),
-                null, new ItemStack(Material.LEATHER_HELMET), null,
-                null, SlimefunItems.ADVANCED_CIRCUIT_BOARD, null
-            }).register(plugin);
+            new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
+            null, new ItemStack(Material.LEATHER_HELMET), null,
+            null, circuitBoard, null
+        }).register(plugin);
 
         new GeneratorCore(FluffyItems.fluffymachines, FluffyItems.GENERATOR_CORE, RecipeType.ENHANCED_CRAFTING_TABLE,
             new ItemStack[] {
-                new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
-                new ItemStack(Material.IRON_INGOT),
-                new ItemStack(Material.IRON_INGOT), SlimefunItems.ELECTRO_MAGNET, new ItemStack(Material.IRON_INGOT),
-                new ItemStack(Material.IRON_INGOT), SlimefunItems.ADVANCED_CIRCUIT_BOARD,
-                new ItemStack(Material.IRON_INGOT)
-            }).register(plugin);
+            new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
+            new ItemStack(Material.IRON_INGOT), SlimefunItems.ELECTRO_MAGNET, new ItemStack(Material.IRON_INGOT),
+            new ItemStack(Material.IRON_INGOT), circuitBoard, new ItemStack(Material.IRON_INGOT)
+        }).register(plugin);
 
         new BackpackLoader(FluffyItems.fluffymachines, FluffyItems.BACKPACK_LOADER,
             RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            new ItemStack(Material.ORANGE_STAINED_GLASS), new ItemStack(Material.ORANGE_STAINED_GLASS),
-            new ItemStack(Material.ORANGE_STAINED_GLASS),
+            orangeGlass, orangeGlass, orangeGlass,
             new ItemStack(Material.IRON_INGOT), new ItemStack(Material.HOPPER), new ItemStack(Material.IRON_INGOT),
             SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.BIG_CAPACITOR, SlimefunItems.ELECTRIC_MOTOR
         }).register(plugin);
@@ -122,7 +121,7 @@ public final class FluffyItemSetup {
         .ENHANCED_CRAFTING_TABLE, new ItemStack[] {
             new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
             new ItemStack(Material.IRON_INGOT), SlimefunItems.ELECTRO_MAGNET, new ItemStack(Material.IRON_INGOT),
-            new ItemStack(Material.IRON_INGOT), SlimefunItems.ADVANCED_CIRCUIT_BOARD, new ItemStack(Material.IRON_INGOT)
+            new ItemStack(Material.IRON_INGOT), circuitBoard, new ItemStack(Material.IRON_INGOT)
         }).register(plugin);
          */
 

@@ -8,6 +8,8 @@ import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
 import me.ncbpfluffybear.fluffymachines.utils.Events;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import javax.annotation.Nonnull;
+
 public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
     private static FluffyMachines instance;
@@ -42,6 +44,7 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
         return "https://github.com/NCBPFluffyBear/FluffyMachines/issues";
     }
 
+    @Nonnull
     @Override
     public JavaPlugin getJavaPlugin() {
         return this;
