@@ -144,6 +144,12 @@ public class FluffyItems {
         "",
         "&7Breaks all shovelable blocks in a 5x5 radius"
     );
+    public static final SlimefunItemStack LINKED_CHEST = new SlimefunItemStack("LINKED_CHEST",
+        Material.ENDER_CHEST,
+        "&6&lLinked Chest",
+        "",
+        "&7A shared storage"
+    );
 
     private FluffyItems() {
     }

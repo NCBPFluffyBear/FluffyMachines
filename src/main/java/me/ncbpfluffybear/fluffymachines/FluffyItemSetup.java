@@ -5,6 +5,7 @@ import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.ncbpfluffybear.fluffymachines.items.EnderChestExtractionNode;
 import me.ncbpfluffybear.fluffymachines.items.EnderChestInsertionNode;
 import me.ncbpfluffybear.fluffymachines.items.HelicopterHat;
+import me.ncbpfluffybear.fluffymachines.items.LinkedChest;
 import me.ncbpfluffybear.fluffymachines.items.UpgradedExplosivePickaxe;
 import me.ncbpfluffybear.fluffymachines.items.UpgradedExplosiveShovel;
 import me.ncbpfluffybear.fluffymachines.items.WateringCan;
@@ -94,6 +95,12 @@ public final class FluffyItemSetup {
         }).register(plugin);
 
         new UpgradedExplosiveShovel(FluffyItems.fluffymachines, FluffyItems.UPGRADED_EXPLOSIVE_SHOVEL, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.SYNTHETIC_EMERALD, SlimefunItems.SYNTHETIC_EMERALD, SlimefunItems.SYNTHETIC_EMERALD,
+            new ItemStack(Material.TNT), SlimefunItems.EXPLOSIVE_SHOVEL, new ItemStack(Material.TNT),
+            null, new ItemStack(Material.OBSIDIAN), null
+        }).register(plugin);
+
+        new LinkedChest(FluffyItems.fluffymachines, FluffyItems.LINKED_CHEST, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
             SlimefunItems.SYNTHETIC_EMERALD, SlimefunItems.SYNTHETIC_EMERALD, SlimefunItems.SYNTHETIC_EMERALD,
             new ItemStack(Material.TNT), SlimefunItems.EXPLOSIVE_SHOVEL, new ItemStack(Material.TNT),
             null, new ItemStack(Material.OBSIDIAN), null
