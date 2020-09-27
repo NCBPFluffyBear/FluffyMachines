@@ -27,7 +27,7 @@ public final class FluffyItemSetup {
     private FluffyItemSetup() {}
     private static final SlimefunItemStack circuitBoard = SlimefunItems.ADVANCED_CIRCUIT_BOARD;
     private static final ItemStack orangeGlass = new ItemStack(Material.ORANGE_STAINED_GLASS);
-
+    private static final ItemStack brownGlass = new ItemStack(Material.BROWN_STAINED_GLASS);
 
     public static void setup(@Nonnull FluffyMachines plugin) {
         
@@ -96,8 +96,7 @@ public final class FluffyItemSetup {
 
         new BackpackUnloader(FluffyItems.fluffymachines, FluffyItems.BACKPACK_UNLOADER,
             RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            new ItemStack(Material.BROWN_STAINED_GLASS), new ItemStack(Material.BROWN_STAINED_GLASS),
-            new ItemStack(Material.BROWN_STAINED_GLASS),
+            brownGlass, brownGlass, brownGlass,
             new ItemStack(Material.IRON_INGOT), new ItemStack(Material.DISPENSER), new ItemStack(Material.IRON_INGOT),
             SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.BIG_CAPACITOR, SlimefunItems.ELECTRIC_MOTOR
         }).register(plugin);
@@ -117,8 +116,8 @@ public final class FluffyItemSetup {
         }).register(plugin);
 
         /* Disabled due to impracticality
-        new ItemOverstacker(FluffyItems.fluffymachines, FluffyItems.ITEM_OVERSTACKER, RecipeType
-        .ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+        new ItemOverstacker(FluffyItems.fluffymachines, FluffyItems.ITEM_OVERSTACKER,
+        RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
             new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
             new ItemStack(Material.IRON_INGOT), SlimefunItems.ELECTRO_MAGNET, new ItemStack(Material.IRON_INGOT),
             new ItemStack(Material.IRON_INGOT), circuitBoard, new ItemStack(Material.IRON_INGOT)
