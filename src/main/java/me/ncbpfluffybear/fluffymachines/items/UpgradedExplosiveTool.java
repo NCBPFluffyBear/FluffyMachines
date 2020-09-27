@@ -1,6 +1,5 @@
 package me.ncbpfluffybear.fluffymachines.items;
 
-import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
 import io.github.thebusybiscuit.slimefun4.core.attributes.DamageableItem;
 import io.github.thebusybiscuit.slimefun4.core.attributes.NotPlaceable;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ToolUseHandler;
@@ -15,25 +14,23 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.materials.MaterialCollections;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
-import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This {@link SlimefunItem} is a super class for items like the {@link UpgradedExplosivePickaxe} or {@link UpgradedExplosiveShovel}.
- * 
+ * This {@link SlimefunItem} is a super class for items like the {@link UpgradedExplosivePickaxe} or {@link
+ * UpgradedExplosiveShovel}.
+ *
  * @author TheBusyBiscuit, NCBPFluffyBear
- * 
  * @see UpgradedExplosivePickaxe
  * @see UpgradedExplosiveShovel
- *
  */
 class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implements NotPlaceable, DamageableItem {
 
@@ -41,6 +38,7 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
         super(category, item, recipeType, recipe);
     }
 
+    @Nonnull
     @Override
     public ToolUseHandler getItemHandler() {
         return (e, tool, fortune, drops) -> {
@@ -91,15 +89,13 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
     protected boolean canBreak(Player p, Block b) {
         if (b.isEmpty() || b.isLiquid()) {
             return false;
-        }
-        else if (MaterialCollections.getAllUnbreakableBlocks().contains(b.getType())) {
+        } else if (MaterialCollections.getAllUnbreakableBlocks().contains(b.getType())) {
             return false;
-        }
-        else if (!b.getWorld().getWorldBorder().isInside(b.getLocation())) {
+        } else if (!b.getWorld().getWorldBorder().isInside(b.getLocation())) {
             return false;
-        }
-        else {
-            return SlimefunPlugin.getProtectionManager().hasPermission(p, b.getLocation(), ProtectableAction.BREAK_BLOCK);
+        } else {
+            return SlimefunPlugin.getProtectionManager().hasPermission(p, b.getLocation(),
+                ProtectableAction.BREAK_BLOCK);
         }
     }
 
@@ -115,8 +111,7 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
             if (handler != null && !handler.onBreak(p, b, sfItem, UnregisterReason.PLAYER_BREAK)) {
                 drops.add(BlockStorage.retrieve(b));
             }
-        }
-        else {
+        } else {
             b.breakNaturally(item);
         }
     }

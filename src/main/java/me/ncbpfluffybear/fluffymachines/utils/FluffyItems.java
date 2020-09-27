@@ -43,7 +43,8 @@ public class FluffyItems {
         "",
         "&aUses Left: &e0"
     );
-    public static final SlimefunItemStack ENDER_CHEST_EXTRACTION_NODE = new SlimefunItemStack("ENDER_CHEST_EXTRACTION_NODE",
+    public static final SlimefunItemStack ENDER_CHEST_EXTRACTION_NODE = new SlimefunItemStack(
+        "ENDER_CHEST_EXTRACTION_NODE",
         new CustomItem(SkullItem.fromHash("e707c7f6c3a056a377d4120028405fdd09acfcd5ae804bfde0f653be866afe39")),
         "&6Ender Chest Extraction Node",
         "",
@@ -52,7 +53,8 @@ public class FluffyItems {
         "&7This will move items from the facing &5Ender Chest",
         "&7to the &6Container &7behind it"
     );
-    public static final SlimefunItemStack ENDER_CHEST_INSERTION_NODE = new SlimefunItemStack("ENDER_CHEST_INSERTION_NODE",
+    public static final SlimefunItemStack ENDER_CHEST_INSERTION_NODE = new SlimefunItemStack(
+        "ENDER_CHEST_INSERTION_NODE",
         new CustomItem(SkullItem.fromHash("7e5dc50c0186d53381d9430a2eff4c38f816b8791890c7471ffdb65ba202bc5")),
         "&bEnder Chest Insertion Node",
         "",
@@ -132,7 +134,8 @@ public class FluffyItems {
         LoreBuilderDynamic.powerBuffer(BackpackLoader.CAPACITY),
         LoreBuilderDynamic.powerBuffer(BackpackLoader.ENERGY_CONSUMPTION)
     );
-    public static final SlimefunItemStack UPGRADED_EXPLOSIVE_PICKAXE = new SlimefunItemStack("UPGRADED_EXPLOSIVE_PICKAXE",
+    public static final SlimefunItemStack UPGRADED_EXPLOSIVE_PICKAXE = new SlimefunItemStack(
+        "UPGRADED_EXPLOSIVE_PICKAXE",
         Material.DIAMOND_PICKAXE,
         "&e&lUpgraded Explosive Pickaxe",
         "",

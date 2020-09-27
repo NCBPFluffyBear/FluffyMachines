@@ -12,24 +12,25 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * The {@link UpgradedExplosiveShovel} works similar to the {@link io.github.thebusybiscuit.slimefun4.implementation.items.tools.ExplosivePickaxe}.
+ * The {@link UpgradedExplosiveShovel} works similar to the
+ * {@link io.github.thebusybiscuit.slimefun4.implementation.items.tools.ExplosivePickaxe}.
  * However it can only break blocks that a shovel can break.
- * 
- * @author Linox, NCBPFluffyBear
  *
+ * @author Linox, NCBPFluffyBear
  * @see ExplosivePickaxe
  * @see UpgradedExplosiveTool
- *
  */
 public class UpgradedExplosiveShovel extends UpgradedExplosiveTool {
 
-    public UpgradedExplosiveShovel(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public UpgradedExplosiveShovel(Category category, SlimefunItemStack item, RecipeType recipeType,
+                                   ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
     }
 
     @Override
     protected boolean canBreak(Player p, Block b) {
-        return MaterialTools.getBreakableByShovel().contains(b.getType()) && SlimefunPlugin.getProtectionManager().hasPermission(p, b.getLocation(), ProtectableAction.BREAK_BLOCK);
+        return MaterialTools.getBreakableByShovel().contains(b.getType())
+            && SlimefunPlugin.getProtectionManager().hasPermission(p, b.getLocation(), ProtectableAction.BREAK_BLOCK);
     }
 
 }

@@ -2,25 +2,17 @@ package me.ncbpfluffybear.fluffymachines.multiblocks;
 
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetProvider;
 import io.github.thebusybiscuit.slimefun4.core.multiblocks.MultiBlockMachine;
-import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import me.ncbpfluffybear.fluffymachines.utils.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.block.BlastFurnace;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.type.Switch;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -32,8 +24,8 @@ public class CrankGenerator extends MultiBlockMachine implements EnergyNetProvid
     public static final int CAPACITY = 64;
 
     public CrankGenerator(Category category, SlimefunItemStack item) {
-        super(category, item, new ItemStack[] { null, null, null, null, new ItemStack(Material.LEVER), null, null,
-            FluffyItems.GENERATOR_CORE, null }, BlockFace.SELF);
+        super(category, item, new ItemStack[] {null, null, null, null, new ItemStack(Material.LEVER), null, null,
+            FluffyItems.GENERATOR_CORE, null}, BlockFace.SELF);
     }
 
     @Override
