@@ -151,7 +151,8 @@ public class FluffyItems {
         "",
         "&7Breaks all shovelable blocks in a 5x5 radius"
     );
-    public static final SlimefunItemStack FIREPROOF_RUNE = new SlimefunItemStack("FIREPROOF_RUNE",
+    public static final SlimefunItemStack FIREPROOF_RUNE = new SlimefunItemStack(
+        "FIREPROOF_RUNE",
         new ColoredFireworkStar(Color.fromRGB(255, 165, 0),
         "&7Ancient Rune &8&l[&c&lFireproof&8&l]",
         "",

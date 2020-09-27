@@ -100,7 +100,8 @@ public final class FluffyItemSetup {
             null, new ItemStack(Material.OBSIDIAN), null
         }).register(plugin);
 
-        new FireproofRune(FluffyItems.fluffymachines, FluffyItems.FIREPROOF_RUNE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+        new FireproofRune(FluffyItems.fluffymachines, FluffyItems.FIREPROOF_RUNE,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
             SlimefunItems.SYNTHETIC_EMERALD, SlimefunItems.SYNTHETIC_EMERALD, SlimefunItems.SYNTHETIC_EMERALD,
             new ItemStack(Material.TNT), SlimefunItems.EXPLOSIVE_SHOVEL, new ItemStack(Material.TNT),
             null, new ItemStack(Material.OBSIDIAN), null
