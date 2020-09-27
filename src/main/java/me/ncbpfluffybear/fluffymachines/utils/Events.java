@@ -1,8 +1,11 @@
 package me.ncbpfluffybear.fluffymachines.utils;
 
+import me.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import me.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import me.ncbpfluffybear.fluffymachines.items.WateringCan;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -53,6 +56,24 @@ public class Events implements Listener {
             if (helmet != null && helicopterHat.isItem(helmet)
             ) {
                 e.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onItemDamage(EntityDamageEvent e) {
+        Entity en = e.getEntity();
+        if (en instanceof Item) {
+            ItemStack item = ((Item)en).getItemStack();
+            if (FireproofRune.isFireproof(item)
+                && (e.getCause() == EntityDamageEvent.DamageCause.FIRE
+                || e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK
+                || e.getCause() == EntityDamageEvent.DamageCause.LAVA
+                || e.getCause() == EntityDamageEvent.DamageCause.LIGHTNING)) {
+                if (!en.isDead()) {
+                    en.remove();
+                    en.getLocation().getWorld().dropItem(en.getLocation(), item);
+                }
             }
         }
     }
