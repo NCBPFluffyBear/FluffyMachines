@@ -26,6 +26,8 @@ Custom item settings can be changed in `plugins/Slimefun/Items.yml`
 
 **Helicopter Hat**: Allows you to float upwards
 
+**Fireproof Rune**: Drop this on your items to prevent them from burning
+
 ## Misc
 **Ender Chest Extraction Node**: Moves items from ender chest to a chest
 

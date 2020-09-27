@@ -4,6 +4,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.ncbpfluffybear.fluffymachines.items.EnderChestExtractionNode;
 import me.ncbpfluffybear.fluffymachines.items.EnderChestInsertionNode;
+import me.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import me.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import me.ncbpfluffybear.fluffymachines.items.UpgradedExplosivePickaxe;
 import me.ncbpfluffybear.fluffymachines.items.UpgradedExplosiveShovel;
@@ -94,6 +95,13 @@ public final class FluffyItemSetup {
         }).register(plugin);
 
         new UpgradedExplosiveShovel(FluffyItems.fluffymachines, FluffyItems.UPGRADED_EXPLOSIVE_SHOVEL, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.SYNTHETIC_EMERALD, SlimefunItems.SYNTHETIC_EMERALD, SlimefunItems.SYNTHETIC_EMERALD,
+            new ItemStack(Material.TNT), SlimefunItems.EXPLOSIVE_SHOVEL, new ItemStack(Material.TNT),
+            null, new ItemStack(Material.OBSIDIAN), null
+        }).register(plugin);
+
+        new FireproofRune(FluffyItems.fluffymachines, FluffyItems.FIREPROOF_RUNE,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
             SlimefunItems.SYNTHETIC_EMERALD, SlimefunItems.SYNTHETIC_EMERALD, SlimefunItems.SYNTHETIC_EMERALD,
             new ItemStack(Material.TNT), SlimefunItems.EXPLOSIVE_SHOVEL, new ItemStack(Material.TNT),
             null, new ItemStack(Material.OBSIDIAN), null
