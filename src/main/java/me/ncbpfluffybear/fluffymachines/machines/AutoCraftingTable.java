@@ -285,11 +285,17 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
         // Make a list using the input slot items
         for (int slot : getInputSlots()) {
             ItemStack slotItem = menu.getItemInSlot(slot);
-            if (slotItem == null) {
-                return;
-            } else {
+            if (slotItem != null) {
                 Material existingMat = slotItem.getType();
                 if (existingMat != Material.AIR) {
+
+                    if (slotItem.getAmount() == 1) {
+                        if (menu.hasViewer()) {
+                            menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE), "&c&lYou need to have enough supplies", "&c&lto craft more than one item"));
+                        }
+                        return;
+                    }
+
                     existingMats.add(existingMat);
                     existingMatSlots.add(slot);
                 }
@@ -321,8 +327,7 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                 // Compare the lists and craft if equal
                 if (reqMats.equals(existingMats)) {
                     existingMatSlots.forEach(menu::consumeItem);
-                    ItemStack strippedKey = new ItemStack(keyItem.getType());
-                    menu.pushItem(strippedKey.clone(), getOutputSlots());
+                    menu.pushItem(r.getResult(), getOutputSlots());
                     removeCharge(block.getLocation(), getEnergyConsumption());
                     if (menu.hasViewer()) {
                         menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.LIME_STAINED_GLASS_PANE), "&a&lRunning"));
@@ -340,11 +345,11 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                         reqMats.add(recipeMat);
                     }
                 }));
+
                 // Compare the lists and craft if equal
                 if (reqMats.equals(existingMats)) {
                     existingMatSlots.forEach(menu::consumeItem);
-                    ItemStack strippedKey = new ItemStack(keyItem.getType());
-                    menu.pushItem(strippedKey.clone(), getOutputSlots());
+                    menu.pushItem(r.getResult(), getOutputSlots());
                     removeCharge(block.getLocation(), getEnergyConsumption());
                     if (menu.hasViewer()) {
                         menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.LIME_STAINED_GLASS_PANE), "&a&lRunning"));
