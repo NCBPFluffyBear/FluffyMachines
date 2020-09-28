@@ -1,10 +1,12 @@
 package me.ncbpfluffybear.fluffymachines.utils;
 
+import io.github.thebusybiscuit.slimefun4.utils.itemstack.ColoredFireworkStar;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullItem;
 import me.ncbpfluffybear.fluffymachines.FluffyMachines;
+import me.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import me.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
 import me.ncbpfluffybear.fluffymachines.machines.AutoCraftingTable;
 import me.ncbpfluffybear.fluffymachines.machines.BackpackLoader;
@@ -13,8 +15,13 @@ import me.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class FluffyItems {
+
+    private FluffyItems() {
+    }
 
     // Category
     public static final Category fluffymachines = new Category(new NamespacedKey(FluffyMachines.getInstance(),
@@ -147,7 +154,18 @@ public class FluffyItems {
         "",
         "&7Breaks all shovelable blocks in a 5x5 radius"
     );
+    public static final SlimefunItemStack FIREPROOF_RUNE = new SlimefunItemStack(
+        "FIREPROOF_RUNE",
+        new ColoredFireworkStar(Color.fromRGB(255, 165, 0),
+        "&7Ancient Rune &8&l[&c&lFireproof&8&l]",
+        "",
+        "&eDrop this rune onto a dropped item to",
+        "&emake it &cfireproof",
+        ""
+    ));
 
-    private FluffyItems() {
+    static {
+        FireproofRune.setFireproof(FIREPROOF_RUNE);
     }
+
 }
