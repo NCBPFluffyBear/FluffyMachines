@@ -3,7 +3,6 @@ package me.ncbpfluffybear.fluffymachines.utils;
 import me.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import me.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import me.ncbpfluffybear.fluffymachines.items.WateringCan;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -66,7 +65,7 @@ public class Events implements Listener {
     public void onItemDamage(EntityDamageEvent e) {
         Entity en = e.getEntity();
         if (en instanceof Item) {
-            ItemStack item = ((Item)en).getItemStack();
+            ItemStack item = ((Item) en).getItemStack();
             if (FireproofRune.isFireproof(item)
                 && (e.getCause() == EntityDamageEvent.DamageCause.FIRE
                 || e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK

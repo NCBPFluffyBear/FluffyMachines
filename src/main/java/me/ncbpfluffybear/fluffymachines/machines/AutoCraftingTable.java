@@ -33,7 +33,6 @@ import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -50,12 +49,12 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
 
     public static final int ENERGY_CONSUMPTION = 256;
     public static final int CAPACITY = 2048;
+    private static final int keySlot = 16;
+    private static final int statusSlot = 23;
     private final int[] border = {0, 1, 3, 5, 13, 14, 50, 51, 52, 53};
     private final int[] inputBorder = {9, 10, 11, 12, 13, 18, 22, 27, 31, 36, 40, 45, 46, 47, 48, 49};
     private final int[] outputBorder = {32, 33, 34, 35, 41, 44, 50, 51, 52, 53};
     private final int[] keyBorder = {6, 7, 8, 15, 17, 24, 25, 26};
-    private final int keySlot = 16;
-    private final int statusSlot = 23;
 
     public AutoCraftingTable(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
@@ -72,16 +71,16 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                 if (!BlockStorage.hasBlockInfo(b)
                     || BlockStorage.getLocationInfo(b.getLocation(), "enabled") == null
                     || BlockStorage.getLocationInfo(b.getLocation(), "enabled").equals(String.valueOf(false))) {
-                    menu.replaceExistingItem(4, new CustomItem(Material.GUNPOWDER, "&7Enabled: &4\u2718", "", "&e> " +
-                        "Click to enable this Machine"));
+                    menu.replaceExistingItem(4, new CustomItem(Material.GUNPOWDER, "&7Enabled: &4\u2718", "",
+                        "&e> Click to enable this Machine"));
                     menu.addMenuClickHandler(4, (p, slot, item, action) -> {
                         BlockStorage.addBlockInfo(b, "enabled", String.valueOf(true));
                         newInstance(menu, b);
                         return false;
                     });
                 } else {
-                    menu.replaceExistingItem(4, new CustomItem(Material.REDSTONE, "&7Enabled: &2\u2714", "", "&e> " +
-                        "Click to disable this Machine"));
+                    menu.replaceExistingItem(4, new CustomItem(Material.REDSTONE, "&7Enabled: &2\u2714", "",
+                        "&e> Click to disable this Machine"));
                     menu.addMenuClickHandler(4, (p, slot, item, action) -> {
                         BlockStorage.addBlockInfo(b, "enabled", String.valueOf(false));
                         newInstance(menu, b);
@@ -162,32 +161,27 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
 
     protected void constructMenu(BlockMenuPreset preset) {
         for (int i : border) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
-                (p, slot, item, action) -> false
-            );
+            preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "), (p, slot, item,
+                                                                                                     action) -> false);
         }
 
         for (int i : inputBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.BLUE_STAINED_GLASS_PANE), " "),
-                (p, slot, item, action) -> false
-            );
+            preset.addItem(i, new CustomItem(new ItemStack(Material.BLUE_STAINED_GLASS_PANE), " "), (p, slot, item,
+                                                                                                     action) -> false);
         }
 
         for (int i : outputBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "),
-                (p, slot, item, action) -> false
-            );
+            preset.addItem(i, new CustomItem(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "), (p, slot, item,
+                                                                                                       action) -> false);
         }
 
         for (int i : keyBorder) {
             preset.addItem(i, new CustomItem(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE), "&e&lKey Item Slot"),
-                (p, slot, item, action) -> false
-            );
+                (p, slot, item, action) -> false);
         }
 
-        preset.addItem(statusSlot, new CustomItem(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE), "&e&lIdle"),
-            (p, slot, item, action) -> false
-        );
+        preset.addItem(statusSlot, new CustomItem(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE), "&e&lIdle"), (p,
+                                                                                                                   slot, item, action) -> false);
 
         for (int i : getOutputSlots()) {
             preset.addMenuClickHandler(i, new AdvancedMenuClickHandler() {
@@ -205,9 +199,9 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
             });
         }
 
-        preset.addItem(2, new CustomItem(new ItemStack(Material.CRAFTING_TABLE), "&eRecipe", "",
-            "&bPut in the Recipe you want to craft", "&ePut in the item you want crafted",
-            "&4Vanilla Crafting Table Recipes ONLY"), (p, slot, item, action) -> false);
+        preset.addItem(2, new CustomItem(new ItemStack(Material.CRAFTING_TABLE), "&eRecipe", "", "&bPut in the Recipe" +
+            " you want to craft", "&ePut in the item you want crafted", "&4Vanilla Crafting Table Recipes ONLY"), (p,
+                                                                                                                   slot, item, action) -> false);
     }
 
     @Override
@@ -220,7 +214,6 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
         return new int[] {42, 43};
     }
 
-    @Nonnull
     @Override
     public EnergyNetComponentType getEnergyComponentType() {
         return EnergyNetComponentType.CONSUMER;
@@ -281,8 +274,8 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                 break;
             } else if (outSlot == getOutputSlots()[1]) {
                 if (menu.hasViewer()) {
-                    menu.replaceExistingItem(statusSlot,
-                        new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE), "&c&lStorage Full"));
+                    menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+                        "&c&lStorage Full"));
                 }
                 return;
             }
@@ -304,11 +297,19 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
         // Make a list using the input slot items
         for (int slot : getInputSlots()) {
             ItemStack slotItem = menu.getItemInSlot(slot);
-            if (slotItem == null) {
-                return;
-            } else {
+            if (slotItem != null) {
                 Material existingMat = slotItem.getType();
                 if (existingMat != Material.AIR) {
+
+                    if (slotItem.getAmount() == 1) {
+                        if (menu.hasViewer()) {
+                            menu.replaceExistingItem(statusSlot,
+                                new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+                                    "&c&lYou need to have enough supplies", "&c&lto craft more than one item"));
+                        }
+                        return;
+                    }
+
                     existingMats.add(existingMat);
                     existingMatSlots.add(slot);
                 }
@@ -339,7 +340,8 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                     }
                 }));
                 // Compare the lists and craft if equal
-                mats(block, menu, keyItem, reqMats, existingMats, existingMatSlots);
+                mats(block, menu, reqMats, existingMats, existingMatSlots, r);
+                break;
             } else if (r instanceof ShapelessRecipe) {
                 List<RecipeChoice> recipeChoices;
                 recipeChoices = ((ShapelessRecipe) r).getChoiceList();
@@ -349,29 +351,26 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                         reqMats.add(recipeMat);
                     }
                 }));
+
                 // Compare the lists and craft if equal
-                mats(block, menu, keyItem, reqMats, existingMats, existingMatSlots);
-                break;
+                mats(block, menu, reqMats, existingMats, existingMatSlots, r);
             }
         }
     }
 
-    private void mats(Block block, BlockMenu menu, ItemStack keyItem, List<Material> reqMats,
-                      List<Material> existingMats, List<Integer> existingMatSlots) {
+    private void mats(Block block, BlockMenu menu, List<Material> reqMats,
+                      List<Material> existingMats, List<Integer> existingMatSlots, Recipe r) {
         if (reqMats.equals(existingMats)) {
             existingMatSlots.forEach(menu::consumeItem);
-            ItemStack strippedKey = new ItemStack(keyItem.getType());
-            menu.pushItem(strippedKey.clone(), getOutputSlots());
+            menu.pushItem(r.getResult(), getOutputSlots());
             removeCharge(block.getLocation(), getEnergyConsumption());
             if (menu.hasViewer()) {
-                menu.replaceExistingItem(statusSlot,
-                    new CustomItem(new ItemStack(Material.LIME_STAINED_GLASS_PANE), "&a&lRunning"));
+                menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.LIME_STAINED_GLASS_PANE),
+                    "&a&lRunning"));
             }
         } else if (menu.hasViewer()) {
-            menu.replaceExistingItem(statusSlot,
-                new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
-                    "&c&lRecipe does not match key")
-            );
+            menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+                "&c&lRecipe does not match key"));
         }
     }
 }

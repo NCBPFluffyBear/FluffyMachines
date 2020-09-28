@@ -15,20 +15,14 @@ import me.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class FluffyItems {
-
-    private FluffyItems() {
-    }
 
     // Category
     public static final Category fluffymachines = new Category(new NamespacedKey(FluffyMachines.getInstance(),
         "fluffymachines"),
         new CustomItem(Material.SMOKER, "&6Fluffy Machines")
     );
-
     // Items
     public static final SlimefunItemStack HELICOPTER_HAT = new SlimefunItemStack("HELICOPTER_HAT",
         Material.LEATHER_HELMET, Color.AQUA,
@@ -70,8 +64,6 @@ public class FluffyItems {
         "&7This will move items to the facing &5Ender Chest",
         "&7from the &6Container &7behind it"
     );
-
-
     // Machines
     public static final SlimefunItemStack AUTO_CRAFTING_TABLE = new SlimefunItemStack("AUTO_CRAFTING_TABLE",
         Material.CRAFTING_TABLE,
@@ -107,14 +99,12 @@ public class FluffyItems {
         "",
         "&7Compresses nonstackable items"
     );
-
     public static final SlimefunItemStack GENERATOR_CORE = new SlimefunItemStack("GENERATOR_CORE",
         Material.BLAST_FURNACE,
         "&7Generator Core",
         "",
         "&7Multiblock component of generators"
     );
-
     public static final SlimefunItemStack CRANK_GENERATOR = new SlimefunItemStack("CRANK_GENERATOR",
         Material.BLAST_FURNACE,
         "&7Crank Generator",
@@ -157,15 +147,18 @@ public class FluffyItems {
     public static final SlimefunItemStack FIREPROOF_RUNE = new SlimefunItemStack(
         "FIREPROOF_RUNE",
         new ColoredFireworkStar(Color.fromRGB(255, 165, 0),
-        "&7Ancient Rune &8&l[&c&lFireproof&8&l]",
-        "",
-        "&eDrop this rune onto a dropped item to",
-        "&emake it &cfireproof",
-        ""
-    ));
+            "&7Ancient Rune &8&l[&c&lFireproof&8&l]",
+            "",
+            "&eDrop this rune onto a dropped item to",
+            "&emake it &cfireproof",
+            ""
+        ));
 
     static {
         FireproofRune.setFireproof(FIREPROOF_RUNE);
+    }
+
+    private FluffyItems() {
     }
 
 }

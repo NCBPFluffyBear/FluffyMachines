@@ -28,6 +28,7 @@ public final class FluffyItemSetup {
     private static final SlimefunItemStack advancedCircuitBoard = SlimefunItems.ADVANCED_CIRCUIT_BOARD;
     private static final ItemStack orangeGlass = new ItemStack(Material.ORANGE_STAINED_GLASS);
     private static final ItemStack brownGlass = new ItemStack(Material.BROWN_STAINED_GLASS);
+
     private FluffyItemSetup() {}
 
     public static void setup(@Nonnull FluffyMachines plugin) {

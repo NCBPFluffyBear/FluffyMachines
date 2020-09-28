@@ -10,7 +10,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
-
 import java.util.logging.Level;
 
 public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
@@ -36,10 +35,13 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
         final Metrics metrics = new Metrics(this, 8927);
 
-        getLogger().log(Level.INFO, ChatColor.GREEN + "Hi there! Want to share your server with the Slimefun community?");
-        getLogger().log(Level.INFO, ChatColor.GREEN + "Join the official Slimefun Discord server at https://discord.gg/s4XRkbB");
+        getLogger().log(Level.INFO, ChatColor.GREEN + "Hi there! Want to share your server with the Slimefun " +
+            "community?");
+        getLogger().log(Level.INFO, ChatColor.GREEN + "Join the official Slimefun Discord server at https://discord" +
+            ".gg/s4XRkbB");
         getLogger().log(Level.INFO, ChatColor.GREEN + "Don't forget to leave your server in #server-showcase!");
-        getLogger().log(Level.INFO, ChatColor.GREEN + "Write \"FluffyBear\" and I'll check out your server sometime :)");
+        getLogger().log(Level.INFO, ChatColor.GREEN + "Write \"FluffyBear\" and I'll check out your server sometime " +
+            ":)");
     }
 
     @Override

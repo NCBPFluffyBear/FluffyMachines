@@ -28,13 +28,12 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- *
  * The Fireproof Rune prevents items from
  * burning in lava or fire
  * Heavily based off of the Soulbound Rune
  *
  * @author NCBPFluffyBear
- *
+ * <p>
  * Worked on Soulbound Rune:
  * @author Linox
  * @author Walshy
@@ -46,7 +45,6 @@ public class FireproofRune extends SimpleSlimefunItem<ItemDropHandler> {
     private static final double RANGE = 1.5;
     private static final NamespacedKey FIREPROOF_KEY = new NamespacedKey(FluffyMachines.getInstance(), "fireproof");
     private static final String FIREPROOF_LORE = ChatColor.RED + "Fireproof";
-
 
 
     public FireproofRune(Category category, SlimefunItemStack item, RecipeType type, ItemStack[] recipe) {
