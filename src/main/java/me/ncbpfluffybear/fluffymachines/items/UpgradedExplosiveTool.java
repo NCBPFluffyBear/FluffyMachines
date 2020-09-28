@@ -19,6 +19,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.inventory.ItemStack;
@@ -50,7 +51,13 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
             b.getWorld().createExplosion(b.getLocation(), 0.0F);
             b.getWorld().playSound(b.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 0.2F, 1F);
 
-            List<Block> blocks = findBlocks(b);
+            BlockFace face = p.getFacing();
+            if (p.getLocation().getPitch() > 67.5) {
+                face = BlockFace.DOWN;
+            } else if (p.getLocation().getPitch() < -67.5) {
+                face = BlockFace.UP;
+            }
+            List<Block> blocks = findBlocks(b, face);
             breakBlocks(p, tool, b, blocks, drops);
         };
     }
@@ -64,18 +71,13 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
         }
     }
 
-    private List<Block> findBlocks(Block b) {
+    private List<Block> findBlocks(Block b, BlockFace face) {
         List<Block> blocks = new ArrayList<>(26);
-
         for (int x = -2; x <= 2; x++) {
             for (int y = -2; y <= 2; y++) {
                 for (int z = -2; z <= 2; z++) {
-                    // We can skip the center block since that will break as usual
-                    if (x == 0 && y == 0 && z == 0) {
-                        continue;
-                    }
-
-                    blocks.add(b.getRelative(x, y, z));
+                    Block shiftedBlock = b.getRelative(face, 2);
+                    blocks.add(shiftedBlock.getRelative(x, y, z));
                 }
             }
         }
