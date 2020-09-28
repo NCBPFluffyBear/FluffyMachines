@@ -70,26 +70,6 @@ public class BackpackLoader extends SlimefunItem implements InventoryBlock, Ener
         });
     }
 
-    static void border(BlockMenuPreset preset, int[] plainBorder, int[] inputBorder, int[] outputBorder) {
-        for (int i : plainBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
-                (p, slot, item, action) -> false
-            );
-        }
-
-        for (int i : inputBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.CYAN_STAINED_GLASS_PANE), " "),
-                (p, slot, item, action) -> false
-            );
-        }
-
-        for (int i : outputBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "),
-                (p, slot, item, action) -> false
-            );
-        }
-    }
-
     @Override
     public void preRegister() {
         this.addItemHandler(new BlockTicker() {
@@ -209,6 +189,26 @@ public class BackpackLoader extends SlimefunItem implements InventoryBlock, Ener
     @Override
     public int[] getOutputSlots() {
         return OUTPUT_SLOTS;
+    }
+
+    static void border(BlockMenuPreset preset, int[] plainBorder, int[] inputBorder, int[] outputBorder) {
+        for (int i : plainBorder) {
+            preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
+                (p, slot, item, action) -> false
+            );
+        }
+
+        for (int i : inputBorder) {
+            preset.addItem(i, new CustomItem(new ItemStack(Material.CYAN_STAINED_GLASS_PANE), " "),
+                (p, slot, item, action) -> false
+            );
+        }
+
+        for (int i : outputBorder) {
+            preset.addItem(i, new CustomItem(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "),
+                (p, slot, item, action) -> false
+            );
+        }
     }
 }
 
