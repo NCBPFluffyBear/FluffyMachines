@@ -50,7 +50,9 @@ public class Events implements Listener {
 
     @EventHandler
     public void onPlayerDamage(EntityDamageEvent e) {
-        if (e.getEntity() instanceof Player && ((Player) e.getEntity()).getEquipment() != null) {
+        if (e.getEntity() instanceof Player && ((Player) e.getEntity()).getEquipment() != null
+            && e.getCause() == EntityDamageEvent.DamageCause.FALL
+        ) {
             Player p = (Player) e.getEntity();
             ItemStack helmet = p.getEquipment().getHelmet();
             if (helmet != null && helicopterHat.isItem(helmet)
