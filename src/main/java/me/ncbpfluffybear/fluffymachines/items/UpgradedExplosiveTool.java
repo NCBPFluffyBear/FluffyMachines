@@ -57,7 +57,6 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
             } else if (p.getLocation().getPitch() < -67.5) {
                 face = BlockFace.UP;
             }
-            Bukkit.broadcastMessage(face.toString());
             List<Block> blocks = findBlocks(b, face);
             breakBlocks(p, tool, b, blocks, drops);
         };
