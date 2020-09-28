@@ -156,20 +156,7 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
     }
 
     protected void constructMenu(BlockMenuPreset preset) {
-        for (int i : border) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
-                (p, slot, item, action) -> false);
-        }
-
-        for (int i : inputBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.BLUE_STAINED_GLASS_PANE), " "),
-                (p, slot, item, action) -> false);
-        }
-
-        for (int i : outputBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "),
-                (p, slot, item, action) -> false);
-        }
+        AutoCraftingTable.border(preset, border, inputBorder, outputBorder);
 
         for (int i : getOutputSlots()) {
             preset.addMenuClickHandler(i, new AdvancedMenuClickHandler() {

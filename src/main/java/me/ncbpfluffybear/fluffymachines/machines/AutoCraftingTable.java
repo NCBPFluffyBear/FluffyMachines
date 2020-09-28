@@ -22,6 +22,7 @@ import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -33,6 +34,7 @@ import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -129,11 +131,12 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
         addItemHandler(onPlace());
         registerBlockHandler(getID(), (p, b, stack, reason) -> {
             BlockMenu inv = BlockStorage.getInventory(b);
+            Location location = b.getLocation();
 
             if (inv != null) {
-                inv.dropItems(b.getLocation(), getInputSlots());
-                inv.dropItems(b.getLocation(), getOutputSlots());
-                inv.dropItems(b.getLocation(), keySlot);
+                inv.dropItems(location, getInputSlots());
+                inv.dropItems(location, getOutputSlots());
+                inv.dropItems(location, keySlot);
             }
 
             return true;
@@ -160,28 +163,15 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
     }
 
     protected void constructMenu(BlockMenuPreset preset) {
-        for (int i : border) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "), (p, slot, item,
-                                                                                                     action) -> false);
-        }
-
-        for (int i : inputBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.BLUE_STAINED_GLASS_PANE), " "), (p, slot, item,
-                                                                                                     action) -> false);
-        }
-
-        for (int i : outputBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "), (p, slot, item,
-                                                                                                       action) -> false);
-        }
+        border(preset, border, inputBorder, outputBorder);
 
         for (int i : keyBorder) {
             preset.addItem(i, new CustomItem(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE), "&e&lKey Item Slot"),
                 (p, slot, item, action) -> false);
         }
 
-        preset.addItem(statusSlot, new CustomItem(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE), "&e&lIdle"), (p,
-                                                                                                                   slot, item, action) -> false);
+        preset.addItem(statusSlot, new CustomItem(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE), "&e&lIdle"),
+            (p, slot, item, action) -> false);
 
         for (int i : getOutputSlots()) {
             preset.addMenuClickHandler(i, new AdvancedMenuClickHandler() {
@@ -194,14 +184,34 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                 @Override
                 public boolean onClick(InventoryClickEvent e, Player p, int slot, ItemStack cursor,
                                        ClickAction action) {
-                    return cursor == null || cursor.getType() == null || cursor.getType() == Material.AIR;
+                    if (cursor == null) return true;
+                    cursor.getType();
+                    return cursor.getType() == Material.AIR;
                 }
             });
         }
 
-        preset.addItem(2, new CustomItem(new ItemStack(Material.CRAFTING_TABLE), "&eRecipe", "", "&bPut in the Recipe" +
-            " you want to craft", "&ePut in the item you want crafted", "&4Vanilla Crafting Table Recipes ONLY"), (p,
-                                                                                                                   slot, item, action) -> false);
+        preset.addItem(2, new CustomItem(new ItemStack(Material.CRAFTING_TABLE), "&eRecipe", "",
+                "&bPut in the Recipe you want to craft",
+                "&ePut in the item you want crafted", "&4Vanilla Crafting Table Recipes ONLY"),
+            (p, slot, item, action) -> false);
+    }
+
+    static void border(BlockMenuPreset preset, int[] border, int[] inputBorder, int[] outputBorder) {
+        for (int i : border) {
+            preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
+                (p, slot, item, action) -> false);
+        }
+
+        for (int i : inputBorder) {
+            preset.addItem(i, new CustomItem(new ItemStack(Material.BLUE_STAINED_GLASS_PANE), " "),
+                (p, slot, item, action) -> false);
+        }
+
+        for (int i : outputBorder) {
+            preset.addItem(i, new CustomItem(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "),
+                (p, slot, item, action) -> false);
+        }
     }
 
     @Override
@@ -214,6 +224,7 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
         return new int[] {42, 43};
     }
 
+    @Nonnull
     @Override
     public EnergyNetComponentType getEnergyComponentType() {
         return EnergyNetComponentType.CONSUMER;
