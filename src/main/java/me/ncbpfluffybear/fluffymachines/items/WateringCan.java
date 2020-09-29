@@ -123,13 +123,9 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
                         if (currentAge < maxAge && updateUses(p, item, 1)) {
                             blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
                             double random = ThreadLocalRandom.current().nextDouble();
-                            if (Constants.SERVER_VERSION < 1163) {
-                                if (random <= cropSuccessChance.getValue()) {
-                                    crop.setAge(currentAge + 1);
-                                    blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
-                                }
-                            } else {
-                                b.applyBoneMeal(p.getFacing());
+                            if (random <= cropSuccessChance.getValue()) {
+                                crop.setAge(currentAge + 1);
+                                blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
                             }
 
                         } else {
