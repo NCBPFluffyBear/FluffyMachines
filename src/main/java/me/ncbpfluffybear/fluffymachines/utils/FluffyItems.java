@@ -114,6 +114,14 @@ public class FluffyItems {
         "",
         Utils.multiBlockWarning()
     );
+    public static final SlimefunItemStack FOUNDRY = new SlimefunItemStack("FOUNDRY",
+        Material.BLAST_FURNACE,
+        "&cFoundry",
+        "",
+        "&eMelts and stores dusts and ingots",
+        "",
+        Utils.multiBlockWarning()
+    );
     public static final SlimefunItemStack BACKPACK_UNLOADER = new SlimefunItemStack("BACKPACK_UNLOADER",
         Material.BROWN_STAINED_GLASS,
         "&eBackpack Unloader",
@@ -143,6 +151,12 @@ public class FluffyItems {
         "&e&lUpgraded Explosive Shovel",
         "",
         "&7Breaks all shovelable blocks in a 5x5 radius"
+    );
+    public static final SlimefunItemStack SUPERHEATED_FURNACE = new SlimefunItemStack("SUPERHEATED_FURNACE",
+        Material.BLAST_FURNACE,
+        "&cSuper Heated Furnace",
+        "",
+        "&7Multiblock component of the Foundry"
     );
 
     private FluffyItems() {

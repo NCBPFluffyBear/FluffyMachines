@@ -14,7 +14,9 @@ import me.ncbpfluffybear.fluffymachines.machines.BackpackLoader;
 import me.ncbpfluffybear.fluffymachines.machines.BackpackUnloader;
 import me.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
 import me.ncbpfluffybear.fluffymachines.multiblocks.CrankGenerator;
+import me.ncbpfluffybear.fluffymachines.multiblocks.Foundry;
 import me.ncbpfluffybear.fluffymachines.multiblocks.components.GeneratorCore;
+import me.ncbpfluffybear.fluffymachines.multiblocks.components.SuperheatedFurnace;
 import me.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -99,6 +101,12 @@ public final class FluffyItemSetup {
             null, new ItemStack(Material.OBSIDIAN), null
         }).register(plugin);
 
+        new SuperheatedFurnace(FluffyItems.fluffymachines, FluffyItems.SUPERHEATED_FURNACE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            new ItemStack(Material.OBSIDIAN), new ItemStack(Material.OBSIDIAN), new ItemStack(Material.OBSIDIAN),
+            new ItemStack(Material.LAVA_BUCKET), new ItemStack(Material.BLAST_FURNACE), new ItemStack(Material.LAVA_BUCKET),
+            new ItemStack(Material.OBSIDIAN), new ItemStack(Material.OBSIDIAN), new ItemStack(Material.OBSIDIAN)
+        }).register(plugin);
+
         /* Disabled due to impracticality
         new ItemOverstacker(FluffyItems.fluffymachines, FluffyItems.ITEM_OVERSTACKER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
             new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
@@ -109,6 +117,7 @@ public final class FluffyItemSetup {
 
         // Multiblocks
         new CrankGenerator(FluffyItems.fluffymachines, FluffyItems.CRANK_GENERATOR).register(plugin);
+        new Foundry(FluffyItems.fluffymachines, FluffyItems.FOUNDRY).register(plugin);
 
         // Items
     }
