@@ -59,7 +59,13 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
             b.getWorld().createExplosion(b.getLocation(), 0.0F);
             b.getWorld().playSound(b.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 0.2F, 1F);
 
-            List<Block> blocks = findBlocks(b);
+            BlockFace face = p.getFacing();
+            if (p.getLocation().getPitch() > 67.5) {
+                face = BlockFace.DOWN;
+            } else if (p.getLocation().getPitch() < -67.5) {
+                face = BlockFace.UP;
+            }
+            List<Block> blocks = findBlocks(b, face);
             breakBlocks(p, tool, b, blocks, drops);
         };
     }
@@ -87,7 +93,7 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
         }
     }
 
-    private List<Block> findBlocks(Block b) {
+    private List<Block> findBlocks(Block b, BlockFace face) {
         List<Block> blocks = new ArrayList<>(26);
         for (int x = -2; x <= 2; x++) {
             for (int y = -2; y <= 2; y++) {
@@ -102,6 +108,8 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
                         Block shiftedBlock = b.getRelative(BlockFace.SELF, 2);
                         blocks.add(shiftedBlock.getRelative(x, y, z));
                     }
+                    Block shiftedBlock = b.getRelative(face, 2);
+                    blocks.add(shiftedBlock.getRelative(x, y, z));
                 }
             }
         }

@@ -5,6 +5,7 @@ import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import me.ncbpfluffybear.fluffymachines.FluffyMachines;
+import me.ncbpfluffybear.fluffymachines.utils.Constants;
 import me.ncbpfluffybear.fluffymachines.utils.Utils;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
@@ -146,14 +147,18 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
                                 return;
                             blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
                             double random = ThreadLocalRandom.current().nextDouble();
-                            if (random <= treeSuccessChance.getValue()) {
+                            if (Constants.SERVER_VERSION < 1163) {
+                                if (random <= treeSuccessChance.getValue()) {
 
-                                Material saplingMaterial = b.getType();
-                                b.setType(Material.AIR);
-                                if (!blockLocation.getWorld().generateTree(blockLocation, getTreeFromSapling(saplingMaterial))) {
-                                    b.setType(saplingMaterial);
+                                    Material saplingMaterial = b.getType();
+                                    b.setType(Material.AIR);
+                                    if (!blockLocation.getWorld().generateTree(blockLocation, getTreeFromSapling(saplingMaterial))) {
+                                        b.setType(saplingMaterial);
+                                    }
+                                    blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
                                 }
-                                blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
+                            } else {
+                                b.applyBoneMeal(p.getFacing());
                             }
                         }
                     }
