@@ -9,9 +9,13 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import javax.annotation.Nullable;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public final class Utils {
@@ -60,6 +64,31 @@ public final class Utils {
 
     public static String multiBlockWarning() {
         return "&cThis is a Multiblock machine!";
+    }
+
+    public static ItemStack buildNonInteractable(Material material, @Nullable String name, @Nullable String... lore) {
+        ItemStack nonClickable = new ItemStack(material);
+        ItemMeta NCMeta = nonClickable.getItemMeta();
+        if (name != null) {
+            NCMeta.setDisplayName(ChatColors.color(name));
+        } else {
+            NCMeta.setDisplayName(" ");
+        }
+
+        if (lore.length > 0) {
+            List<String> lines = new ArrayList();
+            String[] loreString = lore;
+            int loreLength = lore.length;
+
+            for(int i = 0; i < loreLength; ++i) {
+                String line = loreString[i];
+                lines.add(ChatColor.translateAlternateColorCodes('&', line));
+            }
+            NCMeta.setLore(lines);
+        }
+        NCMeta.setCustomModelData(6969);
+        nonClickable.setItemMeta(NCMeta);
+        return nonClickable;
     }
 }
 

@@ -2,11 +2,14 @@ package me.ncbpfluffybear.fluffymachines.utils;
 
 import me.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import me.ncbpfluffybear.fluffymachines.items.WateringCan;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -54,6 +57,16 @@ public class Events implements Listener {
             ) {
                 e.setCancelled(true);
             }
+        }
+    }
+
+    // This is used to make the non clickable GUI items non clickable
+    @EventHandler
+    public void onNonClickableClick(InventoryClickEvent e) {
+        ItemStack item = e.getCurrentItem();
+        if (item != null && item.getType() != Material.AIR && item.getItemMeta().hasCustomModelData()
+            && item.getItemMeta().getCustomModelData() == 6969) {
+            e.setCancelled(true);
         }
     }
 
