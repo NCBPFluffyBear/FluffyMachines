@@ -19,8 +19,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -39,11 +41,12 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
 
     private final ItemSetting<Boolean> damageOnUse = new ItemSetting<>("damage-on-use", true);
     private final ItemSetting<Boolean> callExplosionEvent = new ItemSetting<>("call-explosion-event", false);
+    private final ItemSetting<Boolean> breakFromCenter = new ItemSetting<>("break-from-center", false);
 
     public UpgradedExplosiveTool(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
-        addItemSetting(damageOnUse, callExplosionEvent);
+        addItemSetting(damageOnUse, callExplosionEvent, breakFromCenter);
     }
 
     @Nonnull
@@ -86,7 +89,6 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
 
     private List<Block> findBlocks(Block b) {
         List<Block> blocks = new ArrayList<>(26);
-
         for (int x = -2; x <= 2; x++) {
             for (int y = -2; y <= 2; y++) {
                 for (int z = -2; z <= 2; z++) {
@@ -94,14 +96,18 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
                     if (x == 0 && y == 0 && z == 0) {
                         continue;
                     }
-
-                    blocks.add(b.getRelative(x, y, z));
+                    if (breakFromCenter.getValue()) {
+                        blocks.add(b.getRelative(x, y, z));
+                    } else {
+                        Block shiftedBlock = b.getRelative(BlockFace.SELF, 2);
+                        blocks.add(shiftedBlock.getRelative(x, y, z));
+                    }
                 }
             }
         }
-
         return blocks;
     }
+
 
     @Override
     public boolean isDamageable() {
