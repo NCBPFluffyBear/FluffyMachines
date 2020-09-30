@@ -197,23 +197,6 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
             (p, slot, item, action) -> false);
     }
 
-    static void border(BlockMenuPreset preset, int[] border, int[] inputBorder, int[] outputBorder) {
-        for (int i : border) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
-                (p, slot, item, action) -> false);
-        }
-
-        for (int i : inputBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.BLUE_STAINED_GLASS_PANE), " "),
-                (p, slot, item, action) -> false);
-        }
-
-        for (int i : outputBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "),
-                (p, slot, item, action) -> false);
-        }
-    }
-
     @Override
     public int[] getInputSlots() {
         return new int[] {19, 20, 21, 28, 29, 30, 37, 38, 39};
@@ -382,6 +365,23 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
         } else if (menu.hasViewer()) {
             menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
                 "&c&lRecipe does not match key"));
+        }
+    }
+
+    static void border(BlockMenuPreset preset, int[] border, int[] inputBorder, int[] outputBorder) {
+        for (int i : border) {
+            preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
+                (p, slot, item, action) -> false);
+        }
+
+        for (int i : inputBorder) {
+            preset.addItem(i, new CustomItem(new ItemStack(Material.BLUE_STAINED_GLASS_PANE), " "),
+                (p, slot, item, action) -> false);
+        }
+
+        for (int i : outputBorder) {
+            preset.addItem(i, new CustomItem(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "),
+                (p, slot, item, action) -> false);
         }
     }
 }

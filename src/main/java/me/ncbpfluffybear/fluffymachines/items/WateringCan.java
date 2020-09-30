@@ -11,6 +11,7 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import me.ncbpfluffybear.fluffymachines.FluffyMachines;
+import me.ncbpfluffybear.fluffymachines.utils.Constants;
 import me.ncbpfluffybear.fluffymachines.utils.Utils;
 import org.bukkit.Color;
 import org.bukkit.Effect;
@@ -34,16 +35,14 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.RayTraceResult;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
 
     public static final ItemSetting<Integer> maxUses = new ItemSetting<>("max-uses", 10);
-    public static final ItemSetting<Double> sugarCaneSuccessChance =
-        new ItemSetting<>("sugar-cane-success-chance", 0.3
-        );
+    public static final ItemSetting<Double> sugarCaneSuccessChance = new ItemSetting<>("sugar-cane-success-chance",
+        0.3);
     public static final ItemSetting<Double> cropSuccessChance = new ItemSetting<>("crop-success-chance", 0.3);
     public static final ItemSetting<Double> treeSuccessChance = new ItemSetting<>("tree-success-chance", 0.3);
 
@@ -60,7 +59,6 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
         addItemSetting(treeSuccessChance);
     }
 
-    @Nonnull
     @Override
     public ItemUseHandler getItemHandler() {
         return e -> {
@@ -151,15 +149,19 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
                                 return;
                             blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
                             double random = ThreadLocalRandom.current().nextDouble();
-                            if (random <= treeSuccessChance.getValue()) {
+                            if (Constants.SERVER_VERSION < 1163) {
+                                if (random <= treeSuccessChance.getValue()) {
 
-                                Material saplingMaterial = b.getType();
-                                b.setType(Material.AIR);
-                                if (!blockLocation.getWorld().generateTree(blockLocation,
-                                    getTreeFromSapling(saplingMaterial))) {
-                                    b.setType(saplingMaterial);
+                                    Material saplingMaterial = b.getType();
+                                    b.setType(Material.AIR);
+                                    if (!blockLocation.getWorld().generateTree(blockLocation,
+                                        getTreeFromSapling(saplingMaterial))) {
+                                        b.setType(saplingMaterial);
+                                    }
+                                    blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
                                 }
-                                blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
+                            } else {
+                                b.applyBoneMeal(p.getFacing());
                             }
                         }
                     }

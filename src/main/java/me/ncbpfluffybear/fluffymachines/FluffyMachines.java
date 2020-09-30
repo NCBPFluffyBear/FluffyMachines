@@ -40,8 +40,8 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
         getLogger().log(Level.INFO, ChatColor.GREEN + "Join the official Slimefun Discord server at https://discord" +
             ".gg/s4XRkbB");
         getLogger().log(Level.INFO, ChatColor.GREEN + "Don't forget to leave your server in #server-showcase!");
-        getLogger().log(Level.INFO, ChatColor.GREEN + "Write \"FluffyBear\" and I'll check out your server sometime " +
-            ":)");
+        getLogger().log(Level.INFO, ChatColor.GREEN +
+            "Write \"FluffyBear\" and I'll check out your server sometime :)");
     }
 
     @Override
