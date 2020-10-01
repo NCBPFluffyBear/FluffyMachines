@@ -13,7 +13,6 @@ import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunIte
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
-import org.bukkit.Color;
 import org.bukkit.Effect;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
@@ -28,10 +27,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.RayTraceResult;
 
@@ -50,6 +47,9 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
     private static final int MAX_SUGAR_GROW_HEIGHT = 5;
     private static final NamespacedKey usageKey = new NamespacedKey(FluffyMachines.getInstance(), "watering_can_usage");
 
+    private static final String fullCan = "907a97c8c14e96b4eb2a0f84401959d76611e7547eeb2b6d3a6a62dd7894c2e";
+    private static final String emptyCan = "495ab8fef8771f187286cb41be89b95b4cc0bb0e48fea73fb8a4a1427859dedc";
+
     public WateringCan(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
@@ -62,9 +62,18 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
     @Override
     public ItemUseHandler getItemHandler() {
         return e -> {
+            Player p = e.getPlayer();
+
+            if (p.getInventory().getItemInMainHand().getType() != Material.PLAYER_HEAD) {
+                Utils.send(p, "&cThis item is outdated! Please use /fm replace while holding the watering can.");
+                return;
+            }
+
+            if (!isItem(p.getInventory().getItemInMainHand()))
+                return;
+
             e.cancel();
 
-            Player p = e.getPlayer();
             RayTraceResult rayResult = p.rayTraceBlocks(5d, FluidCollisionMode.SOURCE_ONLY);
 
             if (rayResult != null) {
@@ -122,12 +131,14 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
                         int currentAge = crop.getAge();
                         int maxAge = crop.getMaximumAge();
 
-                        if (currentAge < maxAge && updateUses(p, item, 1)) {
-                            blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
-                            double random = ThreadLocalRandom.current().nextDouble();
-                            if (random <= cropSuccessChance.getValue()) {
-                                crop.setAge(currentAge + 1);
-                                blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
+                        if (currentAge < maxAge) {
+                            if (updateUses(p, item, 1)) {
+                                blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
+                                double random = ThreadLocalRandom.current().nextDouble();
+                                if (random <= cropSuccessChance.getValue()) {
+                                    crop.setAge(currentAge + 1);
+                                    blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
+                                }
                             }
 
                         } else {
@@ -186,16 +197,9 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
             usesLeft--;
 
         } else if (updateType == 2) {
-            item.setType(Material.POTION);
             p.playSound(p.getLocation(), Sound.ENTITY_DROWNED_DEATH_WATER, 0.5F, 1F);
             Utils.send(p, "&aYou have filled your Watering Can");
             usesLeft = maxUses.getValue();
-            // Need to get this again because material changed
-            PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
-            potionMeta.setColor(Color.AQUA);
-            item.setItemMeta(potionMeta);
-            meta = item.getItemMeta();
-            meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
 
         } else if (updateType == 3) {
             if (usesLeft == 0) {
@@ -208,15 +212,17 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
             p.sendMessage("Error");
         }
 
+        /*
+        if (usesLeft == 0) {
+            changeSkull(meta, emptyCan);
+        }
+         */
+
         lore.set(USE_INDEX, ChatColors.color("&aUses Left: &e" + usesLeft));
         meta.setLore(lore);
         meta.getPersistentDataContainer().set(usageKey, PersistentDataType.INTEGER, usesLeft);
         item.setItemMeta(meta);
         Utils.send(p, "&eYou have " + usesLeft + " uses left");
-
-        if (usesLeft == 0) {
-            item.setType(Material.GLASS_BOTTLE);
-        }
 
         return true;
     }
