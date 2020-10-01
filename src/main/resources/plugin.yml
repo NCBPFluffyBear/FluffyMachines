@@ -8,7 +8,7 @@ author: NCBPFluffyBear
 description: A fun addon
 
 ## CHANGE this to the path of the class that extends JavaPlugin.
-main: me.ncbpfluffybear.fluffymachines.FluffyMachines
+main: io.ncbpfluffybear.fluffymachines.FluffyMachines
 
 ## This is required and marks Slimefun as a plugin dependency.
 depend: [Slimefun]
