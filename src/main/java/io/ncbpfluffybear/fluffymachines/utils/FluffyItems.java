@@ -176,6 +176,19 @@ public class FluffyItems {
         "&7Multiblock component of the Foundry",
         "&cMust be used in the Foundry"
     );
+    public static final SlimefunItemStack SCYTHE = new SlimefunItemStack("SCYTHE",
+        Material.IRON_HOE,
+        "&eScythe",
+        "",
+        "&7Breaks 5 crops at once"
+    );
+    public static final SlimefunItemStack UPGRADED_LUMBER_AXE = new SlimefunItemStack("UPGRADED_LUMBER_AXE",
+        Material.DIAMOND_AXE,
+        "&6&lUpgraded Lumber Axe",
+        "",
+        "&7Chops down an entire tree at once",
+        "&72 block reach and works on diagonal blocks too"
+    );
 
     static {
         FireproofRune.setFireproof(FIREPROOF_RUNE);

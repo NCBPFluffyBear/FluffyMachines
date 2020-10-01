@@ -1,4 +1,4 @@
-package io.ncbpfluffybear.fluffymachines.items;
+package io.ncbpfluffybear.fluffymachines.items.tools;
 
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
 import io.github.thebusybiscuit.slimefun4.core.attributes.DamageableItem;
