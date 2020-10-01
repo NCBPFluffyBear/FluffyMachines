@@ -1,18 +1,18 @@
 package me.ncbpfluffybear.fluffymachines.items;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
+import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
+import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
+import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import me.ncbpfluffybear.fluffymachines.FluffyMachines;
 import me.ncbpfluffybear.fluffymachines.utils.Constants;
 import me.ncbpfluffybear.fluffymachines.utils.Utils;
-import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
-import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import org.bukkit.Color;
 import org.bukkit.Effect;
 import org.bukkit.FluidCollisionMode;
@@ -41,7 +41,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
 
     public static final ItemSetting<Integer> maxUses = new ItemSetting<>("max-uses", 10);
-    public static final ItemSetting<Double> sugarCaneSuccessChance = new ItemSetting<>("sugar-cane-success-chance", 0.3);
+    public static final ItemSetting<Double> sugarCaneSuccessChance = new ItemSetting<>("sugar-cane-success-chance",
+        0.3);
     public static final ItemSetting<Double> cropSuccessChance = new ItemSetting<>("crop-success-chance", 0.3);
     public static final ItemSetting<Double> treeSuccessChance = new ItemSetting<>("tree-success-chance", 0.3);
 
@@ -71,7 +72,8 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
                 Block b = rayResult.getHitBlock();
                 Location blockLocation = b.getLocation();
 
-                if (SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), blockLocation, ProtectableAction.BREAK_BLOCK)) {
+                if (SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), blockLocation,
+                    ProtectableAction.BREAK_BLOCK)) {
 
                     ItemStack item = e.getItem();
                     BlockData blockData = b.getBlockData();
@@ -152,7 +154,8 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
 
                                     Material saplingMaterial = b.getType();
                                     b.setType(Material.AIR);
-                                    if (!blockLocation.getWorld().generateTree(blockLocation, getTreeFromSapling(saplingMaterial))) {
+                                    if (!blockLocation.getWorld().generateTree(blockLocation,
+                                        getTreeFromSapling(saplingMaterial))) {
                                         b.setType(saplingMaterial);
                                     }
                                     blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
@@ -182,7 +185,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
             p.playSound(p.getLocation(), Sound.ENTITY_DROWNED_AMBIENT_WATER, 0.5F, 1F);
             usesLeft--;
 
-        } else if (updateType == 2){
+        } else if (updateType == 2) {
             item.setType(Material.POTION);
             p.playSound(p.getLocation(), Sound.ENTITY_DROWNED_DEATH_WATER, 0.5F, 1F);
             Utils.send(p, "&aYou have filled your Watering Can");
@@ -200,7 +203,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
                 return false;
             }
             usesLeft = 0;
-            p.playSound(p.getLocation(), Sound.ITEM_BUCKET_EMPTY, 0.5F, 1F);;
+            p.playSound(p.getLocation(), Sound.ITEM_BUCKET_EMPTY, 0.5F, 1F);
         } else {
             p.sendMessage("Error");
         }
@@ -209,7 +212,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
         meta.setLore(lore);
         meta.getPersistentDataContainer().set(usageKey, PersistentDataType.INTEGER, usesLeft);
         item.setItemMeta(meta);
-        Utils.send(p, "&eYou have "+ usesLeft + " uses left");
+        Utils.send(p, "&eYou have " + usesLeft + " uses left");
 
         if (usesLeft == 0) {
             item.setType(Material.GLASS_BOTTLE);

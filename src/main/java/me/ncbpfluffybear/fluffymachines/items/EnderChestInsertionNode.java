@@ -2,7 +2,6 @@ package me.ncbpfluffybear.fluffymachines.items;
 
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -12,7 +11,6 @@ import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.Objects.handlers.ItemHandler;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import me.ncbpfluffybear.fluffymachines.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -31,16 +29,17 @@ import javax.annotation.Nonnull;
 import java.util.UUID;
 
 /**
- *
  * This {@link SlimefunItem} transfers items to the facing
  * {@link EnderChest} from the {@link Container} behind it
  *
  * @author NCBPFluffyBear
- *
  */
 public class EnderChestInsertionNode extends SlimefunItem {
 
-    public EnderChestInsertionNode(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    private static final Material material = Material.ENDER_CHEST;
+
+    public EnderChestInsertionNode(Category category, SlimefunItemStack item, RecipeType recipeType,
+                                   ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
         addItemHandler(onPlace());
@@ -65,21 +64,21 @@ public class EnderChestInsertionNode extends SlimefunItem {
         boolean valid = false;
         BlockFace face = null;
 
-        if (b.getRelative(BlockFace.NORTH).getType() == Material.ENDER_CHEST) {
+        if (b.getRelative(BlockFace.NORTH).getType() == material) {
             valid = true;
             face = BlockFace.SOUTH;
 
-        } else if (b.getRelative(BlockFace.SOUTH).getType() == Material.ENDER_CHEST) {
+        } else if (b.getRelative(BlockFace.SOUTH).getType() == material) {
             valid = true;
             face = BlockFace.NORTH;
 
 
-        } else if (b.getRelative(BlockFace.EAST).getType() == Material.ENDER_CHEST) {
+        } else if (b.getRelative(BlockFace.EAST).getType() == material) {
             valid = true;
             face = BlockFace.WEST;
 
 
-        } else if (b.getRelative(BlockFace.WEST).getType() == Material.ENDER_CHEST) {
+        } else if (b.getRelative(BlockFace.WEST).getType() == material) {
             valid = true;
             face = BlockFace.EAST;
 
@@ -102,7 +101,7 @@ public class EnderChestInsertionNode extends SlimefunItem {
 
                 Inventory containerInv = ((InventoryHolder) state).getInventory();
 
-                for (int i = 0 ; i < containerInv.getSize() ; i++) {
+                for (int i = 0; i < containerInv.getSize(); i++) {
 
                     if (containerInv.getItem(i) != null) {
                         containerIndex = i;
@@ -113,7 +112,7 @@ public class EnderChestInsertionNode extends SlimefunItem {
 
                 Inventory enderInv = p.getEnderChest();
 
-                for (int i = 0 ; i < enderInv.getSize() ; i++) {
+                for (int i = 0; i < enderInv.getSize(); i++) {
 
                     if (enderInv.getItem(i) == null) {
                         enderIndex = i;

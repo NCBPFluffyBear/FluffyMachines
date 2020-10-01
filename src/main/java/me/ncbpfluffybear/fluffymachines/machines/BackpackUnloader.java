@@ -5,7 +5,6 @@ import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
 import io.github.thebusybiscuit.slimefun4.implementation.items.backpacks.SlimefunBackpack;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
@@ -15,7 +14,6 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -29,14 +27,16 @@ public class BackpackUnloader extends SlimefunItem implements InventoryBlock, En
     public static final int CAPACITY = 1024;
     public static final int ENERGY_CONSUMPTION = 64;
 
-    private static final int[] PLAIN_BORDER = { 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 15, 16, 17 };
-    private static final int[] INPUT_BORDER = { 1, 9, 10 };
-    private static final int[] OUTPUT_BORDER = { 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 35, 36, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53 };
-    private static final int[] INPUT_SLOTS = { 0 };
-    private static final int[] OUTPUT_SLOTS = { 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43 };
+    private static final int[] PLAIN_BORDER = {2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 15, 16, 17};
+    private static final int[] INPUT_BORDER = {1, 9, 10};
+    private static final int[] OUTPUT_BORDER = {18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 35, 36, 44, 45, 46, 47, 48,
+        49, 50, 51, 52, 53};
+    private static final int[] INPUT_SLOTS = {0};
+    private static final int[] OUTPUT_SLOTS = {28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
 
     public BackpackUnloader(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
-        super(category, item, recipeType, recipe);
+        super(category, item, recipeType, recipe
+        );
 
         setupInv();
 
@@ -53,19 +53,8 @@ public class BackpackUnloader extends SlimefunItem implements InventoryBlock, En
     }
 
     protected void setupInv() {
-        createPreset(this, "&eBackpack Unloader", preset -> {
-            for (int i : PLAIN_BORDER) {
-                preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
-            }
-
-            for (int i : INPUT_BORDER) {
-                preset.addItem(i, new CustomItem(new ItemStack(Material.CYAN_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
-            }
-
-            for (int i : OUTPUT_BORDER) {
-                preset.addItem(i, new CustomItem(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
-            }
-        });
+        createPreset(this, "&eBackpack Unloader", preset ->
+            BackpackLoader.border(preset, PLAIN_BORDER, INPUT_BORDER, OUTPUT_BORDER));
     }
 
     @Override
@@ -114,7 +103,7 @@ public class BackpackUnloader extends SlimefunItem implements InventoryBlock, En
                 PlayerProfile.getBackpack(inputItem, backpack -> {
 
                     Inventory bpinv = backpack.getInventory();
-                    for (int slot = 0 ; slot < bpinv.getSize() ; slot++) {
+                    for (int slot = 0; slot < bpinv.getSize(); slot++) {
                         if (bpinv.getItem(slot) != null) {
                             ItemStack transferItem = bpinv.getItem(slot);
                             bpinv.setItem(slot, null);

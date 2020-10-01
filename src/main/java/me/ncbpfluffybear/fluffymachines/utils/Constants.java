@@ -9,7 +9,8 @@ public final class Constants {
 
     public static final int CUSTOM_TICKER_DELAY = SlimefunPlugin.getCfg().getInt("URID.custom-ticker-delay");
 
-    public static final int SERVER_VERSION = Integer.parseInt(Bukkit.getVersion().replaceFirst(".*MC: ", "").replace(")", "").replace(".", ""));
+    public static final int SERVER_VERSION = Integer.parseInt(Bukkit.getVersion().replaceFirst(".*MC: ", "").replace(
+        ")", "").replace(".", ""));
 
     private Constants() {}
 
