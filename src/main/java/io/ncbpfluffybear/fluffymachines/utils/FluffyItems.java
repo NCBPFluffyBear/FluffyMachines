@@ -119,6 +119,7 @@ public class FluffyItems {
         "&cFoundry",
         "",
         "&eMelts and stores dusts and ingots",
+        "&7Stores 138,240 dust (40 Double Chests)",
         "",
         Utils.multiBlockWarning()
     );
@@ -156,7 +157,8 @@ public class FluffyItems {
         Material.BLAST_FURNACE,
         "&cSuper Heated Furnace",
         "",
-        "&7Multiblock component of the Foundry"
+        "&7Multiblock component of the Foundry",
+        "&cMust be used in the Foundry"
     );
 
     private FluffyItems() {

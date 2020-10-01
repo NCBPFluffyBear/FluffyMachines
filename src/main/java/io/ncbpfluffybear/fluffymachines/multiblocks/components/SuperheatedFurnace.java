@@ -2,13 +2,11 @@ package io.ncbpfluffybear.fluffymachines.multiblocks.components;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.interfaces.InventoryBlock;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
@@ -23,6 +21,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -48,7 +47,8 @@ public class SuperheatedFurnace extends SlimefunItem {
     private static final int DUST_INDICATOR = 4;
     private static final int INGOT_INDICATOR = 7;
 
-    private static final ItemStack barrierNonClickable = Utils.buildNonInteractable(Material.BARRIER, "&4Blocked", "&cYou must use this in a Foundry!");
+    private static final int MAX_STORAGE = 138240;
+    private static final Material netherite = Material.NETHERITE_BLOCK;
 
     private static final SlimefunItemStack[] dusts = new SlimefunItemStack[] {
         SlimefunItems.COPPER_DUST, SlimefunItems.GOLD_DUST, SlimefunItems.IRON_DUST,
@@ -72,13 +72,13 @@ public class SuperheatedFurnace extends SlimefunItem {
 
             @Override
             public void newInstance(BlockMenu menu, Block b) {
-                menu.replaceExistingItem(4, new CustomItem(Material.GUNPOWDER, "&6Dust Available", "&e0", "&a> Click here to retrieve"));
+                menu.replaceExistingItem(4, new CustomItem(Material.GUNPOWDER, "&6Dust Available: &e0", "&a> Click here to retrieve"));
                 menu.addMenuClickHandler(4, (p, slot, item, action) -> {
                     retrieveDust(menu, b);
                     return false;
                 });
 
-                menu.replaceExistingItem(7, new CustomItem(Material.IRON_INGOT, "&6Ingots Available", "&e0", "&a> Click here to retrieve"));
+                menu.replaceExistingItem(7, new CustomItem(Material.IRON_INGOT, "&6Ingots Available: &e0", "&a> Click here to retrieve"));
                 menu.addMenuClickHandler(7, (p, slot, item, action) -> {
                     retrieveIngot(menu, b);
                     return false;
@@ -89,7 +89,11 @@ public class SuperheatedFurnace extends SlimefunItem {
 
             @Override
             public boolean canOpen(Block b, Player p) {
-                return p.hasPermission("slimefun.inventory.bypass") || SlimefunPlugin.getProtectionManager().hasPermission(p, b.getLocation(), ProtectableAction.ACCESS_INVENTORIES);
+                return (p.hasPermission("slimefun.inventory.bypass")
+                    || SlimefunPlugin.getProtectionManager().hasPermission(
+                    p, b.getLocation(), ProtectableAction.ACCESS_INVENTORIES))
+                    && getBlockInfo(b.getLocation(), "accessible") != null
+                    && getBlockInfo(b.getLocation(), "ignited") != null && checkStructure(b);
             }
 
             @Override
@@ -101,8 +105,7 @@ public class SuperheatedFurnace extends SlimefunItem {
             public int[] getSlotsAccessedByItemTransport(DirtyChestMenu menu, ItemTransportFlow flow, ItemStack item) {
                 if (flow == ItemTransportFlow.INSERT) {
                     return new int[] {INPUT_SLOT};
-                } else if (flow == ItemTransportFlow.WITHDRAW
-                    && item != null && item.getType() != Material.BARRIER) {
+                } else if (flow == ItemTransportFlow.WITHDRAW) {
                     return new int[] {DUST_OUTPUT_SLOT, INGOT_OUTPUT_SLOT};
                 } else {
                     return new int[0];
@@ -115,34 +118,21 @@ public class SuperheatedFurnace extends SlimefunItem {
 
             if (inv != null) {
 
+                int stored = Integer.parseInt(getBlockInfo(b.getLocation(), "stored"));
                 String type = getBlockInfo(b.getLocation(), "type");
 
-                // Because it gets clogged with barriers when not in multiblock form
-                if (inv.getItemInSlot(INPUT_SLOT) != null && inv.getItemInSlot(INPUT_SLOT).getType() != Material.BARRIER) {
-                    inv.dropItems(b.getLocation(), INPUT_SLOT);
-                }
-                if (inv.getItemInSlot(DUST_OUTPUT_SLOT) != null && inv.getItemInSlot(DUST_OUTPUT_SLOT).getType() != Material.BARRIER) {
-                    inv.dropItems(b.getLocation(), DUST_OUTPUT_SLOT);
-                }
-                if (inv.getItemInSlot(INGOT_OUTPUT_SLOT) != null && inv.getItemInSlot(INGOT_OUTPUT_SLOT).getType() != Material.BARRIER) {
-                    inv.dropItems(b.getLocation(), INGOT_OUTPUT_SLOT);
-                }
+                inv.dropItems(b.getLocation(), INPUT_SLOT);
+                inv.dropItems(b.getLocation(), DUST_OUTPUT_SLOT);
+                inv.dropItems(b.getLocation(), INGOT_OUTPUT_SLOT);
 
-                if (type != null) {
-                    int stored = Integer.parseInt(getBlockInfo(b.getLocation(), "stored"));
-                    if (stored > 0) {
-                        b.getWorld().dropItem(b.getLocation(), new CustomItem(SlimefunItem.getByID(type + "_DUST").getItem(), stored));
-                    }
-
+                if (stored > 0) {
+                    b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(SlimefunItem.getByID(type + "_DUST").getItem(), stored));
                 }
-
-
             }
 
             if (BlockStorage.getLocationInfo(b.getLocation(), "stand") != null) {
                 Bukkit.getEntity(UUID.fromString(BlockStorage.getLocationInfo(b.getLocation(), "stand"))).remove();
             }
-
             return true;
         });
     }
@@ -160,7 +150,7 @@ public class SuperheatedFurnace extends SlimefunItem {
             preset.addItem(i, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
         }
 
-        preset.addItem(1, new CustomItem(new ItemStack(Material.CHEST), "&6Melted Dust", "&e0", "&bType: None"), (p, slot, item, action) -> false);
+        preset.addItem(1, new CustomItem(new ItemStack(Material.CHEST), "&6Melted Dust: &e0 &7(0%)", "&bType: None",  "&7Stacks: 0"), (p, slot, item, action) -> false);
 
     }
 
@@ -181,28 +171,7 @@ public class SuperheatedFurnace extends SlimefunItem {
     }
 
     protected void tick(Block b) {
-        Location l = b.getLocation();
         BlockMenu inv = BlockStorage.getInventory(b);
-
-        boolean accessible = getBlockInfo(l, "accessible") != null;
-        boolean ignited = getBlockInfo(l, "ignited") != null;
-
-        if (!accessible || !ignited) {
-            inv.replaceExistingItem(INPUT_SLOT, barrierNonClickable);
-            inv.replaceExistingItem(DUST_OUTPUT_SLOT, barrierNonClickable);
-            inv.replaceExistingItem(INGOT_OUTPUT_SLOT, barrierNonClickable);
-            return;
-        } else {
-            if (inv.getItemInSlot(INPUT_SLOT) != null && inv.getItemInSlot(INPUT_SLOT).getType() == Material.BARRIER) {
-                inv.consumeItem(INPUT_SLOT);
-            }
-            if (inv.getItemInSlot(DUST_OUTPUT_SLOT) != null && inv.getItemInSlot(DUST_OUTPUT_SLOT).getType() == Material.BARRIER) {
-                inv.consumeItem(DUST_OUTPUT_SLOT);
-            }
-            if (inv.getItemInSlot(INGOT_OUTPUT_SLOT) != null && inv.getItemInSlot(INGOT_OUTPUT_SLOT).getType() == Material.BARRIER) {
-                inv.consumeItem(INGOT_OUTPUT_SLOT);
-            }
-        }
 
         ItemStack inputItem = inv.getItemInSlot(INPUT_SLOT);
 
@@ -211,6 +180,7 @@ public class SuperheatedFurnace extends SlimefunItem {
             int amount = inputItem.getAmount();
             String type = getBlockInfo(b.getLocation(), "type");
             SlimefunItem sfItem = SlimefunItem.getByItem(inputItem);
+            int stored = Integer.parseInt(getBlockInfo(b.getLocation(), "stored"));
 
             if (type == null) {
 
@@ -241,7 +211,9 @@ public class SuperheatedFurnace extends SlimefunItem {
 
                         registerDust(b, "GOLD", amount);
                     }
-                } else if (inputItem.getItemMeta().equals(new ItemStack(Material.IRON_INGOT).getItemMeta())) {
+                } else if (inputItem.getType() == Material.IRON_INGOT
+                    && inputItem.getItemMeta().equals(new ItemStack(Material.IRON_INGOT).getItemMeta())
+                ) {
                     inv.consumeItem(INPUT_SLOT, amount);
 
                     registerDust(b, "IRON", amount);
@@ -250,10 +222,11 @@ public class SuperheatedFurnace extends SlimefunItem {
             } else {
                 if (sfItem!= null && sfItem.getID().equals(type + "_DUST")
                     || (type.equals("GOLD") && sfItem.getID().equals(SlimefunItems.GOLD_4K.getItemId()))
-                    || (type.equals("IRON") && inputItem.getItemMeta().equals(
-                        new ItemStack(Material.IRON_INGOT).getItemMeta()))) {
+                    || (type.equals("IRON") && inputItem.getType() == Material.IRON_INGOT
+                    && inputItem.getItemMeta().equals(new ItemStack(Material.IRON_INGOT).getItemMeta()))
+                    && stored + amount < MAX_STORAGE) {
                     inv.consumeItem(INPUT_SLOT, amount);
-                    addDust(b, amount);;
+                    addDust(b, amount);
                 }
             }
         }
@@ -280,13 +253,13 @@ public class SuperheatedFurnace extends SlimefunItem {
 
         if (stored.equals("0")) {
             setBlockInfo(b, "type", null);
-            inv.replaceExistingItem(INPUT_INDICATOR, new CustomItem(new ItemStack(Material.CHEST), "&6Melted Dust", "&e" + stored, "&bType: None"));
+            inv.replaceExistingItem(INPUT_INDICATOR, new CustomItem(new ItemStack(Material.CHEST), "&6Melted Dust: &e0 &7(0%)", "&bType: None",  "&7Stacks: 0"));
+        } else {
+            inv.replaceExistingItem(INPUT_INDICATOR, new CustomItem(new ItemStack(Material.CHEST), "&6Melted Dust: &e" + stored + " &7(" + Double.parseDouble(stored) / MAX_STORAGE + "%)", "&bType: " + type, "&7Stacks: " + Double.parseDouble(stored) / 64));
 
         }
-
-        inv.replaceExistingItem(INPUT_INDICATOR, new CustomItem(new ItemStack(Material.CHEST), "&6Melted Dust", "&e" + stored, "&bType: " + type));
-        inv.replaceExistingItem(DUST_INDICATOR, new CustomItem(new ItemStack(Material.GUNPOWDER), "&6Dust Available", "&e" + stored, "&a> Click here to retrieve"));
-        inv.replaceExistingItem(INGOT_INDICATOR, new CustomItem(new ItemStack(Material.IRON_INGOT), "&6Ingots Available", "&e" + stored, "&a> Click here to retrieve"));
+        inv.replaceExistingItem(DUST_INDICATOR, new CustomItem(new ItemStack(Material.GUNPOWDER), "&6Dust Available: &e" + stored, "&a> Click here to retrieve"));
+        inv.replaceExistingItem(INGOT_INDICATOR, new CustomItem(new ItemStack(Material.IRON_INGOT), "&6Ingots Available: &e" + stored, "&a> Click here to retrieve"));
 
 
     }
@@ -333,6 +306,35 @@ public class SuperheatedFurnace extends SlimefunItem {
             }
             updateIndicator(b);
         }
+    }
+
+    private boolean checkStructure(Block b) {
+        BlockFace face = null;
+        Block relative;
+
+        if (b.getRelative(BlockFace.NORTH).getType() == netherite) {
+            face = BlockFace.NORTH;
+            relative = b.getRelative(face);
+        } else if (b.getRelative(BlockFace.EAST).getType() == netherite) {
+            face = BlockFace.EAST;
+            relative = b.getRelative(face);
+        } else {
+            return false;
+        }
+
+        // Checks multiblock structure
+
+        return b.getRelative(face).getType() == netherite
+            && checkRite(relative.getRelative(0, -1, 0))
+            && checkRite(relative.getRelative(0, -2, 0))
+            && checkRite(b.getRelative(face.getOppositeFace()).getRelative(0, -1, 0))
+            && checkRite(b.getRelative(face.getOppositeFace()).getRelative(0, -2, 0))
+            && b.getRelative(0, -1, 0).getType() == Material.GLASS
+            && b.getRelative(0, -2, 0).getType() == Material.CAULDRON;
+    }
+
+    private boolean checkRite(Block b) {
+        return (b.getType() == netherite);
     }
 
     private void setBlockInfo(Block b, String key, String data) {
