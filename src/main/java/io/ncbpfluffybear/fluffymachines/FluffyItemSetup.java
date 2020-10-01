@@ -1,23 +1,21 @@
-package io.ncbpfluffybear.fluffymachines;
+package me.ncbpfluffybear.fluffymachines;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.ncbpfluffybear.fluffymachines.items.EnderChestExtractionNode;
-import io.ncbpfluffybear.fluffymachines.items.EnderChestInsertionNode;
-import io.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
-import io.ncbpfluffybear.fluffymachines.machines.AutoCraftingTable;
-import io.ncbpfluffybear.fluffymachines.machines.BackpackLoader;
-import io.ncbpfluffybear.fluffymachines.machines.BackpackUnloader;
-import io.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
-import io.ncbpfluffybear.fluffymachines.multiblocks.CrankGenerator;
-import io.ncbpfluffybear.fluffymachines.multiblocks.components.GeneratorCore;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
-import io.ncbpfluffybear.fluffymachines.items.UpgradedExplosivePickaxe;
-import io.ncbpfluffybear.fluffymachines.items.UpgradedExplosiveShovel;
-import io.ncbpfluffybear.fluffymachines.items.WateringCan;
-import io.ncbpfluffybear.fluffymachines.multiblocks.Foundry;
-import io.ncbpfluffybear.fluffymachines.multiblocks.components.SuperheatedFurnace;
-import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
+import me.ncbpfluffybear.fluffymachines.items.EnderChestExtractionNode;
+import me.ncbpfluffybear.fluffymachines.items.EnderChestInsertionNode;
+import me.ncbpfluffybear.fluffymachines.items.HelicopterHat;
+import me.ncbpfluffybear.fluffymachines.items.UpgradedExplosivePickaxe;
+import me.ncbpfluffybear.fluffymachines.items.UpgradedExplosiveShovel;
+import me.ncbpfluffybear.fluffymachines.items.WateringCan;
+import me.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
+import me.ncbpfluffybear.fluffymachines.machines.AutoCraftingTable;
+import me.ncbpfluffybear.fluffymachines.machines.BackpackLoader;
+import me.ncbpfluffybear.fluffymachines.machines.BackpackUnloader;
+import me.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
+import me.ncbpfluffybear.fluffymachines.multiblocks.CrankGenerator;
+import me.ncbpfluffybear.fluffymachines.multiblocks.components.GeneratorCore;
+import me.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -99,6 +97,13 @@ public final class FluffyItemSetup {
             SlimefunItems.SYNTHETIC_EMERALD, SlimefunItems.SYNTHETIC_EMERALD, SlimefunItems.SYNTHETIC_EMERALD,
             new ItemStack(Material.TNT), SlimefunItems.EXPLOSIVE_SHOVEL, new ItemStack(Material.TNT),
             null, new ItemStack(Material.OBSIDIAN), null
+        }).register(plugin);
+
+        new FireproofRune(FluffyItems.fluffymachines, FluffyItems.FIREPROOF_RUNE,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.SYNTHETIC_EMERALD, new ItemStack(Material.NETHERITE_INGOT), SlimefunItems.SYNTHETIC_EMERALD,
+            new ItemStack(Material.OBSIDIAN), SlimefunItems.FIRE_RUNE, new ItemStack(Material.OBSIDIAN),
+            SlimefunItems.SYNTHETIC_EMERALD, new ItemStack(Material.OBSIDIAN), SlimefunItems.SYNTHETIC_EMERALD
         }).register(plugin);
 
         new SuperheatedFurnace(FluffyItems.fluffymachines, FluffyItems.SUPERHEATED_FURNACE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
