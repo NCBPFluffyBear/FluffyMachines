@@ -2,15 +2,17 @@ package io.ncbpfluffybear.fluffymachines;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
+import io.ncbpfluffybear.fluffymachines.items.tools.Scythe;
+import io.ncbpfluffybear.fluffymachines.items.tools.UpgradedLumberAxe;
 import io.ncbpfluffybear.fluffymachines.multiblocks.Foundry;
 import io.ncbpfluffybear.fluffymachines.multiblocks.components.SuperheatedFurnace;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import io.ncbpfluffybear.fluffymachines.items.EnderChestExtractionNode;
 import io.ncbpfluffybear.fluffymachines.items.EnderChestInsertionNode;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
-import io.ncbpfluffybear.fluffymachines.items.UpgradedExplosivePickaxe;
-import io.ncbpfluffybear.fluffymachines.items.UpgradedExplosiveShovel;
-import io.ncbpfluffybear.fluffymachines.items.WateringCan;
+import io.ncbpfluffybear.fluffymachines.items.tools.UpgradedExplosivePickaxe;
+import io.ncbpfluffybear.fluffymachines.items.tools.UpgradedExplosiveShovel;
+import io.ncbpfluffybear.fluffymachines.items.tools.WateringCan;
 import io.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
 import io.ncbpfluffybear.fluffymachines.machines.AutoCraftingTable;
 import io.ncbpfluffybear.fluffymachines.machines.BackpackLoader;
@@ -35,6 +37,7 @@ public final class FluffyItemSetup {
 
     public static void setup(@Nonnull FluffyMachines plugin) {
 
+        // Tools
         new WateringCan(FluffyItems.fluffymachines, FluffyItems.WATERING_CAN,
             RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
             new ItemStack(Material.IRON_INGOT), null, new ItemStack(Material.IRON_INGOT),
@@ -42,6 +45,19 @@ public final class FluffyItemSetup {
             null, new ItemStack(Material.IRON_INGOT), null
         }).register(plugin);
 
+        new Scythe(FluffyItems.fluffymachines, FluffyItems.SCYTHE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            null, new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
+            null, new ItemStack(Material.IRON_HOE), null,
+            null, new ItemStack(Material.STICK), null
+        }).register(plugin);
+
+        new UpgradedLumberAxe(FluffyItems.fluffymachines, FluffyItems.UPGRADED_LUMBER_AXE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            null, new ItemStack(Material.DIAMOND), new ItemStack(Material.DIAMOND),
+            null, SlimefunItems.LUMBER_AXE, null,
+            null, new ItemStack(Material.OBSIDIAN), null
+        }).register(plugin);
+
+        // Machines
         new WaterSprinkler(FluffyItems.fluffymachines, FluffyItems.WATER_SPRINKER,
             RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
             new ItemStack(Material.IRON_INGOT), SlimefunItems.ELECTRIC_MOTOR, new ItemStack(Material.IRON_INGOT),

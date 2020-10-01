@@ -1,4 +1,4 @@
-package io.ncbpfluffybear.fluffymachines.items;
+package io.ncbpfluffybear.fluffymachines.items.tools;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import me.mrCookieSlime.Slimefun.Objects.Category;
