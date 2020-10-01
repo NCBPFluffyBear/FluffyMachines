@@ -1,12 +1,18 @@
 package io.ncbpfluffybear.fluffymachines;
 
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
+import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import lombok.SneakyThrows;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.bstats.bukkit.Metrics;
 import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
 import io.ncbpfluffybear.fluffymachines.utils.Events;
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
@@ -47,6 +53,21 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
     @Override
     public void onDisable() {
         // Logic for disabling the plugin...
+    }
+
+    @Override
+    public boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command cmd, @Nonnull String label, String[] args) {
+        if (args[0].equalsIgnoreCase("replace") && sender instanceof Player) {
+            Player p = ((Player) sender);
+            ItemStack item = p.getInventory().getItemInMainHand();
+            if (SlimefunItem.getByItem(item) != null) {
+                if (SlimefunItem.getByItem(item) == FluffyItems.WATERING_CAN.getItem()) {
+                    p.getInventory().setItemInMainHand(FluffyItems.WATERING_CAN.clone());
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override

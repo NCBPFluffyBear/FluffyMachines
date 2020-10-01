@@ -18,3 +18,9 @@ version: ${project.version}
 
 ## This is the minimum minecraft version required to run your plugin.
 api-version: 1.14
+
+commands:
+  fluffymachines:
+    description: FluffyMachines Command
+    usage: /<command>
+    aliases: [fm]

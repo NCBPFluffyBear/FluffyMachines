@@ -38,7 +38,7 @@ public class FluffyItems {
         "&eSneak &7to use"
     );
     public static final SlimefunItemStack WATERING_CAN = new SlimefunItemStack("WATERING_CAN",
-        Material.GLASS_BOTTLE,
+        new CustomItem(SkullItem.fromHash("6484da45301625dee79ae29ff513efa583f1ed838033f20db80963cedf8aeb0e")),
         "&bWatering Can",
         "",
         "&fWaters Plants",
