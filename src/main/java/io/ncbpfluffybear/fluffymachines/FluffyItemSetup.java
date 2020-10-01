@@ -2,6 +2,7 @@ package io.ncbpfluffybear.fluffymachines;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
+import io.ncbpfluffybear.fluffymachines.multiblocks.Foundry;
 import io.ncbpfluffybear.fluffymachines.multiblocks.components.SuperheatedFurnace;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import io.ncbpfluffybear.fluffymachines.items.EnderChestExtractionNode;

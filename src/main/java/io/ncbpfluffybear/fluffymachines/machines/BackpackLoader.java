@@ -1,4 +1,4 @@
-package me.ncbpfluffybear.fluffymachines.machines;
+package io.ncbpfluffybear.fluffymachines.machines;
 
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;

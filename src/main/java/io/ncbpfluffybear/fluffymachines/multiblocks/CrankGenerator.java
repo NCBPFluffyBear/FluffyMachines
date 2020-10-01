@@ -1,13 +1,13 @@
-package me.ncbpfluffybear.fluffymachines.multiblocks;
+package io.ncbpfluffybear.fluffymachines.multiblocks;
 
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetProvider;
 import io.github.thebusybiscuit.slimefun4.core.multiblocks.MultiBlockMachine;
+import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.ncbpfluffybear.fluffymachines.utils.FluffyItems;
-import me.ncbpfluffybear.fluffymachines.utils.Utils;
+import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
