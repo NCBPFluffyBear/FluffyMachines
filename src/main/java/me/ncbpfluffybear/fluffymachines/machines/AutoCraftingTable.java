@@ -51,12 +51,12 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
 
     public static final int ENERGY_CONSUMPTION = 256;
     public static final int CAPACITY = 2048;
+    private static final int keySlot = 16;
+    private static final int statusSlot = 23;
     private final int[] border = {0, 1, 3, 5, 13, 14, 50, 51, 52, 53};
     private final int[] inputBorder = {9, 10, 11, 12, 13, 18, 22, 27, 31, 36, 40, 45, 46, 47, 48, 49};
     private final int[] outputBorder = {32, 33, 34, 35, 41, 44, 50, 51, 52, 53};
     private final int[] keyBorder = {6, 7, 8, 15, 17, 24, 25, 26};
-    private static final int keySlot = 16;
-    private static final int statusSlot = 23;
 
     public AutoCraftingTable(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
@@ -165,20 +165,7 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
     }
 
     protected void constructMenu(BlockMenuPreset preset) {
-        for (int i : border) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
-                (p, slot, item, action) -> false);
-        }
-
-        for (int i : inputBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.BLUE_STAINED_GLASS_PANE), " "),
-                (p, slot, item, action) -> false);
-        }
-
-        for (int i : outputBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "),
-                (p, slot, item, action) -> false);
-        }
+        AutoAncientAltar.borders(preset, border, inputBorder, outputBorder);
 
         for (int i : keyBorder) {
             preset.addItem(i, new CustomItem(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE), "&e&lKey Item Slot"),

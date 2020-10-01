@@ -67,8 +67,9 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
                 if (!BlockStorage.hasBlockInfo(b)
                     || BlockStorage.getLocationInfo(b.getLocation(), "enabled") == null
                     || BlockStorage.getLocationInfo(b.getLocation(), "enabled").equals(String.valueOf(false))) {
-                    menu.replaceExistingItem(6, new CustomItem(Material.GUNPOWDER, "&7Enabled: &4\u2718", "", "&e> " +
-                        "Click to enable this Machine"));
+                    menu.replaceExistingItem(6, new CustomItem(Material.GUNPOWDER, "&7Enabled: &4\u2718", "",
+                        "&e> Click to enable this Machine")
+                    );
                     menu.addMenuClickHandler(6, (p, slot, item, action) -> {
                         BlockStorage.addBlockInfo(b, "enabled", String.valueOf(true));
                         newInstance(menu, b);
@@ -156,7 +157,7 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
     }
 
     protected void constructMenu(BlockMenuPreset preset) {
-        AutoCraftingTable.border(preset, border, inputBorder, outputBorder);
+        borders(preset, border, inputBorder, outputBorder);
 
         for (int i : getOutputSlots()) {
             preset.addMenuClickHandler(i, new AdvancedMenuClickHandler() {
@@ -167,17 +168,19 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
                 }
 
                 @Override
-                public boolean onClick(InventoryClickEvent e, Player p, int slot,
-                                       ItemStack cursor, ClickAction action) {
-                    return cursor == null
-                        || cursor.getType() == null
-                        || cursor.getType() == Material.AIR;
+                public boolean onClick(InventoryClickEvent e, Player p, int slot, ItemStack cursor,
+                                       ClickAction action) {
+                    if (cursor == null) return true;
+                    cursor.getType();
+                    return cursor.getType() == Material.AIR;
                 }
             });
         }
 
-        preset.addItem(2, new CustomItem(new ItemStack(Material.ENCHANTING_TABLE), "&eRecipe", "",
-            "&bPut in the Recipe you want to craft", "&4Ancient Altar Recipes ONLY"), (p, slot, item, action) -> false);
+        preset.addItem(2, new CustomItem(new ItemStack(Material.ENCHANTING_TABLE), "&eRecipe",
+                "", "&bPut in the Recipe you want to craft", "&4Ancient Altar Recipes ONLY"
+            ),
+            (p, slot, item, action) -> false);
     }
 
     public int getEnergyConsumption() {
@@ -295,5 +298,22 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
         // we're only executing the last possible shaped recipe
         // we don't want to allow this to be pressed instead of the default timer-based
         // execution to prevent abuse and auto clickers
+    }
+
+    static void borders(BlockMenuPreset preset, int[] border, int[] inputBorder, int[] outputBorder) {
+        for (int i : border) {
+            preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
+                (p, slot, item, action) -> false);
+        }
+
+        for (int i : inputBorder) {
+            preset.addItem(i, new CustomItem(new ItemStack(Material.BLUE_STAINED_GLASS_PANE), " "),
+                (p, slot, item, action) -> false);
+        }
+
+        for (int i : outputBorder) {
+            preset.addItem(i, new CustomItem(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "),
+                (p, slot, item, action) -> false);
+        }
     }
 }
