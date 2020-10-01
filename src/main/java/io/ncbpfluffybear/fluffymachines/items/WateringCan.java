@@ -1,7 +1,5 @@
 package io.ncbpfluffybear.fluffymachines.items;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
@@ -15,7 +13,6 @@ import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunIte
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
-import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
