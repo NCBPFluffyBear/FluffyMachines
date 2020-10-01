@@ -1,15 +1,28 @@
-package io.ncbpfluffybear.fluffymachines.machines;
+package me.ncbpfluffybear.fluffymachines.machines;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
+import io.github.thebusybiscuit.slimefun4.api.events.BlockPlacerPlaceEvent;
+import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
+import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
+import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.altar.AltarRecipe;
 import io.github.thebusybiscuit.slimefun4.implementation.items.altar.AncientAltar;
+import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
+import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu.AdvancedMenuClickHandler;
+import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
+import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.interfaces.InventoryBlock;
+import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
+import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
+import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
+import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
+import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -18,40 +31,25 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.slimefun4.api.events.BlockPlacerPlaceEvent;
-import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
-import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
-import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu.AdvancedMenuClickHandler;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.interfaces.InventoryBlock;
-import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
-import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
-import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
- *
  * This {@link SlimefunItem} automatically crafts
  * Ancient Altar recipes
  *
  * @author NCBPFluffyBear
- *
  */
 public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, EnergyNetComponent {
 
     public static final int ENERGY_CONSUMPTION = 1024;
     public static final int CAPACITY = ENERGY_CONSUMPTION * 3;
-    private final int[] border = { 0, 1, 3, 4, 5, 7, 8, 13, 14, 15, 16, 17, 50, 51, 52, 53 };
-    private final int[] inputBorder = { 9, 10, 11, 12, 13, 18, 22, 27, 31, 36, 40, 45, 46, 47, 48, 49 };
-    private final int[] outputBorder = { 23, 24, 25, 26, 32, 35, 41, 42, 43, 44 };
-    private final int[] mockPedestalSlots = { 19, 20, 21, 30, 39, 38, 37, 28 };
+    private final int[] border = {0, 1, 3, 4, 5, 7, 8, 13, 14, 15, 16, 17, 50, 51, 52, 53};
+    private final int[] inputBorder = {9, 10, 11, 12, 13, 18, 22, 27, 31, 36, 40, 45, 46, 47, 48, 49};
+    private final int[] outputBorder = {23, 24, 25, 26, 32, 35, 41, 42, 43, 44};
+    private final int[] mockPedestalSlots = {19, 20, 21, 30, 39, 38, 37, 28};
     private final AncientAltar altarItem = (AncientAltar) SlimefunItems.ANCIENT_ALTAR.getItem();
 
     public AutoAncientAltar(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
@@ -66,16 +64,21 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
 
             @Override
             public void newInstance(BlockMenu menu, Block b) {
-                if (!BlockStorage.hasBlockInfo(b) || BlockStorage.getLocationInfo(b.getLocation(), "enabled") == null || BlockStorage.getLocationInfo(b.getLocation(), "enabled").equals(String.valueOf(false))) {
-                    menu.replaceExistingItem(6, new CustomItem(Material.GUNPOWDER, "&7Enabled: &4\u2718", "", "&e> Click to enable this Machine"));
+                if (!BlockStorage.hasBlockInfo(b)
+                    || BlockStorage.getLocationInfo(b.getLocation(), "enabled") == null
+                    || BlockStorage.getLocationInfo(b.getLocation(), "enabled").equals(String.valueOf(false))) {
+                    menu.replaceExistingItem(6, new CustomItem(Material.GUNPOWDER, "&7Enabled: &4\u2718", "",
+                        "&e> Click to enable this Machine")
+                    );
                     menu.addMenuClickHandler(6, (p, slot, item, action) -> {
                         BlockStorage.addBlockInfo(b, "enabled", String.valueOf(true));
                         newInstance(menu, b);
                         return false;
                     });
-                }
-                else {
-                    menu.replaceExistingItem(6, new CustomItem(Material.REDSTONE, "&7Enabled: &2\u2714", "", "&e> Click to disable this Machine"));
+                } else {
+                    menu.replaceExistingItem(6, new CustomItem(Material.REDSTONE, "&7Enabled: &2\u2714",
+                        "", "&e> Click to disable this Machine")
+                    );
                     menu.addMenuClickHandler(6, (p, slot, item, action) -> {
                         BlockStorage.addBlockInfo(b, "enabled", String.valueOf(false));
                         newInstance(menu, b);
@@ -86,7 +89,9 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
 
             @Override
             public boolean canOpen(Block b, Player p) {
-                return p.hasPermission("slimefun.inventory.bypass") || SlimefunPlugin.getProtectionManager().hasPermission(p, b.getLocation(), ProtectableAction.ACCESS_INVENTORIES);
+                return p.hasPermission("slimefun.inventory.bypass")
+                    || SlimefunPlugin.getProtectionManager().hasPermission(p, b.getLocation(),
+                    ProtectableAction.ACCESS_INVENTORIES);
             }
 
             @Override
@@ -148,21 +153,11 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
     }
 
     private Comparator<Integer> compareSlots(DirtyChestMenu menu) {
-        return (slot1, slot2) -> menu.getItemInSlot(slot1).getAmount() - menu.getItemInSlot(slot2).getAmount();
+        return Comparator.comparingInt(slot -> menu.getItemInSlot(slot).getAmount());
     }
 
     protected void constructMenu(BlockMenuPreset preset) {
-        for (int i : border) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
-        }
-
-        for (int i : inputBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.BLUE_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
-        }
-
-        for (int i : outputBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
-        }
+        borders(preset, border, inputBorder, outputBorder);
 
         for (int i : getOutputSlots()) {
             preset.addMenuClickHandler(i, new AdvancedMenuClickHandler() {
@@ -173,18 +168,24 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
                 }
 
                 @Override
-                public boolean onClick(InventoryClickEvent e, Player p, int slot, ItemStack cursor, ClickAction action) {
-                    return cursor == null || cursor.getType() == null || cursor.getType() == Material.AIR;
+                public boolean onClick(InventoryClickEvent e, Player p, int slot, ItemStack cursor,
+                                       ClickAction action) {
+                    if (cursor == null) return true;
+                    cursor.getType();
+                    return cursor.getType() == Material.AIR;
                 }
             });
         }
 
-        preset.addItem(2, new CustomItem(new ItemStack(Material.ENCHANTING_TABLE), "&eRecipe", "", "&bPut in the Recipe you want to craft", "&4Ancient Altar Recipes ONLY"), (p, slot, item, action) -> false);
+        preset.addItem(2, new CustomItem(new ItemStack(Material.ENCHANTING_TABLE), "&eRecipe",
+                "", "&bPut in the Recipe you want to craft", "&4Ancient Altar Recipes ONLY"
+            ),
+            (p, slot, item, action) -> false);
     }
 
     public int getEnergyConsumption() {
         return ENERGY_CONSUMPTION;
-    };
+    }
 
     public int getCapacity() {
         return CAPACITY;
@@ -192,14 +193,15 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
 
     @Override
     public int[] getInputSlots() {
-        return new int[] { 19, 20, 21, 28, 29, 30, 37, 38, 39 };
+        return new int[] {19, 20, 21, 28, 29, 30, 37, 38, 39};
     }
 
     @Override
     public int[] getOutputSlots() {
-        return new int[] { 33, 34 };
+        return new int[] {33, 34};
     }
 
+    @Nonnull
     @Override
     public EnergyNetComponentType getEnergyComponentType() {
         return EnergyNetComponentType.CONSUMER;
@@ -242,8 +244,7 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
             ItemStack outItem = menu.getItemInSlot(outSlot);
             if (outItem == null || outItem.getAmount() < outItem.getMaxStackSize()) {
                 break;
-            }
-            else if (outSlot == getOutputSlots()[1]){
+            } else if (outSlot == getOutputSlots()[1]) {
                 return;
             }
         }
@@ -256,7 +257,7 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
         }
 
         // Check and append altar items
-        for (int i = 0 ; i < 8 ; i++) {
+        for (int i = 0; i < 8; i++) {
             int slot = mockPedestalSlots[i];
             ItemStack pedestalItem = menu.getItemInSlot(slot);
             SlimefunItem sfPedestalItem = SlimefunItem.getByItem(pedestalItem);
@@ -297,5 +298,22 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
         // we're only executing the last possible shaped recipe
         // we don't want to allow this to be pressed instead of the default timer-based
         // execution to prevent abuse and auto clickers
+    }
+
+    static void borders(BlockMenuPreset preset, int[] border, int[] inputBorder, int[] outputBorder) {
+        for (int i : border) {
+            preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
+                (p, slot, item, action) -> false);
+        }
+
+        for (int i : inputBorder) {
+            preset.addItem(i, new CustomItem(new ItemStack(Material.BLUE_STAINED_GLASS_PANE), " "),
+                (p, slot, item, action) -> false);
+        }
+
+        for (int i : outputBorder) {
+            preset.addItem(i, new CustomItem(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "),
+                (p, slot, item, action) -> false);
+        }
     }
 }

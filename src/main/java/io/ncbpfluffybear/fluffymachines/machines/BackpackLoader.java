@@ -1,4 +1,4 @@
-package io.ncbpfluffybear.fluffymachines.machines;
+package me.ncbpfluffybear.fluffymachines.machines;
 
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
@@ -14,6 +14,7 @@ import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
+import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -29,14 +30,14 @@ public class BackpackLoader extends SlimefunItem implements InventoryBlock, Ener
     public static final int CAPACITY = 1024;
     public static final int ENERGY_CONSUMPTION = 64;
 
-    private static final int[] PLAIN_BORDER = { 38, 39, 40, 41, 42, 47, 48, 49, 50, 51 };
-    private static final int[] INPUT_BORDER = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35 };
-    private static final int[] OUTPUT_BORDER = { 43, 44, 52 };
-    private static final int[] BACKPACK_BORDER = { 36, 37, 46 };
-    private static final int[] INPUT_SLOTS = { 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25 };
-    private static final int[] OUTPUT_SLOTS = { 53 };
+    private static final int[] PLAIN_BORDER = {38, 39, 40, 41, 42, 47, 48, 49, 50, 51};
+    private static final int[] INPUT_BORDER = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 26, 27, 28, 29, 30, 31, 32, 33,
+        34, 35};
+    private static final int[] OUTPUT_BORDER = {43, 44, 52};
+    private static final int[] BACKPACK_BORDER = {36, 37, 46};
+    private static final int[] INPUT_SLOTS = {10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25};
+    private static final int[] OUTPUT_SLOTS = {53};
     private static final int BACKPACK_SLOT = 45;
-
 
 
     public BackpackLoader(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
@@ -59,20 +60,12 @@ public class BackpackLoader extends SlimefunItem implements InventoryBlock, Ener
 
     protected void setupInv() {
         createPreset(this, "&eBackpack Loader", preset -> {
-            for (int i : PLAIN_BORDER) {
-                preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
-            }
-
-            for (int i : INPUT_BORDER) {
-                preset.addItem(i, new CustomItem(new ItemStack(Material.CYAN_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
-            }
-
-            for (int i : OUTPUT_BORDER) {
-                preset.addItem(i, new CustomItem(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
-            }
+            border(preset, PLAIN_BORDER, INPUT_BORDER, OUTPUT_BORDER);
 
             for (int i : BACKPACK_BORDER) {
-                preset.addItem(i, new CustomItem(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
+                preset.addItem(i, new CustomItem(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE), " "),
+                    (p, slot, item, action) -> false
+                );
             }
         });
     }
@@ -116,7 +109,7 @@ public class BackpackLoader extends SlimefunItem implements InventoryBlock, Ener
                     if (!invalidItem) {
                         moveItem(inv, inputSlot, BACKPACK_SLOT);
 
-                    } else if (invalidItem && inv.getItemInSlot(getOutputSlots()[0]) == null){
+                    } else if (invalidItem && inv.getItemInSlot(getOutputSlots()[0]) == null) {
                         moveItem(inv, inputSlot, getOutputSlots()[0]);
                     }
                     return;
@@ -196,6 +189,26 @@ public class BackpackLoader extends SlimefunItem implements InventoryBlock, Ener
     @Override
     public int[] getOutputSlots() {
         return OUTPUT_SLOTS;
+    }
+
+    static void border(BlockMenuPreset preset, int[] plainBorder, int[] inputBorder, int[] outputBorder) {
+        for (int i : plainBorder) {
+            preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
+                (p, slot, item, action) -> false
+            );
+        }
+
+        for (int i : inputBorder) {
+            preset.addItem(i, new CustomItem(new ItemStack(Material.CYAN_STAINED_GLASS_PANE), " "),
+                (p, slot, item, action) -> false
+            );
+        }
+
+        for (int i : outputBorder) {
+            preset.addItem(i, new CustomItem(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "),
+                (p, slot, item, action) -> false
+            );
+        }
     }
 }
 

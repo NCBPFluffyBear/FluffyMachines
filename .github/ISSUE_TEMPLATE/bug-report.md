@@ -30,4 +30,4 @@ assignees: ''
  - Minecraft Version:
  - CS-CoreLib Version:
  - Slimefun Version:
- - Plugin Version: 
+ - FluffyMachines Version: 

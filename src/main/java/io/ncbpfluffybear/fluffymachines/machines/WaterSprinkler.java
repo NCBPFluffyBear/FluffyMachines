@@ -34,8 +34,6 @@ import javax.annotation.Nonnull;
 public class WaterSprinkler extends AbstractGrowthAccelerator {
 
     public static final ItemSetting<Double> successChance = new ItemSetting<>("success-chance", 0.5);
-    private final ItemSetting<Boolean> particles = new ItemSetting<>("particles", true);
-
     public static final int ENERGY_CONSUMPTION = 16;
     public static final int CAPACITY = 128;
     private static final int RADIUS = 2;
@@ -48,6 +46,7 @@ public class WaterSprinkler extends AbstractGrowthAccelerator {
     private static final CustomItem waterFoundItem = new CustomItem(Material.WATER_BUCKET,
         "&bWater detected"
     );
+    private final ItemSetting<Boolean> particles = new ItemSetting<>("particles", true);
 
     public WaterSprinkler(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
@@ -77,10 +76,12 @@ public class WaterSprinkler extends AbstractGrowthAccelerator {
         return RADIUS;
     }
 
+    @Override
     public int[] getInputSlots() {
         return new int[0];
     }
 
+    @Override
     public int[] getOutputSlots() {
         return new int[0];
     }
@@ -111,7 +112,8 @@ public class WaterSprinkler extends AbstractGrowthAccelerator {
                     final Block block = b.getRelative(x, 0, z);
 
                     if (particles.getValue()) {
-                        block.getWorld().spawnParticle(Particle.WATER_SPLASH, block.getLocation().add(0.5D, 0.5D, 0.5D), 4, 0.1F, 0.1F, 0.1F);
+                        block.getWorld().spawnParticle(Particle.WATER_SPLASH, block.getLocation().add(0.5D, 0.5D,
+                            0.5D), 4, 0.1F, 0.1F, 0.1F);
                     }
 
                     BlockData blockData = block.getBlockData();
@@ -129,7 +131,7 @@ public class WaterSprinkler extends AbstractGrowthAccelerator {
         final double random = ThreadLocalRandom.current().nextDouble();
         if (successChance.getValue() >= random) {
             if (crop.getType() == Material.SUGAR_CANE) {
-                for ( int i = 1 ; i < 3 ; i++) {
+                for (int i = 1; i < 3; i++) {
                     final Block above = crop.getRelative(BlockFace.UP, i);
                     if (above.getType().isAir()) {
                         above.setType(Material.SUGAR_CANE);
@@ -143,7 +145,8 @@ public class WaterSprinkler extends AbstractGrowthAccelerator {
                     ageable.setAge(ageable.getAge() + 1);
                     crop.setBlockData(ageable);
 
-                    crop.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, crop.getLocation().add(0.5D, 0.5D, 0.5D), 4, 0.1F, 0.1F, 0.1F);
+                    crop.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, crop.getLocation().add(0.5D, 0.5D, 0.5D),
+                        4, 0.1F, 0.1F, 0.1F);
                 }
             }
         }

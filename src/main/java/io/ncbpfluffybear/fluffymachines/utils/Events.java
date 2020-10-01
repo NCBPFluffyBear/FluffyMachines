@@ -84,7 +84,7 @@ public class Events implements Listener {
     public void onItemDamage(EntityDamageEvent e) {
         Entity en = e.getEntity();
         if (en instanceof Item) {
-            ItemStack item = ((Item)en).getItemStack();
+            ItemStack item = ((Item) en).getItemStack();
             if (FireproofRune.isFireproof(item)
                 && (e.getCause() == EntityDamageEvent.DamageCause.FIRE
                 || e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK
