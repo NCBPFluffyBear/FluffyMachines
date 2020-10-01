@@ -1,20 +1,21 @@
-package me.ncbpfluffybear.fluffymachines.utils;
+package io.ncbpfluffybear.fluffymachines.utils;
 
+import io.github.thebusybiscuit.slimefun4.utils.itemstack.ColoredFireworkStar;
+import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullItem;
-import me.ncbpfluffybear.fluffymachines.FluffyMachines;
-import me.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
-import me.ncbpfluffybear.fluffymachines.machines.AutoCraftingTable;
-import me.ncbpfluffybear.fluffymachines.machines.BackpackLoader;
-import me.ncbpfluffybear.fluffymachines.machines.BackpackUnloader;
-import me.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
+import io.ncbpfluffybear.fluffymachines.FluffyMachines;
+import io.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
+import io.ncbpfluffybear.fluffymachines.machines.AutoCraftingTable;
+import io.ncbpfluffybear.fluffymachines.machines.BackpackLoader;
+import io.ncbpfluffybear.fluffymachines.machines.BackpackUnloader;
+import io.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.meta.ItemMeta;
+
 
 public class FluffyItems {
 
@@ -119,6 +120,17 @@ public class FluffyItems {
         "",
         Utils.multiBlockWarning()
     );
+
+    public static final SlimefunItemStack FOUNDRY = new SlimefunItemStack("FOUNDRY",
+        Material.BLAST_FURNACE,
+        "&cFoundry",
+        "",
+        "&eMelts and stores dusts and ingots",
+        "&7Stores 138,240 dust (40 Double Chests)",
+        "",
+        Utils.multiBlockWarning()
+    );
+
     public static final SlimefunItemStack BACKPACK_UNLOADER = new SlimefunItemStack("BACKPACK_UNLOADER",
         Material.BROWN_STAINED_GLASS,
         "&eBackpack Unloader",

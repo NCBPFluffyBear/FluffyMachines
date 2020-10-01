@@ -1,12 +1,17 @@
-package me.ncbpfluffybear.fluffymachines.utils;
+package io.ncbpfluffybear.fluffymachines.utils;
 
-import me.ncbpfluffybear.fluffymachines.items.HelicopterHat;
-import me.ncbpfluffybear.fluffymachines.items.WateringCan;
+import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
+import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
+import io.ncbpfluffybear.fluffymachines.items.WateringCan;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;

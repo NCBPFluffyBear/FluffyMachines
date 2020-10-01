@@ -1,9 +1,10 @@
-package me.ncbpfluffybear.fluffymachines;
+package io.ncbpfluffybear.fluffymachines;
 
 import lombok.SneakyThrows;
 import me.mrCookieSlime.Slimefun.bstats.bukkit.Metrics;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
-import me.ncbpfluffybear.fluffymachines.utils.Events;
+import io.ncbpfluffybear.fluffymachines.utils.Events;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;

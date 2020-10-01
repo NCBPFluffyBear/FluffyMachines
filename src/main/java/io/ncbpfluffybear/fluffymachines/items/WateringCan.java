@@ -1,12 +1,12 @@
-package me.ncbpfluffybear.fluffymachines.items;
+package io.ncbpfluffybear.fluffymachines.items;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
-import me.ncbpfluffybear.fluffymachines.FluffyMachines;
-import me.ncbpfluffybear.fluffymachines.utils.Constants;
-import me.ncbpfluffybear.fluffymachines.utils.Utils;
+import io.ncbpfluffybear.fluffymachines.FluffyMachines;
+import io.ncbpfluffybear.fluffymachines.utils.Constants;
+import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;

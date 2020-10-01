@@ -1,13 +1,13 @@
-package me.ncbpfluffybear.fluffymachines.items;
+package io.ncbpfluffybear.fluffymachines.items;
 
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemDropHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
+import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.Slimefun;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.ncbpfluffybear.fluffymachines.FluffyMachines;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
