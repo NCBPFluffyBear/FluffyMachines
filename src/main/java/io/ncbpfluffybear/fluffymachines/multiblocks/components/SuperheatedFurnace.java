@@ -101,7 +101,8 @@ public class SuperheatedFurnace extends SlimefunItem {
             public int[] getSlotsAccessedByItemTransport(DirtyChestMenu menu, ItemTransportFlow flow, ItemStack item) {
                 if (flow == ItemTransportFlow.INSERT) {
                     return new int[] {INPUT_SLOT};
-                } else if (flow == ItemTransportFlow.WITHDRAW) {
+                } else if (flow == ItemTransportFlow.WITHDRAW
+                    && item != null && item.getType() != Material.BARRIER) {
                     return new int[] {DUST_OUTPUT_SLOT, INGOT_OUTPUT_SLOT};
                 } else {
                     return new int[0];
@@ -129,7 +130,9 @@ public class SuperheatedFurnace extends SlimefunItem {
 
                 if (type != null) {
                     int stored = Integer.parseInt(getBlockInfo(b.getLocation(), "stored"));
-                    b.getWorld().dropItem(b.getLocation(), new CustomItem(SlimefunItem.getByID(type + "_DUST").getItem(), stored));
+                    if (stored > 0) {
+                        b.getWorld().dropItem(b.getLocation(), new CustomItem(SlimefunItem.getByID(type + "_DUST").getItem(), stored));
+                    }
 
                 }
 

@@ -53,8 +53,9 @@ public class Foundry extends MultiBlockMachine {
                 lavaStand.setVisible(false);
                 lavaStand.setCustomName("hehexdfluff");
                 lavaStand.setCustomNameVisible(false);
-                ((Furnace) b.getState()).setBurnTime((short)1000000);
-                b.getState().update();
+                Furnace furnace = (Furnace) b.getState();
+                furnace.setBurnTime((short)1000000);
+                furnace.update(true);
 
                 BlockStorage.addBlockInfo(b, "stand", String.valueOf(lavaStand.getUniqueId()));
                 BlockStorage.addBlockInfo(b, "ignited", "true");
@@ -63,8 +64,9 @@ public class Foundry extends MultiBlockMachine {
                 Utils.send(p, "&cThis foundry still needs to be filled with lava!");
             }
         } else if (BlockStorage.getLocationInfo(b.getLocation(), "ignited") != null) {
-            ((Furnace) b.getState()).setBurnTime((short)1000000);
-            b.getState().update();
+            Furnace furnace = (Furnace) b.getState();
+            furnace.setBurnTime((short)1000000);
+            furnace.update(true);
         }
      }
 }
