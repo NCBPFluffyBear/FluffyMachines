@@ -194,6 +194,7 @@ public class FluffyItems {
         "",
         LoreBuilderDynamic.powerBuffer(AutoCrafter.CAPACITY),
         LoreBuilderDynamic.powerPerTick(AutoCrafter.ENERGY_CONSUMPTION)
+    );
     public static final SlimefunItemStack SCYTHE = new SlimefunItemStack("SCYTHE",
         Material.IRON_HOE,
         "&eScythe",
