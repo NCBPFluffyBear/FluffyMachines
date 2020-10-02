@@ -24,3 +24,7 @@ commands:
     description: FluffyMachines Command
     usage: /<command>
     aliases: [fm]
+
+permissions:
+  fluffymachines.admin:
+    description: Allows you to use FluffyMachines admin commands

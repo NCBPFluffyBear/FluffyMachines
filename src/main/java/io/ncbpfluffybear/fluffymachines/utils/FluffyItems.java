@@ -189,6 +189,14 @@ public class FluffyItems {
         "&7Chops down an entire tree at once",
         "&72 block reach and works on diagonal blocks too"
     );
+    public static final SlimefunItemStack DOLLY = new SlimefunItemStack("DOLLY",
+        Material.MINECART,
+        "&bDolly",
+        "",
+        "&7Right click a chest to pick it up",
+        "",
+        "&7ID: <ID>"
+    );
 
     static {
         FireproofRune.setFireproof(FIREPROOF_RUNE);
