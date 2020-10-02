@@ -8,7 +8,7 @@ author: NCBPFluffyBear
 description: A fun addon
 
 ## CHANGE this to the path of the class that extends JavaPlugin.
-main: me.ncbpfluffybear.fluffymachines.FluffyMachines
+main: io.ncbpfluffybear.fluffymachines.FluffyMachines
 
 ## This is required and marks Slimefun as a plugin dependency.
 depend: [Slimefun]
@@ -18,3 +18,9 @@ version: ${project.version}
 
 ## This is the minimum minecraft version required to run your plugin.
 api-version: 1.14
+
+commands:
+  fluffymachines:
+    description: FluffyMachines Command
+    usage: /<command>
+    aliases: [fm]
