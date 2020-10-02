@@ -2,6 +2,7 @@ package io.ncbpfluffybear.fluffymachines.utils;
 
 import io.github.thebusybiscuit.slimefun4.utils.itemstack.ColoredFireworkStar;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
+import io.ncbpfluffybear.fluffymachines.machines.AutoCrafter;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
@@ -175,6 +176,24 @@ public class FluffyItems {
         "",
         "&7Multiblock component of the Foundry",
         "&cMust be used in the Foundry"
+    );
+    public static final SlimefunItemStack AUTO_MAGIC_WORKBENCH = new SlimefunItemStack("AUTO_MAGIC_WORKBENCH",
+        Material.BOOKSHELF,
+        "&6Auto Magic Workbench",
+        "",
+        "&7Automatically crafts &6Magic Workbench &7recipes",
+        "",
+        LoreBuilderDynamic.powerBuffer(AutoCrafter.CAPACITY),
+        LoreBuilderDynamic.powerPerTick(AutoCrafter.ENERGY_CONSUMPTION)
+    );
+    public static final SlimefunItemStack AUTO_ARMOR_FORGE = new SlimefunItemStack("AUTO_ARMOR_FORGE",
+        Material.SMITHING_TABLE,
+        "&7Auto Armor Forge",
+        "",
+        "&7Automatically crafts Armor Forge recipes",
+        "",
+        LoreBuilderDynamic.powerBuffer(AutoCrafter.CAPACITY),
+        LoreBuilderDynamic.powerPerTick(AutoCrafter.ENERGY_CONSUMPTION)
     );
     public static final SlimefunItemStack SCYTHE = new SlimefunItemStack("SCYTHE",
         Material.IRON_HOE,
