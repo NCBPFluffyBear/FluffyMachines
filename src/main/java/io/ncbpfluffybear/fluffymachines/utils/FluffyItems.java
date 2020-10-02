@@ -39,7 +39,7 @@ public class FluffyItems {
         "&eSneak &7to use"
     );
     public static final SlimefunItemStack WATERING_CAN = new SlimefunItemStack("WATERING_CAN",
-        Material.GLASS_BOTTLE,
+        new CustomItem(SkullItem.fromHash("6484da45301625dee79ae29ff513efa583f1ed838033f20db80963cedf8aeb0e")),
         "&bWatering Can",
         "",
         "&fWaters Plants",
@@ -194,6 +194,18 @@ public class FluffyItems {
         "",
         LoreBuilderDynamic.powerBuffer(AutoCrafter.CAPACITY),
         LoreBuilderDynamic.powerPerTick(AutoCrafter.ENERGY_CONSUMPTION)
+    public static final SlimefunItemStack SCYTHE = new SlimefunItemStack("SCYTHE",
+        Material.IRON_HOE,
+        "&eScythe",
+        "",
+        "&7Breaks 5 crops at once"
+    );
+    public static final SlimefunItemStack UPGRADED_LUMBER_AXE = new SlimefunItemStack("UPGRADED_LUMBER_AXE",
+        Material.DIAMOND_AXE,
+        "&6&lUpgraded Lumber Axe",
+        "",
+        "&7Chops down an entire tree at once",
+        "&72 block reach and works on diagonal blocks too"
     );
 
     static {

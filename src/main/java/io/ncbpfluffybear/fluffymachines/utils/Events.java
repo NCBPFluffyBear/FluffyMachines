@@ -2,7 +2,7 @@ package io.ncbpfluffybear.fluffymachines.utils;
 
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
-import io.ncbpfluffybear.fluffymachines.items.WateringCan;
+import io.ncbpfluffybear.fluffymachines.items.tools.WateringCan;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;

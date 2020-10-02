@@ -1,4 +1,4 @@
-package io.ncbpfluffybear.fluffymachines.items;
+package io.ncbpfluffybear.fluffymachines.items.tools;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.tools.ExplosivePickaxe;
