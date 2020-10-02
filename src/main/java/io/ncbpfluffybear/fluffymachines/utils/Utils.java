@@ -6,6 +6,8 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -89,6 +91,17 @@ public final class Utils {
         NCMeta.setCustomModelData(6969);
         nonClickable.setItemMeta(NCMeta);
         return nonClickable;
+    }
+
+    public static boolean checkNonInteractable(ItemStack item) {
+        return item.getItemMeta().hasCustomModelData() && item.getItemMeta().getCustomModelData() == 6969;
+    }
+
+    public static boolean checkAdjacent(Block b, Material material) {
+        return b.getRelative(BlockFace.NORTH).getType() == material
+            || b.getRelative(BlockFace.EAST).getType() == material
+            || b.getRelative(BlockFace.SOUTH).getType() == material
+            || b.getRelative(BlockFace.WEST).getType() == material;
     }
 }
 

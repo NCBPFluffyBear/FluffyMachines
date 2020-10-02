@@ -1,9 +1,12 @@
 package io.ncbpfluffybear.fluffymachines;
 
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
+import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
+import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import lombok.SneakyThrows;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import me.mrCookieSlime.Slimefun.api.Slimefun;
 import me.mrCookieSlime.Slimefun.bstats.bukkit.Metrics;
 import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
@@ -16,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
+import java.util.Iterator;
 import java.util.logging.Level;
 
 public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
@@ -57,6 +61,11 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
     @Override
     public boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command cmd, @Nonnull String label, String[] args) {
+
+        if (args.length == 0) {
+            sender.sendMessage("FluffyMachines > Gotta be longer than that");
+            return true;
+        }
         if (args[0].equalsIgnoreCase("replace") && sender instanceof Player) {
             Player p = ((Player) sender);
             ItemStack item = p.getInventory().getItemInMainHand();
@@ -66,8 +75,27 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
                 }
             }
             return true;
+        } else if (args[0].equalsIgnoreCase("save") && sender.hasPermission("fluffymachines.admin")) {
+            saveAllPlayers();
+            return true;
         }
         return false;
+    }
+
+    private void saveAllPlayers() {
+        Iterator<PlayerProfile> iterator = PlayerProfile.iterator();
+        int players = 0;
+
+        while (iterator.hasNext()) {
+            PlayerProfile profile = iterator.next();
+
+            profile.save();
+            players++;
+        }
+
+        if (players > 0) {
+            Slimefun.getLogger().log(Level.INFO, "Auto-saved all player data for {0} player(s)!", players);
+        }
     }
 
     @Override
