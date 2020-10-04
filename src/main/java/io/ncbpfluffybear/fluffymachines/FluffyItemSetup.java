@@ -3,6 +3,7 @@ package io.ncbpfluffybear.fluffymachines;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.tools.Dolly;
+import io.ncbpfluffybear.fluffymachines.machines.AdvancedAutoDisenchanter;
 import io.ncbpfluffybear.fluffymachines.machines.AutoArmorForge;
 import io.ncbpfluffybear.fluffymachines.machines.AutoMagicWorkbench;
 import io.ncbpfluffybear.fluffymachines.items.tools.Scythe;
@@ -76,6 +77,13 @@ public final class FluffyItemSetup {
         }).register(plugin);
 
         new AutoAncientAltar(FluffyItems.fluffymachines, FluffyItems.AUTO_ANCIENT_ALTAR,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.ANCIENT_PEDESTAL, SlimefunItems.MEDIUM_CAPACITOR, SlimefunItems.ANCIENT_PEDESTAL,
+            SlimefunItems.ANCIENT_PEDESTAL, SlimefunItems.ANCIENT_ALTAR, SlimefunItems.ANCIENT_PEDESTAL,
+            SlimefunItems.ANCIENT_PEDESTAL, SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.ANCIENT_PEDESTAL
+        }).register(plugin);
+
+        new AdvancedAutoDisenchanter(FluffyItems.fluffymachines, FluffyItems.ADVANCED_AUTO_DISENCHANTER,
             RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
             SlimefunItems.ANCIENT_PEDESTAL, SlimefunItems.MEDIUM_CAPACITOR, SlimefunItems.ANCIENT_PEDESTAL,
             SlimefunItems.ANCIENT_PEDESTAL, SlimefunItems.ANCIENT_ALTAR, SlimefunItems.ANCIENT_PEDESTAL,

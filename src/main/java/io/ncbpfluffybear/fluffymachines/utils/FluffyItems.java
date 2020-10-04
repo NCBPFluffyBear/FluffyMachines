@@ -195,6 +195,15 @@ public class FluffyItems {
         LoreBuilderDynamic.powerBuffer(AutoCrafter.CAPACITY),
         LoreBuilderDynamic.powerPerTick(AutoCrafter.ENERGY_CONSUMPTION)
     );
+    public static final SlimefunItemStack ADVANCED_AUTO_DISENCHANTER = new SlimefunItemStack("ADVANCED_AUTO_DISENCHANTER",
+        Material.ENCHANTING_TABLE,
+        "&cAdvanced Auto Disenchanter",
+        "",
+        "&7Automatically crafts Armor Forge recipes",
+        "",
+        LoreBuilderDynamic.powerBuffer(AutoCrafter.CAPACITY),
+        LoreBuilderDynamic.powerPerTick(AutoCrafter.ENERGY_CONSUMPTION)
+    );
     public static final SlimefunItemStack SCYTHE = new SlimefunItemStack("SCYTHE",
         Material.IRON_HOE,
         "&eScythe",
