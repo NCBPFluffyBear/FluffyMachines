@@ -2,6 +2,7 @@ package io.ncbpfluffybear.fluffymachines.multiblocks.components;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -72,19 +73,26 @@ public class SuperheatedFurnace extends SlimefunItem {
 
             @Override
             public void newInstance(BlockMenu menu, Block b) {
-                menu.replaceExistingItem(4, new CustomItem(Material.GUNPOWDER, "&6Dust Available: &e0", "&a> Click here to retrieve"));
+                if (BlockStorage.getLocationInfo(b.getLocation(), "stored") == null) {
+
+                    menu.replaceExistingItem(4, new CustomItem(Material.GUNPOWDER, "&6Dust Available: &e0", "&a> Click here to retrieve"));
+                    menu.replaceExistingItem(7, new CustomItem(Material.IRON_INGOT, "&6Ingots Available: &e0", "&a> Click here to retrieve"));
+                    menu.replaceExistingItem(1, new CustomItem(Material.CHEST, "&6Melted Dust: &e0 &7(0%)", "&bType: None",  "&7Stacks: 0"));
+
+                    BlockStorage.addBlockInfo(b, "stored", "0");
+                }
+
+                menu.addMenuClickHandler(1, (p, slot, item, action) -> false);
+
                 menu.addMenuClickHandler(4, (p, slot, item, action) -> {
                     retrieveDust(menu, b);
                     return false;
                 });
 
-                menu.replaceExistingItem(7, new CustomItem(Material.IRON_INGOT, "&6Ingots Available: &e0", "&a> Click here to retrieve"));
                 menu.addMenuClickHandler(7, (p, slot, item, action) -> {
                     retrieveIngot(menu, b);
                     return false;
                 });
-
-                BlockStorage.addBlockInfo(b, "stored", "0");
             }
 
             @Override
@@ -126,9 +134,25 @@ public class SuperheatedFurnace extends SlimefunItem {
                 inv.dropItems(b.getLocation(), INGOT_OUTPUT_SLOT);
 
                 if (stored > 0) {
-                    b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(SlimefunItem.getByID(type + "_DUST").getItem(), stored));
+                    ItemStack dust = SlimefunItem.getByID(type + "_DUST").getItem();
+
+                    // Everything greater than 1 stack
+                    while (stored >= 64) {
+
+                        b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(dust, 64));
+
+                        stored = stored - 64;
+                    }
+
+                    // Drop remaining, if there is any
+                    if (stored > 0) {
+                        b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(dust, stored));
+                    }
                 }
             }
+
+            // Explosive pick protection
+            BlockStorage.addBlockInfo(b.getLocation(), "stored", "0");
 
             if (BlockStorage.getLocationInfo(b.getLocation(), "stand") != null) {
                 Bukkit.getEntity(UUID.fromString(BlockStorage.getLocationInfo(b.getLocation(), "stand"))).remove();
@@ -150,7 +174,6 @@ public class SuperheatedFurnace extends SlimefunItem {
             preset.addItem(i, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
         }
 
-        preset.addItem(1, new CustomItem(new ItemStack(Material.CHEST), "&6Melted Dust: &e0 &7(0%)", "&bType: None",  "&7Stacks: 0"), (p, slot, item, action) -> false);
 
     }
 

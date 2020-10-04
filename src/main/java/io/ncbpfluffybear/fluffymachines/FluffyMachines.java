@@ -78,6 +78,12 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
         } else if (args[0].equalsIgnoreCase("save") && sender.hasPermission("fluffymachines.admin")) {
             saveAllPlayers();
             return true;
+
+        } else if (args[0].equalsIgnoreCase("meta") && sender.hasPermission("fluffymachines.admin")
+            && sender instanceof Player) {
+            Player p = (Player) sender;
+            Utils.send(p, String.valueOf(p.getInventory().getItemInMainHand().getItemMeta()));
+            return true;
         }
         return false;
     }

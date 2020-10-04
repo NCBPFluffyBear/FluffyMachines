@@ -1,6 +1,7 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
 import io.github.thebusybiscuit.slimefun4.utils.itemstack.ColoredFireworkStar;
+import io.ncbpfluffybear.fluffymachines.items.Barrel;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.machines.AutoCrafter;
 import me.mrCookieSlime.Slimefun.Objects.Category;
@@ -27,6 +28,66 @@ public class FluffyItems {
     public static final Category fluffymachines = new Category(new NamespacedKey(FluffyMachines.getInstance(),
         "fluffymachines"),
         new CustomItem(Material.SMOKER, "&6Fluffy Machines")
+    );
+
+    public static final Category fluffybarrels = new Category(new NamespacedKey(FluffyMachines.getInstance(),
+        "fluffybarrels"),
+        new CustomItem(Material.BARREL, "&6Fluffy Barrels")
+    );
+
+    // Barrels
+    public static final SlimefunItemStack SMALL_FLUFFY_BARREL = new SlimefunItemStack("SMALL_FLUFFY_BARREL",
+        Material.BEEHIVE,
+        "&eSmall Fluffy Barrel",
+        "",
+        "&7Stores a large amount of an item",
+        "",
+        "&bCapacity: &e" + Barrel.SMALL_BARREL_SIZE + " Items"
+    );
+
+    public static final SlimefunItemStack MEDIUM_FLUFFY_BARREL = new SlimefunItemStack("MEDIUM_FLUFFY_BARREL",
+        Material.BARREL,
+        "&6Medium Fluffy Barrel",
+        "",
+        "&7Stores a large amount of an item",
+        "",
+        "&bCapacity: &e" + Barrel.MEDIUM_BARREL_SIZE + " Items"
+    );
+
+    public static final SlimefunItemStack BIG_FLUFFY_BARREL = new SlimefunItemStack("BIG_FLUFFY_BARREL",
+        Material.SMOKER,
+        "&bBig Fluffy Barrel",
+        "",
+        "&7Stores a large amount of an item",
+        "",
+        "&bCapacity: &e" + Barrel.BIG_BARREL_SIZE + " Items"
+    );
+
+    public static final SlimefunItemStack LARGE_FLUFFY_BARREL = new SlimefunItemStack("LARGE_FLUFFY_BARREL",
+        Material.LODESTONE,
+        "&aLarge Fluffy Barrel",
+        "",
+        "&7Stores a large amount of an item",
+        "",
+        "&bCapacity: &e" + Barrel.LARGE_BARREL_SIZE + " Items"
+    );
+
+    public static final SlimefunItemStack MASSIVE_FLUFFY_BARREL = new SlimefunItemStack("MASSIVE_FLUFFY_BARREL",
+        Material.CRYING_OBSIDIAN,
+        "&5Massive Fluffy Barrel",
+        "",
+        "&7Stores a large amount of an item",
+        "",
+        "&bCapacity: &e" + Barrel.MASSIVE_BARREL_SIZE + " Items"
+    );
+
+    public static final SlimefunItemStack BOTTOMLESS_FLUFFY_BARREL = new SlimefunItemStack("BOTTOMLESS_FLUFFY_BARREL",
+        Material.RESPAWN_ANCHOR,
+        "&cBottomless Fluffy Barrel",
+        "",
+        "&7Stores a large amount of an item",
+        "",
+        "&bCapacity: &e" + Barrel.BOTTOMLESS_BARREL_SIZE + " Items"
     );
 
     // Items
@@ -216,6 +277,8 @@ public class FluffyItems {
         "",
         "&7ID: <ID>"
     );
+
+
 
     static {
         FireproofRune.setFireproof(FIREPROOF_RUNE);
