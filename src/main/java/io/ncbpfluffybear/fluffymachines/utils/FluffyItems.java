@@ -189,6 +189,13 @@ public class FluffyItems {
         "&7Chops down an entire tree at once",
         "&72 block reach and works on diagonal blocks too"
     );
+    public static final SlimefunItemStack LINKED_CHEST = new SlimefunItemStack("LINKED_CHEST",
+        Material.GOLD_BLOCK,
+        "&6&lLinked Chest",
+        "",
+        "&7Chops down an entire tree at once",
+        "&72 block reach and works on diagonal blocks too"
+    );
 
     static {
         FireproofRune.setFireproof(FIREPROOF_RUNE);

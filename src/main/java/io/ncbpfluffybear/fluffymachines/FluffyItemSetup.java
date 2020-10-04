@@ -2,6 +2,7 @@ package io.ncbpfluffybear.fluffymachines;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
+import io.ncbpfluffybear.fluffymachines.items.LinkedChest;
 import io.ncbpfluffybear.fluffymachines.items.tools.Scythe;
 import io.ncbpfluffybear.fluffymachines.items.tools.UpgradedLumberAxe;
 import io.ncbpfluffybear.fluffymachines.multiblocks.Foundry;
@@ -143,6 +144,12 @@ public final class FluffyItemSetup {
         }).register(plugin);
 
         new SuperheatedFurnace(FluffyItems.fluffymachines, FluffyItems.SUPERHEATED_FURNACE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            new ItemStack(Material.OBSIDIAN), new ItemStack(Material.OBSIDIAN), new ItemStack(Material.OBSIDIAN),
+            new ItemStack(Material.LAVA_BUCKET), new ItemStack(Material.BLAST_FURNACE), new ItemStack(Material.LAVA_BUCKET),
+            new ItemStack(Material.OBSIDIAN), new ItemStack(Material.OBSIDIAN), new ItemStack(Material.OBSIDIAN)
+        }).register(plugin);
+
+        new LinkedChest(FluffyItems.fluffymachines, FluffyItems.LINKED_CHEST, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
             new ItemStack(Material.OBSIDIAN), new ItemStack(Material.OBSIDIAN), new ItemStack(Material.OBSIDIAN),
             new ItemStack(Material.LAVA_BUCKET), new ItemStack(Material.BLAST_FURNACE), new ItemStack(Material.LAVA_BUCKET),
             new ItemStack(Material.OBSIDIAN), new ItemStack(Material.OBSIDIAN), new ItemStack(Material.OBSIDIAN)
