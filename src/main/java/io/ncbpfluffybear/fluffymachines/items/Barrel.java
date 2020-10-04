@@ -79,7 +79,7 @@ public class Barrel extends SlimefunItem {
 
                     SimpleHologram.update(b, "&cEmpty");
 
-                // We still need the click handlers though
+                    // We still need the click handlers though
                 } else {
                     menu.addMenuClickHandler(STATUS_SLOT, (p, slot, item, action) -> false);
                     menu.addMenuClickHandler(DISPLAY_SLOT, (p, slot, item, action) -> false);
@@ -219,6 +219,17 @@ public class Barrel extends SlimefunItem {
         for (int i = 0; i < OUTPUT_SLOTS.length; i++) {
             if (inv.getItemInSlot(DISPLAY_SLOT) != null && inv.getItemInSlot(DISPLAY_SLOT).getType() != Material.BARRIER) {
 
+                int freeSlot = 0;
+
+                for (int outputSlot : OUTPUT_SLOTS) {
+                    if (inv.getItemInSlot(outputSlot) == null) {
+                        freeSlot = outputSlot;
+                        break;
+                    } else if (outputSlot == OUTPUT_SLOTS[5]) {
+                        return;
+                    }
+                }
+
                 String storedString = BlockStorage.getLocationInfo(l, "stored");
                 int stored = Integer.parseInt(storedString);
                 ItemStack item = inv.getItemInSlot(DISPLAY_SLOT);
@@ -227,24 +238,18 @@ public class Barrel extends SlimefunItem {
 
                     ItemStack clone = new CustomItem(Utils.unKeyItem(item), item.getMaxStackSize());
 
-                    if (inv.fits(clone, OUTPUT_SLOTS)) {
-
-                        int amount = clone.getMaxStackSize();
-                        BlockStorage.addBlockInfo(b, "stored", String.valueOf((stored - amount)));
-                        inv.pushItem(clone, OUTPUT_SLOTS);
-                        updateMenu(b, inv);
-                    }
+                    int amount = clone.getMaxStackSize();
+                    BlockStorage.addBlockInfo(b, "stored", String.valueOf((stored - amount)));
+                    inv.pushItem(clone, freeSlot);
+                    updateMenu(b, inv);
 
                 } else if (stored != 0) {
 
                     ItemStack clone = new CustomItem(Utils.unKeyItem(item), stored);
 
-                    if (inv.fits(clone, OUTPUT_SLOTS)) {
-
-                        BlockStorage.addBlockInfo(b, "stored", "0");
-                        inv.pushItem(clone, OUTPUT_SLOTS);
-                        updateMenu(b, inv);
-                    }
+                    BlockStorage.addBlockInfo(b, "stored", "0");
+                    inv.pushItem(clone, freeSlot);
+                    updateMenu(b, inv);
                 }
             }
         }
