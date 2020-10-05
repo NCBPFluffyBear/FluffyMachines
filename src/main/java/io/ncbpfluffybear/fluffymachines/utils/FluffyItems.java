@@ -36,6 +36,14 @@ public class FluffyItems {
         new CustomItem(Material.BARREL, "&6Fluffy Barrels")
     );
 
+    public static final SlimefunItemStack FM_VERSION_INDICATOR = new SlimefunItemStack("FM_VERSION_INDICATOR",
+        Material.ORANGE_WOOL,
+        "&6&lFluffyMachines Info",
+        "",
+        "&e" + FluffyMachines.getInstance().getName() + " " + FluffyMachines.getInstance().getPluginVersion(),
+        "&7" + FluffyMachines.getInstance().getBugTrackerURL()
+    );
+
     // Barrels
     public static final SlimefunItemStack SMALL_FLUFFY_BARREL = new SlimefunItemStack("SMALL_FLUFFY_BARREL",
         Material.BEEHIVE,
