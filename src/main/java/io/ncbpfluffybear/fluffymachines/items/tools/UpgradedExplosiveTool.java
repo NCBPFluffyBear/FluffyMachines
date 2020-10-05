@@ -6,6 +6,7 @@ import io.github.thebusybiscuit.slimefun4.core.attributes.NotPlaceable;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ToolUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
+import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunBlockHandler;
@@ -17,12 +18,17 @@ import me.mrCookieSlime.Slimefun.cscorelib2.materials.MaterialCollections;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -41,17 +47,30 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
     private final ItemSetting<Boolean> damageOnUse = new ItemSetting<>("damage-on-use", true);
     private final ItemSetting<Boolean> callExplosionEvent = new ItemSetting<>("call-explosion-event", false);
     private final ItemSetting<Boolean> breakFromCenter = new ItemSetting<>("break-from-center", false);
+    private final ItemSetting<Boolean> triggerOtherPlugins = new ItemSetting<>("trigger-other-plugins", true);
+
+
+    private static final NamespacedKey enabled = new NamespacedKey(FluffyMachines.getInstance(), "explosive_tool_enabled");
 
     public UpgradedExplosiveTool(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
-        addItemSetting(damageOnUse, callExplosionEvent, breakFromCenter);
+        addItemSetting(damageOnUse, callExplosionEvent, breakFromCenter, triggerOtherPlugins);
     }
 
     @Nonnull
     @Override
     public ToolUseHandler getItemHandler() {
         return (e, tool, fortune, drops) -> {
+
+            ItemMeta meta = tool.getItemMeta();
+            int active = meta.getPersistentDataContainer().getOrDefault(enabled, PersistentDataType.INTEGER, 1);
+            tool.setItemMeta(meta);
+
+            if (active == 0) {
+                return;
+            }
+
             Player p = e.getPlayer();
             Block b = e.getBlock();
 
@@ -83,12 +102,21 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
             }
         } else {
 
+            // Prevent it from triggering itself, resulting in an endless loop
+            ItemMeta meta = item.getItemMeta();
+            meta.getPersistentDataContainer().set(enabled, PersistentDataType.INTEGER, 0);
+            item.setItemMeta(meta);
+
             for (Block block : blocks) {
                 if (canBreak(p, block)) {
                     breakBlock(p, item, block, drops);
                     damageItem(p, item);
                 }
             }
+
+            // Reenable the tool
+            meta.getPersistentDataContainer().set(enabled, PersistentDataType.INTEGER, 1);
+            item.setItemMeta(meta);
         }
     }
 
@@ -102,10 +130,15 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
                         if (x == 0 && y == 0 && z == 0) {
                             continue;
                         }
-                        blocks.add(b.getRelative(x, y, z));
+                        // Small check to reduce lag
+                        if (b.getRelative(x, y, z).getType() != Material.AIR) {
+                            blocks.add(b.getRelative(x, y, z));
+                        }
                     } else {
                         Block shiftedBlock = b.getRelative(face, 2);
-                        blocks.add(shiftedBlock.getRelative(x, y, z));
+                        if (shiftedBlock.getRelative(x, y, z).getType() != Material.AIR) {
+                            blocks.add(shiftedBlock.getRelative(x, y, z));
+                        }
                     }
                 }
             }
@@ -145,6 +178,11 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
                 drops.add(BlockStorage.retrieve(b));
             }
         } else {
+            if (triggerOtherPlugins.getValue()) {
+                BlockBreakEvent breakEvent = new BlockBreakEvent(b, p);
+                Bukkit.getServer().getPluginManager().callEvent(breakEvent);
+            }
+
             b.breakNaturally(item);
         }
     }
