@@ -115,6 +115,7 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
             }
 
             // Reenable the tool
+            meta = item.getItemMeta(); // This line is needed because then the durability will reset
             meta.getPersistentDataContainer().set(enabled, PersistentDataType.INTEGER, 1);
             item.setItemMeta(meta);
         }

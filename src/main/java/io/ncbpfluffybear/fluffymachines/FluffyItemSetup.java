@@ -43,6 +43,9 @@ public final class FluffyItemSetup {
 
     public static void setup(@Nonnull FluffyMachines plugin) {
 
+        new SlimefunItem(FluffyItems.fluffymachines, FluffyItems.FM_VERSION_INDICATOR, RecipeType.NULL, new ItemStack[0]
+        ).register(plugin);
+
         // Barrels
         new Barrel(FluffyItems.fluffybarrels, FluffyItems.SMALL_FLUFFY_BARREL, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
             new ItemStack(Material.OAK_LOG), new ItemStack(Material.BARREL), new ItemStack(Material.OAK_LOG),
