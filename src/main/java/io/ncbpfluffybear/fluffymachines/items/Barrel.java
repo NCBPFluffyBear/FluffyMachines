@@ -274,7 +274,7 @@ public class Barrel extends SlimefunItem {
     }
 
     private boolean matchMeta(ItemStack item1, ItemStack item2) {
-        return item1.getItemMeta().equals(item2.getItemMeta());
+        return item1.getItemMeta().equals(item2.getItemMeta()) && item1.getType().equals(item2.getType());
     }
 
     private void updateMenu(Block b, BlockMenu inv) {
