@@ -10,6 +10,7 @@ import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -43,6 +44,12 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
             }
 
             Block b = e.getClickedBlock().get();
+
+            if (!SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), b.getLocation(),
+                ProtectableAction.BREAK_BLOCK)) {
+                return;
+            }
+
             Block relative = b.getRelative(e.getClickedFace());
 
             if (b.getType() == Material.CHEST && !BlockStorage.hasBlockInfo(b)) {

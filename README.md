@@ -34,3 +34,6 @@ Custom item settings can be changed in `plugins/Slimefun/Items.yml`
 **Ender Chest Insertion Node**: Moves items from a chest to an ender chest
 
 *The extraction and insertion nodes do no stack items in inventories, that costs more performance and can be handled by cargo.
+
+**Foundry & Superheated Furnace**: Allows the storage of dusts, and can be instantly converted to and from their ingot form.
+

@@ -97,18 +97,16 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
         for (int x = -2; x <= 2; x++) {
             for (int y = -2; y <= 2; y++) {
                 for (int z = -2; z <= 2; z++) {
-                    // We can skip the center block since that will break as usual
-                    if (x == 0 && y == 0 && z == 0) {
-                        continue;
-                    }
                     if (breakFromCenter.getValue()) {
+                        // We can skip the center block since that will break as usual
+                        if (x == 0 && y == 0 && z == 0) {
+                            continue;
+                        }
                         blocks.add(b.getRelative(x, y, z));
                     } else {
-                        Block shiftedBlock = b.getRelative(BlockFace.SELF, 2);
+                        Block shiftedBlock = b.getRelative(face, 2);
                         blocks.add(shiftedBlock.getRelative(x, y, z));
                     }
-                    Block shiftedBlock = b.getRelative(face, 2);
-                    blocks.add(shiftedBlock.getRelative(x, y, z));
                 }
             }
         }
