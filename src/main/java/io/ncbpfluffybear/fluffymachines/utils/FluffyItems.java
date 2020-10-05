@@ -2,6 +2,7 @@ package io.ncbpfluffybear.fluffymachines.utils;
 
 import io.github.thebusybiscuit.slimefun4.utils.itemstack.ColoredFireworkStar;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
+import io.ncbpfluffybear.fluffymachines.machines.AdvancedAutoDisenchanter;
 import io.ncbpfluffybear.fluffymachines.machines.AutoCrafter;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
@@ -30,6 +31,14 @@ public class FluffyItems {
     );
 
     // Items
+    public static final SlimefunItemStack ANCIENT_BOOK = new SlimefunItemStack("ANCIENT_BOOK",
+        Material.BOOK,
+        "&6Ancient Book",
+        "",
+        "&7Used in the &cAdvanced Auto Disenchanter",
+        "",
+        "&6&oContains concentrated amounts of power"
+    );
     public static final SlimefunItemStack HELICOPTER_HAT = new SlimefunItemStack("HELICOPTER_HAT",
         Material.LEATHER_HELMET, Color.AQUA,
         "&1Helicopter Hat",
@@ -199,10 +208,11 @@ public class FluffyItems {
         Material.ENCHANTING_TABLE,
         "&cAdvanced Auto Disenchanter",
         "",
-        "&7Automatically crafts Armor Forge recipes",
+        "&7Removes one enchant from an item",
+        "&7Requires an &6Ancient Book &7to operate",
         "",
-        LoreBuilderDynamic.powerBuffer(AutoCrafter.CAPACITY),
-        LoreBuilderDynamic.powerPerTick(AutoCrafter.ENERGY_CONSUMPTION)
+        LoreBuilderDynamic.powerBuffer(AdvancedAutoDisenchanter.CAPACITY),
+        LoreBuilderDynamic.powerPerTick(AdvancedAutoDisenchanter.ENERGY_CONSUMPTION)
     );
     public static final SlimefunItemStack SCYTHE = new SlimefunItemStack("SCYTHE",
         Material.IRON_HOE,

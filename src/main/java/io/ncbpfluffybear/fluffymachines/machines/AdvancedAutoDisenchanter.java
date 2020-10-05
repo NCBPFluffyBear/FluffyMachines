@@ -4,7 +4,9 @@ import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
+import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
+import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
@@ -51,8 +53,8 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
     private static final int SELECTION_SLOT = 4;
     private static final int PROGRESS_SLOT = 13;
 
-    private static final int ENERGY_CONSUMPTION = 1024;
-    private static final int CAPACITY = 4096;
+    public static final int ENERGY_CONSUMPTION = 1024;
+    public static final int CAPACITY = 4096;
     private static final int REQUIRED_TICKS = 10;
 
     private static final Map<BlockPosition, Integer> progress = new HashMap<>();
@@ -171,6 +173,10 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
 
     protected void tick(Block b) {
 
+        if (getCharge(b.getLocation()) < ENERGY_CONSUMPTION) {
+            return;
+        }
+
         BlockMenu inv = BlockStorage.getInventory(b);
         final BlockPosition pos = new BlockPosition(b.getWorld(), b.getX(), b.getY(), b.getZ());
         int currentProgress = progress.getOrDefault(pos, 0);
@@ -179,11 +185,16 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
 
         if (selectionIndex != -1
             && inv.getItemInSlot(ITEM_SLOT) != null && inv.getItemInSlot(BOOK_SLOT) != null
-            && inv.getItemInSlot(BOOK_SLOT).getType() == Material.BOOK
-            && !inv.getItemInSlot(ITEM_SLOT).getEnchantments().isEmpty()
-            // Two mock items to check if they fit
-            && (inv.fits(new ItemStack(Material.DIAMOND_SWORD))
-            && inv.fits(new ItemStack(Material.ENCHANTED_BOOK)))) {
+            && SlimefunUtils.isItemSimilar(inv.getItemInSlot(BOOK_SLOT), FluffyItems.ANCIENT_BOOK.getItem().getItem(), false, false)
+            && !inv.getItemInSlot(ITEM_SLOT).getEnchantments().isEmpty()) {
+
+
+            // We need both slots empty
+            for (int slot : OUTPUT_SLOTS) {
+                if (inv.getItemInSlot(slot) != null) {
+                    return;
+                }
+            }
 
             // Dont produce the item if didnt finish
             if (currentProgress < REQUIRED_TICKS) {
@@ -192,45 +203,45 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
                 ChestMenuUtils.updateProgressbar(inv, PROGRESS_SLOT, REQUIRED_TICKS - currentProgress,
                     REQUIRED_TICKS, progressItem);
 
+                removeCharge(b.getLocation(), ENERGY_CONSUMPTION);
+
                 return;
             }
 
-            if (selectionIndex != -1) {
-                ItemStack item = inv.getItemInSlot(ITEM_SLOT).clone();
+            ItemStack item = inv.getItemInSlot(ITEM_SLOT).clone();
 
-                List<NamespacedKey> enchants = new ArrayList<>();
-                List<Integer> levels = new ArrayList<>();
-                Map<Enchantment, Integer> enchantMap = item.getEnchantments();
+            List<NamespacedKey> enchants = new ArrayList<>();
+            List<Integer> levels = new ArrayList<>();
+            Map<Enchantment, Integer> enchantMap = item.getEnchantments();
 
-                if (enchantMap.size() == 0) {
-                    return;
-                }
-
-                enchantMap.forEach((enchant, level) -> {
-                    enchants.add(enchant.getKey());
-                    levels.add(level);
-                });
-
-                ItemStack enchantedBook = new ItemStack(Material.ENCHANTED_BOOK);
-                EnchantmentStorageMeta enchantedMeta = (EnchantmentStorageMeta) enchantedBook.getItemMeta();
-                enchantedMeta.addStoredEnchant(Enchantment.getByKey(enchants.get(selectionIndex)), levels.get(selectionIndex), true);
-                enchantedBook.setItemMeta(enchantedMeta);
-
-                item.removeEnchantment(Enchantment.getByKey(enchants.get(selectionIndex)));
-
-                inv.consumeItem(ITEM_SLOT);
-                inv.consumeItem(BOOK_SLOT);
-                inv.pushItem(item, OUTPUT_SLOTS);
-                inv.pushItem(enchantedBook, OUTPUT_SLOTS);
-
-                // Reset the selection item
-                inv.replaceExistingItem(SELECTION_SLOT, selectionItem);
-
-                progress.put(pos, 0);
-                currentProgress = progress.getOrDefault(pos, 0);
-                ChestMenuUtils.updateProgressbar(inv, PROGRESS_SLOT, REQUIRED_TICKS - currentProgress,
-                    REQUIRED_TICKS, progressItem);
+            if (enchantMap.size() == 0) {
+                return;
             }
+
+            enchantMap.forEach((enchant, level) -> {
+                enchants.add(enchant.getKey());
+                levels.add(level);
+            });
+
+            ItemStack enchantedBook = new ItemStack(Material.ENCHANTED_BOOK);
+            EnchantmentStorageMeta enchantedMeta = (EnchantmentStorageMeta) enchantedBook.getItemMeta();
+            enchantedMeta.addStoredEnchant(Enchantment.getByKey(enchants.get(selectionIndex)), levels.get(selectionIndex), true);
+            enchantedBook.setItemMeta(enchantedMeta);
+
+            item.removeEnchantment(Enchantment.getByKey(enchants.get(selectionIndex)));
+
+            inv.consumeItem(ITEM_SLOT);
+            inv.consumeItem(BOOK_SLOT);
+            inv.pushItem(item, OUTPUT_SLOTS);
+            inv.pushItem(enchantedBook, OUTPUT_SLOTS);
+
+            // Reset the selection item
+            inv.replaceExistingItem(SELECTION_SLOT, selectionItem);
+
+            progress.put(pos, 0);
+            currentProgress = progress.getOrDefault(pos, 0);
+            ChestMenuUtils.updateProgressbar(inv, PROGRESS_SLOT, REQUIRED_TICKS - currentProgress,
+                REQUIRED_TICKS, progressItem);
         } else {
 
             progress.put(pos, 0);
