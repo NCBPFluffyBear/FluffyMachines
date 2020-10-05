@@ -3,6 +3,7 @@ package io.ncbpfluffybear.fluffymachines;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.tools.Dolly;
+import io.ncbpfluffybear.fluffymachines.machines.AdvancedAutoDisenchanter;
 import io.ncbpfluffybear.fluffymachines.machines.AutoArmorForge;
 import io.ncbpfluffybear.fluffymachines.machines.AutoMagicWorkbench;
 import io.ncbpfluffybear.fluffymachines.items.tools.Scythe;
@@ -24,6 +25,7 @@ import io.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
 import io.ncbpfluffybear.fluffymachines.multiblocks.CrankGenerator;
 import io.ncbpfluffybear.fluffymachines.multiblocks.components.GeneratorCore;
 import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -39,6 +41,14 @@ public final class FluffyItemSetup {
     private FluffyItemSetup() {}
 
     public static void setup(@Nonnull FluffyMachines plugin) {
+
+        // Items
+        new SlimefunItem(FluffyItems.fluffymachines, FluffyItems.ANCIENT_BOOK,
+            RecipeType.ANCIENT_ALTAR, new ItemStack[] {
+            new ItemStack(Material.BOOK), SlimefunItems.FILLED_FLASK_OF_KNOWLEDGE, new ItemStack(Material.BOOK),
+            SlimefunItems.FILLED_FLASK_OF_KNOWLEDGE, SlimefunItems.ENCHANTMENT_RUNE, SlimefunItems.FILLED_FLASK_OF_KNOWLEDGE,
+            new ItemStack(Material.BOOK), SlimefunItems.FILLED_FLASK_OF_KNOWLEDGE, new ItemStack(Material.BOOK)
+        }).register(plugin);
 
         // Tools
         new WateringCan(FluffyItems.fluffymachines, FluffyItems.WATERING_CAN,
@@ -80,6 +90,13 @@ public final class FluffyItemSetup {
             SlimefunItems.ANCIENT_PEDESTAL, SlimefunItems.MEDIUM_CAPACITOR, SlimefunItems.ANCIENT_PEDESTAL,
             SlimefunItems.ANCIENT_PEDESTAL, SlimefunItems.ANCIENT_ALTAR, SlimefunItems.ANCIENT_PEDESTAL,
             SlimefunItems.ANCIENT_PEDESTAL, SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.ANCIENT_PEDESTAL
+        }).register(plugin);
+
+        new AdvancedAutoDisenchanter(FluffyItems.fluffymachines, FluffyItems.ADVANCED_AUTO_DISENCHANTER,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.REDSTONE_ALLOY, SlimefunItems.AUTO_ANVIL_2, SlimefunItems.REDSTONE_ALLOY,
+            SlimefunItems.BLISTERING_INGOT_3, SlimefunItems.AUTO_DISENCHANTER, SlimefunItems.BLISTERING_INGOT_3,
+            SlimefunItems.WITHER_PROOF_OBSIDIAN, SlimefunItems.WITHER_PROOF_OBSIDIAN, SlimefunItems.WITHER_PROOF_OBSIDIAN
         }).register(plugin);
 
         new EnderChestInsertionNode(FluffyItems.fluffymachines, FluffyItems.ENDER_CHEST_INSERTION_NODE,
@@ -152,9 +169,9 @@ public final class FluffyItemSetup {
         }).register(plugin);
 
         new Dolly(FluffyItems.fluffymachines, FluffyItems.DOLLY, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            new ItemStack(Material.OBSIDIAN), new ItemStack(Material.OBSIDIAN), new ItemStack(Material.OBSIDIAN),
-            new ItemStack(Material.LAVA_BUCKET), new ItemStack(Material.BLAST_FURNACE), new ItemStack(Material.LAVA_BUCKET),
-            new ItemStack(Material.OBSIDIAN), new ItemStack(Material.OBSIDIAN), new ItemStack(Material.OBSIDIAN)
+            new ItemStack(Material.LEATHER), new ItemStack(Material.LEATHER), new ItemStack(Material.LEATHER),
+            new ItemStack(Material.IRON_INGOT), new ItemStack(Material.MINECART), new ItemStack(Material.IRON_INGOT),
+            new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT)
         }).register(plugin);
 
         new AutoMagicWorkbench(FluffyItems.fluffymachines, FluffyItems.AUTO_MAGIC_WORKBENCH, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
