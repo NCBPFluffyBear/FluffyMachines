@@ -1,17 +1,20 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
+import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import javax.annotation.Nullable;
 import java.text.DecimalFormat;
@@ -22,6 +25,10 @@ import java.util.Locale;
 import java.util.TreeMap;
 
 public final class Utils {
+
+    private static final NamespacedKey fluffykey = new NamespacedKey(FluffyMachines.getInstance(), "fluffykey");
+    public static final DecimalFormat powerFormat = new DecimalFormat("###,###.##",
+        DecimalFormatSymbols.getInstance(Locale.ROOT));
 
     private final static TreeMap<Integer, String> map = new TreeMap<Integer, String>();
 
@@ -42,9 +49,6 @@ public final class Utils {
         map.put(1, "I");
 
     }
-
-    private static final DecimalFormat powerFormat = new DecimalFormat("###,###.##",
-        DecimalFormatSymbols.getInstance(Locale.ROOT));
 
     private Utils() {}
 
@@ -131,6 +135,22 @@ public final class Utils {
             return map.get(number);
         }
         return map.get(l) + toRoman(number-l);
+    }
+
+    public static ItemStack keyItem(ItemStack item) {
+        ItemStack clone = item.clone();
+        ItemMeta meta = clone.getItemMeta();
+        meta.getPersistentDataContainer().set(fluffykey, PersistentDataType.INTEGER, 1);
+        clone.setItemMeta(meta);
+        return clone;
+    }
+
+    public static ItemStack unKeyItem(ItemStack item) {
+        ItemStack clone = item.clone();
+        ItemMeta meta = clone.getItemMeta();
+        meta.getPersistentDataContainer().remove(fluffykey);
+        clone.setItemMeta(meta);
+        return clone;
     }
 }
 
