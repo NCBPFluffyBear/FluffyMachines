@@ -55,7 +55,7 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
 
     public static final int ENERGY_CONSUMPTION = 1024;
     public static final int CAPACITY = 4096;
-    private static final int REQUIRED_TICKS = 10;
+    private static final int REQUIRED_TICKS = 60; // "Number of seconds", except 1 Slimefun "second" = 1.6 IRL seconds
 
     private static final Map<BlockPosition, Integer> progress = new HashMap<>();
 
