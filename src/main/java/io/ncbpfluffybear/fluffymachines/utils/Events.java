@@ -76,7 +76,8 @@ public class Events implements Listener {
 
     @EventHandler
     public void onHeadRemove(PlayerArmorStandManipulateEvent e) {
-        if (e.getRightClicked().getCustomName().equals("hehexdfluff"))
+        if (e.getRightClicked().getCustomName() != null
+            && e.getRightClicked().getCustomName().equals("hehexdfluff"))
             e.setCancelled(true);
     }
 
