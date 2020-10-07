@@ -300,7 +300,7 @@ public class SuperheatedFurnace extends SlimefunItem {
             String type = getBlockInfo(b.getLocation(), "type");
 
             setBlockInfo(b, "stored", String.valueOf(stored - 1));
-            menu.pushItem(SlimefunItem.getByID(type + "_DUST").getItem(), DUST_OUTPUT_SLOT);
+            menu.pushItem(SlimefunItem.getByID(type + "_DUST").getItem().clone(), DUST_OUTPUT_SLOT);
 
             updateIndicator(b);
         }
@@ -320,12 +320,12 @@ public class SuperheatedFurnace extends SlimefunItem {
 
             setBlockInfo(b, "stored", String.valueOf(stored - 1));
             if (type.equals("GOLD")) {
-                menu.pushItem(SlimefunItems.GOLD_4K.getItem().getItem(), INGOT_OUTPUT_SLOT);
+                menu.pushItem(SlimefunItems.GOLD_4K.getItem().getItem().clone(), INGOT_OUTPUT_SLOT);
             } else if (type.equals("IRON")) {
                 menu.pushItem(new ItemStack(Material.IRON_INGOT), INGOT_OUTPUT_SLOT);
 
             } else {
-                menu.pushItem(SlimefunItem.getByID(type + "_INGOT").getItem(), INGOT_OUTPUT_SLOT);
+                menu.pushItem(SlimefunItem.getByID(type + "_INGOT").getItem().clone(), INGOT_OUTPUT_SLOT);
             }
             updateIndicator(b);
         }

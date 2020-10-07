@@ -1,5 +1,6 @@
 package io.ncbpfluffybear.fluffymachines.items;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.utils.holograms.SimpleHologram;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
@@ -23,6 +24,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 /**
  * A Remake of Barrels by John000708
@@ -32,12 +34,12 @@ import org.bukkit.inventory.ItemStack;
 
 public class Barrel extends SlimefunItem {
 
-    private final int[] inputBorder = {0, 1, 2, 3, 9, 12, 18, 21, 27, 30, 36, 37, 38, 39};
-    private final int[] outputBorder = {5, 6, 7 ,8, 14, 17, 23, 26, 32, 35, 41, 42, 43, 44};
-    private final int[] plainBorder = {4, 13, 40};
+    private final int[] inputBorder = {9, 10, 11, 12, 18, 21, 27, 28, 29, 30};
+    private final int[] outputBorder = {14, 15, 16, 17, 23, 26, 32, 33, 34, 35};
+    private final int[] plainBorder = {0, 1, 2, 3, 4, 5, 6, 7 ,8, 13, 36, 37, 38, 39, 40, 41, 42, 43, 44};
 
-    private final int[] INPUT_SLOTS = {10, 11, 19, 20, 28, 29};
-    private final int[] OUTPUT_SLOTS = {15, 16, 24, 25, 33, 34};
+    private final int[] INPUT_SLOTS = {19, 20};
+    private final int[] OUTPUT_SLOTS = {24, 25};
 
     private final int STATUS_SLOT = 22;
     private final int DISPLAY_SLOT = 31;
@@ -50,6 +52,8 @@ public class Barrel extends SlimefunItem {
     public static final int BOTTOMLESS_BARREL_SIZE = 1728000; // 500 Double chests
 
     private final int MAX_STORAGE;
+
+    private final ItemSetting<Boolean> showHologram = new ItemSetting<>("show-hologram", true);
 
     public Barrel(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, String name, int MAX_STORAGE) {
         super(category, item, recipeType, recipe);
@@ -77,12 +81,18 @@ public class Barrel extends SlimefunItem {
 
                     BlockStorage.addBlockInfo(b, "stored", "0");
 
-                    SimpleHologram.update(b, "&cEmpty");
+                    if (showHologram.getValue()) {
+                        SimpleHologram.update(b, "&cEmpty");
+                    }
 
                     // We still need the click handlers though
                 } else {
                     menu.addMenuClickHandler(STATUS_SLOT, (p, slot, item, action) -> false);
                     menu.addMenuClickHandler(DISPLAY_SLOT, (p, slot, item, action) -> false);
+
+                    if (!showHologram.getValue()) {
+                        SimpleHologram.remove(b);
+                    }
                 }
             }
 
@@ -146,6 +156,8 @@ public class Barrel extends SlimefunItem {
             SimpleHologram.remove(b);
             return true;
         });
+
+        addItemSetting(showHologram);
     }
 
     protected void constructMenu(BlockMenuPreset preset) {
@@ -158,7 +170,7 @@ public class Barrel extends SlimefunItem {
         }
 
         for (int i : plainBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
+            preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
         }
     }
 
@@ -185,7 +197,7 @@ public class Barrel extends SlimefunItem {
         // These have to be in separate lines or code goes ree
 
         for (int slot : INPUT_SLOTS) {
-            if (inv.getItemInSlot(slot) != null && inv.getItemInSlot(slot).getType() != Material.AIR) {
+            if (inv.getItemInSlot(slot) != null) {
 
                 String storedString = BlockStorage.getLocationInfo(l, "stored");
                 int stored = Integer.parseInt(storedString);
@@ -219,16 +231,16 @@ public class Barrel extends SlimefunItem {
         for (int i = 0; i < OUTPUT_SLOTS.length; i++) {
             if (inv.getItemInSlot(DISPLAY_SLOT) != null && inv.getItemInSlot(DISPLAY_SLOT).getType() != Material.BARRIER) {
 
-                int freeSlot = 0;
-
+                /*
                 for (int outputSlot : OUTPUT_SLOTS) {
                     if (inv.getItemInSlot(outputSlot) == null) {
                         freeSlot = outputSlot;
                         break;
-                    } else if (outputSlot == OUTPUT_SLOTS[5]) {
+                    } else if (outputSlot == OUTPUT_SLOTS[1]) {
                         return;
                     }
                 }
+                 */
 
                 String storedString = BlockStorage.getLocationInfo(l, "stored");
                 int stored = Integer.parseInt(storedString);
@@ -238,18 +250,24 @@ public class Barrel extends SlimefunItem {
 
                     ItemStack clone = new CustomItem(Utils.unKeyItem(item), item.getMaxStackSize());
 
-                    int amount = clone.getMaxStackSize();
-                    BlockStorage.addBlockInfo(b, "stored", String.valueOf((stored - amount)));
-                    inv.pushItem(clone, freeSlot);
-                    updateMenu(b, inv);
+
+                    if (inv.fits(clone, OUTPUT_SLOTS)) {
+                        int amount = clone.getMaxStackSize();
+
+                        BlockStorage.addBlockInfo(b, "stored", String.valueOf((stored - amount)));
+                        inv.pushItem(clone, OUTPUT_SLOTS);
+                        updateMenu(b, inv);
+                    }
 
                 } else if (stored != 0) {
 
                     ItemStack clone = new CustomItem(Utils.unKeyItem(item), stored);
 
-                    BlockStorage.addBlockInfo(b, "stored", "0");
-                    inv.pushItem(clone, freeSlot);
-                    updateMenu(b, inv);
+                    if (inv.fits(clone, OUTPUT_SLOTS)) {
+                        BlockStorage.addBlockInfo(b, "stored", "0");
+                        inv.pushItem(clone, OUTPUT_SLOTS);
+                        updateMenu(b, inv);
+                    }
                 }
             }
         }
@@ -274,7 +292,8 @@ public class Barrel extends SlimefunItem {
     }
 
     private boolean matchMeta(ItemStack item1, ItemStack item2) {
-        return item1.getItemMeta().equals(item2.getItemMeta()) && item1.getType().equals(item2.getType());
+        // It seems the meta comparisons are heavier than type checks
+        return item1.getType().equals(item2.getType()) && item1.getItemMeta().equals(item2.getItemMeta());
     }
 
     private void updateMenu(Block b, BlockMenu inv) {
@@ -294,11 +313,15 @@ public class Barrel extends SlimefunItem {
         inv.replaceExistingItem(STATUS_SLOT, new CustomItem(
             Material.LIME_STAINED_GLASS_PANE, "&6Items Stored: &e" + stored + " / " + MAX_STORAGE,
             "&b" + storedStacks + " Stacks &8| &7" + storedPercent + "&7%"));
-        SimpleHologram.update(b, itemName + " &9x" + stored + " &7(" + storedPercent + "&7%)");
+        if (showHologram.getValue()) {
+            SimpleHologram.update(b, itemName + " &9x" + stored + " &7(" + storedPercent + "&7%)");
+        }
 
         if (stored == 0) {
             inv.replaceExistingItem(DISPLAY_SLOT, new CustomItem(Material.BARRIER, "&cEmpty"));
-            SimpleHologram.update(b, "&cEmpty");
+            if (showHologram.getValue()) {
+                SimpleHologram.update(b, "&cEmpty");
+            }
         }
     }
 
