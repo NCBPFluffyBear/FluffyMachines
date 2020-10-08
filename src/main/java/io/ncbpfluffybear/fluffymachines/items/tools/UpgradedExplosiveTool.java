@@ -6,7 +6,6 @@ import io.github.thebusybiscuit.slimefun4.core.attributes.NotPlaceable;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ToolUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
-import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunBlockHandler;
@@ -19,16 +18,12 @@ import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -49,9 +44,6 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
     private final ItemSetting<Boolean> breakFromCenter = new ItemSetting<>("break-from-center", false);
     private final ItemSetting<Boolean> triggerOtherPlugins = new ItemSetting<>("trigger-other-plugins", true);
 
-
-    private static final NamespacedKey enabled = new NamespacedKey(FluffyMachines.getInstance(), "explosive_tool_enabled");
-
     public UpgradedExplosiveTool(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
@@ -63,11 +55,7 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
     public ToolUseHandler getItemHandler() {
         return (e, tool, fortune, drops) -> {
 
-            ItemMeta meta = tool.getItemMeta();
-            int active = meta.getPersistentDataContainer().getOrDefault(enabled, PersistentDataType.INTEGER, 1);
-            tool.setItemMeta(meta);
-
-            if (active == 0) {
+            if (e instanceof ExplosiveToolEvent) {
                 return;
             }
 
@@ -102,10 +90,6 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
             }
         } else {
 
-            // Prevent it from triggering itself, resulting in an endless loop
-            ItemMeta meta = item.getItemMeta();
-            meta.getPersistentDataContainer().set(enabled, PersistentDataType.INTEGER, 0);
-            item.setItemMeta(meta);
 
             for (Block block : blocks) {
                 if (canBreak(p, block)) {
@@ -114,10 +98,6 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
                 }
             }
 
-            // Reenable the tool
-            meta = item.getItemMeta(); // This line is needed because then the durability will reset
-            meta.getPersistentDataContainer().set(enabled, PersistentDataType.INTEGER, 1);
-            item.setItemMeta(meta);
         }
     }
 
@@ -146,7 +126,6 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
         }
         return blocks;
     }
-
 
     @Override
     public boolean isDamageable() {
@@ -180,7 +159,7 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
             }
         } else {
             if (triggerOtherPlugins.getValue()) {
-                BlockBreakEvent breakEvent = new BlockBreakEvent(b, p);
+                ExplosiveToolEvent breakEvent = new ExplosiveToolEvent(b, p);
                 Bukkit.getServer().getPluginManager().callEvent(breakEvent);
             }
 
