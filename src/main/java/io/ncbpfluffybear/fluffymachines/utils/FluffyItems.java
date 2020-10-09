@@ -304,6 +304,13 @@ public class FluffyItems {
         "",
         "&7ID: <ID>"
     );
+    public static final SlimefunItemStack COCOA_HARVESTER = new SlimefunItemStack("COCOA_HARVESTER",
+        Material.GOLDEN_AXE,
+        "&&eCocoa Harvester",
+        "",
+        "&eRight Click &7a grown cocoa bean to",
+        "&7harvest and replant it"
+    );
 
 
 

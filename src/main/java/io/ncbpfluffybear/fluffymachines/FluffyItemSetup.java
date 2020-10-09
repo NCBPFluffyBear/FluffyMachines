@@ -3,6 +3,7 @@ package io.ncbpfluffybear.fluffymachines;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.ncbpfluffybear.fluffymachines.items.Barrel;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
+import io.ncbpfluffybear.fluffymachines.items.tools.CocoaHarvester;
 import io.ncbpfluffybear.fluffymachines.items.tools.Dolly;
 import io.ncbpfluffybear.fluffymachines.machines.AdvancedAutoDisenchanter;
 import io.ncbpfluffybear.fluffymachines.machines.AutoArmorForge;
@@ -228,6 +229,12 @@ public final class FluffyItemSetup {
         }).register(plugin);
 
         new AutoArmorForge(FluffyItems.fluffymachines, FluffyItems.AUTO_ARMOR_FORGE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            new ItemStack(Material.ANVIL), new ItemStack(Material.ANVIL), new ItemStack(Material.ANVIL),
+            advancedCircuitBoard, new ItemStack(Material.DISPENSER), advancedCircuitBoard,
+            new ItemStack(Material.ANVIL), FluffyItems.AUTO_CRAFTING_TABLE, new ItemStack(Material.ANVIL)
+        }).register(plugin);
+
+        new CocoaHarvester(FluffyItems.fluffymachines, FluffyItems.COCOA_HARVESTER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
             new ItemStack(Material.ANVIL), new ItemStack(Material.ANVIL), new ItemStack(Material.ANVIL),
             advancedCircuitBoard, new ItemStack(Material.DISPENSER), advancedCircuitBoard,
             new ItemStack(Material.ANVIL), FluffyItems.AUTO_CRAFTING_TABLE, new ItemStack(Material.ANVIL)
