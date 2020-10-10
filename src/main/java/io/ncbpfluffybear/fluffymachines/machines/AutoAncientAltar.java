@@ -8,6 +8,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.altar.AltarRecipe;
 import io.github.thebusybiscuit.slimefun4.implementation.items.altar.AncientAltar;
+import io.ncbpfluffybear.fluffymachines.utils.Constants;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu.AdvancedMenuClickHandler;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
@@ -24,6 +25,7 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -33,6 +35,7 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -51,6 +54,10 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
     private final int[] outputBorder = {23, 24, 25, 26, 32, 35, 41, 42, 43, 44};
     private final int[] mockPedestalSlots = {19, 20, 21, 30, 39, 38, 37, 28};
     private final AncientAltar altarItem = (AncientAltar) SlimefunItems.ANCIENT_ALTAR.getItem();
+
+    private final ItemStack ironBars = new ItemStack(Material.IRON_BARS);
+    private final ItemStack earthRune = new SlimefunItemStack(SlimefunItems.EARTH_RUNE.getItemId(), SlimefunItems.EARTH_RUNE);
+    private final List<ItemStack> jarInputs = new ArrayList<>(Arrays.asList(ironBars, earthRune, ironBars, earthRune, ironBars, earthRune, ironBars, earthRune));
 
     public AutoAncientAltar(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
@@ -251,7 +258,7 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
 
         for (int slot : getInputSlots()) {
             ItemStack slotItem = menu.getItemInSlot(slot);
-            if (slotItem == null) {
+            if (slotItem == null || slotItem.getAmount() == 1) {
                 return;
             }
         }
@@ -285,14 +292,28 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
             return;
         }
 
-        // Find matching recipe
-        for (AltarRecipe recipe : altarItem.getRecipes()) {
-            if (recipe.getCatalyst().equals(catalyst) && recipe.getInput().equals(pedestalItems)) {
+        if (Constants.isSoulJarsInstalled && sfCatalyst != null
+            && sfCatalyst.getID().startsWith("FILLED") && sfCatalyst.getID().endsWith("SOUL_JAR")) {
+
+            SlimefunItem spawnerItem = SlimefunItem.getByID(sfCatalyst.getID().replace("FILLED_", "").replace("_SOUL_JAR", "_BROKEN_SPAWNER"));
+            if (pedestalItems.equals(jarInputs) && spawnerItem != null) {
                 removeCharge(block.getLocation(), ENERGY_CONSUMPTION);
                 for (int slot : getInputSlots()) {
                     menu.consumeItem(slot);
                 }
-                menu.pushItem(recipe.getOutput().clone(), getOutputSlots());
+                menu.pushItem(spawnerItem.getItem().clone(), getOutputSlots());
+            }
+        } else {
+
+            // Find matching recipe
+            for (AltarRecipe recipe : altarItem.getRecipes()) {
+                if (recipe.getCatalyst().equals(catalyst) && recipe.getInput().equals(pedestalItems)) {
+                    removeCharge(block.getLocation(), ENERGY_CONSUMPTION);
+                    for (int slot : getInputSlots()) {
+                        menu.consumeItem(slot);
+                    }
+                    menu.pushItem(recipe.getOutput().clone(), getOutputSlots());
+                }
             }
         }
         // we're only executing the last possible shaped recipe

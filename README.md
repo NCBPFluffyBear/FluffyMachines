@@ -16,7 +16,7 @@ Custom item settings can be changed in `plugins/Slimefun/Items.yml`
 
 **Auto Ancient Altar**: Automatically crafts Ancient Altar recipes
 
-**Water Sprinkler**: Electric sprinkler that grows crows in a 2 block radius
+**Water Sprinkler**: Electric sprinkler that grows crops in a 2 block radius
 
 **Backpack Loader**: Moves items from inventory to backpack
 

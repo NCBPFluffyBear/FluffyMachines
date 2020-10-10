@@ -305,8 +305,6 @@ public class FluffyItems {
         "&7ID: <ID>"
     );
 
-
-
     static {
         FireproofRune.setFireproof(FIREPROOF_RUNE);
     }
