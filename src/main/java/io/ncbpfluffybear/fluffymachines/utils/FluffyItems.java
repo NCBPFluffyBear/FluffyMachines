@@ -215,7 +215,7 @@ public class FluffyItems {
         "&7Empties the contents of backpacks",
         "",
         LoreBuilderDynamic.powerBuffer(BackpackUnloader.CAPACITY),
-        LoreBuilderDynamic.powerBuffer(BackpackUnloader.ENERGY_CONSUMPTION)
+        LoreBuilderDynamic.powerPerTick(BackpackUnloader.ENERGY_CONSUMPTION)
     );
     public static final SlimefunItemStack BACKPACK_LOADER = new SlimefunItemStack("BACKPACK_LOADER",
         Material.ORANGE_STAINED_GLASS,
@@ -224,7 +224,7 @@ public class FluffyItems {
         "&7Moves items from inventory to backpack",
         "",
         LoreBuilderDynamic.powerBuffer(BackpackLoader.CAPACITY),
-        LoreBuilderDynamic.powerBuffer(BackpackLoader.ENERGY_CONSUMPTION)
+        LoreBuilderDynamic.powerPerTick(BackpackLoader.ENERGY_CONSUMPTION)
     );
     public static final SlimefunItemStack UPGRADED_EXPLOSIVE_PICKAXE = new SlimefunItemStack(
         "UPGRADED_EXPLOSIVE_PICKAXE",

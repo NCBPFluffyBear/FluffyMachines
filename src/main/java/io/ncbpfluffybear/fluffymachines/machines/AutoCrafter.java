@@ -38,7 +38,7 @@ import java.util.List;
 
 public class AutoCrafter extends SlimefunItem implements InventoryBlock, EnergyNetComponent {
 
-    public static final int ENERGY_CONSUMPTION = 1024;
+    public static final int ENERGY_CONSUMPTION = 128;
     public static final int CAPACITY = ENERGY_CONSUMPTION * 3;
     private final int[] border = {0, 1, 3, 4, 5, 7, 8, 13, 14, 15, 16, 17, 50, 51, 52, 53};
     private final int[] inputBorder = {9, 10, 11, 12, 13, 18, 22, 27, 31, 36, 40, 45, 46, 47, 48, 49};
