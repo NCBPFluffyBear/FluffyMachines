@@ -8,6 +8,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.altar.AltarRecipe;
 import io.github.thebusybiscuit.slimefun4.implementation.items.altar.AncientAltar;
+import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import io.ncbpfluffybear.fluffymachines.utils.Constants;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu.AdvancedMenuClickHandler;
@@ -307,18 +308,17 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
 
             // Find matching recipe
             for (AltarRecipe recipe : altarItem.getRecipes()) {
-                if (recipe.getCatalyst().equals(catalyst) && recipe.getInput().equals(pedestalItems)) {
+
+                if (SlimefunUtils.isItemSimilar(recipe.getCatalyst(), catalyst, true) && recipe.getInput().equals(pedestalItems)) {
                     removeCharge(block.getLocation(), ENERGY_CONSUMPTION);
                     for (int slot : getInputSlots()) {
                         menu.consumeItem(slot);
                     }
                     menu.pushItem(recipe.getOutput().clone(), getOutputSlots());
+                    break;
                 }
             }
         }
-        // we're only executing the last possible shaped recipe
-        // we don't want to allow this to be pressed instead of the default timer-based
-        // execution to prevent abuse and auto clickers
     }
 
     static void borders(BlockMenuPreset preset, int[] border, int[] inputBorder, int[] outputBorder) {
