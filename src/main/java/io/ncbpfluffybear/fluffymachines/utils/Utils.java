@@ -20,6 +20,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitTask;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -97,6 +98,7 @@ public final class Utils {
         return "&cThis is a Multiblock machine!";
     }
 
+    @Nonnull
     public static ItemStack buildNonInteractable(Material material, @Nullable String name, @Nullable String... lore) {
         ItemStack nonClickable = new ItemStack(material);
         ItemMeta NCMeta = nonClickable.getItemMeta();
@@ -122,8 +124,15 @@ public final class Utils {
         return nonClickable;
     }
 
+    /**
+     * Used to check if the item has the custom model data that
+     * is used to mark non-interactability (integer 6969)
+     * @param item specifies the item to check
+     * @return if they item is interactable or not
+     */
     public static boolean checkNonInteractable(ItemStack item) {
-        return item.getItemMeta().hasCustomModelData() && item.getItemMeta().getCustomModelData() == 6969;
+        return item.getItemMeta().hasCustomModelData()
+            && item.getItemMeta().getCustomModelData() == 6969;
     }
 
     public static boolean checkAdjacent(Block b, Material material) {
@@ -133,6 +142,11 @@ public final class Utils {
             || b.getRelative(BlockFace.WEST).getType() == material;
     }
 
+    /**
+     * Converts decimal integers to roman numeral characters
+     * @param number specifies the integer to convert
+     * @return the roman numeral string
+     */
     public static String toRoman(int number) {
         int l =  map.floorKey(number);
         if ( number == l ) {
@@ -141,6 +155,12 @@ public final class Utils {
         return map.get(l) + toRoman(number-l);
     }
 
+    /**
+     * Adds a PDC integer value of 1 to fluffykey so the item can be
+     * recognized in other places
+     * @param item specifies the item to apply the key on
+     * @return the new keyed item
+     */
     public static ItemStack keyItem(ItemStack item) {
         ItemStack clone = item.clone();
         ItemMeta meta = clone.getItemMeta();
@@ -149,6 +169,11 @@ public final class Utils {
         return clone;
     }
 
+    /**
+     * Removes the key from the item back to its original ItemStack
+     * @param item specifies the item to remove the key from
+     * @return the new unkeyed item
+     */
     public static ItemStack unKeyItem(ItemStack item) {
         ItemStack clone = item.clone();
         ItemMeta meta = clone.getItemMeta();
@@ -157,6 +182,13 @@ public final class Utils {
         return clone;
     }
 
+    /**
+     * A portable way to run a runnable after a selected amount of time.
+     * Extremely similar to Slimefun's runsync
+     * @param r is the runnable to run
+     * @param delay the delay in ticks before running the runnable
+     * @return success
+     */
     // Don't use Slimefun's runsync
     public static BukkitTask runSync(Runnable r, long delay) {
         return FluffyMachines.getInstance() != null && FluffyMachines.getInstance().isEnabled() ? Bukkit.getScheduler().runTaskLater(FluffyMachines.getInstance(), r, delay) : null;
