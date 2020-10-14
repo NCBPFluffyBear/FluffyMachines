@@ -3,7 +3,13 @@ package io.ncbpfluffybear.fluffymachines.utils;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import io.ncbpfluffybear.fluffymachines.items.tools.WateringCan;
+import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -94,6 +100,44 @@ public class Events implements Listener {
                 if (!en.isDead()) {
                     en.remove();
                     en.getLocation().getWorld().dropItem(en.getLocation(), item);
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerWarp(PlayerToggleSneakEvent e) {
+        if (e.isSneaking()) {
+            Player p = e.getPlayer();
+            Block b = p.getLocation().subtract(0, 1, 0).getBlock();
+
+            if (BlockStorage.hasBlockInfo(b) && BlockStorage.check(b) == FluffyItems.WARP_PAD.getItem()
+                && BlockStorage.getLocationInfo(b.getLocation(), "type").equals("origin")) {
+
+                Location l = b.getLocation();
+                Location destination = new Location(b.getWorld(),
+                    Integer.parseInt(BlockStorage.getLocationInfo(l, "x")),
+                    Integer.parseInt(BlockStorage.getLocationInfo(l, "y")),
+                    Integer.parseInt(BlockStorage.getLocationInfo(l, "z")));
+
+                float yaw = p.getLocation().getYaw();
+                float pitch = p.getLocation().getPitch();
+
+                if (BlockStorage.hasBlockInfo(destination) && BlockStorage.getLocationInfo(destination, "type") != null
+                    && BlockStorage.getLocationInfo(destination, "type").equals("destination")
+                    && destination.getBlock().getRelative(BlockFace.UP).getType() == Material.AIR
+                    && destination.getBlock().getRelative(BlockFace.UP, 2).getType() == Material.AIR) {
+
+                    destination.setPitch(pitch);
+                    destination.setYaw(yaw);
+                    p.teleport(destination.add(0.5, 1, 0.5));
+
+                    p.playSound(p.getLocation(), Sound.ITEM_CHORUS_FRUIT_TELEPORT, 0.5F, 0.5F);
+                    p.spawnParticle(Particle.DRAGON_BREATH, p.getLocation(), 10);
+
+                } else {
+                    Utils.send(p, "&cMissing destination Warp Pad!");
+
                 }
             }
         }
