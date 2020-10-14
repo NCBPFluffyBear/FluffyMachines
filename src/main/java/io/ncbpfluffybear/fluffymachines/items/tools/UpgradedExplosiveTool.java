@@ -17,6 +17,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.materials.MaterialCollections;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -41,17 +42,23 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
     private final ItemSetting<Boolean> damageOnUse = new ItemSetting<>("damage-on-use", true);
     private final ItemSetting<Boolean> callExplosionEvent = new ItemSetting<>("call-explosion-event", false);
     private final ItemSetting<Boolean> breakFromCenter = new ItemSetting<>("break-from-center", false);
+    private final ItemSetting<Boolean> triggerOtherPlugins = new ItemSetting<>("trigger-other-plugins", true);
 
     public UpgradedExplosiveTool(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
-        addItemSetting(damageOnUse, callExplosionEvent, breakFromCenter);
+        addItemSetting(damageOnUse, callExplosionEvent, breakFromCenter, triggerOtherPlugins);
     }
 
     @Nonnull
     @Override
     public ToolUseHandler getItemHandler() {
         return (e, tool, fortune, drops) -> {
+
+            if (e instanceof ExplosiveToolEvent) {
+                return;
+            }
+
             Player p = e.getPlayer();
             Block b = e.getBlock();
 
@@ -83,12 +90,14 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
             }
         } else {
 
+
             for (Block block : blocks) {
                 if (canBreak(p, block)) {
                     breakBlock(p, item, block, drops);
                     damageItem(p, item);
                 }
             }
+
         }
     }
 
@@ -97,24 +106,26 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
         for (int x = -2; x <= 2; x++) {
             for (int y = -2; y <= 2; y++) {
                 for (int z = -2; z <= 2; z++) {
-                    // We can skip the center block since that will break as usual
-                    if (x == 0 && y == 0 && z == 0) {
-                        continue;
-                    }
                     if (breakFromCenter.getValue()) {
-                        blocks.add(b.getRelative(x, y, z));
+                        // We can skip the center block since that will break as usual
+                        if (x == 0 && y == 0 && z == 0) {
+                            continue;
+                        }
+                        // Small check to reduce lag
+                        if (b.getRelative(x, y, z).getType() != Material.AIR) {
+                            blocks.add(b.getRelative(x, y, z));
+                        }
                     } else {
-                        Block shiftedBlock = b.getRelative(BlockFace.SELF, 2);
-                        blocks.add(shiftedBlock.getRelative(x, y, z));
+                        Block shiftedBlock = b.getRelative(face, 2);
+                        if (shiftedBlock.getRelative(x, y, z).getType() != Material.AIR) {
+                            blocks.add(shiftedBlock.getRelative(x, y, z));
+                        }
                     }
-                    Block shiftedBlock = b.getRelative(face, 2);
-                    blocks.add(shiftedBlock.getRelative(x, y, z));
                 }
             }
         }
         return blocks;
     }
-
 
     @Override
     public boolean isDamageable() {
@@ -147,6 +158,11 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
                 drops.add(BlockStorage.retrieve(b));
             }
         } else {
+            if (triggerOtherPlugins.getValue()) {
+                ExplosiveToolEvent breakEvent = new ExplosiveToolEvent(b, p);
+                Bukkit.getServer().getPluginManager().callEvent(breakEvent);
+            }
+
             b.breakNaturally(item);
         }
     }

@@ -3,15 +3,12 @@ package io.ncbpfluffybear.fluffymachines.machines;
 import io.github.thebusybiscuit.slimefun4.api.events.BlockPlacerPlaceEvent;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
+import io.github.thebusybiscuit.slimefun4.core.multiblocks.MultiBlockMachine;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import io.github.thebusybiscuit.slimefun4.implementation.items.altar.AltarRecipe;
-import io.github.thebusybiscuit.slimefun4.implementation.items.altar.AncientAltar;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
-import io.ncbpfluffybear.fluffymachines.utils.Constants;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu.AdvancedMenuClickHandler;
+import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -36,34 +33,32 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * This {@link SlimefunItem} automatically crafts
- * Ancient Altar recipes
- *
- * @author NCBPFluffyBear
- */
-public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, EnergyNetComponent {
+public class AutoCrafter extends SlimefunItem implements InventoryBlock, EnergyNetComponent {
 
     public static final int ENERGY_CONSUMPTION = 128;
     public static final int CAPACITY = ENERGY_CONSUMPTION * 3;
     private final int[] border = {0, 1, 3, 4, 5, 7, 8, 13, 14, 15, 16, 17, 50, 51, 52, 53};
     private final int[] inputBorder = {9, 10, 11, 12, 13, 18, 22, 27, 31, 36, 40, 45, 46, 47, 48, 49};
     private final int[] outputBorder = {23, 24, 25, 26, 32, 35, 41, 42, 43, 44};
-    private final int[] mockPedestalSlots = {19, 20, 21, 30, 39, 38, 37, 28};
-    private final AncientAltar altarItem = (AncientAltar) SlimefunItems.ANCIENT_ALTAR.getItem();
+    private final int[] inputSlots = {19, 20, 21, 28, 29, 30, 37, 38, 39};
+    private final int[] outputSlots = {33, 34};
+    private final String machineName;
+    private final Material material;
+    private final RecipeType machineRecipes;
+    private final MultiBlockMachine mblock;
 
-    private final ItemStack ironBars = new ItemStack(Material.IRON_BARS);
-    private final ItemStack earthRune = new SlimefunItemStack(SlimefunItems.EARTH_RUNE.getItemId(), SlimefunItems.EARTH_RUNE);
-    private final List<ItemStack> jarInputs = new ArrayList<>(Arrays.asList(ironBars, earthRune, ironBars, earthRune, ironBars, earthRune, ironBars, earthRune));
-
-    public AutoAncientAltar(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public AutoCrafter(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, String displayName, Material material, String machineName, RecipeType machineRecipes) {
         super(category, item, recipeType, recipe);
 
-        new BlockMenuPreset(getID(), "&5Auto Ancient Altar") {
+        this.machineName = machineName;
+        this.material = material;
+        this.machineRecipes = machineRecipes;
+        this.mblock = (MultiBlockMachine) machineRecipes.getMachine();
+
+        new BlockMenuPreset(getID(), displayName) {
 
             @Override
             public void init() {
@@ -168,7 +163,7 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
         borders(preset, border, inputBorder, outputBorder);
 
         for (int i : getOutputSlots()) {
-            preset.addMenuClickHandler(i, new AdvancedMenuClickHandler() {
+            preset.addMenuClickHandler(i, new ChestMenu.AdvancedMenuClickHandler() {
 
                 @Override
                 public boolean onClick(Player p, int slot, ItemStack cursor, ClickAction action) {
@@ -185,8 +180,8 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
             });
         }
 
-        preset.addItem(2, new CustomItem(new ItemStack(Material.ENCHANTING_TABLE), "&eRecipe",
-                "", "&bPut in the Recipe you want to craft", "&4Ancient Altar Recipes ONLY"
+        preset.addItem(2, new CustomItem(new ItemStack(material), "&eRecipe",
+                "", "&bPut in the Recipe you want to craft", machineName + " Recipes ONLY"
             ),
             (p, slot, item, action) -> false);
     }
@@ -201,12 +196,12 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
 
     @Override
     public int[] getInputSlots() {
-        return new int[] {19, 20, 21, 28, 29, 30, 37, 38, 39};
+        return inputSlots;
     }
 
     @Override
     public int[] getOutputSlots() {
-        return new int[] {33, 34};
+        return outputSlots;
     }
 
     @Nonnull
@@ -221,7 +216,7 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
 
             @Override
             public void tick(Block b, SlimefunItem sf, Config data) {
-                AutoAncientAltar.this.tick(b);
+                AutoCrafter.this.tick(b);
             }
 
             @Override
@@ -245,7 +240,6 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
 
     private void craftIfValid(Block block) {
         BlockMenu menu = BlockStorage.getInventory(block);
-        List<ItemStack> pedestalItems = new ArrayList<>();
 
         // Make sure at least 1 slot is free
         for (int outSlot : getOutputSlots()) {
@@ -257,68 +251,42 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
             }
         }
 
-        for (int slot : getInputSlots()) {
-            ItemStack slotItem = menu.getItemInSlot(slot);
-            if (slotItem == null || slotItem.getAmount() == 1) {
+        // Find matching recipe
+        for (ItemStack[] input : RecipeType.getRecipeInputList(mblock)) {
+            if (isCraftable(menu, input)) {
+                ItemStack output = RecipeType.getRecipeOutputList(mblock, input).clone();
+                craft(output, menu);
+                removeCharge(block.getLocation(), getEnergyConsumption());
                 return;
             }
         }
+        // we're only executing the last possible shaped recipe
+        // we don't want to allow this to be pressed instead of the default timer-based
+        // execution to prevent abuse and auto clickers
+    }
 
-        // Check and append altar items
-        for (int i = 0; i < 8; i++) {
-            int slot = mockPedestalSlots[i];
-            ItemStack pedestalItem = menu.getItemInSlot(slot);
-            SlimefunItem sfPedestalItem = SlimefunItem.getByItem(pedestalItem);
-            if (sfPedestalItem != null) {
-                SlimefunItemStack pedestalItemStack = new SlimefunItemStack(sfPedestalItem.getID(), pedestalItem);
-                pedestalItems.add(new SlimefunItemStack(pedestalItemStack, 1));
-            } else if (!pedestalItem.hasItemMeta()) {
-                pedestalItems.add(new ItemStack(pedestalItem.getType(), 1));
-            } else {
-                return;
+    private boolean isCraftable(BlockMenu inv, ItemStack[] recipe) {
+        for (int j = 0; j < 9; j++) {
+            ItemStack item = inv.getItemInSlot(getInputSlots()[j]);
+            if ((item != null && item.getAmount() == 1)
+                || !SlimefunUtils.isItemSimilar(inv.getItemInSlot(getInputSlots()[j]), recipe[j], true)) {
+                return false;
             }
         }
 
-        // Check and append catalyst
-        int mockAltarSlot = 29;
-        ItemStack catalystItem = menu.getItemInSlot(mockAltarSlot);
-        SlimefunItem sfCatalyst = SlimefunItem.getByItem(catalystItem);
-        ItemStack catalyst = null;
-        if (sfCatalyst != null) {
-            SlimefunItemStack catalystStack = new SlimefunItemStack(sfCatalyst.getID(), catalystItem);
-            catalyst = new SlimefunItemStack(catalystStack, 1);
-        } else if (!catalystItem.hasItemMeta()) {
-            catalyst = new ItemStack(catalystItem.getType(), 1);
-        } else {
-            return;
-        }
+        return true;
+    }
 
-        if (Constants.isSoulJarsInstalled && sfCatalyst != null
-            && sfCatalyst.getID().startsWith("FILLED") && sfCatalyst.getID().endsWith("SOUL_JAR")) {
+    private void craft(ItemStack output, BlockMenu inv) {
+        for (int j = 0; j < 9; j++) {
+            ItemStack item = inv.getItemInSlot(getInputSlots()[j]);
 
-            SlimefunItem spawnerItem = SlimefunItem.getByID(sfCatalyst.getID().replace("FILLED_", "").replace("_SOUL_JAR", "_BROKEN_SPAWNER"));
-            if (pedestalItems.equals(jarInputs) && spawnerItem != null) {
-                removeCharge(block.getLocation(), ENERGY_CONSUMPTION);
-                for (int slot : getInputSlots()) {
-                    menu.consumeItem(slot);
-                }
-                menu.pushItem(spawnerItem.getItem().clone(), getOutputSlots());
-            }
-        } else {
-
-            // Find matching recipe
-            for (AltarRecipe recipe : altarItem.getRecipes()) {
-
-                if (SlimefunUtils.isItemSimilar(recipe.getCatalyst(), catalyst, true) && recipe.getInput().equals(pedestalItems)) {
-                    removeCharge(block.getLocation(), ENERGY_CONSUMPTION);
-                    for (int slot : getInputSlots()) {
-                        menu.consumeItem(slot);
-                    }
-                    menu.pushItem(recipe.getOutput().clone(), getOutputSlots());
-                    break;
-                }
+            if (item != null && item.getType() != Material.AIR) {
+                inv.consumeItem(getInputSlots()[j]);
             }
         }
+
+        inv.pushItem(output, outputSlots);
     }
 
     static void borders(BlockMenuPreset preset, int[] border, int[] inputBorder, int[] outputBorder) {
@@ -338,3 +306,4 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
         }
     }
 }
+

@@ -49,8 +49,8 @@ import java.util.Map;
  */
 public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, EnergyNetComponent {
 
-    public static final int ENERGY_CONSUMPTION = 256;
-    public static final int CAPACITY = 2048;
+    public static final int ENERGY_CONSUMPTION = 128;
+    public static final int CAPACITY = ENERGY_CONSUMPTION * 3;
     private static final int keySlot = 16;
     private static final int statusSlot = 23;
     private final int[] border = {0, 1, 3, 5, 13, 14, 50, 51, 52, 53};

@@ -1,9 +1,12 @@
 package io.ncbpfluffybear.fluffymachines;
 
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
+import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
+import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import lombok.SneakyThrows;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import me.mrCookieSlime.Slimefun.api.Slimefun;
 import me.mrCookieSlime.Slimefun.bstats.bukkit.Metrics;
 import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
@@ -16,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
+import java.util.Iterator;
 import java.util.logging.Level;
 
 public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
@@ -48,6 +52,16 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
         getLogger().log(Level.INFO, ChatColor.GREEN + "Don't forget to leave your server in #server-showcase!");
         getLogger().log(Level.INFO, ChatColor.GREEN +
             "Write \"FluffyBear\" and I'll check out your server sometime :)");
+        getLogger().log(Level.WARNING, ChatColor.RED + "Barrels warning:");
+        getLogger().log(Level.WARNING, ChatColor.RED + "A recent FluffyMachines addition, barrels, is still in a testing phase.");
+        getLogger().log(Level.WARNING, ChatColor.RED + "This is a recreation of John000708's barrels, which have been found to");
+        getLogger().log(Level.WARNING, ChatColor.RED + "be extremely buggy.");
+        getLogger().log(Level.WARNING, ChatColor.RED + "Fluffy Barrels are ready, but please use them cautiously,");
+        getLogger().log(Level.WARNING, ChatColor.RED + "and remember to report any bugs you find to");
+        getLogger().log(Level.WARNING, ChatColor.RED + "https://github.com/NCBPFluffyBear/FluffyMachines/issues");
+        getLogger().log(Level.WARNING, ChatColor.RED + "If you wish to temporarily disable barrels, you can do so in");
+        getLogger().log(Level.WARNING, ChatColor.RED + "/plugins/Slimefun/Items.yml");
+        getLogger().log(Level.WARNING, ChatColor.RED + "This message will be replaced once barrels have been deemed stable.");
     }
 
     @Override
@@ -57,6 +71,11 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
     @Override
     public boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command cmd, @Nonnull String label, String[] args) {
+
+        if (args.length == 0) {
+            sender.sendMessage("FluffyMachines > Gotta be longer than that");
+            return true;
+        }
         if (args[0].equalsIgnoreCase("replace") && sender instanceof Player) {
             Player p = ((Player) sender);
             ItemStack item = p.getInventory().getItemInMainHand();
@@ -66,8 +85,33 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
                 }
             }
             return true;
+        } else if (args[0].equalsIgnoreCase("save") && sender.hasPermission("fluffymachines.admin")) {
+            saveAllPlayers();
+            return true;
+
+        } else if (args[0].equalsIgnoreCase("meta") && sender.hasPermission("fluffymachines.admin")
+            && sender instanceof Player) {
+            Player p = (Player) sender;
+            Utils.send(p, String.valueOf(p.getInventory().getItemInMainHand().getItemMeta()));
+            return true;
         }
         return false;
+    }
+
+    private void saveAllPlayers() {
+        Iterator<PlayerProfile> iterator = PlayerProfile.iterator();
+        int players = 0;
+
+        while (iterator.hasNext()) {
+            PlayerProfile profile = iterator.next();
+
+            profile.save();
+            players++;
+        }
+
+        if (players > 0) {
+            Slimefun.getLogger().log(Level.INFO, "Auto-saved all player data for {0} player(s)!", players);
+        }
     }
 
     @Override

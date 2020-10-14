@@ -1,7 +1,10 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
 import io.github.thebusybiscuit.slimefun4.utils.itemstack.ColoredFireworkStar;
+import io.ncbpfluffybear.fluffymachines.items.Barrel;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
+import io.ncbpfluffybear.fluffymachines.machines.AdvancedAutoDisenchanter;
+import io.ncbpfluffybear.fluffymachines.machines.AutoCrafter;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
@@ -28,7 +31,83 @@ public class FluffyItems {
         new CustomItem(Material.SMOKER, "&6Fluffy Machines")
     );
 
+    public static final Category fluffybarrels = new Category(new NamespacedKey(FluffyMachines.getInstance(),
+        "fluffybarrels"),
+        new CustomItem(Material.BARREL, "&6Fluffy Barrels")
+    );
+
+    public static final SlimefunItemStack FM_VERSION_INDICATOR = new SlimefunItemStack("FM_VERSION_INDICATOR",
+        Material.ORANGE_WOOL,
+        "&6&lFluffyMachines Info",
+        "",
+        "&e" + FluffyMachines.getInstance().getName() + " " + FluffyMachines.getInstance().getPluginVersion(),
+        "&7" + FluffyMachines.getInstance().getBugTrackerURL()
+    );
+
+    // Barrels
+    public static final SlimefunItemStack SMALL_FLUFFY_BARREL = new SlimefunItemStack("SMALL_FLUFFY_BARREL",
+        Material.BEEHIVE,
+        "&eSmall Fluffy Barrel",
+        "",
+        "&7Stores a large amount of an item",
+        "",
+        "&bCapacity: &e" + Barrel.SMALL_BARREL_SIZE + " Items"
+    );
+
+    public static final SlimefunItemStack MEDIUM_FLUFFY_BARREL = new SlimefunItemStack("MEDIUM_FLUFFY_BARREL",
+        Material.BARREL,
+        "&6Medium Fluffy Barrel",
+        "",
+        "&7Stores a large amount of an item",
+        "",
+        "&bCapacity: &e" + Barrel.MEDIUM_BARREL_SIZE + " Items"
+    );
+
+    public static final SlimefunItemStack BIG_FLUFFY_BARREL = new SlimefunItemStack("BIG_FLUFFY_BARREL",
+        Material.SMOKER,
+        "&bBig Fluffy Barrel",
+        "",
+        "&7Stores a large amount of an item",
+        "",
+        "&bCapacity: &e" + Barrel.BIG_BARREL_SIZE + " Items"
+    );
+
+    public static final SlimefunItemStack LARGE_FLUFFY_BARREL = new SlimefunItemStack("LARGE_FLUFFY_BARREL",
+        Material.LODESTONE,
+        "&aLarge Fluffy Barrel",
+        "",
+        "&7Stores a large amount of an item",
+        "",
+        "&bCapacity: &e" + Barrel.LARGE_BARREL_SIZE + " Items"
+    );
+
+    public static final SlimefunItemStack MASSIVE_FLUFFY_BARREL = new SlimefunItemStack("MASSIVE_FLUFFY_BARREL",
+        Material.CRYING_OBSIDIAN,
+        "&5Massive Fluffy Barrel",
+        "",
+        "&7Stores a large amount of an item",
+        "",
+        "&bCapacity: &e" + Barrel.MASSIVE_BARREL_SIZE + " Items"
+    );
+
+    public static final SlimefunItemStack BOTTOMLESS_FLUFFY_BARREL = new SlimefunItemStack("BOTTOMLESS_FLUFFY_BARREL",
+        Material.RESPAWN_ANCHOR,
+        "&cBottomless Fluffy Barrel",
+        "",
+        "&7Stores a large amount of an item",
+        "",
+        "&bCapacity: &e" + Barrel.BOTTOMLESS_BARREL_SIZE + " Items"
+    );
+
     // Items
+    public static final SlimefunItemStack ANCIENT_BOOK = new SlimefunItemStack("ANCIENT_BOOK",
+        Material.BOOK,
+        "&6Ancient Book",
+        "",
+        "&7Used in the &cAdvanced Auto Disenchanter",
+        "",
+        "&6&oContains concentrated amounts of power"
+    );
     public static final SlimefunItemStack HELICOPTER_HAT = new SlimefunItemStack("HELICOPTER_HAT",
         Material.LEATHER_HELMET, Color.AQUA,
         "&1Helicopter Hat",
@@ -136,7 +215,7 @@ public class FluffyItems {
         "&7Empties the contents of backpacks",
         "",
         LoreBuilderDynamic.powerBuffer(BackpackUnloader.CAPACITY),
-        LoreBuilderDynamic.powerBuffer(BackpackUnloader.ENERGY_CONSUMPTION)
+        LoreBuilderDynamic.powerPerTick(BackpackUnloader.ENERGY_CONSUMPTION)
     );
     public static final SlimefunItemStack BACKPACK_LOADER = new SlimefunItemStack("BACKPACK_LOADER",
         Material.ORANGE_STAINED_GLASS,
@@ -145,7 +224,7 @@ public class FluffyItems {
         "&7Moves items from inventory to backpack",
         "",
         LoreBuilderDynamic.powerBuffer(BackpackLoader.CAPACITY),
-        LoreBuilderDynamic.powerBuffer(BackpackLoader.ENERGY_CONSUMPTION)
+        LoreBuilderDynamic.powerPerTick(BackpackLoader.ENERGY_CONSUMPTION)
     );
     public static final SlimefunItemStack UPGRADED_EXPLOSIVE_PICKAXE = new SlimefunItemStack(
         "UPGRADED_EXPLOSIVE_PICKAXE",
@@ -176,6 +255,34 @@ public class FluffyItems {
         "&7Multiblock component of the Foundry",
         "&cMust be used in the Foundry"
     );
+    public static final SlimefunItemStack AUTO_MAGIC_WORKBENCH = new SlimefunItemStack("AUTO_MAGIC_WORKBENCH",
+        Material.BOOKSHELF,
+        "&6Auto Magic Workbench",
+        "",
+        "&7Automatically crafts &6Magic Workbench &7recipes",
+        "",
+        LoreBuilderDynamic.powerBuffer(AutoCrafter.CAPACITY),
+        LoreBuilderDynamic.powerPerTick(AutoCrafter.ENERGY_CONSUMPTION)
+    );
+    public static final SlimefunItemStack AUTO_ARMOR_FORGE = new SlimefunItemStack("AUTO_ARMOR_FORGE",
+        Material.SMITHING_TABLE,
+        "&7Auto Armor Forge",
+        "",
+        "&7Automatically crafts Armor Forge recipes",
+        "",
+        LoreBuilderDynamic.powerBuffer(AutoCrafter.CAPACITY),
+        LoreBuilderDynamic.powerPerTick(AutoCrafter.ENERGY_CONSUMPTION)
+    );
+    public static final SlimefunItemStack ADVANCED_AUTO_DISENCHANTER = new SlimefunItemStack("ADVANCED_AUTO_DISENCHANTER",
+        Material.ENCHANTING_TABLE,
+        "&cAdvanced Auto Disenchanter",
+        "",
+        "&7Removes one enchant from an item",
+        "&7Requires an &6Ancient Book &7to operate",
+        "",
+        LoreBuilderDynamic.powerBuffer(AdvancedAutoDisenchanter.CAPACITY),
+        LoreBuilderDynamic.powerPerTick(AdvancedAutoDisenchanter.ENERGY_CONSUMPTION)
+    );
     public static final SlimefunItemStack SCYTHE = new SlimefunItemStack("SCYTHE",
         Material.IRON_HOE,
         "&eScythe",
@@ -188,6 +295,14 @@ public class FluffyItems {
         "",
         "&7Chops down an entire tree at once",
         "&72 block reach and works on diagonal blocks too"
+    );
+    public static final SlimefunItemStack DOLLY = new SlimefunItemStack("DOLLY",
+        Material.MINECART,
+        "&bDolly",
+        "",
+        "&7Right click a chest to pick it up",
+        "",
+        "&7ID: <ID>"
     );
     public static final SlimefunItemStack LINKED_CHEST = new SlimefunItemStack("LINKED_CHEST",
         Material.GOLD_BLOCK,

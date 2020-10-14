@@ -1,13 +1,16 @@
 package io.ncbpfluffybear.fluffymachines.items;
 
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemDropHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
+import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
+import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.Slimefun;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,6 +24,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,6 +55,7 @@ public class FireproofRune extends SimpleSlimefunItem<ItemDropHandler> {
         super(category, item, type, recipe);
     }
 
+    @Nonnull
     @Override
     public ItemDropHandler getItemHandler() {
         return (e, p, item) -> {
@@ -60,7 +65,7 @@ public class FireproofRune extends SimpleSlimefunItem<ItemDropHandler> {
                     return true;
                 }
 
-                Slimefun.runSync(() -> activate(p, item), 20L);
+                Utils.runSync(() -> activate(p, item), 20L);
 
                 return true;
             }
@@ -69,7 +74,6 @@ public class FireproofRune extends SimpleSlimefunItem<ItemDropHandler> {
     }
 
     private void activate(Player p, Item rune) {
-        // Being sure the entity is still valid and not picked up or whatsoever.
         if (!rune.isValid()) {
             return;
         }
@@ -86,7 +90,7 @@ public class FireproofRune extends SimpleSlimefunItem<ItemDropHandler> {
                 // This lightning is just an effect, it deals no damage.
                 l.getWorld().strikeLightningEffect(l);
 
-                Slimefun.runSync(() -> {
+                Utils.runSync(() -> {
                     // Being sure entities are still valid and not picked up or whatsoever.
                     if (rune.isValid() && item.isValid() && itemStack.getAmount() == 1) {
 
@@ -99,13 +103,13 @@ public class FireproofRune extends SimpleSlimefunItem<ItemDropHandler> {
                         setFireproof(itemStack);
                         l.getWorld().dropItemNaturally(l, itemStack);
 
-                        SlimefunPlugin.getLocalization().sendMessage(p, "messages.soulbound-rune.success", true);
+                        Utils.send(p, "&aYour item is now fireproof");
                     } else {
-                        SlimefunPlugin.getLocalization().sendMessage(p, "messages.soulbound-rune.fail", true);
+                        Utils.send(p, "&cYour item could not be made fireproof");
                     }
                 }, 10L);
             } else {
-                SlimefunPlugin.getLocalization().sendMessage(p, "messages.soulbound-rune.fail", true);
+                Utils.send(p, "&cYour item could not be made fireproof");
             }
         }
     }

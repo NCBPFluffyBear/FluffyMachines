@@ -27,8 +27,8 @@ import java.util.List;
 
 public class BackpackLoader extends SlimefunItem implements InventoryBlock, EnergyNetComponent {
 
-    public static final int CAPACITY = 1024;
-    public static final int ENERGY_CONSUMPTION = 64;
+    public static final int ENERGY_CONSUMPTION = 16;
+    public static final int CAPACITY = ENERGY_CONSUMPTION * 3;
 
     private static final int[] PLAIN_BORDER = {38, 39, 40, 41, 42, 47, 48, 49, 50, 51};
     private static final int[] INPUT_BORDER = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 26, 27, 28, 29, 30, 31, 32, 33,
