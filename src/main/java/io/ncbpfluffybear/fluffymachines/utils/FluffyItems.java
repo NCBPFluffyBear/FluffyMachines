@@ -1,10 +1,14 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
+import io.github.thebusybiscuit.slimefun4.core.attributes.MachineTier;
+import io.github.thebusybiscuit.slimefun4.core.attributes.MachineType;
+import io.github.thebusybiscuit.slimefun4.utils.LoreBuilder;
 import io.github.thebusybiscuit.slimefun4.utils.itemstack.ColoredFireworkStar;
 import io.ncbpfluffybear.fluffymachines.items.Barrel;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.machines.AdvancedAutoDisenchanter;
 import io.ncbpfluffybear.fluffymachines.machines.AutoCrafter;
+import io.ncbpfluffybear.fluffymachines.machines.ElectricDustFabricator;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
@@ -323,6 +327,16 @@ public class FluffyItems {
         "&eRight Click &7on a Warp Pad to set the destination",
         "",
         "&eLinked Coordinates: &7None"
+    );
+
+    public static final SlimefunItemStack ELECTRIC_DUST_FABRICATOR = new SlimefunItemStack("ELECTRIC_DUST_FABRICATOR",
+        Material.BLAST_FURNACE,
+        "&6Electric Dust Fabricator",
+        "",
+        LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE),
+        LoreBuilder.speed(10),
+        LoreBuilderDynamic.powerBuffer(ElectricDustFabricator.CAPACITY),
+        LoreBuilderDynamic.powerPerTick(ElectricDustFabricator.ENERGY_CONSUMPTION)
     );
 
     static {

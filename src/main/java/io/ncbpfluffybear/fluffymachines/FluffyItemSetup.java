@@ -10,6 +10,7 @@ import io.ncbpfluffybear.fluffymachines.machines.AutoArmorForge;
 import io.ncbpfluffybear.fluffymachines.machines.AutoMagicWorkbench;
 import io.ncbpfluffybear.fluffymachines.items.tools.Scythe;
 import io.ncbpfluffybear.fluffymachines.items.tools.UpgradedLumberAxe;
+import io.ncbpfluffybear.fluffymachines.machines.ElectricDustFabricator;
 import io.ncbpfluffybear.fluffymachines.machines.WarpPad;
 import io.ncbpfluffybear.fluffymachines.multiblocks.Foundry;
 import io.ncbpfluffybear.fluffymachines.multiblocks.components.SuperheatedFurnace;
@@ -251,6 +252,13 @@ public final class FluffyItemSetup {
             null, new ItemStack(Material.ENDER_EYE), null,
             null, SlimefunItems.MAGNESIUM_INGOT, null,
             null, SlimefunItems.MAGNESIUM_INGOT, null
+        }).register(plugin);
+
+        new ElectricDustFabricator(FluffyItems.fluffymachines, FluffyItems.ELECTRIC_DUST_FABRICATOR,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.ELECTRIC_ORE_GRINDER_2, SlimefunItems.ELECTRIC_ORE_GRINDER_2, SlimefunItems.ELECTRIC_ORE_GRINDER_2,
+            SlimefunItems.ELECTRIC_GOLD_PAN_3, SlimefunItems.BLISTERING_INGOT_3, SlimefunItems.ELECTRIC_GOLD_PAN_3,
+            SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.ELECTRIC_DUST_WASHER_3, SlimefunItems.ELECTRIC_MOTOR
         }).register(plugin);
 
         /* Disabled due to impracticality
