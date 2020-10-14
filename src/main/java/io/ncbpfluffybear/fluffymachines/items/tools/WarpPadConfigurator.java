@@ -3,6 +3,7 @@ package io.ncbpfluffybear.fluffymachines.items.tools;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
+import io.github.thebusybiscuit.slimefun4.utils.holograms.SimpleHologram;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
@@ -83,6 +84,7 @@ public class WarpPadConfigurator extends SlimefunItem implements Listener {
                         meta.setLore(lore);
                         item.setItemMeta(meta);
 
+                        SimpleHologram.update(b, "&a&lDestination");
                         BlockStorage.addBlockInfo(b, "type", "destination");
                         Utils.send(p, "&3This pad has been marked as a &aDestination &3and bound to your configurator");
 
@@ -127,5 +129,7 @@ public class WarpPadConfigurator extends SlimefunItem implements Listener {
         BlockStorage.addBlockInfo(b, "x", String.valueOf(x));
         BlockStorage.addBlockInfo(b, "y", String.valueOf(y));
         BlockStorage.addBlockInfo(b, "z", String.valueOf(z));
+
+        SimpleHologram.update(b, "&a&lOrigin");
     }
 }
