@@ -305,6 +305,26 @@ public class FluffyItems {
         "&7ID: <ID>"
     );
 
+    public static final SlimefunItemStack WARP_PAD = new SlimefunItemStack("WARP_PAD",
+        Material.SMOKER,
+        "&6Warp Pad",
+        "",
+        "&eCrouch &7on this block to teleport to",
+        "&7the linked destination pad",
+        "",
+        "&7Use a Warp Pad Configurator to link Warp Pads"
+    );
+
+    public static final SlimefunItemStack WARP_PAD_CONFIGURATOR = new SlimefunItemStack("WARP_PAD_CONFIGURATOR",
+        Material.BLAZE_ROD,
+        "&6Warp Pad Configurator",
+        "",
+        "&eSneak and Right Click &7on a Warp Pad to set the origin",
+        "&eRight Click &7on a Warp Pad to set the destination",
+        "",
+        "&eLinked Coordinates: &7None"
+    );
+
     static {
         FireproofRune.setFireproof(FIREPROOF_RUNE);
     }

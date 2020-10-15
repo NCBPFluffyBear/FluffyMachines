@@ -4,11 +4,13 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.ncbpfluffybear.fluffymachines.items.Barrel;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.tools.Dolly;
+import io.ncbpfluffybear.fluffymachines.items.tools.WarpPadConfigurator;
 import io.ncbpfluffybear.fluffymachines.machines.AdvancedAutoDisenchanter;
 import io.ncbpfluffybear.fluffymachines.machines.AutoArmorForge;
 import io.ncbpfluffybear.fluffymachines.machines.AutoMagicWorkbench;
 import io.ncbpfluffybear.fluffymachines.items.tools.Scythe;
 import io.ncbpfluffybear.fluffymachines.items.tools.UpgradedLumberAxe;
+import io.ncbpfluffybear.fluffymachines.machines.WarpPad;
 import io.ncbpfluffybear.fluffymachines.multiblocks.Foundry;
 import io.ncbpfluffybear.fluffymachines.multiblocks.components.SuperheatedFurnace;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -235,6 +237,20 @@ public final class FluffyItemSetup {
             new ItemStack(Material.BOOK), SlimefunItems.FILLED_FLASK_OF_KNOWLEDGE, new ItemStack(Material.BOOK),
             SlimefunItems.FILLED_FLASK_OF_KNOWLEDGE, SlimefunItems.ENCHANTMENT_RUNE, SlimefunItems.FILLED_FLASK_OF_KNOWLEDGE,
             new ItemStack(Material.BOOK), SlimefunItems.FILLED_FLASK_OF_KNOWLEDGE, new ItemStack(Material.BOOK)
+        }).register(plugin);
+
+        new WarpPad(FluffyItems.fluffymachines, FluffyItems.WARP_PAD,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            new ItemStack(Material.ENDER_EYE), new ItemStack(Material.ENDER_EYE), new ItemStack(Material.ENDER_EYE),
+            new ItemStack(Material.ENDER_EYE), SlimefunItems.GPS_TELEPORTER_PYLON, new ItemStack(Material.ENDER_EYE),
+            new ItemStack(Material.ENDER_EYE), new ItemStack(Material.ENDER_EYE), new ItemStack(Material.ENDER_EYE)
+        }).register(plugin);
+
+        new WarpPadConfigurator(FluffyItems.fluffymachines, FluffyItems.WARP_PAD_CONFIGURATOR,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            null, new ItemStack(Material.ENDER_EYE), null,
+            null, SlimefunItems.MAGNESIUM_INGOT, null,
+            null, SlimefunItems.MAGNESIUM_INGOT, null
         }).register(plugin);
 
         /* Disabled due to impracticality
