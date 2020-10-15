@@ -1,10 +1,15 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
+import io.github.thebusybiscuit.slimefun4.core.attributes.MachineTier;
+import io.github.thebusybiscuit.slimefun4.core.attributes.MachineType;
+import io.github.thebusybiscuit.slimefun4.utils.LoreBuilder;
 import io.github.thebusybiscuit.slimefun4.utils.itemstack.ColoredFireworkStar;
 import io.ncbpfluffybear.fluffymachines.items.Barrel;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.machines.AdvancedAutoDisenchanter;
 import io.ncbpfluffybear.fluffymachines.machines.AutoCrafter;
+import io.ncbpfluffybear.fluffymachines.machines.ElectricDustFabricator;
+import io.ncbpfluffybear.fluffymachines.machines.ElectricDustRecycler;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
@@ -319,10 +324,32 @@ public class FluffyItems {
         Material.BLAZE_ROD,
         "&6Warp Pad Configurator",
         "",
-        "&eSneak and Right Click &7on a Warp Pad to set the origin",
-        "&eRight Click &7on a Warp Pad to set the destination",
+        "&eSneak and Right Click &7on a Warp Pad to set the destination",
+        "&eRight Click &7on a Warp Pad to set the origin",
         "",
         "&eLinked Coordinates: &7None"
+    );
+
+    public static final SlimefunItemStack ELECTRIC_DUST_FABRICATOR = new SlimefunItemStack("ELECTRIC_DUST_FABRICATOR",
+        Material.BLAST_FURNACE,
+        "&6Electric Dust Fabricator",
+        "",
+        "&7An all-in-one machine that grinds, pans, and washes",
+        LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE),
+        LoreBuilder.speed(10),
+        LoreBuilderDynamic.powerBuffer(ElectricDustFabricator.CAPACITY),
+        LoreBuilderDynamic.powerPerTick(ElectricDustFabricator.ENERGY_CONSUMPTION)
+    );
+
+    public static final SlimefunItemStack ELECTRIC_DUST_RECYCLER = new SlimefunItemStack("ELECTRIC_DUST_RECYCLER",
+        Material.IRON_BLOCK,
+        "&fElectric Dust Recycler",
+        "",
+        "&7Recycles dust back into sifted ore",
+        LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE),
+        LoreBuilder.speed(1),
+        LoreBuilderDynamic.powerBuffer(ElectricDustRecycler.CAPACITY),
+        LoreBuilderDynamic.powerPerTick(ElectricDustRecycler.ENERGY_CONSUMPTION)
     );
 
     static {

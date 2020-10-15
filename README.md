@@ -24,6 +24,10 @@ Custom item settings can be changed in `plugins/Slimefun/Items.yml`
 
 **Advanced Auto Disenchanter & Ancient Book**: Allows players to disenchant specific enchants from items. Requires an Ancient Book to operate.
 
+**Electric Dust Fabricator**: Turns cobblestone into sifted ore
+
+**Electric Dust Recycler**: Turns eight of the same dust into one sifted ore
+
 ## Generators
 **Crank Generator**: Multiblock machine that generates power when clicked
 
@@ -53,4 +57,6 @@ Custom item settings can be changed in `plugins/Slimefun/Items.yml`
 **Foundry & Superheated Furnace**: Allows the storage of dusts, and can be instantly converted to and from their ingot form.
 
 **Barrels**: Storage containers that store one type of item each
+
+**Warp Pad & Warp Pad Configurator**: Short distance teleportation pads
 
