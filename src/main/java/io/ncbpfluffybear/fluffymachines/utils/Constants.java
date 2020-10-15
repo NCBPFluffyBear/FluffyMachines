@@ -1,7 +1,13 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import org.bukkit.Bukkit;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public final class Constants {
 
@@ -13,6 +19,12 @@ public final class Constants {
         ")", "").replace(".", ""));
 
     public static final boolean isSoulJarsInstalled = Bukkit.getPluginManager().isPluginEnabled("SoulJars");
+
+    public static final List<SlimefunItemStack> dusts = new ArrayList<>(Arrays.asList(
+        SlimefunItems.COPPER_DUST, SlimefunItems.GOLD_DUST, SlimefunItems.IRON_DUST,
+        SlimefunItems.LEAD_DUST, SlimefunItems.ALUMINUM_DUST, SlimefunItems.ZINC_DUST,
+        SlimefunItems.TIN_DUST, SlimefunItems.MAGNESIUM_DUST, SlimefunItems.SILVER_DUST
+    ));
 
     private Constants() {}
 

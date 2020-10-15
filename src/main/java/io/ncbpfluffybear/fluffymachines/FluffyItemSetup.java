@@ -11,6 +11,7 @@ import io.ncbpfluffybear.fluffymachines.machines.AutoMagicWorkbench;
 import io.ncbpfluffybear.fluffymachines.items.tools.Scythe;
 import io.ncbpfluffybear.fluffymachines.items.tools.UpgradedLumberAxe;
 import io.ncbpfluffybear.fluffymachines.machines.ElectricDustFabricator;
+import io.ncbpfluffybear.fluffymachines.machines.ElectricDustRecycler;
 import io.ncbpfluffybear.fluffymachines.machines.WarpPad;
 import io.ncbpfluffybear.fluffymachines.multiblocks.Foundry;
 import io.ncbpfluffybear.fluffymachines.multiblocks.components.SuperheatedFurnace;
@@ -259,6 +260,13 @@ public final class FluffyItemSetup {
             SlimefunItems.ELECTRIC_ORE_GRINDER_2, SlimefunItems.ELECTRIC_ORE_GRINDER_2, SlimefunItems.ELECTRIC_ORE_GRINDER_2,
             SlimefunItems.ELECTRIC_GOLD_PAN_3, SlimefunItems.BLISTERING_INGOT_3, SlimefunItems.ELECTRIC_GOLD_PAN_3,
             SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.ELECTRIC_DUST_WASHER_3, SlimefunItems.ELECTRIC_MOTOR
+        }).register(plugin);
+
+        new ElectricDustRecycler(FluffyItems.fluffymachines, FluffyItems.ELECTRIC_DUST_RECYCLER,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            new ItemStack(Material.LAVA_BUCKET), new ItemStack(Material.PISTON), new ItemStack(Material.LAVA_BUCKET),
+            new ItemStack(Material.LAVA_BUCKET), SlimefunItems.ELECTRIFIED_CRUCIBLE_3, new ItemStack(Material.LAVA_BUCKET),
+            SlimefunItems.ELECTRIC_MOTOR, new ItemStack(Material.PISTON), SlimefunItems.ELECTRIC_MOTOR
         }).register(plugin);
 
         /* Disabled due to impracticality
