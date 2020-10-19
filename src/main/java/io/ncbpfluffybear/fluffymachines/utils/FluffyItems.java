@@ -352,6 +352,38 @@ public class FluffyItems {
         LoreBuilderDynamic.powerPerTick(ElectricDustRecycler.ENERGY_CONSUMPTION)
     );
 
+    public static final SlimefunItemStack ENERGY_TRANSMITTER = new SlimefunItemStack("ENERGY_TRANSMITTER",
+        Material.LIME_STAINED_GLASS,
+        "&eEnergy Transmitter",
+        "",
+        "&7Recycles dust back into sifted ore",
+        LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE),
+        LoreBuilder.speed(1),
+        LoreBuilderDynamic.powerBuffer(ElectricDustRecycler.CAPACITY),
+        LoreBuilderDynamic.powerPerTick(ElectricDustRecycler.ENERGY_CONSUMPTION)
+    );
+
+    public static final SlimefunItemStack ENERGY_RECEIVER = new SlimefunItemStack("ENERGY_RECEIVER",
+        Material.RED_STAINED_GLASS,
+        "&eEnergy Receiver",
+        "",
+        "&7Recycles dust back into sifted ore",
+        LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE),
+        LoreBuilder.speed(1),
+        LoreBuilderDynamic.powerBuffer(ElectricDustRecycler.CAPACITY),
+        LoreBuilderDynamic.powerPerTick(ElectricDustRecycler.ENERGY_CONSUMPTION)
+    );
+
+    public static final SlimefunItemStack LINKER = new SlimefunItemStack("LINKER",
+        Material.CLOCK,
+        "&eLinker",
+        "",
+        "&eSneak and Right Click &7on a Warp Pad to set the destination",
+        "&eRight Click &7on a Warp Pad to set the origin",
+        "",
+        "&eLinked Coordinates: &7None"
+    );
+
     static {
         FireproofRune.setFireproof(FIREPROOF_RUNE);
     }

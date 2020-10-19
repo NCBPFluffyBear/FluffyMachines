@@ -1,4 +1,4 @@
-package io.ncbpfluffybear.fluffymachines.items.tools;
+package io.ncbpfluffybear.fluffymachines.machines.warppad;
 
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;

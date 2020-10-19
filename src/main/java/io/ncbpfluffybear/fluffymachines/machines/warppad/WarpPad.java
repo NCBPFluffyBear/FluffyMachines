@@ -1,4 +1,4 @@
-package io.ncbpfluffybear.fluffymachines.machines;
+package io.ncbpfluffybear.fluffymachines.machines.warppad;
 
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
