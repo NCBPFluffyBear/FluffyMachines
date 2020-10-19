@@ -60,3 +60,4 @@ Custom item settings can be changed in `plugins/Slimefun/Items.yml`
 
 **Warp Pad & Warp Pad Configurator**: Short distance teleportation pads
 
+**Portable Charger**: Multiple tiered handheld charders that allow players to charge items anywhere
