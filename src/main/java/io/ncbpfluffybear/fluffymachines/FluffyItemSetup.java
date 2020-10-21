@@ -4,6 +4,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.ncbpfluffybear.fluffymachines.items.Barrel;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.tools.Dolly;
+import io.ncbpfluffybear.fluffymachines.items.tools.PortableCharger;
 import io.ncbpfluffybear.fluffymachines.items.tools.WarpPadConfigurator;
 import io.ncbpfluffybear.fluffymachines.machines.AdvancedAutoDisenchanter;
 import io.ncbpfluffybear.fluffymachines.machines.AutoArmorForge;
@@ -91,6 +92,47 @@ public final class FluffyItemSetup {
             SlimefunItems.REINFORCED_PLATE, FluffyItems.MASSIVE_FLUFFY_BARREL, SlimefunItems.REINFORCED_PLATE,
             SlimefunItems.REINFORCED_PLATE, SlimefunItems.BLISTERING_INGOT_3, SlimefunItems.REINFORCED_PLATE},
             "&cBottomless Fluffy Barrel", Barrel.BOTTOMLESS_BARREL_SIZE
+        ).register(plugin);
+
+        // Chargers
+        new PortableCharger(FluffyItems.fluffymachines, FluffyItems.SMALL_PORTABLE_CHARGER,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.STEEL_INGOT, SlimefunItems.COPPER_WIRE, SlimefunItems.STEEL_INGOT,
+            SlimefunItems.STEEL_INGOT, SlimefunItems.SMALL_CAPACITOR, SlimefunItems.STEEL_INGOT,
+            new ItemStack(Material.BRICK), SlimefunItems.STEEL_PLATE, new ItemStack(Material.BRICK)},
+            PortableCharger.Type.SMALL.chargeCapacity, PortableCharger.Type.SMALL.chargeSpeed
+        ).register(plugin);
+
+        new PortableCharger(FluffyItems.fluffymachines, FluffyItems.MEDIUM_PORTABLE_CHARGER,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.STEEL_INGOT, SlimefunItems.COPPER_WIRE, SlimefunItems.STEEL_INGOT,
+            SlimefunItems.STEEL_INGOT, SlimefunItems.MEDIUM_CAPACITOR, SlimefunItems.STEEL_INGOT,
+            new ItemStack(Material.IRON_INGOT), SlimefunItems.STEEL_PLATE, new ItemStack(Material.IRON_INGOT)},
+            PortableCharger.Type.MEDIUM.chargeCapacity, PortableCharger.Type.MEDIUM.chargeSpeed
+        ).register(plugin);
+
+        new PortableCharger(FluffyItems.fluffymachines, FluffyItems.BIG_PORTABLE_CHARGER,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.STEEL_INGOT, SlimefunItems.COPPER_WIRE, SlimefunItems.STEEL_INGOT,
+            SlimefunItems.STEEL_INGOT, SlimefunItems.BIG_CAPACITOR, SlimefunItems.STEEL_INGOT,
+            new ItemStack(Material.GOLD_INGOT), SlimefunItems.STEEL_PLATE, new ItemStack(Material.GOLD_INGOT)},
+            PortableCharger.Type.BIG.chargeCapacity, PortableCharger.Type.BIG.chargeSpeed
+        ).register(plugin);
+
+        new PortableCharger(FluffyItems.fluffymachines, FluffyItems.LARGE_PORTABLE_CHARGER,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.STEEL_INGOT, SlimefunItems.COPPER_WIRE, SlimefunItems.STEEL_INGOT,
+            SlimefunItems.STEEL_INGOT, SlimefunItems.LARGE_CAPACITOR, SlimefunItems.STEEL_INGOT,
+            new ItemStack(Material.NETHER_BRICK), SlimefunItems.STEEL_PLATE, new ItemStack(Material.NETHER_BRICK)},
+            PortableCharger.Type.LARGE.chargeCapacity, PortableCharger.Type.LARGE.chargeSpeed
+        ).register(plugin);
+
+        new PortableCharger(FluffyItems.fluffymachines, FluffyItems.CARBONADO_PORTABLE_CHARGER,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.STEEL_INGOT, SlimefunItems.COPPER_WIRE, SlimefunItems.STEEL_INGOT,
+            SlimefunItems.STEEL_INGOT, SlimefunItems.CARBONADO_EDGED_CAPACITOR, SlimefunItems.STEEL_INGOT,
+            new ItemStack(Material.NETHERITE_INGOT), SlimefunItems.STEEL_PLATE, new ItemStack(Material.NETHERITE_INGOT)},
+            PortableCharger.Type.CARBONADO.chargeCapacity, PortableCharger.Type.CARBONADO.chargeSpeed
         ).register(plugin);
 
         // Multiblocks

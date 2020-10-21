@@ -6,6 +6,7 @@ import io.github.thebusybiscuit.slimefun4.utils.LoreBuilder;
 import io.github.thebusybiscuit.slimefun4.utils.itemstack.ColoredFireworkStar;
 import io.ncbpfluffybear.fluffymachines.items.Barrel;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
+import io.ncbpfluffybear.fluffymachines.items.tools.PortableCharger;
 import io.ncbpfluffybear.fluffymachines.machines.AdvancedAutoDisenchanter;
 import io.ncbpfluffybear.fluffymachines.machines.AutoCrafter;
 import io.ncbpfluffybear.fluffymachines.machines.ElectricDustFabricator;
@@ -23,6 +24,9 @@ import io.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
+
+import javax.sound.sampled.Port;
 
 
 public class FluffyItems {
@@ -102,6 +106,57 @@ public class FluffyItems {
         "&7Stores a large amount of an item",
         "",
         "&bCapacity: &e" + Barrel.BOTTOMLESS_BARREL_SIZE + " Items"
+    );
+
+    // Portable Chargers
+    public static final SlimefunItemStack SMALL_PORTABLE_CHARGER = new SlimefunItemStack("SMALL_PORTABLE_CHARGER",
+        Material.BRICK,
+        "&eSmall Portable Charger",
+        "",
+        "&7A handheld charger that holds a lot of power",
+        "",
+        "&eCharge Speed: &7" + PortableCharger.Type.SMALL.chargeSpeed + " J/s",
+        LoreBuilder.powerCharged(0, PortableCharger.Type.SMALL.chargeCapacity)
+    );
+
+    public static final SlimefunItemStack MEDIUM_PORTABLE_CHARGER = new SlimefunItemStack("MEDIUM_PORTABLE_CHARGER",
+        Material.IRON_INGOT,
+        "&6Medium Portable Charger",
+        "",
+        "&7A handheld charger that holds a lot of power",
+        "",
+        "&eCharge Speed: &7" + PortableCharger.Type.MEDIUM.chargeSpeed + " J/s",
+        LoreBuilder.powerCharged(0, PortableCharger.Type.MEDIUM.chargeCapacity)
+    );
+
+    public static final SlimefunItemStack BIG_PORTABLE_CHARGER = new SlimefunItemStack("BIG_PORTABLE_CHARGER",
+        Material.GOLD_INGOT,
+        "&aBig Portable Charger",
+        "",
+        "&7A handheld charger that holds a lot of power",
+        "",
+        "&eCharge Speed: &7" + PortableCharger.Type.BIG.chargeSpeed + " J/s",
+        LoreBuilder.powerCharged(0, PortableCharger.Type.BIG.chargeCapacity)
+    );
+
+    public static final SlimefunItemStack LARGE_PORTABLE_CHARGER = new SlimefunItemStack("LARGE_PORTABLE_CHARGER",
+        Material.NETHER_BRICK,
+        "&2Large Portable Charger",
+        "",
+        "&7A handheld charger that holds a lot of power",
+        "",
+        "&eCharge Speed: &7" + PortableCharger.Type.LARGE.chargeSpeed + " J/s",
+        LoreBuilder.powerCharged(0, PortableCharger.Type.LARGE.chargeCapacity)
+    );
+
+    public static final SlimefunItemStack CARBONADO_PORTABLE_CHARGER = new SlimefunItemStack("CARBONADO_PORTABLE_CHARGER",
+        Material.NETHERITE_INGOT,
+        "&4Carbonado Portable Charger",
+        "",
+        "&7A handheld charger that holds a lot of power",
+        "",
+        "&eCharge Speed: &7" + PortableCharger.Type.CARBONADO.chargeSpeed + " J/s",
+        LoreBuilder.powerCharged(0, PortableCharger.Type.CARBONADO.chargeCapacity)
     );
 
     // Items
@@ -352,7 +407,14 @@ public class FluffyItems {
         LoreBuilderDynamic.powerPerTick(ElectricDustRecycler.ENERGY_CONSUMPTION)
     );
 
+    private static final Enchantment glowEnchant = Enchantment.getByKey(Constants.GLOW_ENCHANT);
+
     static {
         FireproofRune.setFireproof(FIREPROOF_RUNE);
+        SMALL_PORTABLE_CHARGER.addEnchantment(glowEnchant, 1);
+        MEDIUM_PORTABLE_CHARGER.addEnchantment(glowEnchant, 1);
+        BIG_PORTABLE_CHARGER.addEnchantment(glowEnchant, 1);
+        LARGE_PORTABLE_CHARGER.addEnchantment(glowEnchant, 1);
+        CARBONADO_PORTABLE_CHARGER.addEnchantment(glowEnchant, 1);
     }
 }
