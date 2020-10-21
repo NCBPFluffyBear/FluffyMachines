@@ -1,0 +1,7 @@
+version: "1"
+rules:
+  - base: master
+    upstream: NCBPFluffyBear:master
+    mergeMethod: merge
+    conflictReviewers:
+      - xMikux

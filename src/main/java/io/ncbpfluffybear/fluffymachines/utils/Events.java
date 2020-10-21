@@ -49,8 +49,8 @@ public class Events implements Listener {
             e.setCancelled(true);
             Entity target = e.getRightClicked();
             if (target instanceof Player && WateringCan.updateUses(p, item, 3)) {
-                Utils.send(p, "&bSplash!");
-                Utils.send((Player) target, "&bYou were splashed by " + p.getDisplayName() + "!");
+                Utils.send(p, "&b潑!");
+                Utils.send((Player) target, "&b你被" + p.getDisplayName() + "潑到!");
                 ((Player) target).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 60, 1));
             }
         }
@@ -136,7 +136,7 @@ public class Events implements Listener {
                     p.spawnParticle(Particle.DRAGON_BREATH, p.getLocation(), 10);
 
                 } else {
-                    Utils.send(p, "&cMissing destination Warp Pad!");
+                    Utils.send(p, "&c缺少目的地傳送板!");
 
                 }
             }

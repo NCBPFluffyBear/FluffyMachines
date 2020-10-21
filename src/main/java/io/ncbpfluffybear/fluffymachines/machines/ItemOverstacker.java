@@ -44,7 +44,7 @@ public class ItemOverstacker extends SlimefunItem implements InventoryBlock, Ene
     }
 
     protected void setupInv() {
-        createPreset(this, "&eItem Overstacker", preset -> {
+        createPreset(this, "&e物品過度堆疊機", preset -> {
             for (int i : PLAIN_BORDER) {
                 preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
                     (p, slot, item, action) -> false

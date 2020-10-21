@@ -62,9 +62,9 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
     private static final NamespacedKey selection = new NamespacedKey(FluffyMachines.getInstance(), "selection");
 
     private static final ItemStack selectionItem = new CustomItem(Material.ENCHANTED_BOOK,
-        "&6Selected Enchant", "&a> Click here to cycle through enchants", "&5Current Enchant: None");
+        "&6Selected Enchant", "&a> 點擊此循環查看附魔", "&5目前附魔: 無");
 
-    private static final ItemStack progressItem = new CustomItem(Material.EXPERIENCE_BOTTLE, "&aProgress");
+    private static final ItemStack progressItem = new CustomItem(Material.EXPERIENCE_BOTTLE, "&a運作");
 
 
     static {
@@ -76,7 +76,7 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
     public AdvancedAutoDisenchanter(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
-        new BlockMenuPreset(getID(), "&cAdvanced Auto Disenchanter") {
+        new BlockMenuPreset(getID(), "&c高級自動退魔器") {
 
             @Override
             public void init() {
@@ -276,14 +276,14 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
                 selectionIndex++; // 0
                 meta.getPersistentDataContainer().set(selection, PersistentDataType.INTEGER, selectionIndex);
 
-                lore.set(1, ChatColor.DARK_PURPLE + "Current Enchant: " +  ChatColor.YELLOW + enchants.get(selectionIndex)); // 0
+                lore.set(1, ChatColor.DARK_PURPLE + "目前附魔: " +  ChatColor.YELLOW + enchants.get(selectionIndex)); // 0
                 meta.setLore(lore);
                 clickedItem.setItemMeta(meta);
 
             } else {
                 selectionIndex = 0;
                 meta.getPersistentDataContainer().set(selection, PersistentDataType.INTEGER, selectionIndex);
-                lore.set(1, ChatColor.DARK_PURPLE + "Current Enchant: " + ChatColor.YELLOW + enchants.get(0));
+                lore.set(1, ChatColor.DARK_PURPLE + "目前附魔: " + ChatColor.YELLOW + enchants.get(0));
                 meta.setLore(lore);
                 clickedItem.setItemMeta(meta);
             }

@@ -59,7 +59,7 @@ public class BackpackLoader extends SlimefunItem implements InventoryBlock, Ener
     }
 
     protected void setupInv() {
-        createPreset(this, "&eBackpack Loader", preset -> {
+        createPreset(this, "&e背包裝載器", preset -> {
             border(preset, PLAIN_BORDER, INPUT_BORDER, OUTPUT_BORDER);
 
             for (int i : BACKPACK_BORDER) {

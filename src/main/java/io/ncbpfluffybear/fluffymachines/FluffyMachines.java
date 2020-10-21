@@ -11,8 +11,8 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.Slimefun;
 import me.mrCookieSlime.Slimefun.bstats.bukkit.Metrics;
-import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
-import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
+//import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
+//import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
 import io.ncbpfluffybear.fluffymachines.utils.Events;
 import org.bukkit.ChatColor;
 import org.bukkit.FluidCollisionMode;
@@ -38,11 +38,11 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
     public void onEnable() {
         instance = this;
         // Read something from your config.yml
-        Config cfg = new Config(this);
+        //Config cfg = new Config(this);
 
-        if (cfg.getBoolean("options.auto-update") && getDescription().getVersion().startsWith("DEV - ")) {
-            new GitHubBuildsUpdater(this, getFile(), "NCBPFluffyBear/FluffyMachines/master/").start();
-        }
+        //if (cfg.getBoolean("options.auto-update") && getDescription().getVersion().startsWith("DEV - ")) {
+        //    new GitHubBuildsUpdater(this, getFile(), "NCBPFluffyBear/FluffyMachines/master/").start();
+        //}
 
         // Register Glow
 
@@ -66,23 +66,23 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
         final Metrics metrics = new Metrics(this, 8927);
 
-        getLogger().log(Level.INFO, ChatColor.GREEN + "Hi there! Want to share your server with the " +
-            "Slimefun community?");
-        getLogger().log(Level.INFO, ChatColor.GREEN + "Join the official Slimefun Discord server at " +
+        getLogger().log(Level.INFO, ChatColor.GREEN + "Hi 你好! 想要分享你的伺服器到" +
+            "Slimefun社群?");
+        getLogger().log(Level.INFO, ChatColor.GREEN + "加入官方Slimefun Discord 伺服器 " +
             "https://discord.gg/slimefun");
-        getLogger().log(Level.INFO, ChatColor.GREEN + "Don't forget to leave your server in #server-showcase!");
+        getLogger().log(Level.INFO, ChatColor.GREEN + "別忘記將伺服器留在 #server-showcase!");
         getLogger().log(Level.INFO, ChatColor.GREEN +
-            "Write \"FluffyBear\" and I'll check out your server sometime :)");
-        getLogger().log(Level.WARNING, ChatColor.RED + "Barrels warning:");
-        getLogger().log(Level.WARNING, ChatColor.RED + "A recent FluffyMachines addition, barrels, is still in a testing phase.");
-        getLogger().log(Level.WARNING, ChatColor.RED + "This is a recreation of John000708's barrels, which have been found to");
-        getLogger().log(Level.WARNING, ChatColor.RED + "be extremely buggy.");
-        getLogger().log(Level.WARNING, ChatColor.RED + "Fluffy Barrels are ready, but please use them cautiously,");
-        getLogger().log(Level.WARNING, ChatColor.RED + "and remember to report any bugs you find to");
+            "寫 \"FluffyBear\" 我會在某個時間去看你的伺服器 :)");
+        getLogger().log(Level.WARNING, ChatColor.RED + "木桶警告:");
+        getLogger().log(Level.WARNING, ChatColor.RED + "近期在Fluffy機器增加的桶子,還處於測試階段.");
+        getLogger().log(Level.WARNING, ChatColor.RED + "這是重寫John000708的木桶附加, 已被發現");
+        getLogger().log(Level.WARNING, ChatColor.RED + "非常的buggy.");
+        getLogger().log(Level.WARNING, ChatColor.RED + "Fluffy木桶已準備好,但請謹慎使用,");
+        getLogger().log(Level.WARNING, ChatColor.RED + "並記得回報任何你發現的問題");
         getLogger().log(Level.WARNING, ChatColor.RED + "https://github.com/NCBPFluffyBear/FluffyMachines/issues");
-        getLogger().log(Level.WARNING, ChatColor.RED + "If you wish to temporarily disable barrels, you can do so in");
+        getLogger().log(Level.WARNING, ChatColor.RED + "如果你希望暫時禁用木桶,你可以在");
         getLogger().log(Level.WARNING, ChatColor.RED + "/plugins/Slimefun/Items.yml");
-        getLogger().log(Level.WARNING, ChatColor.RED + "This message will be replaced once barrels have been deemed stable.");
+        getLogger().log(Level.WARNING, ChatColor.RED + "一旦木桶被確認為穩定,此訊息將會被替換.");
     }
 
     @Override
