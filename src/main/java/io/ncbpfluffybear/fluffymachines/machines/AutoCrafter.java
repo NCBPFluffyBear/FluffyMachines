@@ -70,8 +70,8 @@ public class AutoCrafter extends SlimefunItem implements InventoryBlock, EnergyN
                 if (!BlockStorage.hasBlockInfo(b)
                     || BlockStorage.getLocationInfo(b.getLocation(), "enabled") == null
                     || BlockStorage.getLocationInfo(b.getLocation(), "enabled").equals(String.valueOf(false))) {
-                    menu.replaceExistingItem(6, new CustomItem(Material.GUNPOWDER, "&7已啟用: &4\u2718", "",
-                        "&e> 點擊啟用此機器")
+                    menu.replaceExistingItem(6, new CustomItem(Material.GUNPOWDER, "&7Enabled: &4\u2718", "",
+                        "&e> Click to enable this Machine")
                     );
                     menu.addMenuClickHandler(6, (p, slot, item, action) -> {
                         BlockStorage.addBlockInfo(b, "enabled", String.valueOf(true));
@@ -79,8 +79,8 @@ public class AutoCrafter extends SlimefunItem implements InventoryBlock, EnergyN
                         return false;
                     });
                 } else {
-                    menu.replaceExistingItem(6, new CustomItem(Material.REDSTONE, "&7已啟用: &2\u2714",
-                        "", "&e> 點擊禁用此機器")
+                    menu.replaceExistingItem(6, new CustomItem(Material.REDSTONE, "&7Enabled: &2\u2714",
+                        "", "&e> Click to disable this Machine")
                     );
                     menu.addMenuClickHandler(6, (p, slot, item, action) -> {
                         BlockStorage.addBlockInfo(b, "enabled", String.valueOf(false));
@@ -180,8 +180,8 @@ public class AutoCrafter extends SlimefunItem implements InventoryBlock, EnergyN
             });
         }
 
-        preset.addItem(2, new CustomItem(new ItemStack(material), "&e配方",
-                "", "&b放入你要製作的配方 僅限", machineName + "配方"
+        preset.addItem(2, new CustomItem(new ItemStack(material), "&eRecipe",
+                "", "&bPut in the Recipe you want to craft", machineName + " Recipes ONLY"
             ),
             (p, slot, item, action) -> false);
     }

@@ -79,14 +79,14 @@ public class WarpPadConfigurator extends SlimefunItem implements Listener {
                         pdc.set(yCoord, PersistentDataType.INTEGER, b.getY());
                         pdc.set(zCoord, PersistentDataType.INTEGER, b.getZ());
                         lore.set(LORE_COORDINATE_INDEX, ChatColor.translateAlternateColorCodes(
-                            '&', "&e鏈接坐標: &7" + b.getX() + ", " + b.getY() + ", " + b.getZ()));
+                            '&', "&eLinked Coordinates: &7" + b.getX() + ", " + b.getY() + ", " + b.getZ()));
 
                         meta.setLore(lore);
                         item.setItemMeta(meta);
 
-                        SimpleHologram.update(b, "&a&l目的地");
+                        SimpleHologram.update(b, "&a&lDestination");
                         BlockStorage.addBlockInfo(b, "type", "destination");
-                        Utils.send(p, "&3此傳送板已被標記為 &a目的地 &3並綁定至你的配置器");
+                        Utils.send(p, "&3This pad has been marked as a &aDestination &3and bound to your configurator");
 
                     // Origin
                     } else if (pdc.has(world, PersistentDataType.STRING) && b.getWorld().getName().equals(
@@ -98,27 +98,27 @@ public class WarpPadConfigurator extends SlimefunItem implements Listener {
                         if (Math.abs(x - b.getX()) > MAX_DISTANCE.getValue()
                             || Math.abs(z - b.getZ()) > MAX_DISTANCE.getValue()) {
 
-                            Utils.send(p, "&c你所鏈接的方塊不能大於 "
-                                + MAX_DISTANCE.getValue() + " 格方塊遠!");
+                            Utils.send(p, "&cYou can not link blocks more than "
+                                + MAX_DISTANCE.getValue() + " blocks apart!");
 
                             return;
                         }
 
                         registerOrigin(b, x, y, z);
 
-                        Utils.send(p, "&3此傳送板已被標記為 &a源點 &3和你的配置器設定 " +
-                            "已粘貼至該板上");
+                        Utils.send(p, "&3This pad has been marked as an &aOrigin &3and your configurator's settings " +
+                            "have been pasted onto this pad");
 
                     } else {
 
-                        Utils.send(p, "&c蹲下右鍵在傳送板來設置目的地, 然後右鍵" +
-                            " " + "另一個傳送板來設置源點!");
+                        Utils.send(p, "&cSneak and right click on a Warp Pad to set the destination, then right click" +
+                            " " + "another Warp Pad tp set the origin!");
                     }
 
                 }
 
             } else {
-                Utils.send(p, "&c使用傳送板配置器來配置此傳送板");
+                Utils.send(p, "&cConfigure this Warp Pad using a Warp Pad Configurator");
             }
         }
     }
@@ -130,6 +130,6 @@ public class WarpPadConfigurator extends SlimefunItem implements Listener {
         BlockStorage.addBlockInfo(b, "y", String.valueOf(y));
         BlockStorage.addBlockInfo(b, "z", String.valueOf(z));
 
-        SimpleHologram.update(b, "&a&l源點");
+        SimpleHologram.update(b, "&a&lOrigin");
     }
 }

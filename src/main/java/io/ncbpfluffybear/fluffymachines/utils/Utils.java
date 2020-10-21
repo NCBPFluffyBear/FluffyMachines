@@ -90,11 +90,11 @@ public final class Utils {
     }
 
     public static void send(Player p, String message) {
-        p.sendMessage(ChatColor.GRAY + "[Fluffy機器] " + ChatColors.color(message));
+        p.sendMessage(ChatColor.GRAY + "[FluffyMachines] " + ChatColors.color(message));
     }
 
     public static String multiBlockWarning() {
-        return "&c這是一台多重方塊機器!";
+        return "&cThis is a Multiblock machine!";
     }
 
     public static ItemStack buildNonInteractable(Material material, @Nullable String name, @Nullable String... lore) {

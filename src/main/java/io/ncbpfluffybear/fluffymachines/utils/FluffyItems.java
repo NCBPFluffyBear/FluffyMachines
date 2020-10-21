@@ -37,17 +37,17 @@ public class FluffyItems {
     // Category
     public static final Category fluffymachines = new Category(new NamespacedKey(FluffyMachines.getInstance(),
         "fluffymachines"),
-        new CustomItem(Material.SMOKER, "&6Fluffy機器")
+        new CustomItem(Material.SMOKER, "&6Fluffy Machines")
     );
 
     public static final Category fluffybarrels = new Category(new NamespacedKey(FluffyMachines.getInstance(),
         "fluffybarrels"),
-        new CustomItem(Material.BARREL, "&6Fluffy木桶")
+        new CustomItem(Material.BARREL, "&6Fluffy Barrels")
     );
 
     public static final SlimefunItemStack FM_VERSION_INDICATOR = new SlimefunItemStack("FM_VERSION_INDICATOR",
         Material.ORANGE_WOOL,
-        "&6&lFluffy機器 版本資訊",
+        "&6&lFluffyMachines Info",
         "",
         "&e" + FluffyMachines.getInstance().getName() + " " + FluffyMachines.getInstance().getPluginVersion(),
         "&7" + FluffyMachines.getInstance().getBugTrackerURL()
@@ -56,232 +56,232 @@ public class FluffyItems {
     // Barrels
     public static final SlimefunItemStack SMALL_FLUFFY_BARREL = new SlimefunItemStack("SMALL_FLUFFY_BARREL",
         Material.BEEHIVE,
-        "&e小型 Fluffy木桶",
+        "&eSmall Fluffy Barrel",
         "",
-        "&7可存儲多個相同的物品",
+        "&7Stores a large amount of an item",
         "",
-        "&b容量: &e" + Barrel.SMALL_BARREL_SIZE + " 物品"
+        "&bCapacity: &e" + Barrel.SMALL_BARREL_SIZE + " Items"
     );
 
     public static final SlimefunItemStack MEDIUM_FLUFFY_BARREL = new SlimefunItemStack("MEDIUM_FLUFFY_BARREL",
         Material.BARREL,
-        "&6中型 Fluffy 木桶",
+        "&6Medium Fluffy Barrel",
         "",
-        "&7可存儲多個相同的物品",
+        "&7Stores a large amount of an item",
         "",
-        "&b容量: &e" + Barrel.MEDIUM_BARREL_SIZE + " 物品"
+        "&bCapacity: &e" + Barrel.MEDIUM_BARREL_SIZE + " Items"
     );
 
     public static final SlimefunItemStack BIG_FLUFFY_BARREL = new SlimefunItemStack("BIG_FLUFFY_BARREL",
         Material.SMOKER,
-        "&b大型 Fluffy木桶",
+        "&bBig Fluffy Barrel",
         "",
-        "&7可存儲多個相同的物品",
+        "&7Stores a large amount of an item",
         "",
-        "&b容量: &e" + Barrel.BIG_BARREL_SIZE + " 物品"
+        "&bCapacity: &e" + Barrel.BIG_BARREL_SIZE + " Items"
     );
 
     public static final SlimefunItemStack LARGE_FLUFFY_BARREL = new SlimefunItemStack("LARGE_FLUFFY_BARREL",
         Material.LODESTONE,
-        "&a巨型 Fluffy木桶",
+        "&aLarge Fluffy Barrel",
         "",
-        "&7可存儲多個相同的物品",
+        "&7Stores a large amount of an item",
         "",
-        "&b容量: &e" + Barrel.LARGE_BARREL_SIZE + " 物品"
+        "&bCapacity: &e" + Barrel.LARGE_BARREL_SIZE + " Items"
     );
 
     public static final SlimefunItemStack MASSIVE_FLUFFY_BARREL = new SlimefunItemStack("MASSIVE_FLUFFY_BARREL",
         Material.CRYING_OBSIDIAN,
-        "&5超大 Fluffy木桶",
+        "&5Massive Fluffy Barrel",
         "",
-        "&7可存儲多個相同的物品",
+        "&7Stores a large amount of an item",
         "",
-        "&b容量: &e" + Barrel.MASSIVE_BARREL_SIZE + " 物品"
+        "&bCapacity: &e" + Barrel.MASSIVE_BARREL_SIZE + " Items"
     );
 
     public static final SlimefunItemStack BOTTOMLESS_FLUFFY_BARREL = new SlimefunItemStack("BOTTOMLESS_FLUFFY_BARREL",
         Material.RESPAWN_ANCHOR,
-        "&c無底洞 Fluffy木桶",
+        "&cBottomless Fluffy Barrel",
         "",
-        "&7可存儲多個相同的物品",
+        "&7Stores a large amount of an item",
         "",
-        "&b容量: &e" + Barrel.BOTTOMLESS_BARREL_SIZE + " Items"
+        "&bCapacity: &e" + Barrel.BOTTOMLESS_BARREL_SIZE + " Items"
     );
 
     // Portable Chargers
     public static final SlimefunItemStack SMALL_PORTABLE_CHARGER = new SlimefunItemStack("SMALL_PORTABLE_CHARGER",
         Material.BRICK,
-        "&e小型隨身充電器",
+        "&eSmall Portable Charger",
         "",
-        "&7攜帶型充電器,可容納大量電量",
+        "&7A handheld charger that holds a lot of power",
         "",
-        "&e充電速度: &7" + PortableCharger.Type.SMALL.chargeSpeed + " J/s",
+        "&eCharge Speed: &7" + PortableCharger.Type.SMALL.chargeSpeed + " J/s",
         LoreBuilder.powerCharged(0, PortableCharger.Type.SMALL.chargeCapacity)
     );
 
     public static final SlimefunItemStack MEDIUM_PORTABLE_CHARGER = new SlimefunItemStack("MEDIUM_PORTABLE_CHARGER",
         Material.IRON_INGOT,
-        "&6中型隨身充電器",
+        "&6Medium Portable Charger",
         "",
-        "&7攜帶型充電器,可容納大量電量",
+        "&7A handheld charger that holds a lot of power",
         "",
-        "&e充電速度: &7" + PortableCharger.Type.MEDIUM.chargeSpeed + " J/s",
+        "&eCharge Speed: &7" + PortableCharger.Type.MEDIUM.chargeSpeed + " J/s",
         LoreBuilder.powerCharged(0, PortableCharger.Type.MEDIUM.chargeCapacity)
     );
 
     public static final SlimefunItemStack BIG_PORTABLE_CHARGER = new SlimefunItemStack("BIG_PORTABLE_CHARGER",
         Material.GOLD_INGOT,
-        "&a大型隨身充電器",
+        "&aBig Portable Charger",
         "",
-        "&7攜帶型充電器,可容納大量電量",
+        "&7A handheld charger that holds a lot of power",
         "",
-        "&e充電速度: &7" + PortableCharger.Type.BIG.chargeSpeed + " J/s",
+        "&eCharge Speed: &7" + PortableCharger.Type.BIG.chargeSpeed + " J/s",
         LoreBuilder.powerCharged(0, PortableCharger.Type.BIG.chargeCapacity)
     );
 
     public static final SlimefunItemStack LARGE_PORTABLE_CHARGER = new SlimefunItemStack("LARGE_PORTABLE_CHARGER",
         Material.NETHER_BRICK,
-        "&2巨型隨身充電器",
+        "&2Large Portable Charger",
         "",
-        "&7攜帶型充電器,可容納大量電量",
+        "&7A handheld charger that holds a lot of power",
         "",
-        "&e充電速度: &7" + PortableCharger.Type.LARGE.chargeSpeed + " J/s",
+        "&eCharge Speed: &7" + PortableCharger.Type.LARGE.chargeSpeed + " J/s",
         LoreBuilder.powerCharged(0, PortableCharger.Type.LARGE.chargeCapacity)
     );
 
     public static final SlimefunItemStack CARBONADO_PORTABLE_CHARGER = new SlimefunItemStack("CARBONADO_PORTABLE_CHARGER",
         Material.NETHERITE_INGOT,
-        "&4黑鑽石隨身充電器",
+        "&4Carbonado Portable Charger",
         "",
-        "&7攜帶型充電器,可容納大量電量",
+        "&7A handheld charger that holds a lot of power",
         "",
-        "&e充電速度: &7" + PortableCharger.Type.CARBONADO.chargeSpeed + " J/s",
+        "&eCharge Speed: &7" + PortableCharger.Type.CARBONADO.chargeSpeed + " J/s",
         LoreBuilder.powerCharged(0, PortableCharger.Type.CARBONADO.chargeCapacity)
     );
 
     // Items
     public static final SlimefunItemStack ANCIENT_BOOK = new SlimefunItemStack("ANCIENT_BOOK",
         Material.BOOK,
-        "&6古代書籍",
+        "&6Ancient Book",
         "",
-        "&7用於&c高級自動退魔器",
+        "&7Used in the &cAdvanced Auto Disenchanter",
         "",
-        "&6&o含有密集的力量"
+        "&6&oContains concentrated amounts of power"
     );
     public static final SlimefunItemStack HELICOPTER_HAT = new SlimefunItemStack("HELICOPTER_HAT",
         Material.LEATHER_HELMET, Color.AQUA,
-        "&1直升機帽",
+        "&1Helicopter Hat",
         "",
         "&7brrrrrrrrRRRRRRRR",
         "",
-        "&e蹲下 &7來使用"
+        "&eSneak &7to use"
     );
     public static final SlimefunItemStack WATERING_CAN = new SlimefunItemStack("WATERING_CAN",
         new CustomItem(SkullItem.fromHash("6484da45301625dee79ae29ff513efa583f1ed838033f20db80963cedf8aeb0e")),
-        "&b灑水壺",
+        "&bWatering Can",
         "",
-        "&f灌溉植物",
+        "&fWaters Plants",
         "",
-        "&7> &e右鍵 &7對著水源來填滿灑水壺",
-        "&7> &e右鍵 &7對著植物來加速生長.",
-        "&7> &e右鍵 &7玩家讓它緩速",
+        "&7> &eRight Click &7a water to fill your watering can",
+        "&7> &eRight Click &7a plant to speed up growth.",
+        "&7> &eRight Click &7a player to slow them down",
         "",
-        "&a剩餘次數: &e0"
+        "&aUses Left: &e0"
     );
     public static final SlimefunItemStack ENDER_CHEST_EXTRACTION_NODE = new SlimefunItemStack(
         "ENDER_CHEST_EXTRACTION_NODE",
         new CustomItem(SkullItem.fromHash("e707c7f6c3a056a377d4120028405fdd09acfcd5ae804bfde0f653be866afe39")),
-        "&6終界箱提取節點",
+        "&6Ender Chest Extraction Node",
         "",
-        "&7將此放置在&5終界箱&7來綁定",
+        "&7Place this on the side of an &5Ender Chest &7to bind",
         "",
-        "&7這會移動物品至朝向的&5終界箱",
-        "&7移動到後面的&6容器"
+        "&7This will move items from the facing &5Ender Chest",
+        "&7to the &6Container &7behind it"
     );
     public static final SlimefunItemStack ENDER_CHEST_INSERTION_NODE = new SlimefunItemStack(
         "ENDER_CHEST_INSERTION_NODE",
         new CustomItem(SkullItem.fromHash("7e5dc50c0186d53381d9430a2eff4c38f816b8791890c7471ffdb65ba202bc5")),
-        "&b終界箱存放節點",
+        "&bEnder Chest Insertion Node",
         "",
-        "&7將此放置在&5終界箱&7來綁定",
+        "&7Place this on the side of an &5Ender Chest &7to bind",
         "",
-        "&7這會移動物品至朝向的&5終界箱",
-        "&7從它後面的&6容器"
+        "&7This will move items to the facing &5Ender Chest",
+        "&7from the &6Container &7behind it"
     );
     // Machines
     public static final SlimefunItemStack AUTO_CRAFTING_TABLE = new SlimefunItemStack("AUTO_CRAFTING_TABLE",
         Material.CRAFTING_TABLE,
-        "&6自動工作台",
+        "&6Auto Crafting Table",
         "",
-        "&7自動製作&f原版&7配方",
+        "&7Automatically crafts &fvanilla &7recipes",
         "",
         LoreBuilderDynamic.powerBuffer(AutoCraftingTable.CAPACITY),
         LoreBuilderDynamic.powerPerTick(AutoCraftingTable.ENERGY_CONSUMPTION)
     );
     public static final SlimefunItemStack AUTO_ANCIENT_ALTAR = new SlimefunItemStack("AUTO_ANCIENT_ALTAR",
         Material.ENCHANTING_TABLE,
-        "&5自動古代祭壇",
+        "&5Auto Ancient Altar",
         "",
-        "&7自動製作&5古代祭壇&7配方",
+        "&7Automatically crafts &5Ancient Altar &7recipes",
         "",
         LoreBuilderDynamic.powerBuffer(AutoAncientAltar.CAPACITY),
         LoreBuilderDynamic.powerPerTick(AutoAncientAltar.ENERGY_CONSUMPTION)
     );
     public static final SlimefunItemStack WATER_SPRINKER = new SlimefunItemStack("WATER_SPRINKLER",
         new CustomItem(SkullItem.fromHash("d6b13d69d1929dcf8edf99f3901415217c6a567d3a6ead12f75a4de3ed835e85"),
-            "灑水器"),
-        "&b灑水器",
+            "Water Sprinkler"),
+        "&bWater Sprinkler",
         "",
-        "&7灑水 灑水",
+        "&7Sprinkly sprinkly",
         "",
         LoreBuilderDynamic.powerBuffer(WaterSprinkler.CAPACITY),
         LoreBuilderDynamic.powerPerTick(WaterSprinkler.ENERGY_CONSUMPTION)
     );
     public static final SlimefunItemStack ITEM_OVERSTACKER = new SlimefunItemStack("ITEM_OVERSTACKER",
         Material.PISTON,
-        "&e物品過度堆疊機",
+        "&eItem Overstacker",
         "",
-        "&7壓縮不可堆疊物品"
+        "&7Compresses nonstackable items"
     );
     public static final SlimefunItemStack GENERATOR_CORE = new SlimefunItemStack("GENERATOR_CORE",
         Material.BLAST_FURNACE,
-        "&7發電機核心",
+        "&7Generator Core",
         "",
-        "&7多重方塊的發電機部件"
+        "&7Multiblock component of generators"
     );
     public static final SlimefunItemStack CRANK_GENERATOR = new SlimefunItemStack("CRANK_GENERATOR",
         Material.BLAST_FURNACE,
-        "&7曲柄發電機",
+        "&7Crank Generator",
         "",
-        "&e右鍵 &7控制桿來產生動力",
+        "&eRight click &7the lever to generate power",
         "",
         Utils.multiBlockWarning()
     );
 
     public static final SlimefunItemStack FOUNDRY = new SlimefunItemStack("FOUNDRY",
         Material.BLAST_FURNACE,
-        "&c鑄造廠",
+        "&cFoundry",
         "",
-        "&e融化並儲存粉與錠",
-        "&7儲存138,240個粉 (40個大型儲物箱)",
+        "&eMelts and stores dusts and ingots",
+        "&7Stores 138,240 dust (40 Double Chests)",
         "",
         Utils.multiBlockWarning()
     );
 
     public static final SlimefunItemStack BACKPACK_UNLOADER = new SlimefunItemStack("BACKPACK_UNLOADER",
         Material.BROWN_STAINED_GLASS,
-        "&e背包卸載器",
+        "&eBackpack Unloader",
         "",
-        "&7清空背包內的內容物",
+        "&7Empties the contents of backpacks",
         "",
         LoreBuilderDynamic.powerBuffer(BackpackUnloader.CAPACITY),
         LoreBuilderDynamic.powerPerTick(BackpackUnloader.ENERGY_CONSUMPTION)
     );
     public static final SlimefunItemStack BACKPACK_LOADER = new SlimefunItemStack("BACKPACK_LOADER",
         Material.ORANGE_STAINED_GLASS,
-        "&e背包裝載器",
+        "&eBackpack Loader",
         "",
-        "&7將物品從庫存移至背包內",
+        "&7Moves items from inventory to backpack",
         "",
         LoreBuilderDynamic.powerBuffer(BackpackLoader.CAPACITY),
         LoreBuilderDynamic.powerPerTick(BackpackLoader.ENERGY_CONSUMPTION)
@@ -289,107 +289,107 @@ public class FluffyItems {
     public static final SlimefunItemStack UPGRADED_EXPLOSIVE_PICKAXE = new SlimefunItemStack(
         "UPGRADED_EXPLOSIVE_PICKAXE",
         Material.DIAMOND_PICKAXE,
-        "&e&l升級版爆炸鎬",
+        "&e&lUpgraded Explosive Pickaxe",
         "",
-        "&7以5x5範圍破壞可挖掘的方塊"
+        "&7Breaks all mineable blocks in a 5x5 radius"
     );
     public static final SlimefunItemStack UPGRADED_EXPLOSIVE_SHOVEL = new SlimefunItemStack("UPGRADED_EXPLOSIVE_SHOVEL",
         Material.DIAMOND_SHOVEL,
-        "&e&l升級版爆炸鏟",
+        "&e&lUpgraded Explosive Shovel",
         "",
-        "&7以5x5範圍破壞可鏟的方塊"
+        "&7Breaks all shovelable blocks in a 5x5 radius"
     );
     public static final SlimefunItemStack FIREPROOF_RUNE = new SlimefunItemStack(
         "FIREPROOF_RUNE",
         new ColoredFireworkStar(Color.fromRGB(255, 165, 0),
-            "&7古代魔法符文 &8&l[&c&l防火&8&l]",
+            "&7Ancient Rune &8&l[&c&lFireproof&8&l]",
             "",
-            "&e將此符文放在掉落物品上",
-            "&e讓它&c防火",
+            "&eDrop this rune onto a dropped item to",
+            "&emake it &cfireproof",
             ""
     ));
     public static final SlimefunItemStack SUPERHEATED_FURNACE = new SlimefunItemStack("SUPERHEATED_FURNACE",
         Material.BLAST_FURNACE,
-        "&c超級炙熱熔爐",
+        "&cSuper Heated Furnace",
         "",
-        "&7鑄造廠的多重方塊一部份",
-        "&c必須在鑄造廠上使用"
+        "&7Multiblock component of the Foundry",
+        "&cMust be used in the Foundry"
     );
     public static final SlimefunItemStack AUTO_MAGIC_WORKBENCH = new SlimefunItemStack("AUTO_MAGIC_WORKBENCH",
         Material.BOOKSHELF,
-        "&6自動魔法合成台",
+        "&6Auto Magic Workbench",
         "",
-        "&7自動製作&6魔法合成台&7配方",
+        "&7Automatically crafts &6Magic Workbench &7recipes",
         "",
         LoreBuilderDynamic.powerBuffer(AutoCrafter.CAPACITY),
         LoreBuilderDynamic.powerPerTick(AutoCrafter.ENERGY_CONSUMPTION)
     );
     public static final SlimefunItemStack AUTO_ARMOR_FORGE = new SlimefunItemStack("AUTO_ARMOR_FORGE",
         Material.SMITHING_TABLE,
-        "&7自動盔甲鍛造台",
+        "&7Auto Armor Forge",
         "",
-        "&7自動製作盔甲鍛造台的配方",
+        "&7Automatically crafts Armor Forge recipes",
         "",
         LoreBuilderDynamic.powerBuffer(AutoCrafter.CAPACITY),
         LoreBuilderDynamic.powerPerTick(AutoCrafter.ENERGY_CONSUMPTION)
     );
     public static final SlimefunItemStack ADVANCED_AUTO_DISENCHANTER = new SlimefunItemStack("ADVANCED_AUTO_DISENCHANTER",
         Material.ENCHANTING_TABLE,
-        "&c高級自動退魔器",
+        "&cAdvanced Auto Disenchanter",
         "",
-        "&7從物品上移除一個附魔",
-        "&7需要&6古代書籍&7來運作",
+        "&7Removes one enchant from an item",
+        "&7Requires an &6Ancient Book &7to operate",
         "",
         LoreBuilderDynamic.powerBuffer(AdvancedAutoDisenchanter.CAPACITY),
         LoreBuilderDynamic.powerPerTick(AdvancedAutoDisenchanter.ENERGY_CONSUMPTION)
     );
     public static final SlimefunItemStack SCYTHE = new SlimefunItemStack("SCYTHE",
         Material.IRON_HOE,
-        "&e鐮刀",
+        "&eScythe",
         "",
-        "&7一次採收五個農作物"
+        "&7Breaks 5 crops at once"
     );
     public static final SlimefunItemStack UPGRADED_LUMBER_AXE = new SlimefunItemStack("UPGRADED_LUMBER_AXE",
         Material.DIAMOND_AXE,
-        "&6&l升級版伐木斧",
+        "&6&lUpgraded Lumber Axe",
         "",
-        "&7一次砍倒整棵樹",
-        "&72格方塊遠和可以運作於對角方塊上"
+        "&7Chops down an entire tree at once",
+        "&72 block reach and works on diagonal blocks too"
     );
     public static final SlimefunItemStack DOLLY = new SlimefunItemStack("DOLLY",
         Material.MINECART,
-        "&b搬運器",
+        "&bDolly",
         "",
-        "&7右鍵拿起箱子",
+        "&7Right click a chest to pick it up",
         "",
         "&7ID: <ID>"
     );
 
     public static final SlimefunItemStack WARP_PAD = new SlimefunItemStack("WARP_PAD",
         Material.SMOKER,
-        "&6傳送板",
+        "&6Warp Pad",
         "",
-        "&e蹲下 &7在此方塊上傳送到",
-        "&7鏈接的目的地板",
+        "&eCrouch &7on this block to teleport to",
+        "&7the linked destination pad",
         "",
-        "&7使用傳送板配置器來連接傳送板"
+        "&7Use a Warp Pad Configurator to link Warp Pads"
     );
 
     public static final SlimefunItemStack WARP_PAD_CONFIGURATOR = new SlimefunItemStack("WARP_PAD_CONFIGURATOR",
         Material.BLAZE_ROD,
-        "&6傳送板配置器",
+        "&6Warp Pad Configurator",
         "",
-        "&e蹲下右鍵 &7在傳送板上設置目的地",
-        "&e右鍵 &7在傳送板上設置源點",
+        "&eSneak and Right Click &7on a Warp Pad to set the destination",
+        "&eRight Click &7on a Warp Pad to set the origin",
         "",
-        "&e鏈接坐標: &7無"
+        "&eLinked Coordinates: &7None"
     );
 
     public static final SlimefunItemStack ELECTRIC_DUST_FABRICATOR = new SlimefunItemStack("ELECTRIC_DUST_FABRICATOR",
         Material.BLAST_FURNACE,
-        "&6電動粉工廠",
+        "&6Electric Dust Fabricator",
         "",
-        "&7一機多用的機器,它有研磨機,掏金機與礦物洗滌機的功能",
+        "&7An all-in-one machine that grinds, pans, and washes",
         LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE),
         LoreBuilder.speed(10),
         LoreBuilderDynamic.powerBuffer(ElectricDustFabricator.CAPACITY),
@@ -398,9 +398,9 @@ public class FluffyItems {
 
     public static final SlimefunItemStack ELECTRIC_DUST_RECYCLER = new SlimefunItemStack("ELECTRIC_DUST_RECYCLER",
         Material.IRON_BLOCK,
-        "&f電動粉回收機",
+        "&fElectric Dust Recycler",
         "",
-        "&7將粉回收為篩礦",
+        "&7Recycles dust back into sifted ore",
         LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE),
         LoreBuilder.speed(1),
         LoreBuilderDynamic.powerBuffer(ElectricDustRecycler.CAPACITY),

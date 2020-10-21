@@ -16,7 +16,7 @@ public final class LoreBuilderDynamic {
 
 
     public static String powerBuffer(double power) {
-        return power(power, " 緩存");
+        return power(power, " Buffer");
     }
 
     public static String powerPerTick(double power) {

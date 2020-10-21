@@ -49,10 +49,10 @@ public class CrankGenerator extends MultiBlockMachine implements EnergyNetProvid
                 p.playSound(p.getLocation(), Sound.BLOCK_PISTON_EXTEND, 0.5F, 0.5F);
 
             } else {
-                Utils.send(p, "&c缺少發電機核心");
+                Utils.send(p, "&cMissing generator core");
             }
         } else {
-            Utils.send(p, "&c缺少發電機核心");
+            Utils.send(p, "&cMissing generator core");
         }
     }
 

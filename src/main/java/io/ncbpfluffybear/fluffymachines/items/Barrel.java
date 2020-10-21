@@ -75,16 +75,16 @@ public class Barrel extends SlimefunItem {
                 // Essentially convert to onPlace itemhandler
                 if (BlockStorage.getLocationInfo(b.getLocation(), "stored") == null) {
                     menu.replaceExistingItem(STATUS_SLOT, new CustomItem(
-                        Material.LIME_STAINED_GLASS_PANE, "&6儲存物品: &e0" + " / " + MAX_STORAGE, "&70%"));
+                        Material.LIME_STAINED_GLASS_PANE, "&6Items Stored: &e0" + " / " + MAX_STORAGE, "&70%"));
                     menu.addMenuClickHandler(STATUS_SLOT, (p, slot, item, action) -> false);
 
-                    menu.replaceExistingItem(DISPLAY_SLOT, new CustomItem(Material.BARRIER, "&c空"));
+                    menu.replaceExistingItem(DISPLAY_SLOT, new CustomItem(Material.BARRIER, "&cEmpty"));
                     menu.addMenuClickHandler(DISPLAY_SLOT, (p, slot, item, action) -> false);
 
                     BlockStorage.addBlockInfo(b, "stored", "0");
 
                     if (showHologram.getValue()) {
-                        SimpleHologram.update(b, "&c空");
+                        SimpleHologram.update(b, "&cEmpty");
                     }
 
                     // We still need the click handlers though
@@ -341,16 +341,16 @@ public class Barrel extends SlimefunItem {
         String storedStacks = doubleRoundAndFade((double) stored / (double) inv.getItemInSlot(DISPLAY_SLOT).getMaxStackSize());
 
         inv.replaceExistingItem(STATUS_SLOT, new CustomItem(
-            Material.LIME_STAINED_GLASS_PANE, "&6儲存物品: &e" + stored + " / " + MAX_STORAGE,
-            "&b" + storedStacks + " 組 &8| &7" + storedPercent + "&7%"));
+            Material.LIME_STAINED_GLASS_PANE, "&6Items Stored: &e" + stored + " / " + MAX_STORAGE,
+            "&b" + storedStacks + " Stacks &8| &7" + storedPercent + "&7%"));
         if (showHologram.getValue()) {
             SimpleHologram.update(b, itemName + " &9x" + stored + " &7(" + storedPercent + "&7%)");
         }
 
         if (stored == 0) {
-            inv.replaceExistingItem(DISPLAY_SLOT, new CustomItem(Material.BARRIER, "&c空"));
+            inv.replaceExistingItem(DISPLAY_SLOT, new CustomItem(Material.BARRIER, "&cEmpty"));
             if (showHologram.getValue()) {
-                SimpleHologram.update(b, "&c空");
+                SimpleHologram.update(b, "&cEmpty");
             }
         }
     }
