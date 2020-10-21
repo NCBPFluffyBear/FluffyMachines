@@ -5,7 +5,7 @@ name: FluffyMachines
 author: NCBPFluffyBear
 
 ## CHANGE this to a meaninful but short description of your plugin.
-description: A fun addon
+description: 黏液科技附加 Fluffy機器 繁體翻譯版.
 
 ## CHANGE this to the path of the class that extends JavaPlugin.
 main: io.ncbpfluffybear.fluffymachines.FluffyMachines

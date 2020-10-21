@@ -142,11 +142,11 @@ public class EnderChestInsertionNode extends SlimefunItem {
                 if (e.getBlockAgainst().getType() != Material.ENDER_CHEST) {
                     e.setCancelled(true);
                     BlockStorage.clearBlockInfo(e.getBlockPlaced());
-                    Utils.send(p, "&cYou can only place this on an Ender Chest!");
+                    Utils.send(p, "&c你只能把它放在終界箱上!");
                 } else {
                     BlockStorage.addBlockInfo(b, "owner", p.getUniqueId().toString());
                     BlockStorage.addBlockInfo(b, "playername", p.getDisplayName());
-                    Utils.send(p, "&aEnder Chest Insertion Node registered to " + p.getDisplayName()
+                    Utils.send(p, "&a終界箱存放節點已註冊到 " + p.getDisplayName()
                         + " &7(UUID: " + p.getUniqueId().toString() + ")");
                 }
             }
@@ -157,7 +157,7 @@ public class EnderChestInsertionNode extends SlimefunItem {
         return (BlockUseHandler) e -> {
             Player p = e.getPlayer();
             Block b = e.getClickedBlock().get();
-            Utils.send(p, "&eThis Ender Chest Insertion Node belongs to " +
+            Utils.send(p, "&e這終界箱存放節點屬於 " +
                 BlockStorage.getLocationInfo(b.getLocation(), "playername")
                 + " &7(UUID: " + BlockStorage.getLocationInfo(b.getLocation(), "owner") + ")");
         };

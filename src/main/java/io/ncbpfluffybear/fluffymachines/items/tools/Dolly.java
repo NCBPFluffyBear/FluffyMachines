@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
 
-    private static final ItemStack lockItem = Utils.buildNonInteractable(Material.DIRT, "&4&lDolly empty", "&cHow did you get in here?");
+    private static final ItemStack lockItem = Utils.buildNonInteractable(Material.DIRT, "&4&l搬運器", "&c你怎麼進來的?");
 
     public Dolly(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
@@ -70,7 +70,7 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
                 Inventory chest = ((InventoryHolder) b.getState()).getInventory();
 
                 if (chest.getSize() > 27) {
-                    Utils.send(p, "&cYou can only pick up single chests!");
+                    Utils.send(p, "&c你只能搬起單個箱子!");
                     return;
                 }
 
@@ -86,14 +86,14 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
                         exists.set(true);
                         dolly.setType(Material.CHEST_MINECART);
                     } else {
-                        Utils.send(p, "&cThis dolly is already carrying a chest!");
+                        Utils.send(p, "&c已經有正在搬運的箱子了!");
                     }
                 });
 
                 // Deals with async problems
                 if (exists.get()) {
                     b.setType(Material.AIR);
-                    Utils.send(p, "&aYou have picked up this chest");
+                    Utils.send(p, "&a你搬起了這個箱子");
                 }
 
 
@@ -107,9 +107,9 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
                         relative.setType(Material.CHEST);
                         ((InventoryHolder) relative.getState()).getInventory().setStorageContents(bpcontents);
                         dolly.setType(Material.MINECART);
-                        Utils.send(p, "&aChest has been placed");
+                        Utils.send(p, "&a箱子已放置");
                     } else {
-                        Utils.send(p, "&cYou must pick up a chest first!");
+                        Utils.send(p, "&c你需要先搬起一個箱子!");
                     }
                 });
             }

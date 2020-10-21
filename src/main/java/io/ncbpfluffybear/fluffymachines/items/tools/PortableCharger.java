@@ -67,11 +67,11 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
             final Rechargeable charger = (Rechargeable) SlimefunItem.getByItem(chargerItem);
 
             // Create GUI Items
-            Inventory inventory = Bukkit.createInventory(null, 27, ChatColor.GOLD + "Portable Charger");
+            Inventory inventory = Bukkit.createInventory(null, 27, ChatColor.GOLD + "隨身充電器");
 
             ItemStack backgroundItem = Utils.buildNonInteractable(Material.GRAY_STAINED_GLASS_PANE, null);
             ItemStack borderItem = Utils.buildNonInteractable(Material.YELLOW_STAINED_GLASS_PANE, null);
-            ItemStack powerItem = Utils.buildNonInteractable(Material.GLOWSTONE, "&4Power");
+            ItemStack powerItem = Utils.buildNonInteractable(Material.GLOWSTONE, "&4電量");
 
             // Build and open GUI
             for (int i = 0; i < 27; i++)
@@ -81,7 +81,7 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
                 inventory.setItem(slot, borderItem);
 
             inventory.setItem(POWER_SLOT, powerItem);
-            updateSlot(inventory, POWER_SLOT, "&6&lPower Remaining",
+            updateSlot(inventory, POWER_SLOT, "&6&l剩餘電量",
                 "&e" + charger.getItemCharge(chargerItem) + "J");
             inventory.clear(CHARGE_SLOT);
             p.openInventory(inventory);
@@ -118,14 +118,14 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
                             }
 
                         } else if (neededCharge == 0) {
-                            Utils.send(p, "&cThis item is already full!");
+                            Utils.send(p, "&c此物品已被充飽!");
 
                         } else {
-                            Utils.send(p, "&cYour charger does not have enough power!");
+                            Utils.send(p, "&c你的充電器並沒有足夠的電量!");
                         }
 
                         // The name of the powerItem NEEDS to be "Portable Charger" to cancel event
-                        updateSlot(inventory, POWER_SLOT, "&6&lPower Remaining",
+                        updateSlot(inventory, POWER_SLOT, "&6&l剩餘電量",
                             "&e" + charger.getItemCharge(chargerItem) + "J");
                     }
 
@@ -137,7 +137,7 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
 
                         // Check if player left an item inside
                         if (forgottenItem != null) {
-                            Utils.send(p, "&cHey! You left something in the charger! Dropping it now...");
+                            Utils.send(p, "&c嘿! 你在充電器內遺留了一些東西! 現在落下了...");
                             p.getWorld().dropItemNaturally(p.getLocation(), forgottenItem);
                         }
                     }

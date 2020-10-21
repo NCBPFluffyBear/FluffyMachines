@@ -64,7 +64,7 @@ public class SuperheatedFurnace extends SlimefunItem {
     public SuperheatedFurnace(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
-        new BlockMenuPreset(getID(), "&cFoundry") {
+        new BlockMenuPreset(getID(), "&c鑄造廠") {
 
             @Override
             public void init() {
@@ -75,9 +75,9 @@ public class SuperheatedFurnace extends SlimefunItem {
             public void newInstance(BlockMenu menu, Block b) {
                 if (BlockStorage.getLocationInfo(b.getLocation(), "stored") == null) {
 
-                    menu.replaceExistingItem(4, new CustomItem(Material.GUNPOWDER, "&6Dust Available: &e0", "&a> Click here to retrieve"));
-                    menu.replaceExistingItem(7, new CustomItem(Material.IRON_INGOT, "&6Ingots Available: &e0", "&a> Click here to retrieve"));
-                    menu.replaceExistingItem(1, new CustomItem(Material.CHEST, "&6Melted Dust: &e0 &7(0%)", "&bType: None",  "&7Stacks: 0"));
+                    menu.replaceExistingItem(4, new CustomItem(Material.GUNPOWDER, "&6可用的粉: &e0", "&a> 點擊這裡拿出"));
+                    menu.replaceExistingItem(7, new CustomItem(Material.IRON_INGOT, "&6可用的錠: &e0", "&a> 點擊這裡拿出"));
+                    menu.replaceExistingItem(1, new CustomItem(Material.CHEST, "&6融化的粉: &e0 &7(0%)", "&b類型: 無",  "&7組: 0"));
 
                     BlockStorage.addBlockInfo(b, "stored", "0");
                 }
@@ -276,13 +276,13 @@ public class SuperheatedFurnace extends SlimefunItem {
 
         if (stored.equals("0")) {
             setBlockInfo(b, "type", null);
-            inv.replaceExistingItem(INPUT_INDICATOR, new CustomItem(new ItemStack(Material.CHEST), "&6Melted Dust: &e0 &7(0%)", "&bType: None",  "&7Stacks: 0"));
+            inv.replaceExistingItem(INPUT_INDICATOR, new CustomItem(new ItemStack(Material.CHEST), "&6融化的粉: &e0 &7(0%)", "&b類型: 無",  "&7組: 0"));
         } else {
-            inv.replaceExistingItem(INPUT_INDICATOR, new CustomItem(new ItemStack(Material.CHEST), "&6Melted Dust: &e" + stored + " &7(" + Double.parseDouble(stored) / MAX_STORAGE + "%)", "&bType: " + type, "&7Stacks: " + Double.parseDouble(stored) / 64));
+            inv.replaceExistingItem(INPUT_INDICATOR, new CustomItem(new ItemStack(Material.CHEST), "&6融化的粉: &e" + stored + " &7(" + Double.parseDouble(stored) / MAX_STORAGE + "%)", "&b類型: " + type, "&7組: " + Double.parseDouble(stored) / 64));
 
         }
-        inv.replaceExistingItem(DUST_INDICATOR, new CustomItem(new ItemStack(Material.GUNPOWDER), "&6Dust Available: &e" + stored, "&a> Click here to retrieve"));
-        inv.replaceExistingItem(INGOT_INDICATOR, new CustomItem(new ItemStack(Material.IRON_INGOT), "&6Ingots Available: &e" + stored, "&a> Click here to retrieve"));
+        inv.replaceExistingItem(DUST_INDICATOR, new CustomItem(new ItemStack(Material.GUNPOWDER), "&6可用的粉: &e" + stored, "&a> 點擊這裡拿出"));
+        inv.replaceExistingItem(INGOT_INDICATOR, new CustomItem(new ItemStack(Material.IRON_INGOT), "&6可用的錠: &e" + stored, "&a> 點擊這裡拿出"));
 
 
     }
