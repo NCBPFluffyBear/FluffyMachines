@@ -65,7 +65,7 @@ public class FluffyItems {
 
     public static final SlimefunItemStack MEDIUM_FLUFFY_BARREL = new SlimefunItemStack("MEDIUM_FLUFFY_BARREL",
         Material.BARREL,
-        "&6中型 Fluffy 木桶",
+        "&6中型 Fluffy木桶",
         "",
         "&7可存儲多個相同的物品",
         "",

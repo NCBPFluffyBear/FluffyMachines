@@ -138,8 +138,8 @@ public class Barrel extends SlimefunItem {
                     ItemStack unKeyed = Utils.unKeyItem(inv.getItemInSlot(DISPLAY_SLOT));
 
                     if (stored > OVERFLOW_AMOUNT) {
-                        Utils.send(p, "&eThere are more than " + OVERFLOW_AMOUNT + " items in this barrel! " +
-                            "Dropping " + OVERFLOW_AMOUNT + " items instead!");
+                        Utils.send(p, "&e此木桶內有超過 " + OVERFLOW_AMOUNT + " 個物品! " +
+                            "掉落 " + OVERFLOW_AMOUNT + " 個替代物品!");
                         int toRemove = OVERFLOW_AMOUNT;
                         while (toRemove >= stackSize) {
 
