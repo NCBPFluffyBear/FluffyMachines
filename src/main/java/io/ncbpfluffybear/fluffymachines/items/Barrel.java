@@ -51,6 +51,8 @@ public class Barrel extends SlimefunItem {
     public static final int MASSIVE_BARREL_SIZE = 276480; // 80 Double chests
     public static final int BOTTOMLESS_BARREL_SIZE = 1728000; // 500 Double chests
 
+    private final int OVERFLOW_AMOUNT = 49920;
+
     private final int MAX_STORAGE;
 
     private final ItemSetting<Boolean> showHologram = new ItemSetting<>("show-hologram", true);
@@ -135,25 +137,53 @@ public class Barrel extends SlimefunItem {
                     int stackSize = inv.getItemInSlot(DISPLAY_SLOT).getMaxStackSize();
                     ItemStack unKeyed = Utils.unKeyItem(inv.getItemInSlot(DISPLAY_SLOT));
 
-                    // Everything greater than 1 stack
-                    while (stored >= stackSize) {
+                    if (stored > OVERFLOW_AMOUNT) {
+                        Utils.send(p, "&eThere are more than " + OVERFLOW_AMOUNT + " items in this barrel! " +
+                            "Dropping " + OVERFLOW_AMOUNT + " items instead!");
+                        int toRemove = OVERFLOW_AMOUNT;
+                        while (toRemove >= stackSize) {
 
-                        b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(unKeyed, stackSize));
+                            b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(unKeyed, stackSize));
 
-                        stored = stored - stackSize;
+                            toRemove = toRemove - stackSize;
+                        }
+
+                        if (toRemove > 0) {
+                            b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(unKeyed, toRemove));
+                        }
+
+                        BlockStorage.addBlockInfo(b, "stored", String.valueOf(stored - OVERFLOW_AMOUNT));
+                        updateMenu(b, inv);
+
+                        return false;
+                    } else {
+
+                        // Everything greater than 1 stack
+                        while (stored >= stackSize) {
+
+                            b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(unKeyed, stackSize));
+
+                            stored = stored - stackSize;
+                        }
+
+                        // Drop remaining, if there is any
+                        if (stored > 0) {
+                            b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(unKeyed, stored));
+                        }
+
+                        // In case they use an explosive pick
+                        BlockStorage.addBlockInfo(b, "stored", "0");
+                        updateMenu(b, inv);
+                        SimpleHologram.remove(b);
+                        return true;
                     }
-
-                    // Drop remaining, if there is any
-                    if (stored > 0) {
-                        b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(unKeyed, stored));
-                    }
+                } else {
+                    SimpleHologram.remove(b);
+                    return true;
                 }
 
             }
-            // In case they use an explosive pick
-            BlockStorage.addBlockInfo(b, "stored", "0");
-            updateMenu(b, inv);
-            SimpleHologram.remove(b);
+
             return true;
         });
 
@@ -216,7 +246,7 @@ public class Barrel extends SlimefunItem {
                     if (stored + item.getAmount() <= MAX_STORAGE) {
                         storeItem(b, inv, slot, item, stored);
 
-                    // Split itemstack
+                        // Split itemstack
                     } else {
                         int amount = MAX_STORAGE - stored;
                         inv.consumeItem(slot, amount);
