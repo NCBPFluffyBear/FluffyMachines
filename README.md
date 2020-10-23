@@ -7,7 +7,8 @@
 
 自訂義物品設置可以在`plugins/Slimefun/Items.yml`內進行更改
 
-[官方原碼連結](https://github.com/NCBPFluffyBear/FluffyMachines)
+此為**非官方**版本, 請勿在該作者的問題追蹤內回報!
+[原作者連結](https://github.com/NCBPFluffyBear/FluffyMachines)
 
 ## 機器
 **自動工作台**: 自動製作原版配方

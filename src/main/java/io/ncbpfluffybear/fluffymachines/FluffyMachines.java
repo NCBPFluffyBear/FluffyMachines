@@ -10,7 +10,7 @@ import lombok.SneakyThrows;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.Slimefun;
-import me.mrCookieSlime.Slimefun.bstats.bukkit.Metrics;
+//import me.mrCookieSlime.Slimefun.bstats.bukkit.Metrics;
 //import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 //import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
 import io.ncbpfluffybear.fluffymachines.utils.Events;
@@ -64,7 +64,7 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
         // Register Events Class
         getServer().getPluginManager().registerEvents(new Events(), this);
 
-        final Metrics metrics = new Metrics(this, 8927);
+        //final Metrics metrics = new Metrics(this, 8927);
 
         getLogger().log(Level.INFO, ChatColor.GREEN + "Hi 你好! 想要分享你的伺服器到" +
             "Slimefun社群?");
@@ -83,6 +83,9 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
         getLogger().log(Level.WARNING, ChatColor.RED + "如果你希望暫時禁用木桶,你可以在");
         getLogger().log(Level.WARNING, ChatColor.RED + "/plugins/Slimefun/Items.yml");
         getLogger().log(Level.WARNING, ChatColor.RED + "一旦木桶被確認為穩定,此訊息將會被替換.");
+        getLogger().log(Level.WARNING, ChatColor.RED + "");
+        getLogger().log(Level.WARNING, ChatColor.RED + "此為繁體翻譯版 非官方版本");
+        getLogger().log(Level.WARNING, ChatColor.RED + "請勿在黏液科技伺服器官方問!");
     }
 
     @Override
@@ -171,7 +174,7 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
     @Override
     public String getBugTrackerURL() {
-        return "https://github.com/NCBPFluffyBear/FluffyMachines/issues";
+        return "https://github.com/xMikux/FluffyMachines/issues";
     }
 
     @Nonnull
