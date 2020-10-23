@@ -50,6 +50,7 @@ public class SuperheatedFurnace extends SlimefunItem {
 
     private static final int MAX_STORAGE = 138240;
     private static final Material netherite = Material.NETHERITE_BLOCK;
+    private int MAX_STACK_SIZE = 64;
 
     private static final SlimefunItemStack[] dusts = new SlimefunItemStack[] {
         SlimefunItems.COPPER_DUST, SlimefunItems.GOLD_DUST, SlimefunItems.IRON_DUST,
@@ -75,8 +76,8 @@ public class SuperheatedFurnace extends SlimefunItem {
             public void newInstance(BlockMenu menu, Block b) {
                 if (BlockStorage.getLocationInfo(b.getLocation(), "stored") == null) {
 
-                    menu.replaceExistingItem(4, new CustomItem(Material.GUNPOWDER, "&6Dust Available: &e0", "&a> Click here to retrieve"));
-                    menu.replaceExistingItem(7, new CustomItem(Material.IRON_INGOT, "&6Ingots Available: &e0", "&a> Click here to retrieve"));
+                    menu.replaceExistingItem(4, new CustomItem(Material.GUNPOWDER, "&6Dust Available: &e0", "&a> &eLeft Click &ahere to retrieve 1", "&a> &eLeft Click &ahere to retrieve 64"));
+                    menu.replaceExistingItem(7, new CustomItem(Material.IRON_INGOT, "&6Ingots Available: &e0", "&a> &eRight Click &ahere to retrieve 1", "&a> &eLeft Click &ahere to retrieve 64"));
                     menu.replaceExistingItem(1, new CustomItem(Material.CHEST, "&6Melted Dust: &e0 &7(0%)", "&bType: None",  "&7Stacks: 0"));
 
                     BlockStorage.addBlockInfo(b, "stored", "0");
@@ -85,12 +86,20 @@ public class SuperheatedFurnace extends SlimefunItem {
                 menu.addMenuClickHandler(1, (p, slot, item, action) -> false);
 
                 menu.addMenuClickHandler(4, (p, slot, item, action) -> {
-                    retrieveDust(menu, b);
+                    if (action.isRightClicked()) {
+                        retrieveDust(menu, b, true);
+                    } else {
+                        retrieveDust(menu, b, false);
+                    }
                     return false;
                 });
 
                 menu.addMenuClickHandler(7, (p, slot, item, action) -> {
-                    retrieveIngot(menu, b);
+                    if (action.isRightClicked()) {
+                        retrieveIngot(menu, b, true);
+                    } else {
+                        retrieveIngot(menu, b, false);
+                    }
                     return false;
                 });
             }
@@ -281,13 +290,13 @@ public class SuperheatedFurnace extends SlimefunItem {
             inv.replaceExistingItem(INPUT_INDICATOR, new CustomItem(new ItemStack(Material.CHEST), "&6Melted Dust: &e" + stored + " &7(" + Double.parseDouble(stored) / MAX_STORAGE + "%)", "&bType: " + type, "&7Stacks: " + Double.parseDouble(stored) / 64));
 
         }
-        inv.replaceExistingItem(DUST_INDICATOR, new CustomItem(new ItemStack(Material.GUNPOWDER), "&6Dust Available: &e" + stored, "&a> Click here to retrieve"));
-        inv.replaceExistingItem(INGOT_INDICATOR, new CustomItem(new ItemStack(Material.IRON_INGOT), "&6Ingots Available: &e" + stored, "&a> Click here to retrieve"));
+        inv.replaceExistingItem(DUST_INDICATOR, new CustomItem(new ItemStack(Material.GUNPOWDER), "&6Dust Available: &e" + stored, "&a> &eLeft Click &ahere to retrieve 1", "&a> &eLeft Click &ahere to retrieve 64"));
+        inv.replaceExistingItem(INGOT_INDICATOR, new CustomItem(new ItemStack(Material.IRON_INGOT), "&6Ingots Available: &e" + stored, "&a> &eLeft Click &ahere to retrieve 1", "&a> &eRight Click &ahere to retrieve 64"));
 
 
     }
 
-    private void retrieveDust(BlockMenu menu, Block b) {
+    private void retrieveDust(BlockMenu menu, Block b, boolean isRightClicked) {
 
         if (getBlockInfo(b.getLocation(), "stored") == null)
             return;
@@ -298,15 +307,26 @@ public class SuperheatedFurnace extends SlimefunItem {
             || menu.getItemInSlot(DUST_OUTPUT_SLOT).getAmount() < 64)) {
 
             String type = getBlockInfo(b.getLocation(), "type");
+            int amount;
 
-            setBlockInfo(b, "stored", String.valueOf(stored - 1));
-            menu.pushItem(SlimefunItem.getByID(type + "_DUST").getItem().clone(), DUST_OUTPUT_SLOT);
+            if (!isRightClicked) {
+                amount = 1;
+            } else if (stored < MAX_STACK_SIZE) {
+                amount = stored;
+            } else if (menu.getItemInSlot(DUST_OUTPUT_SLOT) == null) {
+                amount = MAX_STACK_SIZE;
+            } else {
+                amount = MAX_STACK_SIZE - menu.getItemInSlot(DUST_OUTPUT_SLOT).getAmount();
+            }
+
+            setBlockInfo(b, "stored", String.valueOf(stored - amount));
+            menu.pushItem(new CustomItem(SlimefunItem.getByID(type + "_DUST").getItem().clone(), amount), DUST_OUTPUT_SLOT);
 
             updateIndicator(b);
         }
     }
 
-    private void retrieveIngot(BlockMenu menu, Block b) {
+    private void retrieveIngot(BlockMenu menu, Block b, boolean isRightClicked) {
 
         if (getBlockInfo(b.getLocation(), "stored") == null)
             return;
@@ -318,14 +338,26 @@ public class SuperheatedFurnace extends SlimefunItem {
 
             String type = getBlockInfo(b.getLocation(), "type");
 
-            setBlockInfo(b, "stored", String.valueOf(stored - 1));
+            int amount;
+
+            if (!isRightClicked) {
+                amount = 1;
+            } else if (stored < MAX_STACK_SIZE) {
+                amount = stored;
+            } else if (menu.getItemInSlot(DUST_OUTPUT_SLOT) == null) {
+                amount = MAX_STACK_SIZE;
+            } else {
+                amount = MAX_STACK_SIZE - menu.getItemInSlot(DUST_OUTPUT_SLOT).getAmount();
+            }
+
+            setBlockInfo(b, "stored", String.valueOf(stored - amount));
             if (type.equals("GOLD")) {
-                menu.pushItem(SlimefunItems.GOLD_4K.getItem().getItem().clone(), INGOT_OUTPUT_SLOT);
+                menu.pushItem(new CustomItem(SlimefunItems.GOLD_4K.getItem().getItem().clone(), 1), INGOT_OUTPUT_SLOT);
             } else if (type.equals("IRON")) {
-                menu.pushItem(new ItemStack(Material.IRON_INGOT), INGOT_OUTPUT_SLOT);
+                menu.pushItem(new ItemStack(Material.IRON_INGOT, amount), INGOT_OUTPUT_SLOT);
 
             } else {
-                menu.pushItem(SlimefunItem.getByID(type + "_INGOT").getItem().clone(), INGOT_OUTPUT_SLOT);
+                menu.pushItem(new CustomItem(SlimefunItem.getByID(type + "_INGOT").getItem().clone(), 1), INGOT_OUTPUT_SLOT);
             }
             updateIndicator(b);
         }
