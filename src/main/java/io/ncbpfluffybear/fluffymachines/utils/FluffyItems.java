@@ -304,6 +304,12 @@ public class FluffyItems {
         "",
         "&7ID: <ID>"
     );
+    public static final SlimefunItemStack BUILDERS_WAND = new SlimefunItemStack("BUILDERS_WAND",
+        Material.GOLDEN_AXE,
+        "&bBuilder's Wand",
+        "",
+        "&7Places many blocks at once"
+    );
 
     static {
         FireproofRune.setFireproof(FIREPROOF_RUNE);

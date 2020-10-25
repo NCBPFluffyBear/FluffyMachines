@@ -3,6 +3,7 @@ package io.ncbpfluffybear.fluffymachines;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.ncbpfluffybear.fluffymachines.items.Barrel;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
+import io.ncbpfluffybear.fluffymachines.items.tools.BuildersWand;
 import io.ncbpfluffybear.fluffymachines.items.tools.Dolly;
 import io.ncbpfluffybear.fluffymachines.machines.AdvancedAutoDisenchanter;
 import io.ncbpfluffybear.fluffymachines.machines.AutoArmorForge;
@@ -232,6 +233,13 @@ public final class FluffyItemSetup {
 
         new SlimefunItem(FluffyItems.fluffymachines, FluffyItems.ANCIENT_BOOK,
             RecipeType.ANCIENT_ALTAR, new ItemStack[] {
+            new ItemStack(Material.BOOK), SlimefunItems.FILLED_FLASK_OF_KNOWLEDGE, new ItemStack(Material.BOOK),
+            SlimefunItems.FILLED_FLASK_OF_KNOWLEDGE, SlimefunItems.ENCHANTMENT_RUNE, SlimefunItems.FILLED_FLASK_OF_KNOWLEDGE,
+            new ItemStack(Material.BOOK), SlimefunItems.FILLED_FLASK_OF_KNOWLEDGE, new ItemStack(Material.BOOK)
+        }).register(plugin);
+
+        new BuildersWand(FluffyItems.fluffymachines, FluffyItems.BUILDERS_WAND,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
             new ItemStack(Material.BOOK), SlimefunItems.FILLED_FLASK_OF_KNOWLEDGE, new ItemStack(Material.BOOK),
             SlimefunItems.FILLED_FLASK_OF_KNOWLEDGE, SlimefunItems.ENCHANTMENT_RUNE, SlimefunItems.FILLED_FLASK_OF_KNOWLEDGE,
             new ItemStack(Material.BOOK), SlimefunItems.FILLED_FLASK_OF_KNOWLEDGE, new ItemStack(Material.BOOK)
