@@ -245,8 +245,8 @@ public final class FluffyItemSetup {
         new HelicopterHat(FluffyItems.fluffymachines, FluffyItems.HELICOPTER_HAT,
             RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
             new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
-            null, new ItemStack(Material.LEATHER_HELMET), null,
-            null, advancedCircuitBoard, null
+            advancedCircuitBoard, new ItemStack(Material.LEATHER_HELMET), advancedCircuitBoard,
+            SlimefunItems.COMPRESSED_CARBON, SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.COMPRESSED_CARBON
         }).register(plugin);
 
         new FireproofRune(FluffyItems.fluffymachines, FluffyItems.FIREPROOF_RUNE,

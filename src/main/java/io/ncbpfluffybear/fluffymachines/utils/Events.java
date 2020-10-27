@@ -17,6 +17,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -33,7 +35,7 @@ public class Events implements Listener {
     public void onHelicopterHatUse(PlayerToggleSneakEvent e) {
         Player p = e.getPlayer();
         if (e.isSneaking() && helicopterHat.isItem(p.getEquipment().getHelmet())) {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 1000000, 10));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 1000000, 4));
         } else {
             p.removePotionEffect(PotionEffectType.LEVITATION);
         }
@@ -140,6 +142,15 @@ public class Events implements Listener {
 
                 }
             }
+        }
+    }
+
+    @EventHandler
+    public void onHopper(InventoryMoveItemEvent e) {
+        if (e.getSource().getType() == InventoryType.HOPPER
+            && BlockStorage.hasBlockInfo(e.getDestination().getLocation())
+            && BlockStorage.checkID(e.getDestination().getLocation().getBlock()).endsWith("FLUFFY_BARREL")) {
+            e.setCancelled(true);
         }
     }
 
