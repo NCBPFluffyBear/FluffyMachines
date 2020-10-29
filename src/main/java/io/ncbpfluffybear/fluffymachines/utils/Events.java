@@ -148,6 +148,7 @@ public class Events implements Listener {
     @EventHandler
     public void onHopper(InventoryMoveItemEvent e) {
         if (e.getSource().getType() == InventoryType.HOPPER
+            && e.getDestination().getLocation() != null
             && BlockStorage.hasBlockInfo(e.getDestination().getLocation())
             && BlockStorage.checkID(e.getDestination().getLocation().getBlock()).endsWith("FLUFFY_BARREL")) {
             e.setCancelled(true);
