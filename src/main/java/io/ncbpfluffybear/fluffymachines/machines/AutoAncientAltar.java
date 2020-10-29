@@ -113,6 +113,10 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
                     return getOutputSlots();
                 }
 
+                if (item.getType() == Material.WATER_BUCKET || item.getType() == Material.WATER_BUCKET) {
+                    return getInputSlots();
+                }
+
                 List<Integer> slots = new ArrayList<>();
                 for (int slot : getInputSlots()) {
                     if (menu.getItemInSlot(slot) != null) {
@@ -259,7 +263,8 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
 
         for (int slot : getInputSlots()) {
             ItemStack slotItem = menu.getItemInSlot(slot);
-            if (slotItem == null || slotItem.getAmount() == 1) {
+            if (slotItem == null || (slotItem.getType() != Material.WATER_BUCKET
+                && slotItem.getType() != Material.MILK_BUCKET && slotItem.getAmount() == 1)) {
                 return;
             }
         }

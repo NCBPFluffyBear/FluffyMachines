@@ -253,7 +253,7 @@ public class SuperheatedFurnace extends NonHopperableItem {
                 }
 
             } else {
-                if (sfItem!= null && sfItem.getID().equals(type + "_DUST")
+                if (sfItem!= null && (sfItem.getID().equals(type + "_DUST") || sfItem.getID().equals(type + "_INGOT"))
                     || (type.equals("GOLD") && sfItem.getID().equals(SlimefunItems.GOLD_4K.getItemId()))
                     || (type.equals("IRON") && inputItem.getType() == Material.IRON_INGOT
                     && inputItem.getItemMeta().equals(new ItemStack(Material.IRON_INGOT).getItemMeta()))
@@ -320,8 +320,11 @@ public class SuperheatedFurnace extends NonHopperableItem {
                 amount = MAX_STACK_SIZE - menu.getItemInSlot(DUST_OUTPUT_SLOT).getAmount();
             }
 
-            setBlockInfo(b, "stored", String.valueOf(stored - amount));
-            menu.pushItem(new CustomItem(SlimefunItem.getByID(type + "_DUST").getItem().clone(), amount), DUST_OUTPUT_SLOT);
+            ItemStack dustItem = new CustomItem(SlimefunItem.getByID(type + "_DUST").getItem().clone(), amount);
+            if (menu.fits(dustItem, DUST_OUTPUT_SLOT)) {
+                setBlockInfo(b, "stored", String.valueOf(stored - amount));
+                menu.pushItem(dustItem, DUST_OUTPUT_SLOT);
+            }
 
             updateIndicator(b);
         }
@@ -345,21 +348,26 @@ public class SuperheatedFurnace extends NonHopperableItem {
                 amount = 1;
             } else if (stored < MAX_STACK_SIZE) {
                 amount = stored;
-            } else if (menu.getItemInSlot(DUST_OUTPUT_SLOT) == null) {
+            } else if (menu.getItemInSlot(INGOT_OUTPUT_SLOT) == null) {
                 amount = MAX_STACK_SIZE;
             } else {
-                amount = MAX_STACK_SIZE - menu.getItemInSlot(DUST_OUTPUT_SLOT).getAmount();
+                amount = MAX_STACK_SIZE - menu.getItemInSlot(INGOT_OUTPUT_SLOT).getAmount();
             }
 
-            setBlockInfo(b, "stored", String.valueOf(stored - amount));
+            ItemStack ingotItem;
             if (type.equals("GOLD")) {
-                menu.pushItem(new CustomItem(SlimefunItems.GOLD_4K.getItem().getItem().clone(), 1), INGOT_OUTPUT_SLOT);
+                ingotItem = new CustomItem(SlimefunItems.GOLD_4K.getItem().getItem().clone(), amount);
             } else if (type.equals("IRON")) {
-                menu.pushItem(new ItemStack(Material.IRON_INGOT, amount), INGOT_OUTPUT_SLOT);
-
+                ingotItem = new ItemStack(Material.IRON_INGOT, amount);
             } else {
-                menu.pushItem(new CustomItem(SlimefunItem.getByID(type + "_INGOT").getItem().clone(), 1), INGOT_OUTPUT_SLOT);
+                ingotItem = new CustomItem(SlimefunItem.getByID(type + "_INGOT").getItem().clone(), amount);
             }
+
+            if (menu.fits(ingotItem, INGOT_OUTPUT_SLOT)) {
+                setBlockInfo(b, "stored", String.valueOf(stored - amount));
+                menu.pushItem(ingotItem, INGOT_OUTPUT_SLOT);
+            }
+
             updateIndicator(b);
         }
     }
