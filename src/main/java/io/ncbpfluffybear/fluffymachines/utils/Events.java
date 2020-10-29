@@ -3,6 +3,7 @@ package io.ncbpfluffybear.fluffymachines.utils;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import io.ncbpfluffybear.fluffymachines.items.tools.WateringCan;
+import io.ncbpfluffybear.fluffymachines.objects.NonHopperableItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,10 +12,12 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
@@ -149,10 +152,10 @@ public class Events implements Listener {
     public void onHopper(InventoryMoveItemEvent e) {
         if (e.getSource().getType() == InventoryType.HOPPER
             && e.getDestination().getLocation() != null
-            && BlockStorage.hasBlockInfo(e.getDestination().getLocation())
-            && BlockStorage.checkID(e.getDestination().getLocation().getBlock()).endsWith("FLUFFY_BARREL")) {
-            e.setCancelled(true);
+            && BlockStorage.hasBlockInfo(e.getDestination().getLocation())) {
+            if (BlockStorage.check(e.getDestination().getLocation()) instanceof NonHopperableItem){
+                e.setCancelled(true);
+            }
         }
     }
-
 }

@@ -2,6 +2,7 @@ package io.ncbpfluffybear.fluffymachines.multiblocks.components;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.ncbpfluffybear.fluffymachines.objects.NonHopperableItem;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
@@ -36,7 +37,7 @@ import java.util.UUID;
  *
  * @author NCBPFluffyBear
  */
-public class SuperheatedFurnace extends SlimefunItem {
+public class SuperheatedFurnace extends NonHopperableItem {
 
     private static final int[] inputBorder = {0, 2, 9, 11, 18, 19, 20};
     private static final int[] dustOutputBorder = {3, 5, 12, 14, 21, 22, 23};

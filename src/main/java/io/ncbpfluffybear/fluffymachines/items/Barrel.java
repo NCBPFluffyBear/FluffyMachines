@@ -3,6 +3,7 @@ package io.ncbpfluffybear.fluffymachines.items;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.utils.holograms.SimpleHologram;
+import io.ncbpfluffybear.fluffymachines.objects.NonHopperableItem;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
@@ -32,7 +33,7 @@ import sun.java2d.pipe.SpanShapeRenderer;
  * @author NCBPFluffyBear
  */
 
-public class Barrel extends SlimefunItem {
+public class Barrel extends NonHopperableItem {
 
     private final int[] inputBorder = {9, 10, 11, 12, 18, 21, 27, 28, 29, 30};
     private final int[] outputBorder = {14, 15, 16, 17, 23, 26, 32, 33, 34, 35};
