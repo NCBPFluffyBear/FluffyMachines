@@ -409,13 +409,13 @@ public class FluffyItems {
 
     public static final SlimefunItemStack ALTERNATE_ELEVATOR_PLATE = new SlimefunItemStack("ALTERNATE_ELEVATOR_PLATE",
         Material.POLISHED_BLACKSTONE_PRESSURE_PLATE,
-        "&3Alternate Elevator Plate",
+        "&3備用電梯板",
         "",
-        "&fPlace an Elevator Plate on every floor",
-        "&fand you will be able to teleport between them.",
+        "&f在每個樓層上放置一個電梯板",
+        "&f你將可以在各樓層之間傳送.",
         "",
-        "&eRight Click this Block &7to name it",
-        "&7Uses a Chest GUI instead of a Book GUI"
+        "&e右鍵此板 &7來命名",
+        "&7使用的是箱子介面而不是書本介面 "
     );
 
     private static final Enchantment glowEnchant = Enchantment.getByKey(Constants.GLOW_ENCHANT);
