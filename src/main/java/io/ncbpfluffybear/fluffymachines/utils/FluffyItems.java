@@ -407,6 +407,17 @@ public class FluffyItems {
         LoreBuilderDynamic.powerPerTick(ElectricDustRecycler.ENERGY_CONSUMPTION)
     );
 
+    public static final SlimefunItemStack ALTERNATE_ELEVATOR_PLATE = new SlimefunItemStack("ALTERNATE_ELEVATOR_PLATE",
+        Material.POLISHED_BLACKSTONE_PRESSURE_PLATE,
+        "&3Alternate Elevator Plate",
+        "",
+        "&fPlace an Elevator Plate on every floor",
+        "&fand you will be able to teleport between them.",
+        "",
+        "&eRight Click this Block &7to name it",
+        "&7Uses a Chest GUI instead of a Book GUI"
+    );
+
     private static final Enchantment glowEnchant = Enchantment.getByKey(Constants.GLOW_ENCHANT);
 
     static {
