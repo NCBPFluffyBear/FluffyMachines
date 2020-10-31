@@ -26,7 +26,6 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -57,8 +56,10 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
     private final AncientAltar altarItem = (AncientAltar) SlimefunItems.ANCIENT_ALTAR.getItem();
 
     private final ItemStack ironBars = new ItemStack(Material.IRON_BARS);
-    private final ItemStack earthRune = new SlimefunItemStack(SlimefunItems.EARTH_RUNE.getItemId(), SlimefunItems.EARTH_RUNE);
-    private final List<ItemStack> jarInputs = new ArrayList<>(Arrays.asList(ironBars, earthRune, ironBars, earthRune, ironBars, earthRune, ironBars, earthRune));
+    private final ItemStack earthRune = new SlimefunItemStack(SlimefunItems.EARTH_RUNE.getItemId(),
+        SlimefunItems.EARTH_RUNE);
+    private final List<ItemStack> jarInputs = new ArrayList<>(Arrays.asList(ironBars, earthRune, ironBars, earthRune,
+        ironBars, earthRune, ironBars, earthRune));
 
     public AutoAncientAltar(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
@@ -301,7 +302,8 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
         if (Constants.isSoulJarsInstalled && sfCatalyst != null
             && sfCatalyst.getID().startsWith("FILLED") && sfCatalyst.getID().endsWith("SOUL_JAR")) {
 
-            SlimefunItem spawnerItem = SlimefunItem.getByID(sfCatalyst.getID().replace("FILLED_", "").replace("_SOUL_JAR", "_BROKEN_SPAWNER"));
+            SlimefunItem spawnerItem = SlimefunItem.getByID(sfCatalyst.getID().replace("FILLED_", "").replace(
+                "_SOUL_JAR", "_BROKEN_SPAWNER"));
             if (pedestalItems.equals(jarInputs) && spawnerItem != null) {
                 removeCharge(block.getLocation(), ENERGY_CONSUMPTION);
                 for (int slot : getInputSlots()) {
@@ -333,7 +335,7 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
         }
 
         for (int i : inputBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.BLUE_STAINED_GLASS_PANE), " "),
+            preset.addItem(i, new CustomItem(new ItemStack(Material.CYAN_STAINED_GLASS_PANE), " "),
                 (p, slot, item, action) -> false);
         }
 
