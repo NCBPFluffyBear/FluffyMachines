@@ -347,7 +347,7 @@ public final class FluffyItemSetup {
             new ItemStack(Material.PISTON), SlimefunItems.ELECTRIC_MOTOR, new ItemStack(Material.PISTON),
             SlimefunItems.ALUMINUM_BRONZE_INGOT, SlimefunItems.ALUMINUM_BRONZE_INGOT,
             SlimefunItems.ALUMINUM_BRONZE_INGOT},
-            new SlimefunItemStack(SlimefunItems.ELEVATOR_PLATE, 2)
+            new SlimefunItemStack(FluffyItems.ALTERNATE_ELEVATOR_PLATE, 2)
         ).register(plugin);
 
         /* Disabled due to impracticality
