@@ -4,29 +4,28 @@ import io.github.thebusybiscuit.slimefun4.core.attributes.MachineTier;
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineType;
 import io.github.thebusybiscuit.slimefun4.utils.LoreBuilder;
 import io.github.thebusybiscuit.slimefun4.utils.itemstack.ColoredFireworkStar;
+import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import io.ncbpfluffybear.fluffymachines.items.Barrel;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.tools.PortableCharger;
 import io.ncbpfluffybear.fluffymachines.machines.AdvancedAutoDisenchanter;
+import io.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
 import io.ncbpfluffybear.fluffymachines.machines.AutoCrafter;
+import io.ncbpfluffybear.fluffymachines.machines.AutoCraftingTable;
+import io.ncbpfluffybear.fluffymachines.machines.AutoTableSaw;
+import io.ncbpfluffybear.fluffymachines.machines.BackpackLoader;
+import io.ncbpfluffybear.fluffymachines.machines.BackpackUnloader;
 import io.ncbpfluffybear.fluffymachines.machines.ElectricDustFabricator;
 import io.ncbpfluffybear.fluffymachines.machines.ElectricDustRecycler;
+import io.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullItem;
-import io.ncbpfluffybear.fluffymachines.FluffyMachines;
-import io.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
-import io.ncbpfluffybear.fluffymachines.machines.AutoCraftingTable;
-import io.ncbpfluffybear.fluffymachines.machines.BackpackLoader;
-import io.ncbpfluffybear.fluffymachines.machines.BackpackUnloader;
-import io.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
-
-import javax.sound.sampled.Port;
 
 
 public class FluffyItems {
@@ -45,12 +44,14 @@ public class FluffyItems {
         new CustomItem(Material.BARREL, "&6Fluffy木桶")
     );
 
-    public static final SlimefunItemStack FM_VERSION_INDICATOR = new SlimefunItemStack("FM_VERSION_INDICATOR",
+    public static final SlimefunItemStack FLUFFYMACHINES_INFO = new SlimefunItemStack("FLUFFYMACHINES_INFO",
         Material.ORANGE_WOOL,
         "&6&lFluffy機器 版本資訊",
         "",
         "&e" + FluffyMachines.getInstance().getName() + " " + FluffyMachines.getInstance().getPluginVersion(),
-        "&7" + FluffyMachines.getInstance().getBugTrackerURL()
+        "",
+        "&e左鍵點擊 &7獲取Wiki連結",
+        "&e右鍵點擊 &7獲取Bug回報連結"
     );
 
     // Barrels
@@ -149,7 +150,8 @@ public class FluffyItems {
         LoreBuilder.powerCharged(0, PortableCharger.Type.LARGE.chargeCapacity)
     );
 
-    public static final SlimefunItemStack CARBONADO_PORTABLE_CHARGER = new SlimefunItemStack("CARBONADO_PORTABLE_CHARGER",
+    public static final SlimefunItemStack CARBONADO_PORTABLE_CHARGER = new SlimefunItemStack(
+        "CARBONADO_PORTABLE_CHARGER",
         Material.NETHERITE_INGOT,
         "&4黑鑽石隨身充電器",
         "",
@@ -226,6 +228,15 @@ public class FluffyItems {
         "",
         LoreBuilderDynamic.powerBuffer(AutoAncientAltar.CAPACITY),
         LoreBuilderDynamic.powerPerTick(AutoAncientAltar.ENERGY_CONSUMPTION)
+    );
+    public static final SlimefunItemStack AUTO_TABLE_SAW = new SlimefunItemStack("AUTO_TABLE_SAW",
+        Material.STONECUTTER,
+        "&6自動鋸木機",
+        "",
+        "&7自動製作&6鋸木機&7配方",
+        "",
+        LoreBuilderDynamic.powerBuffer(AutoTableSaw.CAPACITY),
+        LoreBuilderDynamic.powerPerTick(AutoTableSaw.ENERGY_CONSUMPTION)
     );
     public static final SlimefunItemStack WATER_SPRINKER = new SlimefunItemStack("WATER_SPRINKLER",
         new CustomItem(SkullItem.fromHash("d6b13d69d1929dcf8edf99f3901415217c6a567d3a6ead12f75a4de3ed835e85"),
@@ -307,7 +318,7 @@ public class FluffyItems {
             "&e將此符文放在掉落物品上",
             "&e讓它&c防火",
             ""
-    ));
+        ));
     public static final SlimefunItemStack SUPERHEATED_FURNACE = new SlimefunItemStack("SUPERHEATED_FURNACE",
         Material.BLAST_FURNACE,
         "&c超級炙熱熔爐",
@@ -333,7 +344,8 @@ public class FluffyItems {
         LoreBuilderDynamic.powerBuffer(AutoCrafter.CAPACITY),
         LoreBuilderDynamic.powerPerTick(AutoCrafter.ENERGY_CONSUMPTION)
     );
-    public static final SlimefunItemStack ADVANCED_AUTO_DISENCHANTER = new SlimefunItemStack("ADVANCED_AUTO_DISENCHANTER",
+    public static final SlimefunItemStack ADVANCED_AUTO_DISENCHANTER = new SlimefunItemStack(
+        "ADVANCED_AUTO_DISENCHANTER",
         Material.ENCHANTING_TABLE,
         "&c高級自動退魔器",
         "",

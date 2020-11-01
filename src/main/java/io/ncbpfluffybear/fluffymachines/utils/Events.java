@@ -27,7 +27,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
@@ -180,6 +182,22 @@ public class Events implements Listener {
         if (id != null && id.equals(FluffyItems.ALTERNATE_ELEVATOR_PLATE.getItemId())) {
                 AlternateElevatorPlate elevator = ((AlternateElevatorPlate) FluffyItems.ALTERNATE_ELEVATOR_PLATE.getItem());
                 elevator.openInterface(e.getPlayer(), e.getClickedBlock());
+        }
+    }
+
+    @EventHandler
+    public void onFMInfoClick(InventoryClickEvent e) {
+        if (SlimefunItem.getByItem(e.getCurrentItem()) != null
+            && SlimefunItem.getByItem(e.getCurrentItem()) == FluffyItems.FLUFFYMACHINES_INFO.getItem()) {
+
+            Player p = (Player) e.getWhoClicked();
+            p.closeInventory();
+
+            if (e.getClick() == ClickType.LEFT) {
+                Utils.send(p, "&7Wiki連結: https://github.com/NCBPFluffyBear/FluffyMachines/blob/master/README.md");
+            } else if (e.getClick() == ClickType.RIGHT) {
+                Utils.send(p, "&7回報Bugs: https://github.com/xMikux/FluffyMachines/issues");
+            }
         }
     }
 }
