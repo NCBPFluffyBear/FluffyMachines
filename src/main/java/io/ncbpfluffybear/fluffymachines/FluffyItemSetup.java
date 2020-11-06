@@ -25,6 +25,7 @@ import io.ncbpfluffybear.fluffymachines.machines.BackpackLoader;
 import io.ncbpfluffybear.fluffymachines.machines.BackpackUnloader;
 import io.ncbpfluffybear.fluffymachines.machines.ElectricDustFabricator;
 import io.ncbpfluffybear.fluffymachines.machines.ElectricDustRecycler;
+import io.ncbpfluffybear.fluffymachines.machines.InteractABot;
 import io.ncbpfluffybear.fluffymachines.machines.WarpPad;
 import io.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
 import io.ncbpfluffybear.fluffymachines.multiblocks.CrankGenerator;
@@ -349,6 +350,14 @@ public final class FluffyItemSetup {
             SlimefunItems.ALUMINUM_BRONZE_INGOT},
             new SlimefunItemStack(FluffyItems.ALTERNATE_ELEVATOR_PLATE, 2)
         ).register(plugin);
+
+        new InteractABot(FluffyItems.fluffymachines, 1, FluffyItems.INTERACT_A_BOT,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            null, new ItemStack(Material.POLISHED_BLACKSTONE_PRESSURE_PLATE), null,
+            new ItemStack(Material.PISTON), SlimefunItems.ELECTRIC_MOTOR, new ItemStack(Material.PISTON),
+            SlimefunItems.ALUMINUM_BRONZE_INGOT, SlimefunItems.ALUMINUM_BRONZE_INGOT,
+            SlimefunItems.ALUMINUM_BRONZE_INGOT
+        }).register(plugin);
 
         /* Disabled due to impracticality
         new ItemOverstacker(FluffyItems.fluffymachines, FluffyItems.ITEM_OVERSTACKER,

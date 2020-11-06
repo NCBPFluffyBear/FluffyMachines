@@ -2,6 +2,7 @@ package io.ncbpfluffybear.fluffymachines.utils;
 
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineTier;
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineType;
+import io.github.thebusybiscuit.slimefun4.utils.HeadTexture;
 import io.github.thebusybiscuit.slimefun4.utils.LoreBuilder;
 import io.github.thebusybiscuit.slimefun4.utils.itemstack.ColoredFireworkStar;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
@@ -421,6 +422,17 @@ public class FluffyItems {
 
     public static final SlimefunItemStack ALTERNATE_ELEVATOR_PLATE = new SlimefunItemStack("ALTERNATE_ELEVATOR_PLATE",
         Material.POLISHED_BLACKSTONE_PRESSURE_PLATE,
+        "&3Alternate Elevator Plate",
+        "",
+        "&fPlace an Elevator Plate on every floor",
+        "&fand you will be able to teleport between them.",
+        "",
+        "&eRight Click this Block &7to name it",
+        "&7Uses a Chest GUI instead of a Book GUI"
+    );
+
+    public static final SlimefunItemStack INTERACT_A_BOT = new SlimefunItemStack("INTERACT_A_BOT",
+        HeadTexture.PROGRAMMABLE_ANDROID,
         "&3Alternate Elevator Plate",
         "",
         "&fPlace an Elevator Plate on every floor",
