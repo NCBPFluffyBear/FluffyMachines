@@ -343,7 +343,7 @@ public final class FluffyItemSetup {
 
         new AlternateElevatorPlate(FluffyItems.fluffymachines, FluffyItems.ALTERNATE_ELEVATOR_PLATE,
             RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            null, new ItemStack(Material.POLISHED_BLACKSTONE_PRESSURE_PLATE), null,
+            new ItemStack(Material.STONE_PRESSURE_PLATE), new ItemStack(Material.STONE_PRESSURE_PLATE), new ItemStack(Material.STONE_PRESSURE_PLATE),
             new ItemStack(Material.PISTON), SlimefunItems.ELECTRIC_MOTOR, new ItemStack(Material.PISTON),
             SlimefunItems.ALUMINUM_BRONZE_INGOT, SlimefunItems.ALUMINUM_BRONZE_INGOT,
             SlimefunItems.ALUMINUM_BRONZE_INGOT},

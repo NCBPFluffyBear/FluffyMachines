@@ -9,6 +9,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.altar.AltarRecipe;
 import io.github.thebusybiscuit.slimefun4.implementation.items.altar.AncientAltar;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
+import io.github.thebusybiscuit.slimefun4.utils.itemstack.ItemStackWrapper;
 import io.ncbpfluffybear.fluffymachines.utils.Constants;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu.AdvancedMenuClickHandler;
@@ -26,18 +27,21 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This {@link SlimefunItem} automatically crafts
@@ -58,8 +62,15 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
     private final ItemStack ironBars = new ItemStack(Material.IRON_BARS);
     private final ItemStack earthRune = new SlimefunItemStack(SlimefunItems.EARTH_RUNE.getItemId(),
         SlimefunItems.EARTH_RUNE);
+    private final ItemStack enderRune = new SlimefunItemStack(SlimefunItems.ENDER_RUNE.getItemId(),
+        SlimefunItems.ENDER_RUNE);
+    private final ItemStack essence = new SlimefunItemStack(SlimefunItems.ESSENCE_OF_AFTERLIFE.getItemId(),
+        SlimefunItems.ESSENCE_OF_AFTERLIFE);
+    private final ItemStack filledFlask = SlimefunItems.FILLED_FLASK_OF_KNOWLEDGE.clone();
     private final List<ItemStack> jarInputs = new ArrayList<>(Arrays.asList(ironBars, earthRune, ironBars, earthRune,
         ironBars, earthRune, ironBars, earthRune));
+    private final List<ItemStack> repairedInputs = new ArrayList<>(Arrays.asList(enderRune, filledFlask, essence, filledFlask,
+        enderRune, filledFlask, essence, filledFlask));
 
     public AutoAncientAltar(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
@@ -72,7 +83,7 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
             }
 
             @Override
-            public void newInstance(BlockMenu menu, Block b) {
+            public void newInstance(@Nonnull BlockMenu menu, @Nonnull Block b) {
                 if (!BlockStorage.hasBlockInfo(b)
                     || BlockStorage.getLocationInfo(b.getLocation(), "enabled") == null
                     || BlockStorage.getLocationInfo(b.getLocation(), "enabled").equals(String.valueOf(false))) {
@@ -138,7 +149,7 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
         };
 
         addItemHandler(onPlace());
-        registerBlockHandler(getID(), (p, b, stack, reason) -> {
+        registerBlockHandler(getId(), (p, b, stack, reason) -> {
             BlockMenu inv = BlockStorage.getInventory(b);
 
             if (inv != null) {
@@ -276,12 +287,10 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
             ItemStack pedestalItem = menu.getItemInSlot(slot);
             SlimefunItem sfPedestalItem = SlimefunItem.getByItem(pedestalItem);
             if (sfPedestalItem != null) {
-                SlimefunItemStack pedestalItemStack = new SlimefunItemStack(sfPedestalItem.getID(), pedestalItem);
+                SlimefunItemStack pedestalItemStack = new SlimefunItemStack(sfPedestalItem.getId(), pedestalItem);
                 pedestalItems.add(new SlimefunItemStack(pedestalItemStack, 1));
-            } else if (!pedestalItem.hasItemMeta()) {
-                pedestalItems.add(new ItemStack(pedestalItem.getType(), 1));
             } else {
-                return;
+                pedestalItems.add(new CustomItem(pedestalItem, 1));
             }
         }
 
@@ -289,9 +298,9 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
         int mockAltarSlot = 29;
         ItemStack catalystItem = menu.getItemInSlot(mockAltarSlot);
         SlimefunItem sfCatalyst = SlimefunItem.getByItem(catalystItem);
-        ItemStack catalyst = null;
+        ItemStack catalyst;
         if (sfCatalyst != null) {
-            SlimefunItemStack catalystStack = new SlimefunItemStack(sfCatalyst.getID(), catalystItem);
+            SlimefunItemStack catalystStack = new SlimefunItemStack(sfCatalyst.getId(), catalystItem);
             catalyst = new SlimefunItemStack(catalystStack, 1);
         } else if (!catalystItem.hasItemMeta()) {
             catalyst = new ItemStack(catalystItem.getType(), 1);
@@ -300,9 +309,9 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
         }
 
         if (Constants.isSoulJarsInstalled && sfCatalyst != null
-            && sfCatalyst.getID().startsWith("FILLED") && sfCatalyst.getID().endsWith("SOUL_JAR")) {
+            && sfCatalyst.getId().startsWith("FILLED") && sfCatalyst.getId().endsWith("SOUL_JAR")) {
 
-            SlimefunItem spawnerItem = SlimefunItem.getByID(sfCatalyst.getID().replace("FILLED_", "").replace(
+            SlimefunItem spawnerItem = SlimefunItem.getByID(sfCatalyst.getId().replace("FILLED_", "").replace(
                 "_SOUL_JAR", "_BROKEN_SPAWNER"));
             if (pedestalItems.equals(jarInputs) && spawnerItem != null) {
                 removeCharge(block.getLocation(), ENERGY_CONSUMPTION);
@@ -310,6 +319,22 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
                     menu.consumeItem(slot);
                 }
                 menu.pushItem(spawnerItem.getItem().clone(), getOutputSlots());
+            }
+        } else if (SlimefunUtils.isItemSimilar(catalystItem, SlimefunItems.BROKEN_SPAWNER, false, false)) {
+
+            if (pedestalItems.equals(repairedInputs)) {
+                removeCharge(block.getLocation(), ENERGY_CONSUMPTION);
+                for (int slot : getInputSlots()) {
+                    menu.consumeItem(slot);
+                }
+                ItemStackWrapper wrapper = new ItemStackWrapper(catalystItem);
+
+                ItemStack spawnerItem = SlimefunItems.REPAIRED_SPAWNER.clone();
+                ItemMeta im = spawnerItem.getItemMeta();
+                im.setLore(Arrays.asList(wrapper.getItemMeta().getLore().get(0)));
+                spawnerItem.setItemMeta(im);
+
+                menu.pushItem(spawnerItem.clone(), getOutputSlots());
             }
         } else {
 
