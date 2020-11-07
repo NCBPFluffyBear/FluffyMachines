@@ -1,9 +1,11 @@
 package io.ncbpfluffybear.fluffymachines.items;
 
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.utils.holograms.SimpleHologram;
 import io.ncbpfluffybear.fluffymachines.objects.NonHopperableItem;
+import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
@@ -23,9 +25,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import sun.java2d.pipe.SpanShapeRenderer;
+
+import javax.annotation.Nonnull;
 
 /**
  * A Remake of Barrels by John000708
@@ -52,7 +58,7 @@ public class Barrel extends NonHopperableItem {
     public static final int MASSIVE_BARREL_SIZE = 276480; // 80 Double chests
     public static final int BOTTOMLESS_BARREL_SIZE = 1728000; // 500 Double chests
 
-    private final int OVERFLOW_AMOUNT = 49920;
+    private final int OVERFLOW_AMOUNT = 5000;
 
     private final int MAX_STORAGE;
 
@@ -63,7 +69,7 @@ public class Barrel extends NonHopperableItem {
 
         this.MAX_STORAGE = MAX_STORAGE;
 
-        new BlockMenuPreset(getID(), name) {
+        new BlockMenuPreset(getId(), name) {
 
             @Override
             public void init() {
@@ -100,7 +106,7 @@ public class Barrel extends NonHopperableItem {
             }
 
             @Override
-            public boolean canOpen(Block b, Player p) {
+            public boolean canOpen(@Nonnull Block b, @Nonnull Player p) {
                 return (p.hasPermission("slimefun.inventory.bypass")
                     || SlimefunPlugin.getProtectionManager().hasPermission(
                     p, b.getLocation(), ProtectableAction.ACCESS_INVENTORIES));
@@ -123,22 +129,35 @@ public class Barrel extends NonHopperableItem {
             }
         };
 
-        registerBlockHandler(getID(), (p, b, stack, reason) -> {
+        registerBlockHandler(getId(), (p, b, stack, reason) -> {
             BlockMenu inv = BlockStorage.getInventory(b);
             String storedString = BlockStorage.getLocationInfo(b.getLocation(), "stored");
             int stored = Integer.parseInt(storedString);
 
             if (inv != null) {
 
+                int itemCount = 0;
+
+                for (Entity e : p.getNearbyEntities(5, 5, 5)) {
+                    if (e instanceof Item) {
+                        itemCount++;
+                    }
+                }
+
+                if (itemCount > 5) {
+                    Utils.send(p, "&cPlease remove nearby items before breaking this barrel!");
+                    return false;
+                }
+
                 inv.dropItems(b.getLocation(), INPUT_SLOTS);
                 inv.dropItems(b.getLocation(), OUTPUT_SLOTS);
-
 
                 if (stored > 0) {
                     int stackSize = inv.getItemInSlot(DISPLAY_SLOT).getMaxStackSize();
                     ItemStack unKeyed = Utils.unKeyItem(inv.getItemInSlot(DISPLAY_SLOT));
 
                     if (stored > OVERFLOW_AMOUNT) {
+
                         Utils.send(p, "&eThere are more than " + OVERFLOW_AMOUNT + " items in this barrel! " +
                             "Dropping " + OVERFLOW_AMOUNT + " items instead!");
                         int toRemove = OVERFLOW_AMOUNT;
@@ -184,7 +203,6 @@ public class Barrel extends NonHopperableItem {
                 }
 
             }
-
             return true;
         });
 
