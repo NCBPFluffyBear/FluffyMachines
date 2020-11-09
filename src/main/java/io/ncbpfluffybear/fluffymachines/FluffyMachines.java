@@ -140,6 +140,24 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
                 }
                 return true;
             }
+
+        } else if (args[0].equalsIgnoreCase("ai")
+            && sender instanceof Player) {
+            Player p = (Player) sender;
+
+            if (args.length != 3) {
+                return true;
+            } else {
+                RayTraceResult rayResult = p.rayTraceBlocks(5d);
+                if (rayResult != null && rayResult.getHitBlock() != null
+                    && BlockStorage.hasBlockInfo(rayResult.getHitBlock())) {
+
+                    BlockStorage.addBlockInfo(rayResult.getHitBlock(), args[1], args[2]);
+
+                }
+                return true;
+            }
+
         }
         return false;
     }

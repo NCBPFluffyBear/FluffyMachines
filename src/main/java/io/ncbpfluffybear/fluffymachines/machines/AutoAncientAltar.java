@@ -75,7 +75,7 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
     public AutoAncientAltar(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
-        new BlockMenuPreset(getID(), "&5自動古代祭壇") {
+        new BlockMenuPreset(getId(), "&5自動古代祭壇") {
 
             @Override
             public void init() {
@@ -84,6 +84,8 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
 
             @Override
             public void newInstance(@Nonnull BlockMenu menu, @Nonnull Block b) {
+                BlockStorage.addBlockInfo(b, "craftOnce", String.valueOf(false));
+
                 if (!BlockStorage.hasBlockInfo(b)
                     || BlockStorage.getLocationInfo(b.getLocation(), "enabled") == null
                     || BlockStorage.getLocationInfo(b.getLocation(), "enabled").equals(String.valueOf(false))) {
@@ -105,6 +107,14 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
                         return false;
                     });
                 }
+
+                menu.replaceExistingItem(7, new CustomItem(Material.ENCHANTING_TABLE, "&c製作一次",
+                    "", "&e> 點擊製作配方一次")
+                );
+                menu.addMenuClickHandler(7, (p, slot, item, action) -> {
+                    BlockStorage.addBlockInfo(b, "craftOnce", String.valueOf(true));
+                    return false;
+                });
             }
 
             @Override
@@ -125,7 +135,7 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
                     return getOutputSlots();
                 }
 
-                if (item.getType() == Material.WATER_BUCKET || item.getType() == Material.WATER_BUCKET) {
+                if (item.getType() == Material.WATER_BUCKET || item.getType() == Material.MILK_BUCKET) {
                     return getInputSlots();
                 }
 
@@ -248,7 +258,9 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
     }
 
     protected void tick(Block block) {
-        if (BlockStorage.getLocationInfo(block.getLocation(), "enabled").equals(String.valueOf(false))) {
+        String craftOnce = BlockStorage.getLocationInfo(block.getLocation(), "craftOnce");
+        if (BlockStorage.getLocationInfo(block.getLocation(), "enabled").equals(String.valueOf(false))
+            && craftOnce.equals("false")) {
             return;
         }
 
@@ -256,10 +268,11 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
             return;
         }
 
-        craftIfValid(block);
+        BlockStorage.addBlockInfo(block, "craftOnce", String.valueOf(false));
+        craftIfValid(block, Boolean.parseBoolean(craftOnce));
     }
 
-    private void craftIfValid(Block block) {
+    private void craftIfValid(Block block, boolean craftOnce) {
         BlockMenu menu = BlockStorage.getInventory(block);
         List<ItemStack> pedestalItems = new ArrayList<>();
 
@@ -275,8 +288,11 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
 
         for (int slot : getInputSlots()) {
             ItemStack slotItem = menu.getItemInSlot(slot);
-            if (slotItem == null || (slotItem.getType() != Material.WATER_BUCKET
-                && slotItem.getType() != Material.MILK_BUCKET && slotItem.getAmount() == 1)) {
+            if (slotItem == null) {
+                return;
+            }
+            if (!craftOnce && slotItem.getType() != Material.WATER_BUCKET
+                && slotItem.getType() != Material.MILK_BUCKET && slotItem.getAmount() == 1) {
                 return;
             }
         }
