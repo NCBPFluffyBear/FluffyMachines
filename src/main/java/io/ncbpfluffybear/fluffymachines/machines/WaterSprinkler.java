@@ -120,6 +120,7 @@ public class WaterSprinkler extends AbstractGrowthAccelerator {
 
                     if (blockData instanceof Ageable) {
                         grow(block);
+                        removeCharge(b.getLocation(), getEnergyConsumption());
                     }
                 }
             }
@@ -136,6 +137,8 @@ public class WaterSprinkler extends AbstractGrowthAccelerator {
                     if (above.getType().isAir()) {
                         above.setType(Material.SUGAR_CANE);
                         break;
+                    } else if (above.getType() != Material.SUGAR_CANE) {
+                        return;
                     }
                 }
             } else {
