@@ -60,6 +60,8 @@ public class FluffyItems {
         "&e小型 Fluffy木桶",
         "",
         "&7可存儲多個相同的物品",
+        "&c不要使用爆炸工具破壞...",
+        "&c除非你想要失去裡面的所有東西",
         "",
         "&b容量: &e" + Barrel.SMALL_BARREL_SIZE + " 物品"
     );
@@ -69,6 +71,8 @@ public class FluffyItems {
         "&6中型 Fluffy木桶",
         "",
         "&7可存儲多個相同的物品",
+        "&c不要使用爆炸工具破壞...",
+        "&c除非你想要失去裡面的所有東西",
         "",
         "&b容量: &e" + Barrel.MEDIUM_BARREL_SIZE + " 物品"
     );
@@ -78,6 +82,8 @@ public class FluffyItems {
         "&b大型 Fluffy木桶",
         "",
         "&7可存儲多個相同的物品",
+        "&c不要使用爆炸工具破壞...",
+        "&c除非你想要失去裡面的所有東西",
         "",
         "&b容量: &e" + Barrel.BIG_BARREL_SIZE + " 物品"
     );
@@ -87,6 +93,8 @@ public class FluffyItems {
         "&a巨型 Fluffy木桶",
         "",
         "&7可存儲多個相同的物品",
+        "&c不要使用爆炸工具破壞...",
+        "&c除非你想要失去裡面的所有東西",
         "",
         "&b容量: &e" + Barrel.LARGE_BARREL_SIZE + " 物品"
     );
@@ -96,6 +104,8 @@ public class FluffyItems {
         "&5超大 Fluffy木桶",
         "",
         "&7可存儲多個相同的物品",
+        "&c不要使用爆炸工具破壞...",
+        "&c除非你想要失去裡面的所有東西",
         "",
         "&b容量: &e" + Barrel.MASSIVE_BARREL_SIZE + " 物品"
     );
@@ -105,6 +115,8 @@ public class FluffyItems {
         "&c無底洞 Fluffy木桶",
         "",
         "&7可存儲多個相同的物品",
+        "&c不要使用爆炸工具破壞...",
+        "&c除非你想要失去裡面的所有東西",
         "",
         "&b容量: &e" + Barrel.BOTTOMLESS_BARREL_SIZE + " Items"
     );
