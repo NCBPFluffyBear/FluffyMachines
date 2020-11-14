@@ -58,7 +58,7 @@ public class Barrel extends NonHopperableItem {
     public static final int MASSIVE_BARREL_SIZE = 276480; // 80 Double chests
     public static final int BOTTOMLESS_BARREL_SIZE = 1728000; // 500 Double chests
 
-    private final int OVERFLOW_AMOUNT = 5000;
+    private final int OVERFLOW_AMOUNT = 3240;
 
     private final int MAX_STORAGE;
 
@@ -137,6 +137,18 @@ public class Barrel extends NonHopperableItem {
             if (inv != null) {
 
                 int itemCount = 0;
+
+                SlimefunItem sfItem = SlimefunItem.getByItem(p.getInventory().getItemInMainHand());
+                if (sfItem != null && (
+                    sfItem == SlimefunItems.EXPLOSIVE_PICKAXE.getItem()
+                    || sfItem == SlimefunItems.EXPLOSIVE_SHOVEL.getItem()
+                    || sfItem == FluffyItems.UPGRADED_EXPLOSIVE_PICKAXE.getItem()
+                    || sfItem == FluffyItems.UPGRADED_EXPLOSIVE_SHOVEL.getItem()
+                )) {
+                    Utils.send(p, "&cYou can not break barrels using explosive tools!");
+                    SimpleHologram.remove(b);
+                    return true;
+                }
 
                 for (Entity e : p.getNearbyEntities(5, 5, 5)) {
                     if (e instanceof Item) {

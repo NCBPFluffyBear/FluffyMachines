@@ -76,7 +76,7 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
     public AdvancedAutoDisenchanter(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
-        new BlockMenuPreset(getID(), "&cAdvanced Auto Disenchanter") {
+        new BlockMenuPreset(getId(), "&cAdvanced Auto Disenchanter") {
 
             @Override
             public void init() {
@@ -123,7 +123,7 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
             }
         };
 
-        registerBlockHandler(getID(), (p, b, stack, reason) -> {
+        registerBlockHandler(getId(), (p, b, stack, reason) -> {
             BlockMenu inv = BlockStorage.getInventory(b);
 
             if (inv != null) {
