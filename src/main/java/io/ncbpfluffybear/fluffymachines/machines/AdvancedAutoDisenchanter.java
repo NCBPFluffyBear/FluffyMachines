@@ -84,19 +84,23 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
             }
 
             @Override
-            public void newInstance(BlockMenu menu, Block b) {
+            public void newInstance(@Nonnull BlockMenu menu, @Nonnull Block b) {
                 menu.replaceExistingItem(SELECTION_SLOT, selectionItem.clone());
-
 
                 menu.addMenuClickHandler(SELECTION_SLOT, (p, slot, item, action) -> {
                     cycleEnchants(menu, item);
                     return false;
                 });
 
+                menu.addMenuClickHandler(ITEM_SLOT, (p, slot, item, action) -> {
+                    menu.replaceExistingItem(SELECTION_SLOT, selectionItem.clone());
+                    return true;
+                });
+
             }
 
             @Override
-            public boolean canOpen(Block b, Player p) {
+            public boolean canOpen(@Nonnull Block b, @Nonnull Player p) {
                 return (p.hasPermission("slimefun.inventory.bypass")
                     || SlimefunPlugin.getProtectionManager().hasPermission(
                     p, b.getLocation(), ProtectableAction.ACCESS_INVENTORIES));
@@ -182,11 +186,17 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
         int currentProgress = progress.getOrDefault(pos, 0);
         ItemMeta meta = inv.getItemInSlot(SELECTION_SLOT).getItemMeta();
         int selectionIndex = meta.getPersistentDataContainer().get(selection, PersistentDataType.INTEGER);
+        ItemStack input = inv.getItemInSlot(ITEM_SLOT);
+
+        SlimefunItem sfItem = SlimefunItem.getByItem(input);
+        if (sfItem != null && !sfItem.isDisenchantable()) {
+            return;
+        }
 
         if (selectionIndex != -1
-            && inv.getItemInSlot(ITEM_SLOT) != null && inv.getItemInSlot(BOOK_SLOT) != null
+            && input != null && inv.getItemInSlot(BOOK_SLOT) != null
             && SlimefunUtils.isItemSimilar(inv.getItemInSlot(BOOK_SLOT), FluffyItems.ANCIENT_BOOK.getItem().getItem(), false, false)
-            && !inv.getItemInSlot(ITEM_SLOT).getEnchantments().isEmpty()) {
+            && !input.getEnchantments().isEmpty()) {
 
 
             // We need both slots empty
@@ -238,17 +248,11 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
             // Reset the selection item
             inv.replaceExistingItem(SELECTION_SLOT, selectionItem);
 
-            progress.put(pos, 0);
-            currentProgress = progress.getOrDefault(pos, 0);
-            ChestMenuUtils.updateProgressbar(inv, PROGRESS_SLOT, REQUIRED_TICKS - currentProgress,
-                REQUIRED_TICKS, progressItem);
-        } else {
-
-            progress.put(pos, 0);
-            currentProgress = progress.getOrDefault(pos, 0);
-            ChestMenuUtils.updateProgressbar(inv, PROGRESS_SLOT, REQUIRED_TICKS - currentProgress,
-                REQUIRED_TICKS, progressItem);
         }
+        progress.put(pos, 0);
+        currentProgress = progress.getOrDefault(pos, 0);
+        ChestMenuUtils.updateProgressbar(inv, PROGRESS_SLOT, REQUIRED_TICKS - currentProgress,
+            REQUIRED_TICKS, progressItem);
     }
 
     private void cycleEnchants(BlockMenu inv, ItemStack clickedItem) {
@@ -262,10 +266,9 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
             }
 
             // Convert to a list
-            enchantMap.forEach((enchant, level) -> {
+            enchantMap.forEach((enchant, level) ->
                 enchants.add(WordUtils.capitalizeFully(enchant.getKey().toString()
-                    .replace("minecraft:", "").replace("_", " ")) + " " + Utils.toRoman(level));
-            });
+                .replace("minecraft:", "").replace("_", " ")) + " " + Utils.toRoman(level)));
 
             ItemMeta meta = clickedItem.getItemMeta();
             List<String> lore = meta.getLore();
@@ -277,16 +280,14 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
                 meta.getPersistentDataContainer().set(selection, PersistentDataType.INTEGER, selectionIndex);
 
                 lore.set(1, ChatColor.DARK_PURPLE + "Current Enchant: " +  ChatColor.YELLOW + enchants.get(selectionIndex)); // 0
-                meta.setLore(lore);
-                clickedItem.setItemMeta(meta);
 
             } else {
                 selectionIndex = 0;
                 meta.getPersistentDataContainer().set(selection, PersistentDataType.INTEGER, selectionIndex);
                 lore.set(1, ChatColor.DARK_PURPLE + "Current Enchant: " + ChatColor.YELLOW + enchants.get(0));
-                meta.setLore(lore);
-                clickedItem.setItemMeta(meta);
             }
+            meta.setLore(lore);
+            clickedItem.setItemMeta(meta);
         }
     }
 
