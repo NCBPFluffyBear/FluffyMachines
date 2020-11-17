@@ -33,6 +33,10 @@ public class ElectricDustFabricator extends AContainer implements RecipeDisplayI
     public static final int ENERGY_CONSUMPTION = 256;
     public static final int CAPACITY = ENERGY_CONSUMPTION * 3;
     private OreWasher oreWasher;
+    private final List<ItemStack> acceptableInputs = new ArrayList<>(Arrays.asList(
+        new ItemStack(Material.COBBLESTONE), new ItemStack(Material.ANDESITE),
+        new ItemStack(Material.DIORITE), new ItemStack(Material.GRANITE)
+    ));
 
     public ElectricDustFabricator(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
@@ -51,7 +55,9 @@ public class ElectricDustFabricator extends AContainer implements RecipeDisplayI
         List<ItemStack> displayRecipes = new ArrayList<>();
 
         for (SlimefunItemStack dust : Constants.dusts) {
-            displayRecipes.add(new ItemStack(Material.COBBLESTONE));
+            displayRecipes.add(new CustomItem(Material.COBBLESTONE,
+                "&fAny Cobblestone Variant", "&7Cobblestone", "&7Andesite", "&7Diorite", "&7Granite"
+            ));
             displayRecipes.add(dust);
         }
 
@@ -61,18 +67,19 @@ public class ElectricDustFabricator extends AContainer implements RecipeDisplayI
     @Override
     protected MachineRecipe findNextRecipe(BlockMenu menu) {
         for (int slot : getInputSlots()) {
-            if (SlimefunUtils.isItemSimilar(menu.getItemInSlot(slot), new ItemStack(Material.COBBLESTONE), true,
-                false)) {
-                if (!hasFreeSlot(menu)) {
-                    return null;
-                }
+            for (ItemStack acceptableInput : acceptableInputs) {
+                if (SlimefunUtils.isItemSimilar(menu.getItemInSlot(slot), acceptableInput, true, false)) {
+                    if (!hasFreeSlot(menu)) {
+                        return null;
+                    }
 
-                ItemStack dust = oreWasher.getRandomDust();
-                MachineRecipe recipe = new MachineRecipe(4 / getSpeed(), new ItemStack[0], new ItemStack[] {dust});
+                    ItemStack dust = oreWasher.getRandomDust();
+                    MachineRecipe recipe = new MachineRecipe(4 / getSpeed(), new ItemStack[0], new ItemStack[] {dust});
 
-                if (menu.fits(recipe.getOutput()[0], getOutputSlots())) {
-                    menu.consumeItem(slot);
-                    return recipe;
+                    if (menu.fits(recipe.getOutput()[0], getOutputSlots())) {
+                        menu.consumeItem(slot);
+                        return recipe;
+                    }
                 }
             }
         }

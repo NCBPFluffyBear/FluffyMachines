@@ -1,8 +1,15 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.items.gps.ElevatorPlate;
+import io.github.thebusybiscuit.slimefun4.implementation.items.gps.Teleporter;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import io.ncbpfluffybear.fluffymachines.items.tools.WateringCan;
+import io.ncbpfluffybear.fluffymachines.machines.AlternateElevatorPlate;
+import io.ncbpfluffybear.fluffymachines.objects.NonHopperableItem;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,18 +18,29 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryInteractEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import java.util.UUID;
 
 public class Events implements Listener {
 
@@ -33,7 +51,7 @@ public class Events implements Listener {
     public void onHelicopterHatUse(PlayerToggleSneakEvent e) {
         Player p = e.getPlayer();
         if (e.isSneaking() && helicopterHat.isItem(p.getEquipment().getHelmet())) {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 1000000, 10));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 1000000, 4));
         } else {
             p.removePotionEffect(PotionEffectType.LEVITATION);
         }
@@ -143,4 +161,43 @@ public class Events implements Listener {
         }
     }
 
+    @EventHandler
+    public void onHopper(InventoryMoveItemEvent e) {
+        if (e.getSource().getType() == InventoryType.HOPPER
+            && e.getDestination().getLocation() != null
+            && BlockStorage.hasBlockInfo(e.getDestination().getLocation())) {
+            if (BlockStorage.check(e.getDestination().getLocation()) instanceof NonHopperableItem){
+                e.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPressurePlateEnter(PlayerInteractEvent e) {
+        if (e.getAction() != Action.PHYSICAL || e.getClickedBlock() == null) {
+            return;
+        }
+
+        String id = BlockStorage.checkID(e.getClickedBlock());
+        if (id != null && id.equals(FluffyItems.ALTERNATE_ELEVATOR_PLATE.getItemId())) {
+                AlternateElevatorPlate elevator = ((AlternateElevatorPlate) FluffyItems.ALTERNATE_ELEVATOR_PLATE.getItem());
+                elevator.openInterface(e.getPlayer(), e.getClickedBlock());
+        }
+    }
+
+    @EventHandler
+    public void onFMInfoClick(InventoryClickEvent e) {
+        if (SlimefunItem.getByItem(e.getCurrentItem()) != null
+            && SlimefunItem.getByItem(e.getCurrentItem()) == FluffyItems.FLUFFYMACHINES_INFO.getItem()) {
+
+            Player p = (Player) e.getWhoClicked();
+            p.closeInventory();
+
+            if (e.getClick() == ClickType.LEFT) {
+                Utils.send(p, "&7Wiki Link: https://github.com/NCBPFluffyBear/FluffyMachines/blob/master/README.md");
+            } else if (e.getClick() == ClickType.RIGHT) {
+                Utils.send(p, "&7Report Bugs: https://github.com/NCBPFluffyBear/FluffyMachines/issues");
+            }
+        }
+    }
 }

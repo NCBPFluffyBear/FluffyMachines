@@ -2,8 +2,10 @@ package io.ncbpfluffybear.fluffymachines.utils;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +19,9 @@ public final class Constants {
 
     public static final int SERVER_VERSION = Integer.parseInt(Bukkit.getVersion().replaceFirst(".*MC: ", "").replace(
         ")", "").replace(".", ""));
+
+    public static final NamespacedKey GLOW_ENCHANT = new NamespacedKey(FluffyMachines.getInstance(),
+        "fm_glow_enchant");
 
     public static final boolean isSoulJarsInstalled = Bukkit.getPluginManager().isPluginEnabled("SoulJars");
 
