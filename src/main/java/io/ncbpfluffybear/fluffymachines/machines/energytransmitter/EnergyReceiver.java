@@ -31,11 +31,12 @@ public class EnergyReceiver extends SlimefunItem implements EnergyNetComponent {
 
     public static final int CAPACITY = 1048576;
     public static final int RATE = 1024;
+    private final int INDICATOR_SLOT = 4;
 
     public EnergyReceiver(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
-        new BlockMenuPreset(getID(), "&cEnergy Receiver") {
+        new BlockMenuPreset(getId(), "&cEnergy Receiver") {
 
             @Override
             public void init() {
@@ -43,15 +44,15 @@ public class EnergyReceiver extends SlimefunItem implements EnergyNetComponent {
             }
 
             @Override
-            public boolean canOpen(Block b, Player p) {
+            public boolean canOpen(@Nonnull Block b, @Nonnull Player p) {
 
                 Location l = b.getLocation();
 
                 if (BlockStorage.getLocationInfo(l, "status") != null) {
 
                     BlockStorage.getInventory(b).replaceExistingItem(
-                        4, new CustomItem(Material.LIME_STAINED_GLASS_PANE, "&aLinked", "&bTransmitter's location:",
-                            "&eWorld: &f" + Bukkit.getWorld(UUID.fromString(BlockStorage.getLocationInfo(l, "world"))) +
+                        INDICATOR_SLOT, new CustomItem(Material.LIME_STAINED_GLASS_PANE, "&aLinked", "&bTransmitter's location:",
+                            "&eWorld: &f" + Bukkit.getWorld(UUID.fromString(BlockStorage.getLocationInfo(l, "world"))).getName() +
                                 "&eLocation: &f" + BlockStorage.getLocationInfo(l, "x") + ", " +
                                 BlockStorage.getLocationInfo(l, "y") + ", " + BlockStorage.getLocationInfo(l, "z")));
                 }
@@ -75,12 +76,10 @@ public class EnergyReceiver extends SlimefunItem implements EnergyNetComponent {
 
     protected void constructMenu(BlockMenuPreset preset) {
         for (int b = 0; b < 9; b++) {
-            preset.addItem(b, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
-                ChestMenuUtils.getEmptyClickHandler()
-            );
+            preset.addItem(b, ChestMenuUtils.getBackground(), ChestMenuUtils.getEmptyClickHandler());
         }
 
-        preset.addItem(4, new CustomItem(Material.RED_STAINED_GLASS_PANE, "&cNot Linked"));
+        preset.addItem(INDICATOR_SLOT, new CustomItem(Material.RED_STAINED_GLASS_PANE, "&cNot Linked"));
     }
 
     @Override

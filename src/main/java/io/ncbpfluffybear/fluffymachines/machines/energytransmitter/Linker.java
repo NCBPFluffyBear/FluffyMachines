@@ -39,7 +39,12 @@ public class Linker extends SimpleSlimefunItem<ItemUseHandler> {
     public ItemUseHandler getItemHandler() {
         return e -> {
 
-            if (e.getClickedBlock().isPresent()
+            if (e.getPlayer().isSneaking()) {
+                e.getItem().setItemMeta(FluffyItems.LINKER.getItemMeta());
+                return;
+            }
+
+            if (e.getClickedBlock().isPresent() && BlockStorage.hasBlockInfo(e.getClickedBlock().get())
                 && (BlockStorage.checkID(e.getClickedBlock().get()).equals(FluffyItems.ENERGY_TRANSMITTER.getItemId())
                 || BlockStorage.checkID(e.getClickedBlock().get()).equals(FluffyItems.ENERGY_RECEIVER.getItemId()))) {
 

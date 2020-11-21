@@ -12,7 +12,6 @@ import io.ncbpfluffybear.fluffymachines.items.tools.Scythe;
 import io.ncbpfluffybear.fluffymachines.items.tools.UpgradedExplosivePickaxe;
 import io.ncbpfluffybear.fluffymachines.items.tools.UpgradedExplosiveShovel;
 import io.ncbpfluffybear.fluffymachines.items.tools.UpgradedLumberAxe;
-import io.ncbpfluffybear.fluffymachines.items.tools.WarpPadConfigurator;
 import io.ncbpfluffybear.fluffymachines.items.tools.WateringCan;
 import io.ncbpfluffybear.fluffymachines.machines.AdvancedAutoDisenchanter;
 import io.ncbpfluffybear.fluffymachines.machines.AlternateElevatorPlate;
@@ -25,8 +24,12 @@ import io.ncbpfluffybear.fluffymachines.machines.BackpackLoader;
 import io.ncbpfluffybear.fluffymachines.machines.BackpackUnloader;
 import io.ncbpfluffybear.fluffymachines.machines.ElectricDustFabricator;
 import io.ncbpfluffybear.fluffymachines.machines.ElectricDustRecycler;
-import io.ncbpfluffybear.fluffymachines.machines.WarpPad;
 import io.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
+import io.ncbpfluffybear.fluffymachines.machines.energytransmitter.EnergyReceiver;
+import io.ncbpfluffybear.fluffymachines.machines.energytransmitter.EnergyTransmitter;
+import io.ncbpfluffybear.fluffymachines.machines.energytransmitter.Linker;
+import io.ncbpfluffybear.fluffymachines.machines.warppad.WarpPad;
+import io.ncbpfluffybear.fluffymachines.machines.warppad.WarpPadConfigurator;
 import io.ncbpfluffybear.fluffymachines.multiblocks.CrankGenerator;
 import io.ncbpfluffybear.fluffymachines.multiblocks.Foundry;
 import io.ncbpfluffybear.fluffymachines.multiblocks.components.GeneratorCore;
@@ -349,6 +352,30 @@ public final class FluffyItemSetup {
             SlimefunItems.ALUMINUM_BRONZE_INGOT},
             new SlimefunItemStack(FluffyItems.ALTERNATE_ELEVATOR_PLATE, 2)
         ).register(plugin);
+
+        new EnergyReceiver(FluffyItems.fluffymachines, FluffyItems.ENERGY_RECEIVER,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            new ItemStack(Material.STONE_PRESSURE_PLATE), new ItemStack(Material.STONE_PRESSURE_PLATE), new ItemStack(Material.STONE_PRESSURE_PLATE),
+            new ItemStack(Material.PISTON), SlimefunItems.ELECTRIC_MOTOR, new ItemStack(Material.PISTON),
+            SlimefunItems.ALUMINUM_BRONZE_INGOT, SlimefunItems.ALUMINUM_BRONZE_INGOT,
+            SlimefunItems.ALUMINUM_BRONZE_INGOT
+        }).register(plugin);
+
+        new EnergyTransmitter(FluffyItems.fluffymachines, FluffyItems.ENERGY_TRANSMITTER,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            new ItemStack(Material.STONE_PRESSURE_PLATE), new ItemStack(Material.STONE_PRESSURE_PLATE), new ItemStack(Material.STONE_PRESSURE_PLATE),
+            new ItemStack(Material.PISTON), SlimefunItems.ELECTRIC_MOTOR, new ItemStack(Material.PISTON),
+            SlimefunItems.ALUMINUM_BRONZE_INGOT, SlimefunItems.ALUMINUM_BRONZE_INGOT,
+            SlimefunItems.ALUMINUM_BRONZE_INGOT
+        }).register(plugin);
+
+        new Linker(FluffyItems.fluffymachines, FluffyItems.LINKER,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            new ItemStack(Material.STONE_PRESSURE_PLATE), new ItemStack(Material.STONE_PRESSURE_PLATE), new ItemStack(Material.STONE_PRESSURE_PLATE),
+            new ItemStack(Material.PISTON), SlimefunItems.ELECTRIC_MOTOR, new ItemStack(Material.PISTON),
+            SlimefunItems.ALUMINUM_BRONZE_INGOT, SlimefunItems.ALUMINUM_BRONZE_INGOT,
+            SlimefunItems.ALUMINUM_BRONZE_INGOT
+        }).register(plugin);
 
         /* Disabled due to impracticality
         new ItemOverstacker(FluffyItems.fluffymachines, FluffyItems.ITEM_OVERSTACKER,

@@ -18,6 +18,8 @@ import io.ncbpfluffybear.fluffymachines.machines.BackpackUnloader;
 import io.ncbpfluffybear.fluffymachines.machines.ElectricDustFabricator;
 import io.ncbpfluffybear.fluffymachines.machines.ElectricDustRecycler;
 import io.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
+import io.ncbpfluffybear.fluffymachines.machines.energytransmitter.EnergyReceiver;
+import io.ncbpfluffybear.fluffymachines.machines.energytransmitter.EnergyTransmitter;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
@@ -440,6 +442,37 @@ public class FluffyItems {
         "",
         "&eRight Click this Block &7to name it",
         "&7Uses a Chest GUI instead of a Book GUI"
+    );
+
+    public static final SlimefunItemStack ENERGY_TRANSMITTER = new SlimefunItemStack("ENERGY_TRANSMITTER",
+        Material.LIME_STAINED_GLASS,
+        "&eEnergy Transmitter",
+        "",
+        "&7Transmits energy to a receiver",
+        "&cUse a Linker to configure",
+        LoreBuilderDynamic.powerBuffer(EnergyTransmitter.CAPACITY),
+        LoreBuilderDynamic.powerPerTick(EnergyReceiver.RATE)
+    );
+
+    public static final SlimefunItemStack ENERGY_RECEIVER = new SlimefunItemStack("ENERGY_RECEIVER",
+        Material.RED_STAINED_GLASS,
+        "&eEnergy Receiver",
+        "",
+        "&7Receives energy from a transmitter",
+        "&cUse a Linker to configure",
+        LoreBuilderDynamic.powerBuffer(EnergyReceiver.CAPACITY),
+        LoreBuilderDynamic.powerPerTick(EnergyReceiver.RATE)
+    );
+
+    public static final SlimefunItemStack LINKER = new SlimefunItemStack("LINKER",
+        Material.CLOCK,
+        "&eLinker",
+        "",
+        "&eRight Click &7on a Energy Receiver to set energy input",
+        "&eRight Click &7on a Energy Transmitter to set energy output",
+        "&eSneak &7and &eRight Click &7to wipe Linker data",
+        "",
+        "&eLinked Coordinates: &7None"
     );
 
     private static final Enchantment glowEnchant = Enchantment.getByKey(Constants.GLOW_ENCHANT);

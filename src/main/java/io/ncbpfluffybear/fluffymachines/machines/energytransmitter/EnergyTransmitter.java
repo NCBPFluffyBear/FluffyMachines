@@ -27,11 +27,12 @@ import java.util.UUID;
 public class EnergyTransmitter extends SlimefunItem implements EnergyNetComponent {
 
     public static final int CAPACITY = 1048576;
+    private final int INDICATOR_SLOT = 4;
 
     public EnergyTransmitter(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
-        new BlockMenuPreset(getID(), "&aEnergy Transmitter") {
+        new BlockMenuPreset(getId(), "&aEnergy Transmitter") {
 
             @Override
             public void init() {
@@ -39,12 +40,12 @@ public class EnergyTransmitter extends SlimefunItem implements EnergyNetComponen
             }
 
             @Override
-            public boolean canOpen(Block b, Player p) {
+            public boolean canOpen(@Nonnull Block b, @Nonnull Player p) {
 
                 Location l = b.getLocation();
 
                 BlockStorage.getInventory(b).replaceExistingItem(
-                    4, new CustomItem(Material.LIME_STAINED_GLASS_PANE, "&bThis block's location:",
+                    INDICATOR_SLOT, new CustomItem(Material.LIME_STAINED_GLASS_PANE, "&bThis block's location:",
                         "&eWorld: &f" + b.getWorld().getName(),
                             "&eLocation: &f" + b.getX() + ", " + b.getY() + ", " + b.getZ()));
 
@@ -67,15 +68,8 @@ public class EnergyTransmitter extends SlimefunItem implements EnergyNetComponen
 
     protected void constructMenu(BlockMenuPreset preset) {
         for (int b = 0; b < 9; b++) {
-            preset.addItem(b, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
-                ChestMenuUtils.getEmptyClickHandler()
-            );
+            preset.addItem(b, ChestMenuUtils.getBackground(), ChestMenuUtils.getEmptyClickHandler());
         }
-
-        preset.addItem(4, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS), "&cNot Transmitting Energy"),
-            ChestMenuUtils.getEmptyClickHandler()
-        );
-
     }
 
     @Nonnull
