@@ -442,6 +442,16 @@ public class FluffyItems {
         "&7Uses a Chest GUI instead of a Book GUI"
     );
 
+    public static final SlimefunItemStack FLUFFY_WRENCH = new SlimefunItemStack("FLUFFY_WRENCH",
+        Material.GOLDEN_AXE,
+        "&6Fluffy Wrench",
+        "",
+        "&7Used to quickly remove Slimefun cargo nodes",
+        "and electricity components",
+        "",
+        "&eLeft&7/&eRight Click &7a compatible block to break it"
+    );
+
     private static final Enchantment glowEnchant = Enchantment.getByKey(Constants.GLOW_ENCHANT);
 
     static {

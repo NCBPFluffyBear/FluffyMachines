@@ -7,6 +7,7 @@ import io.ncbpfluffybear.fluffymachines.items.EnderChestInsertionNode;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import io.ncbpfluffybear.fluffymachines.items.tools.Dolly;
+import io.ncbpfluffybear.fluffymachines.items.tools.FluffyWrench;
 import io.ncbpfluffybear.fluffymachines.items.tools.PortableCharger;
 import io.ncbpfluffybear.fluffymachines.items.tools.Scythe;
 import io.ncbpfluffybear.fluffymachines.items.tools.UpgradedExplosivePickaxe;
@@ -163,6 +164,13 @@ public final class FluffyItemSetup {
             null, new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
             null, new ItemStack(Material.IRON_HOE), null,
             null, new ItemStack(Material.STICK), null
+        }).register(plugin);
+
+        new FluffyWrench(FluffyItems.fluffymachines, FluffyItems.FLUFFY_WRENCH,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.COPPER_INGOT, null, SlimefunItems.COPPER_INGOT,
+            SlimefunItems.COPPER_INGOT, SlimefunItems.COPPER_INGOT, SlimefunItems.COPPER_INGOT,
+            null, SlimefunItems.COPPER_INGOT, null
         }).register(plugin);
 
         new UpgradedLumberAxe(FluffyItems.fluffymachines, FluffyItems.UPGRADED_LUMBER_AXE,

@@ -49,6 +49,8 @@ Custom item settings can be changed in `plugins/Slimefun/Items.yml`
 
 **Scythe**: Breaks 5 crops per swing
 
+**Wrench**: Quickly breaks Slimefun cargo and energy components.
+
 ## Misc
 **Ender Chest Extraction Node**: Moves items from ender chest to a chest
 

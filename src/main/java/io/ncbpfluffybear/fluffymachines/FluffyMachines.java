@@ -70,19 +70,6 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
             "Slimefun community?");
         getLogger().log(Level.INFO, ChatColor.GREEN + "Join the official Slimefun Discord server at " +
             "https://discord.gg/slimefun");
-        getLogger().log(Level.INFO, ChatColor.GREEN + "Don't forget to leave your server in #server-showcase!");
-        getLogger().log(Level.INFO, ChatColor.GREEN +
-            "Write \"FluffyBear\" and I'll check out your server sometime :)");
-        getLogger().log(Level.WARNING, ChatColor.RED + "Barrels warning:");
-        getLogger().log(Level.WARNING, ChatColor.RED + "A recent FluffyMachines addition, barrels, is still in a testing phase.");
-        getLogger().log(Level.WARNING, ChatColor.RED + "This is a recreation of John000708's barrels, which have been found to");
-        getLogger().log(Level.WARNING, ChatColor.RED + "be extremely buggy.");
-        getLogger().log(Level.WARNING, ChatColor.RED + "Fluffy Barrels are ready, but please use them cautiously,");
-        getLogger().log(Level.WARNING, ChatColor.RED + "and remember to report any bugs you find to");
-        getLogger().log(Level.WARNING, ChatColor.RED + "https://github.com/NCBPFluffyBear/FluffyMachines/issues");
-        getLogger().log(Level.WARNING, ChatColor.RED + "If you wish to temporarily disable barrels, you can do so in");
-        getLogger().log(Level.WARNING, ChatColor.RED + "/plugins/Slimefun/Items.yml");
-        getLogger().log(Level.WARNING, ChatColor.RED + "This message will be replaced once barrels have been deemed stable.");
     }
 
     @Override
