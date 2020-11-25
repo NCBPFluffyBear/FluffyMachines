@@ -5,6 +5,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import io.github.thebusybiscuit.slimefun4.utils.holograms.SimpleHologram;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
+import io.ncbpfluffybear.fluffymachines.machines.WarpPad;
 import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -30,6 +31,12 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
 
+/**
+ * A tool used to configure the {@link WarpPad} by
+ * setting the origin and destinations.
+ *
+ * @author NCBPFluffyBear
+ */
 public class WarpPadConfigurator extends SlimefunItem implements Listener {
 
     private final NamespacedKey xCoord = new NamespacedKey(FluffyMachines.getInstance(), "xCoordinate");

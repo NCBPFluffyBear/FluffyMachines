@@ -5,7 +5,7 @@ import io.github.thebusybiscuit.slimefun4.core.attributes.MachineType;
 import io.github.thebusybiscuit.slimefun4.utils.LoreBuilder;
 import io.github.thebusybiscuit.slimefun4.utils.itemstack.ColoredFireworkStar;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
-import io.ncbpfluffybear.fluffymachines.items.Barrel;
+import io.ncbpfluffybear.fluffymachines.items.barrels.Barrel;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.tools.PortableCharger;
 import io.ncbpfluffybear.fluffymachines.machines.AdvancedAutoDisenchanter;
@@ -119,6 +119,14 @@ public class FluffyItems {
         "&cUnless you want to lose everything inside",
         "",
         "&bCapacity: &e" + Barrel.BOTTOMLESS_BARREL_SIZE + " Items"
+    );
+
+    public static final SlimefunItemStack BIOMETRIC_BARREL_PROTECTION = new SlimefunItemStack("BIOMETRIC_BARREL_PROTECTION",
+        Material.PAPER,
+        "&bBiometric Barrel Protection",
+        "",
+        "&eRight Click &7on a barrel you have full access",
+        "&7to in order to lock it"
     );
 
     // Portable Chargers
@@ -456,6 +464,7 @@ public class FluffyItems {
 
     static {
         FireproofRune.setFireproof(FIREPROOF_RUNE);
+        BIOMETRIC_BARREL_PROTECTION.addEnchantment(glowEnchant, 1);
         SMALL_PORTABLE_CHARGER.addEnchantment(glowEnchant, 1);
         MEDIUM_PORTABLE_CHARGER.addEnchantment(glowEnchant, 1);
         BIG_PORTABLE_CHARGER.addEnchantment(glowEnchant, 1);

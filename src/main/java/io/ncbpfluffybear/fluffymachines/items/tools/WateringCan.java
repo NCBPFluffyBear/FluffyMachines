@@ -36,6 +36,14 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * A tool that allows players to speed up the
+ * growth of plants by right clicking on them.
+ * Not compatible with ExoticGarden without using
+ * the modified version of ExoticGarden.
+ *
+ * @author NCBPFluffyBear
+ */
 public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
 
     public static final ItemSetting<Integer> maxUses = new ItemSetting<>("max-uses", 10);
@@ -47,9 +55,6 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
     private static final int USE_INDEX = 7;
     private static final int MAX_SUGAR_GROW_HEIGHT = 5;
     private static final NamespacedKey usageKey = new NamespacedKey(FluffyMachines.getInstance(), "watering_can_usage");
-
-    private static final String fullCan = "907a97c8c14e96b4eb2a0f84401959d76611e7547eeb2b6d3a6a62dd7894c2e";
-    private static final String emptyCan = "495ab8fef8771f187286cb41be89b95b4cc0bb0e48fea73fb8a4a1427859dedc";
 
     public WateringCan(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);

@@ -164,7 +164,8 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
     private void registerGlow() {
         Enchantment glowEnchantment = new GlowEnchant(Constants.GLOW_ENCHANT, new String[] {
-            "SMALL_PORTABLE_CHARGER", "MEDIUM_PORTABLE_CHARGER", "BIG_PORTABLE_CHARGER",
+            "BIOMETRIC_BARREL_PROTECTION", "SMALL_PORTABLE_CHARGER",
+            "MEDIUM_PORTABLE_CHARGER", "BIG_PORTABLE_CHARGER",
             "LARGE_PORTABLE_CHARGER", "CARBONADO_PORTABLE_CHARGER"
         });
 

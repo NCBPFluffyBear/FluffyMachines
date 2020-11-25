@@ -1,4 +1,4 @@
-package io.ncbpfluffybear.fluffymachines.items;
+package io.ncbpfluffybear.fluffymachines.items.barrels;
 
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
@@ -29,16 +29,15 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 import javax.annotation.Nonnull;
+import java.util.UUID;
 
 /**
- * A Remake of Barrels by John000708
+ * A Remake of Barrels by John000708.
  *
  * @author NCBPFluffyBear
  */
-
 public class Barrel extends NonHopperableItem {
 
     private final int[] inputBorder = {9, 10, 11, 12, 18, 21, 27, 28, 29, 30};
@@ -77,7 +76,7 @@ public class Barrel extends NonHopperableItem {
             }
 
             @Override
-            public void newInstance(BlockMenu menu, Block b) {
+            public void newInstance(@Nonnull BlockMenu menu, @Nonnull Block b) {
 
                 // Essentially convert to onPlace itemhandler
                 if (BlockStorage.getLocationInfo(b.getLocation(), "stored") == null) {
@@ -107,9 +106,15 @@ public class Barrel extends NonHopperableItem {
 
             @Override
             public boolean canOpen(@Nonnull Block b, @Nonnull Player p) {
+                boolean bioUnlocked = true;
+                String owner = BlockStorage.getLocationInfo(b.getLocation(), "owner");
+                if (owner != null && !p.getUniqueId().equals(UUID.fromString(owner))) {
+                    bioUnlocked = false;
+                }
+
                 return (p.hasPermission("slimefun.inventory.bypass")
                     || SlimefunPlugin.getProtectionManager().hasPermission(
-                    p, b.getLocation(), ProtectableAction.ACCESS_INVENTORIES));
+                    p, b.getLocation(), ProtectableAction.ACCESS_INVENTORIES) & bioUnlocked);
             }
 
             @Override

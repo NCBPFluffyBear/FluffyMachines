@@ -37,7 +37,7 @@ import java.util.Optional;
  * Heavily based off of the Soulbound Rune
  *
  * @author NCBPFluffyBear
- * <p>
+ *
  * Worked on Soulbound Rune:
  * @author Linox
  * @author Walshy

@@ -20,6 +20,12 @@ import org.bukkit.inventory.ItemStack;
 import javax.annotation.Nonnull;
 import java.util.List;
 
+/**
+ * A tool which allows players to break
+ * multiple blocks at once.
+ *
+ * @author NCBPFluffyBear
+ */
 public class Scythe extends SimpleSlimefunItem<ItemUseHandler> implements NotPlaceable {
 
     private static final int MAX_BROKEN = 5;

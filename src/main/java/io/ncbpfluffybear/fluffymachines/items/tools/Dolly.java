@@ -22,6 +22,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import javax.annotation.Nonnull;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * A tool that can pick up chests and place them down.
+ * Consumes a backpack slot.
+ *
+ * @author NCBPFluffyBear
+ */
 public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
 
     private static final ItemStack lockItem = Utils.buildNonInteractable(Material.DIRT, "&4&lDolly empty", "&cHow did you get in here?");
