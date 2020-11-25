@@ -70,20 +70,6 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
             "Slimefun社群?");
         getLogger().log(Level.INFO, ChatColor.GREEN + "加入官方Slimefun Discord 伺服器 " +
             "https://discord.gg/slimefun");
-        getLogger().log(Level.INFO, ChatColor.GREEN + "別忘記將伺服器留在 #server-showcase!");
-        getLogger().log(Level.INFO, ChatColor.GREEN +
-            "寫 \"FluffyBear\" 我會在某個時間去看你的伺服器 :)");
-        getLogger().log(Level.WARNING, ChatColor.RED + "木桶警告:");
-        getLogger().log(Level.WARNING, ChatColor.RED + "近期在Fluffy機器增加的桶子,還處於測試階段.");
-        getLogger().log(Level.WARNING, ChatColor.RED + "這是重寫John000708的木桶附加, 已被發現");
-        getLogger().log(Level.WARNING, ChatColor.RED + "非常的buggy.");
-        getLogger().log(Level.WARNING, ChatColor.RED + "Fluffy木桶已準備好,但請謹慎使用,");
-        getLogger().log(Level.WARNING, ChatColor.RED + "並記得回報任何你發現的問題");
-        getLogger().log(Level.WARNING, ChatColor.RED + "https://github.com/NCBPFluffyBear/FluffyMachines/issues");
-        getLogger().log(Level.WARNING, ChatColor.RED + "如果你希望暫時禁用木桶,你可以在");
-        getLogger().log(Level.WARNING, ChatColor.RED + "/plugins/Slimefun/Items.yml");
-        getLogger().log(Level.WARNING, ChatColor.RED + "一旦木桶被確認為穩定,此訊息將會被替換.");
-        getLogger().log(Level.WARNING, ChatColor.RED + "");
         getLogger().log(Level.WARNING, ChatColor.RED + "此為繁體翻譯版 非官方版本");
         getLogger().log(Level.WARNING, ChatColor.RED + "請勿在黏液科技伺服器官方問!");
     }

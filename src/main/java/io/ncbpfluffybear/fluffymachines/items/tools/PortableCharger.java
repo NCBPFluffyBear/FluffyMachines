@@ -19,7 +19,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -42,6 +46,7 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
     private final int[] BORDER = {5, 6, 7, 14, 16, 23, 24, 25};
     private final int POWER_SLOT = 11;
     private final int CHARGE_SLOT = 15;
+    private final int INV_SIZE = 27;
     private final float CHARGE_CAPACITY;
     private final float CHARGE_SPEED;
     private final Plugin plugin = FluffyMachines.getInstance();
@@ -53,6 +58,7 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
         this.CHARGE_CAPACITY = chargeCapacity;
         this.CHARGE_SPEED = chargeSpeed;
 
+        Bukkit.getPluginManager().registerEvents(this, FluffyMachines.getInstance());
     }
 
     @Nonnull
@@ -67,14 +73,14 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
             final Rechargeable charger = (Rechargeable) SlimefunItem.getByItem(chargerItem);
 
             // Create GUI Items
-            Inventory inventory = Bukkit.createInventory(null, 27, ChatColor.GOLD + "隨身充電器");
+            Inventory inventory = Bukkit.createInventory(null, INV_SIZE, ChatColor.GOLD + "隨身充電器");
 
             ItemStack backgroundItem = Utils.buildNonInteractable(Material.GRAY_STAINED_GLASS_PANE, null);
             ItemStack borderItem = Utils.buildNonInteractable(Material.YELLOW_STAINED_GLASS_PANE, null);
             ItemStack powerItem = Utils.buildNonInteractable(Material.GLOWSTONE, "&4電量");
 
             // Build and open GUI
-            for (int i = 0; i < 27; i++)
+            for (int i = 0; i < INV_SIZE; i++)
                 inventory.setItem(i, backgroundItem);
 
             for (int slot : BORDER)
@@ -93,7 +99,12 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
                     ItemStack deviceItem = inventory.getItem(CHARGE_SLOT);
                     SlimefunItem sfItem = SlimefunItem.getByItem(deviceItem);
 
-                    if (sfItem instanceof Rechargeable && !isItem(deviceItem)) {
+                    if (sfItem instanceof PortableCharger) {
+                        p.closeInventory();
+                        Utils.send(p, "&c你不能充隨身充電器");
+                    }
+
+                    if (sfItem instanceof Rechargeable) {
 
                         Rechargeable device = (Rechargeable) sfItem;
                         float neededCharge = device.getMaxItemCharge(deviceItem)
@@ -144,6 +155,16 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
                 }
             }.runTaskTimer(plugin, 0, 20);
         };
+    }
+
+    @EventHandler
+    public void onChargerItemClick(InventoryClickEvent e) {
+        SlimefunItem sfItem1 = SlimefunItem.getByItem(e.getCurrentItem());
+        SlimefunItem sfItem2 = SlimefunItem.getByItem(e.getCursor());
+        if ((sfItem1 instanceof PortableCharger || sfItem2 instanceof PortableCharger)
+            && e.getWhoClicked().getOpenInventory().getTitle().contains("Portable Charger")) {
+            e.setCancelled(true);
+        }
     }
 
     public void updateSlot(Inventory inventory, int slot, String name, String... lore) {

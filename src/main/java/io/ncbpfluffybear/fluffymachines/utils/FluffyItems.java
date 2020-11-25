@@ -442,6 +442,16 @@ public class FluffyItems {
         "&7使用的是箱子介面而不是書本介面 "
     );
 
+    public static final SlimefunItemStack FLUFFY_WRENCH = new SlimefunItemStack("FLUFFY_WRENCH",
+        Material.GOLDEN_AXE,
+        "&6Fluffy扳手",
+        "",
+        "&7用於快速移除黏液科技的物流節點",
+        "&7與能源組件",
+        "",
+        "&e左&7/&e右鍵 &7相容方塊來破壞它"
+    );
+
     private static final Enchantment glowEnchant = Enchantment.getByKey(Constants.GLOW_ENCHANT);
 
     static {
