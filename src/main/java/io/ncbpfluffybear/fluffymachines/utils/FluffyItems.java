@@ -447,7 +447,7 @@ public class FluffyItems {
         "&6Fluffy Wrench",
         "",
         "&7Used to quickly remove Slimefun cargo nodes",
-        "and electricity components",
+        "&7and electricity components",
         "",
         "&eLeft&7/&eRight Click &7a compatible block to break it"
     );
