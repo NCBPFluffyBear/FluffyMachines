@@ -11,10 +11,12 @@ import me.mrCookieSlime.Slimefun.Objects.handlers.ItemHandler;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.blocks.Vein;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
+import org.bukkit.Bukkit;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.event.Event;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -43,6 +45,11 @@ public class Scythe extends SimpleSlimefunItem<ItemUseHandler> implements NotPla
 
     public ToolUseHandler onBlockBreak() {
         return (e, tool, fortune, drops) -> {
+
+            if (e instanceof AlternateBreakEvent) {
+                return;
+            }
+
             if (e.getBlock().getBlockData() instanceof Ageable
                 && ((Ageable) e.getBlock().getBlockData()).getAge()
                 == ((Ageable) e.getBlock().getBlockData()).getMaximumAge()) {
@@ -54,7 +61,8 @@ public class Scythe extends SimpleSlimefunItem<ItemUseHandler> implements NotPla
 
                 for (Block b : crops) {
                     if (SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), b, ProtectableAction.BREAK_BLOCK)) {
-                        b.breakNaturally(tool);
+                        AlternateBreakEvent breakEvent = new AlternateBreakEvent(b, e.getPlayer());
+                        Bukkit.getPluginManager().callEvent(breakEvent);
                     }
                 }
             }

@@ -55,7 +55,7 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
     public ToolUseHandler getItemHandler() {
         return (e, tool, fortune, drops) -> {
 
-            if (e instanceof ExplosiveToolEvent) {
+            if (e instanceof AlternateBreakEvent) {
                 return;
             }
 
@@ -159,7 +159,7 @@ class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implement
             }
         } else {
             if (triggerOtherPlugins.getValue()) {
-                ExplosiveToolEvent breakEvent = new ExplosiveToolEvent(b, p);
+                AlternateBreakEvent breakEvent = new AlternateBreakEvent(b, p);
                 Bukkit.getServer().getPluginManager().callEvent(breakEvent);
             }
 
