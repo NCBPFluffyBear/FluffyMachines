@@ -62,7 +62,7 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
     private static final NamespacedKey selection = new NamespacedKey(FluffyMachines.getInstance(), "selection");
 
     private static final ItemStack selectionItem = new CustomItem(Material.ENCHANTED_BOOK,
-        "&6Selected Enchant", "&a> 點擊此循環查看附魔", "&5目前附魔: 無");
+        "&6選取附魔", "&a> 點擊此循環查看附魔", "&5目前附魔: 無");
 
     private static final ItemStack progressItem = new CustomItem(Material.EXPERIENCE_BOTTLE, "&a運作");
 
