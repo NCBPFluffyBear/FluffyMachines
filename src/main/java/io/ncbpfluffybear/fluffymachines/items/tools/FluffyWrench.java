@@ -59,8 +59,7 @@ public class FluffyWrench extends SimpleSlimefunItem<ItemUseHandler> implements 
         Player p = e.getPlayer();
 
         Long cooldown = cooldowns.get(p.getUniqueId());
-        if (isItem(e.getItem()) && e.getAction() == Action.RIGHT_CLICK_BLOCK
-            && cooldown != null
+        if (isItem(e.getItem()) && cooldown != null
         ) {
             if ((System.currentTimeMillis() - cooldown) < WRENCH_DELAY) {
                 return;
