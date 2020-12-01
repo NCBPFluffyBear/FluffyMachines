@@ -63,6 +63,7 @@ public class Scythe extends SimpleSlimefunItem<ItemUseHandler> implements NotPla
                     if (SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), b, ProtectableAction.BREAK_BLOCK)) {
                         AlternateBreakEvent breakEvent = new AlternateBreakEvent(b, e.getPlayer());
                         Bukkit.getPluginManager().callEvent(breakEvent);
+                        b.breakNaturally(tool);
                     }
                 }
             }
