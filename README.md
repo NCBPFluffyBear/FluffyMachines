@@ -16,6 +16,8 @@ Custom item settings can be changed in `plugins/Slimefun/Items.yml`
 
 **Auto Ancient Altar**: Automatically crafts Ancient Altar recipes
 
+**Auto Table Saw**: Automatically crafts Table Saw recipes
+
 **Water Sprinkler**: Electric sprinkler that grows crops in a 2 block radius
 
 **Backpack Loader**: Moves items from inventory to backpack
@@ -23,6 +25,10 @@ Custom item settings can be changed in `plugins/Slimefun/Items.yml`
 **Backpack Unloader**: Empties backpack into inventory
 
 **Advanced Auto Disenchanter & Ancient Book**: Allows players to disenchant specific enchants from items. Requires an Ancient Book to operate.
+
+**Electric Dust Fabricator**: Turns cobblestone into sifted ore
+
+**Electric Dust Recycler**: Turns eight of the same dust into one sifted ore
 
 ## Generators
 **Crank Generator**: Multiblock machine that generates power when clicked
@@ -43,6 +49,8 @@ Custom item settings can be changed in `plugins/Slimefun/Items.yml`
 
 **Scythe**: Breaks 5 crops per swing
 
+**Wrench**: Quickly breaks Slimefun cargo and energy components.
+
 ## Misc
 **Ender Chest Extraction Node**: Moves items from ender chest to a chest
 
@@ -54,3 +62,8 @@ Custom item settings can be changed in `plugins/Slimefun/Items.yml`
 
 **Barrels**: Storage containers that store one type of item each
 
+**Warp Pad & Warp Pad Configurator**: Short distance teleportation pads
+
+**Alternate Elevator Plate**: Functions the same as Slimefun's Elevator Plates, but it uses a Chest GUI. Can be used for cosmetic effect, of if your server does not support elevators when a player is muted, this will work.
+
+**Portable Charger**: Multiple tiered handheld charders that allow players to charge items anywhere

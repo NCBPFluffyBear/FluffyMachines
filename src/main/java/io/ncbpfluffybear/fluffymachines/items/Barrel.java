@@ -1,8 +1,11 @@
 package io.ncbpfluffybear.fluffymachines.items;
 
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.utils.holograms.SimpleHologram;
+import io.ncbpfluffybear.fluffymachines.objects.NonHopperableItem;
+import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
@@ -22,9 +25,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import sun.java2d.pipe.SpanShapeRenderer;
+
+import javax.annotation.Nonnull;
 
 /**
  * A Remake of Barrels by John000708
@@ -32,7 +39,7 @@ import sun.java2d.pipe.SpanShapeRenderer;
  * @author NCBPFluffyBear
  */
 
-public class Barrel extends SlimefunItem {
+public class Barrel extends NonHopperableItem {
 
     private final int[] inputBorder = {9, 10, 11, 12, 18, 21, 27, 28, 29, 30};
     private final int[] outputBorder = {14, 15, 16, 17, 23, 26, 32, 33, 34, 35};
@@ -51,6 +58,8 @@ public class Barrel extends SlimefunItem {
     public static final int MASSIVE_BARREL_SIZE = 276480; // 80 Double chests
     public static final int BOTTOMLESS_BARREL_SIZE = 1728000; // 500 Double chests
 
+    private final int OVERFLOW_AMOUNT = 3240;
+
     private final int MAX_STORAGE;
 
     private final ItemSetting<Boolean> showHologram = new ItemSetting<>("show-hologram", true);
@@ -60,7 +69,7 @@ public class Barrel extends SlimefunItem {
 
         this.MAX_STORAGE = MAX_STORAGE;
 
-        new BlockMenuPreset(getID(), name) {
+        new BlockMenuPreset(getId(), name) {
 
             @Override
             public void init() {
@@ -97,7 +106,7 @@ public class Barrel extends SlimefunItem {
             }
 
             @Override
-            public boolean canOpen(Block b, Player p) {
+            public boolean canOpen(@Nonnull Block b, @Nonnull Player p) {
                 return (p.hasPermission("slimefun.inventory.bypass")
                     || SlimefunPlugin.getProtectionManager().hasPermission(
                     p, b.getLocation(), ProtectableAction.ACCESS_INVENTORIES));
@@ -120,40 +129,92 @@ public class Barrel extends SlimefunItem {
             }
         };
 
-        registerBlockHandler(getID(), (p, b, stack, reason) -> {
+        registerBlockHandler(getId(), (p, b, stack, reason) -> {
             BlockMenu inv = BlockStorage.getInventory(b);
             String storedString = BlockStorage.getLocationInfo(b.getLocation(), "stored");
             int stored = Integer.parseInt(storedString);
 
             if (inv != null) {
 
+                int itemCount = 0;
+
+                SlimefunItem sfItem = SlimefunItem.getByItem(p.getInventory().getItemInMainHand());
+                if (sfItem != null && (
+                    sfItem == SlimefunItems.EXPLOSIVE_PICKAXE.getItem()
+                    || sfItem == SlimefunItems.EXPLOSIVE_SHOVEL.getItem()
+                    || sfItem == FluffyItems.UPGRADED_EXPLOSIVE_PICKAXE.getItem()
+                    || sfItem == FluffyItems.UPGRADED_EXPLOSIVE_SHOVEL.getItem()
+                )) {
+                    Utils.send(p, "&cYou can not break barrels using explosive tools!");
+                    SimpleHologram.remove(b);
+                    return true;
+                }
+
+                for (Entity e : p.getNearbyEntities(5, 5, 5)) {
+                    if (e instanceof Item) {
+                        itemCount++;
+                    }
+                }
+
+                if (itemCount > 5) {
+                    Utils.send(p, "&cPlease remove nearby items before breaking this barrel!");
+                    return false;
+                }
+
                 inv.dropItems(b.getLocation(), INPUT_SLOTS);
                 inv.dropItems(b.getLocation(), OUTPUT_SLOTS);
-
 
                 if (stored > 0) {
                     int stackSize = inv.getItemInSlot(DISPLAY_SLOT).getMaxStackSize();
                     ItemStack unKeyed = Utils.unKeyItem(inv.getItemInSlot(DISPLAY_SLOT));
 
-                    // Everything greater than 1 stack
-                    while (stored >= stackSize) {
+                    if (stored > OVERFLOW_AMOUNT) {
 
-                        b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(unKeyed, stackSize));
+                        Utils.send(p, "&eThere are more than " + OVERFLOW_AMOUNT + " items in this barrel! " +
+                            "Dropping " + OVERFLOW_AMOUNT + " items instead!");
+                        int toRemove = OVERFLOW_AMOUNT;
+                        while (toRemove >= stackSize) {
 
-                        stored = stored - stackSize;
+                            b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(unKeyed, stackSize));
+
+                            toRemove = toRemove - stackSize;
+                        }
+
+                        if (toRemove > 0) {
+                            b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(unKeyed, toRemove));
+                        }
+
+                        BlockStorage.addBlockInfo(b, "stored", String.valueOf(stored - OVERFLOW_AMOUNT));
+                        updateMenu(b, inv);
+
+                        return false;
+                    } else {
+
+                        // Everything greater than 1 stack
+                        while (stored >= stackSize) {
+
+                            b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(unKeyed, stackSize));
+
+                            stored = stored - stackSize;
+                        }
+
+                        // Drop remaining, if there is any
+                        if (stored > 0) {
+                            b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(unKeyed, stored));
+                        }
+
+                        // In case they use an explosive pick
+                        BlockStorage.addBlockInfo(b, "stored", "0");
+                        updateMenu(b, inv);
+                        SimpleHologram.remove(b);
+                        return true;
                     }
-
-                    // Drop remaining, if there is any
-                    if (stored > 0) {
-                        b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(unKeyed, stored));
-                    }
+                } else {
+                    SimpleHologram.remove(b);
+                    return true;
                 }
 
             }
-            // In case they use an explosive pick
-            BlockStorage.addBlockInfo(b, "stored", "0");
-            updateMenu(b, inv);
-            SimpleHologram.remove(b);
             return true;
         });
 
@@ -216,7 +277,7 @@ public class Barrel extends SlimefunItem {
                     if (stored + item.getAmount() <= MAX_STORAGE) {
                         storeItem(b, inv, slot, item, stored);
 
-                    // Split itemstack
+                        // Split itemstack
                     } else {
                         int amount = MAX_STORAGE - stored;
                         inv.consumeItem(slot, amount);

@@ -158,6 +158,10 @@ public final class Utils {
     }
 
     // Don't use Slimefun's runsync
+    public static BukkitTask runSync(Runnable r) {
+        return FluffyMachines.getInstance() != null && FluffyMachines.getInstance().isEnabled() ? Bukkit.getScheduler().runTask(FluffyMachines.getInstance(), r) : null;
+    }
+
     public static BukkitTask runSync(Runnable r, long delay) {
         return FluffyMachines.getInstance() != null && FluffyMachines.getInstance().isEnabled() ? Bukkit.getScheduler().runTaskLater(FluffyMachines.getInstance(), r, delay) : null;
     }
