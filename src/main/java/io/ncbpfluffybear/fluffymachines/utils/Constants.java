@@ -31,6 +31,8 @@ public final class Constants {
         SlimefunItems.TIN_DUST, SlimefunItems.MAGNESIUM_DUST, SlimefunItems.SILVER_DUST
     ));
 
+    public static final int MAX_STACK_SIZE = 64;
+
     private Constants() {}
 
 }

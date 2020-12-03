@@ -3,8 +3,6 @@
 These are some thrown together machines made by me for fun :)
 I pretty much add whatever comes to mind, is suggested by me, or other addons don't want to add.
 
-Not all of these machines are aimed for performance, so make sure you check their timings!
-
 Custom item settings can be changed in `plugins/Slimefun/Items.yml`
 
 ## Machines

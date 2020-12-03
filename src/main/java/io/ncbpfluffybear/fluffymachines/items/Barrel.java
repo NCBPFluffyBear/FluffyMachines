@@ -4,7 +4,7 @@ import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.utils.holograms.SimpleHologram;
-import io.ncbpfluffybear.fluffymachines.objects.NonHopperableItem;
+import io.ncbpfluffybear.fluffymachines.objects.NonHopperableBlock;
 import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
@@ -29,7 +29,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 import javax.annotation.Nonnull;
 
@@ -39,7 +38,7 @@ import javax.annotation.Nonnull;
  * @author NCBPFluffyBear
  */
 
-public class Barrel extends NonHopperableItem {
+public class Barrel extends NonHopperableBlock {
 
     private final int[] inputBorder = {9, 10, 11, 12, 18, 21, 27, 28, 29, 30};
     private final int[] outputBorder = {14, 15, 16, 17, 23, 26, 32, 33, 34, 35};
@@ -77,7 +76,7 @@ public class Barrel extends NonHopperableItem {
             }
 
             @Override
-            public void newInstance(BlockMenu menu, Block b) {
+            public void newInstance(@Nonnull BlockMenu menu, @Nonnull Block b) {
 
                 // Essentially convert to onPlace itemhandler
                 if (BlockStorage.getLocationInfo(b.getLocation(), "stored") == null) {
