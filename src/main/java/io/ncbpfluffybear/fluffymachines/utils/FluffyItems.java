@@ -389,7 +389,8 @@ public class FluffyItems {
         "&7ID: <ID>"
     );
     public static final SlimefunItemStack LINKED_CHEST = new SlimefunItemStack("LINKED_CHEST",
-        Material.GOLD_BLOCK,
+        new CustomItem(SkullItem.fromHash("6484da45301625dee79ae29ff513efa583f1ed838033f20db80963cedf8aeb0e")),
+        "&6&lLinked Chest",
         "&6&lLinked Chest",
         "",
         "&7Chops down an entire tree at once",

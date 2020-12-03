@@ -6,6 +6,7 @@ import io.ncbpfluffybear.fluffymachines.items.EnderChestExtractionNode;
 import io.ncbpfluffybear.fluffymachines.items.EnderChestInsertionNode;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
+import io.ncbpfluffybear.fluffymachines.items.LinkedChest;
 import io.ncbpfluffybear.fluffymachines.items.tools.Dolly;
 import io.ncbpfluffybear.fluffymachines.items.tools.FluffyWrench;
 import io.ncbpfluffybear.fluffymachines.items.tools.PortableCharger;
@@ -317,6 +318,12 @@ public final class FluffyItemSetup {
             SlimefunItems.FILLED_FLASK_OF_KNOWLEDGE, SlimefunItems.ENCHANTMENT_RUNE,
             SlimefunItems.FILLED_FLASK_OF_KNOWLEDGE,
             new ItemStack(Material.BOOK), SlimefunItems.FILLED_FLASK_OF_KNOWLEDGE, new ItemStack(Material.BOOK)
+        }).register(plugin);
+
+        new LinkedChest(FluffyItems.fluffymachines, FluffyItems.LINKED_CHEST, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            new ItemStack(Material.OBSIDIAN), new ItemStack(Material.OBSIDIAN), new ItemStack(Material.OBSIDIAN),
+            new ItemStack(Material.LAVA_BUCKET), new ItemStack(Material.BLAST_FURNACE), new ItemStack(Material.LAVA_BUCKET),
+            new ItemStack(Material.OBSIDIAN), new ItemStack(Material.OBSIDIAN), new ItemStack(Material.OBSIDIAN)
         }).register(plugin);
 
         new WarpPad(FluffyItems.fluffymachines, FluffyItems.WARP_PAD,

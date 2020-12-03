@@ -1,19 +1,15 @@
 package io.ncbpfluffybear.fluffymachines.items;
 
-import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
-import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
-import io.ncbpfluffybear.fluffymachines.FluffyMachines;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
+import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.handlers.ItemHandler;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
@@ -25,10 +21,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.stream.IntStream;
 
 /**
- *
  * A locked chest that functions similarly to
  * ColoredEnderChests
- *
  */
 
 public class LinkedChest extends SlimefunItem {
@@ -44,13 +38,20 @@ public class LinkedChest extends SlimefunItem {
 
     private ItemHandler onInteract() {
         return (BlockUseHandler) e -> {
-            new BlockMenu(buildMenu("yes"), e.getClickedBlock().get().getLocation());
-            e.getPlayer().openInventory(BlockStorage.getInventory(e.getClickedBlock().get()).toInventory());
+            Block b = e.getClickedBlock().get();
+            Player p = e.getPlayer();
+            if (BlockStorage.getLocationInfo(b.getLocation(), "id").equals("LINKED_CHEST")) {
+                Utils.send(p, "&2Please enter an ID for this linked chest");
+                ChatUtils.awaitInput(p, msg -> {
+                    BlockStorage.addBlockInfo(b.getLocation(), "id", msg);
+                    buildMenu(msg);
+                });
+            }
         };
     }
 
-    private BlockMenuPreset buildMenu(String id) {
-        return new BlockMenuPreset(getID(), "&c&lLinked Chest", true) {
+    private void buildMenu(String id) {
+        new BlockMenuPreset(id, "&c&lLinked Chest", true) {
 
             @Override
             public void init() {
