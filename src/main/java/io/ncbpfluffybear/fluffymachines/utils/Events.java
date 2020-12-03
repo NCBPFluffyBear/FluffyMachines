@@ -1,14 +1,10 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import io.github.thebusybiscuit.slimefun4.implementation.items.gps.ElevatorPlate;
-import io.github.thebusybiscuit.slimefun4.implementation.items.gps.Teleporter;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import io.ncbpfluffybear.fluffymachines.items.tools.WateringCan;
 import io.ncbpfluffybear.fluffymachines.machines.AlternateElevatorPlate;
-import io.ncbpfluffybear.fluffymachines.objects.NonHopperableItem;
+import io.ncbpfluffybear.fluffymachines.objects.NonHopperableBlock;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.Location;
@@ -18,18 +14,15 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
@@ -39,8 +32,6 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import java.util.UUID;
 
 public class Events implements Listener {
 
@@ -166,7 +157,7 @@ public class Events implements Listener {
         if (e.getSource().getType() == InventoryType.HOPPER
             && e.getDestination().getLocation() != null
             && BlockStorage.hasBlockInfo(e.getDestination().getLocation())) {
-            if (BlockStorage.check(e.getDestination().getLocation()) instanceof NonHopperableItem){
+            if (BlockStorage.check(e.getDestination().getLocation()) instanceof NonHopperableBlock) {
                 e.setCancelled(true);
             }
         }
@@ -180,8 +171,8 @@ public class Events implements Listener {
 
         String id = BlockStorage.checkID(e.getClickedBlock());
         if (id != null && id.equals(FluffyItems.ALTERNATE_ELEVATOR_PLATE.getItemId())) {
-                AlternateElevatorPlate elevator = ((AlternateElevatorPlate) FluffyItems.ALTERNATE_ELEVATOR_PLATE.getItem());
-                elevator.openInterface(e.getPlayer(), e.getClickedBlock());
+            AlternateElevatorPlate elevator = ((AlternateElevatorPlate) FluffyItems.ALTERNATE_ELEVATOR_PLATE.getItem());
+            elevator.openInterface(e.getPlayer(), e.getClickedBlock());
         }
     }
 
