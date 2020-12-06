@@ -34,7 +34,7 @@ import javax.annotation.Nonnull;
 public class WaterSprinkler extends AbstractGrowthAccelerator {
 
     public static final ItemSetting<Double> successChance = new ItemSetting<>("success-chance", 0.5);
-    public static final int ENERGY_CONSUMPTION = 16;
+    public static final int ENERGY_CONSUMPTION = 2;
     public static final int CAPACITY = 128;
     private static final int RADIUS = 2;
     private static final int PROGRESS_SLOT = 4;

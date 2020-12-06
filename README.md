@@ -65,3 +65,7 @@ Custom item settings can be changed in `plugins/Slimefun/Items.yml`
 **Alternate Elevator Plate**: Functions the same as Slimefun's Elevator Plates, but it uses a Chest GUI. Can be used for cosmetic effect, of if your server does not support elevators when a player is muted, this will work.
 
 **Portable Charger**: Multiple tiered handheld charders that allow players to charge items anywhere
+
+## FAQ
+**Can cargo be used on the Foundry?**
+*Yes, but you can not place it directly on the Superheated Furnace. Place down a chest in its place, put the cargo on the chest, and then replace the chest wth the Superheated Furnace.*
