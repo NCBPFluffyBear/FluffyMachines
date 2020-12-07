@@ -258,7 +258,7 @@ public class FluffyItems {
         "&7灑水 灑水",
         "",
         LoreBuilderDynamic.powerBuffer(WaterSprinkler.CAPACITY),
-        LoreBuilderDynamic.powerPerTick(WaterSprinkler.ENERGY_CONSUMPTION)
+        LoreBuilderDynamic.powerPerTick(WaterSprinkler.ENERGY_CONSUMPTION) + " 個作物"
     );
     public static final SlimefunItemStack ITEM_OVERSTACKER = new SlimefunItemStack("ITEM_OVERSTACKER",
         Material.PISTON,
