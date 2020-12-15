@@ -24,8 +24,8 @@ import java.util.function.Predicate;
 
 public class UpgradedLumberAxe extends SimpleSlimefunItem<ItemUseHandler> implements NotPlaceable {
 
-    private static final int MAX_BROKEN = 100;
-    private static final int MAX_STRIPPED = 20;
+    private static final int MAX_BROKEN = 200;
+    private static final int MAX_STRIPPED = 200;
     private static final int RANGE = 2;
 
     public UpgradedLumberAxe(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
