@@ -394,7 +394,7 @@ public class Barrel extends NonHopperableBlock {
         }
 
         if (stored == 0) {
-            inv.replaceExistingItem(DISPLAY_SLOT, new CustomItem(Material.BARRIER, "&cEmpty"));
+            inv.replaceExistingItem(DISPLAY_SLOT, new CustomItem(Material.BARRIER, "&c空"));
             if (showHologram.getValue() && hasHolo.equals("true")) {
                 FluffyHologram.update(b, "&c空");
             }
