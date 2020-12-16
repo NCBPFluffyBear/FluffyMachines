@@ -8,10 +8,8 @@ import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunIte
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.cscorelib2.materials.MaterialCollections;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import org.bukkit.Axis;
-import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.Tag;
@@ -19,14 +17,15 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.Orientable;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nonnull;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
 
 public class UpgradedLumberAxe extends SimpleSlimefunItem<ItemUseHandler> implements NotPlaceable {
 
-    private static final int MAX_BROKEN = 100;
-    private static final int MAX_STRIPPED = 20;
+    private static final int MAX_BROKEN = 200;
+    private static final int MAX_STRIPPED = 200;
     private static final int RANGE = 2;
 
     public UpgradedLumberAxe(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
@@ -42,15 +41,14 @@ public class UpgradedLumberAxe extends SimpleSlimefunItem<ItemUseHandler> implem
 
     private ToolUseHandler onBlockBreak() {
         return (e, tool, fortune, drops) -> {
-            if (MaterialCollections.getAllLogs().contains(e.getBlock().getType())) {
+            if (Tag.LOGS.getValues().contains(e.getBlock().getType())) {
                 List<Block> logs = find(e.getBlock(), MAX_BROKEN, b -> Tag.LOGS.isTagged(b.getType()));
 
-                if (logs.contains(e.getBlock())) {
-                    logs.remove(e.getBlock());
-                }
+                logs.remove(e.getBlock());
 
                 for (Block b : logs) {
-                    if (SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), b, ProtectableAction.BREAK_BLOCK)) {
+                    if (SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), b,
+                        ProtectableAction.BREAK_BLOCK)) {
                         b.breakNaturally(tool);
                     }
                 }
@@ -58,6 +56,7 @@ public class UpgradedLumberAxe extends SimpleSlimefunItem<ItemUseHandler> implem
         };
     }
 
+    @Nonnull
     @Override
     public ItemUseHandler getItemHandler() {
         return e -> {
@@ -67,12 +66,11 @@ public class UpgradedLumberAxe extends SimpleSlimefunItem<ItemUseHandler> implem
                 if (isUnstrippedLog(block)) {
                     List<Block> logs = find(block, MAX_STRIPPED, this::isUnstrippedLog);
 
-                    if (logs.contains(block)) {
-                        logs.remove(block);
-                    }
+                    logs.remove(block);
 
                     for (Block b : logs) {
-                        if (SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), b, ProtectableAction.BREAK_BLOCK)) {
+                        if (SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), b,
+                            ProtectableAction.BREAK_BLOCK)) {
                             stripLog(b);
                         }
                     }

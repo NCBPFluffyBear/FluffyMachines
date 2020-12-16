@@ -2,11 +2,13 @@ package io.ncbpfluffybear.fluffymachines.items.tools;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.tools.ExplosivePickaxe;
+import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.materials.MaterialTools;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -29,7 +31,7 @@ public class UpgradedExplosiveShovel extends UpgradedExplosiveTool {
 
     @Override
     protected boolean canBreak(Player p, Block b) {
-        return MaterialTools.getBreakableByShovel().contains(b.getType())
+        return SlimefunTag.EXPLOSIVE_SHOVEL_BLOCKS.isTagged(b.getType())
             && SlimefunPlugin.getProtectionManager().hasPermission(p, b.getLocation(), ProtectableAction.BREAK_BLOCK);
     }
 
