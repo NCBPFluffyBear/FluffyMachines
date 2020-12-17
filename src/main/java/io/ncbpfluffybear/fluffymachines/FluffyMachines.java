@@ -14,12 +14,15 @@ import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
 import io.ncbpfluffybear.fluffymachines.utils.Events;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.RayTraceResult;
 
@@ -31,6 +34,8 @@ import java.util.logging.Level;
 public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
     private static FluffyMachines instance;
+    public static ShapedRecipe shapedVanillaRecipes;
+    public static ShapelessRecipe shapelessVanillaRecipes;
 
     @SneakyThrows
     @Override
@@ -56,6 +61,10 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
         }
 
         registerGlow();
+
+        while (Bukkit.recipeIterator().hasNext()) {
+            Bukkit.recipeIterator().next()
+        }
 
         // Registering Items
         FluffyItemSetup.setup(this);

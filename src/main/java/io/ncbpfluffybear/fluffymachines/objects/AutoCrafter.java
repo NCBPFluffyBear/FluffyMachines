@@ -1,4 +1,4 @@
-package io.ncbpfluffybear.fluffymachines.machines;
+package io.ncbpfluffybear.fluffymachines.objects;
 
 import io.github.thebusybiscuit.slimefun4.api.events.BlockPlacerPlaceEvent;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
@@ -23,7 +23,6 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -58,7 +57,7 @@ public class AutoCrafter extends SlimefunItem implements InventoryBlock, EnergyN
         this.machineRecipes = machineRecipes;
         this.mblock = (MultiBlockMachine) machineRecipes.getMachine();
 
-        new BlockMenuPreset(getID(), displayName) {
+        new BlockMenuPreset(getId(), displayName) {
 
             @Override
             public void init() {
@@ -128,7 +127,7 @@ public class AutoCrafter extends SlimefunItem implements InventoryBlock, EnergyN
         };
 
         addItemHandler(onPlace());
-        registerBlockHandler(getID(), (p, b, stack, reason) -> {
+        registerBlockHandler(getId(), (p, b, stack, reason) -> {
             BlockMenu inv = BlockStorage.getInventory(b);
 
             if (inv != null) {
@@ -174,7 +173,6 @@ public class AutoCrafter extends SlimefunItem implements InventoryBlock, EnergyN
                 public boolean onClick(InventoryClickEvent e, Player p, int slot, ItemStack cursor,
                                        ClickAction action) {
                     if (cursor == null) return true;
-                    cursor.getType();
                     return cursor.getType() == Material.AIR;
                 }
             });
