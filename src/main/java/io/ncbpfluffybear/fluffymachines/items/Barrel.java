@@ -389,13 +389,13 @@ public class Barrel extends NonHopperableBlock {
         inv.replaceExistingItem(STATUS_SLOT, new CustomItem(
             Material.LIME_STAINED_GLASS_PANE, "&6Items Stored: &e" + stored + " / " + MAX_STORAGE,
             "&b" + storedStacks + " Stacks &8| &7" + storedPercent + "&7%"));
-        if (showHologram.getValue() && hasHolo.equals("true")) {
+        if (showHologram.getValue() && (hasHolo == null || hasHolo.equals("true"))) {
             FluffyHologram.update(b, itemName + " &9x" + stored + " &7(" + storedPercent + "&7%)");
         }
 
         if (stored == 0) {
             inv.replaceExistingItem(DISPLAY_SLOT, new CustomItem(Material.BARRIER, "&cEmpty"));
-            if (showHologram.getValue() && hasHolo.equals("true")) {
+            if (showHologram.getValue() && (hasHolo == null || hasHolo.equals("true"))) {
                 FluffyHologram.update(b, "&cEmpty");
             }
         }
