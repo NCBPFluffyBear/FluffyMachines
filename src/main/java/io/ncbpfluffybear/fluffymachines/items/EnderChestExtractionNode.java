@@ -139,12 +139,7 @@ public class EnderChestExtractionNode extends SlimefunItem {
                 Player p = e.getPlayer();
                 Block b = e.getBlock();
 
-                if (e.getBlockAgainst().getType() != Material.ENDER_CHEST) {
-                    e.setCancelled(true);
-                    BlockStorage.clearBlockInfo(e.getBlockPlaced());
-                    Utils.send(p, "&cYou can only place this on an Ender Chest!");
-                } else {
-
+                if (!e.isCancelled()) {
                     BlockStorage.addBlockInfo(b, "owner", p.getUniqueId().toString());
                     BlockStorage.addBlockInfo(b, "playername", p.getDisplayName());
                     Utils.send(p, "&aEnder Chest Extraction Node registered to " + p.getDisplayName()
