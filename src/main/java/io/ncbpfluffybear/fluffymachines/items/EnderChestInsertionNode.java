@@ -139,11 +139,7 @@ public class EnderChestInsertionNode extends SlimefunItem {
                 Player p = e.getPlayer();
                 Block b = e.getBlock();
 
-                if (e.getBlockAgainst().getType() != Material.ENDER_CHEST) {
-                    e.setCancelled(true);
-                    BlockStorage.clearBlockInfo(e.getBlockPlaced());
-                    Utils.send(p, "&c你只能把它放在終界箱上!");
-                } else {
+                if (!e.isCancelled()) {
                     BlockStorage.addBlockInfo(b, "owner", p.getUniqueId().toString());
                     BlockStorage.addBlockInfo(b, "playername", p.getDisplayName());
                     Utils.send(p, "&a終界箱存放節點已註冊到 " + p.getDisplayName()

@@ -1,5 +1,9 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
+import io.github.thebusybiscuit.slimefun4.utils.itemstack.ItemStackWrapper;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import io.ncbpfluffybear.fluffymachines.items.tools.WateringCan;
@@ -20,6 +24,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -32,6 +37,8 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import javax.annotation.Nonnull;
 
 public class Events implements Listener {
 
@@ -190,5 +197,23 @@ public class Events implements Listener {
                 Utils.send(p, "&7回報Bugs: https://github.com/xMikux/FluffyMachines/issues");
             }
         }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onExtractionNodePlace(BlockPlaceEvent e) {
+        if ((e.getBlock().getY() != e.getBlockAgainst().getY() || e.getBlockAgainst().getType() != Material.ENDER_CHEST)
+            && isExtractionNode(e.getItemInHand())) {
+            Utils.send(e.getPlayer(), "&c你只能把它放在終界箱上!");
+            e.setCancelled(true);
+        }
+    }
+
+    private boolean isExtractionNode(@Nonnull ItemStack item) {
+        SlimefunItem sfItem = SlimefunItem.getByItem(item);
+
+        if (sfItem == null) {
+            return false;
+        }
+        return sfItem.getId().equals(FluffyItems.ENDER_CHEST_EXTRACTION_NODE.getItemId()) || sfItem.getId().equals(FluffyItems.ENDER_CHEST_INSERTION_NODE.getItemId());
     }
 }
