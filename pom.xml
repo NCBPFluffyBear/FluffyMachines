@@ -138,7 +138,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.j3fftw1</groupId>
+            <groupId>com.github.Slimefun-Addon-Community</groupId>
             <artifactId>extrautils</artifactId>
             <version>a039b05823</version>
         </dependency>
