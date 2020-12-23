@@ -56,39 +56,6 @@ public final class Utils {
 
     private Utils() {}
 
-    public static String powerFormatAndFadeDecimals(double power) {
-        String formattedString = powerFormat.format(power);
-        if (formattedString.indexOf('.') != -1) {
-            return formattedString.substring(0, formattedString.indexOf('.')) + ChatColor.DARK_GRAY
-                + formattedString.substring(formattedString.indexOf('.')) + ChatColor.GRAY;
-        } else {
-            return formattedString;
-        }
-    }
-
-    public static void putOutputSlot(BlockMenuPreset preset, int slot) {
-        preset.addItem(slot, null, new ChestMenu.AdvancedMenuClickHandler() {
-
-            @Override
-            public boolean onClick(Player p, int slot, ItemStack cursor, ClickAction action) {
-                return false;
-            }
-
-            @Override
-            public boolean onClick(InventoryClickEvent e, Player p, int slot, ItemStack cursor, ClickAction action) {
-                return cursor == null || cursor.getType() == Material.AIR;
-            }
-        });
-    }
-
-    public static double perTickToPerSecond(double power) {
-        if (Constants.CUSTOM_TICKER_DELAY <= 0) {
-            return (Constants.SERVER_TICK_RATE * power);
-        } else {
-            return (1 / ((double) Constants.CUSTOM_TICKER_DELAY / Constants.SERVER_TICK_RATE) * power);
-        }
-    }
-
     public static void send(Player p, String message) {
         p.sendMessage(ChatColor.GRAY + "[FluffyMachines] " + ChatColors.color(message));
     }

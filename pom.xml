@@ -103,7 +103,7 @@
         <dependency>
             <groupId>com.github.TheBusyBiscuit</groupId>
             <artifactId>Slimefun4</artifactId>
-            <version>RC-17</version>
+            <version>RC-18</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -137,5 +137,10 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.j3fftw1</groupId>
+            <artifactId>extrautils</artifactId>
+            <version>a039b05823</version>
+        </dependency>
     </dependencies>
 </project>

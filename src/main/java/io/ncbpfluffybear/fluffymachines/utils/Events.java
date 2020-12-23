@@ -1,14 +1,10 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
-import io.github.thebusybiscuit.slimefun4.utils.itemstack.ItemStackWrapper;
+import dev.j3fftw.extrautils.objects.NonHopperableBlock;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import io.ncbpfluffybear.fluffymachines.items.tools.WateringCan;
 import io.ncbpfluffybear.fluffymachines.machines.AlternateElevatorPlate;
-import io.ncbpfluffybear.fluffymachines.objects.NonHopperableBlock;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.Location;
@@ -155,17 +151,6 @@ public class Events implements Listener {
                     Utils.send(p, "&cMissing destination Warp Pad!");
 
                 }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onHopper(InventoryMoveItemEvent e) {
-        if (e.getSource().getType() == InventoryType.HOPPER
-            && e.getDestination().getLocation() != null
-            && BlockStorage.hasBlockInfo(e.getDestination().getLocation())) {
-            if (BlockStorage.check(e.getDestination().getLocation()) instanceof NonHopperableBlock) {
-                e.setCancelled(true);
             }
         }
     }

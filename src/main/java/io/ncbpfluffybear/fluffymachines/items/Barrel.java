@@ -5,7 +5,6 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.ncbpfluffybear.fluffymachines.objects.FluffyHologram;
-import io.ncbpfluffybear.fluffymachines.objects.NonHopperableBlock;
 import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
@@ -39,7 +38,7 @@ import javax.annotation.Nonnull;
  * @author NCBPFluffyBear
  */
 
-public class Barrel extends NonHopperableBlock {
+public class Barrel extends SlimefunItem {
 
     private final int[] inputBorder = {9, 10, 11, 12, 18, 21, 27, 28, 29, 30};
     private final int[] outputBorder = {14, 15, 16, 17, 23, 26, 32, 33, 34, 35};
