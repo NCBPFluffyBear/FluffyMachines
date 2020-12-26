@@ -140,7 +140,7 @@
         <dependency>
             <groupId>com.github.Slimefun-Addon-Community</groupId>
             <artifactId>extrautils</artifactId>
-            <version>a039b05823</version>
+            <version>cea1be6550</version>
         </dependency>
     </dependencies>
 </project>
