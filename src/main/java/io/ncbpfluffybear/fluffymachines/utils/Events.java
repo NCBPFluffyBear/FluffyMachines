@@ -1,16 +1,13 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
-import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
-import io.github.thebusybiscuit.slimefun4.utils.itemstack.ItemStackWrapper;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import io.ncbpfluffybear.fluffymachines.items.tools.WateringCan;
 import io.ncbpfluffybear.fluffymachines.machines.AlternateElevatorPlate;
-import io.ncbpfluffybear.fluffymachines.objects.NonHopperableBlock;
+import javax.annotation.Nonnull;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -28,8 +25,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -37,8 +32,6 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
-import javax.annotation.Nonnull;
 
 public class Events implements Listener {
 
@@ -112,11 +105,12 @@ public class Events implements Listener {
                 && (e.getCause() == EntityDamageEvent.DamageCause.FIRE
                 || e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK
                 || e.getCause() == EntityDamageEvent.DamageCause.LAVA
-                || e.getCause() == EntityDamageEvent.DamageCause.LIGHTNING)) {
-                if (!en.isDead()) {
-                    en.remove();
-                    en.getLocation().getWorld().dropItem(en.getLocation(), item);
-                }
+                || e.getCause() == EntityDamageEvent.DamageCause.LIGHTNING)
+                || !en.isDead()
+            ) {
+                en.remove();
+                en.getLocation().getWorld().dropItem(en.getLocation(), item);
+
             }
         }
     }
@@ -155,17 +149,6 @@ public class Events implements Listener {
                     Utils.send(p, "&cMissing destination Warp Pad!");
 
                 }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onHopper(InventoryMoveItemEvent e) {
-        if (e.getSource().getType() == InventoryType.HOPPER
-            && e.getDestination().getLocation() != null
-            && BlockStorage.hasBlockInfo(e.getDestination().getLocation())) {
-            if (BlockStorage.check(e.getDestination().getLocation()) instanceof NonHopperableBlock) {
-                e.setCancelled(true);
             }
         }
     }
