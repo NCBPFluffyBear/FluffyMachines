@@ -1,11 +1,11 @@
 package io.ncbpfluffybear.fluffymachines.machines;
 
+import dev.j3fftw.extrautils.objects.NonHopperableBlock;
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.utils.holograms.SimpleHologram;
-import io.ncbpfluffybear.fluffymachines.objects.NonHopperableBlock;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.handlers.ItemHandler;
