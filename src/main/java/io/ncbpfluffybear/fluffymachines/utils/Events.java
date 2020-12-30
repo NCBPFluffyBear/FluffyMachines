@@ -106,7 +106,7 @@ public class Events implements Listener {
                 || e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK
                 || e.getCause() == EntityDamageEvent.DamageCause.LAVA
                 || e.getCause() == EntityDamageEvent.DamageCause.LIGHTNING)
-                || !en.isDead()
+                && !en.isDead()
             ) {
                 en.remove();
                 en.getLocation().getWorld().dropItem(en.getLocation(), item);
