@@ -21,6 +21,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -28,14 +30,17 @@ import org.bukkit.util.RayTraceResult;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
     private static FluffyMachines instance;
-    public static ShapedRecipe shapedVanillaRecipes;
-    public static ShapelessRecipe shapelessVanillaRecipes;
+    public static HashMap<ItemStack, Map<Character, RecipeChoice>> shapedVanillaRecipes = new HashMap<>();
+    public static HashMap<ItemStack, List<RecipeChoice>> shapelessVanillaRecipes = new HashMap<>();
 
     @SneakyThrows
     @Override
@@ -62,8 +67,20 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
         registerGlow();
 
-        while (Bukkit.recipeIterator().hasNext()) {
-            Bukkit.recipeIterator().next()
+        Iterator<Recipe> recipeIterator = Bukkit.recipeIterator();
+        while (recipeIterator.hasNext()) {
+            Recipe r = recipeIterator.next();
+
+            if (r instanceof ShapedRecipe) {
+                ShapedRecipe sr = (ShapedRecipe) r;
+                shapedVanillaRecipes.put(sr.getResult(), sr.getChoiceMap());
+
+            } else if (r instanceof ShapelessRecipe) {
+                ShapelessRecipe slr = (ShapelessRecipe) r;
+                shapelessVanillaRecipes.put(slr.getResult(), slr.getChoiceList());
+
+            }
+
         }
 
         // Registering Items
