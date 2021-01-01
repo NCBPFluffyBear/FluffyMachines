@@ -4,9 +4,10 @@ import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import io.ncbpfluffybear.fluffymachines.items.tools.WateringCan;
 import io.ncbpfluffybear.fluffymachines.machines.AlternateElevatorPlate;
-import io.ncbpfluffybear.fluffymachines.objects.NonHopperableBlock;
+import javax.annotation.Nonnull;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -20,11 +21,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -105,11 +105,12 @@ public class Events implements Listener {
                 && (e.getCause() == EntityDamageEvent.DamageCause.FIRE
                 || e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK
                 || e.getCause() == EntityDamageEvent.DamageCause.LAVA
-                || e.getCause() == EntityDamageEvent.DamageCause.LIGHTNING)) {
-                if (!en.isDead()) {
-                    en.remove();
-                    en.getLocation().getWorld().dropItem(en.getLocation(), item);
-                }
+                || e.getCause() == EntityDamageEvent.DamageCause.LIGHTNING)
+                && !en.isDead()
+            ) {
+                en.remove();
+                en.getLocation().getWorld().dropItem(en.getLocation(), item);
+
             }
         }
     }
@@ -152,17 +153,6 @@ public class Events implements Listener {
         }
     }
 
-    @EventHandler
-    public void onHopper(InventoryMoveItemEvent e) {
-        if (e.getSource().getType() == InventoryType.HOPPER
-            && e.getDestination().getLocation() != null
-            && BlockStorage.hasBlockInfo(e.getDestination().getLocation())) {
-            if (BlockStorage.check(e.getDestination().getLocation()) instanceof NonHopperableBlock) {
-                e.setCancelled(true);
-            }
-        }
-    }
-
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPressurePlateEnter(PlayerInteractEvent e) {
         if (e.getAction() != Action.PHYSICAL || e.getClickedBlock() == null) {
@@ -190,5 +180,23 @@ public class Events implements Listener {
                 Utils.send(p, "&7Report Bugs: https://github.com/NCBPFluffyBear/FluffyMachines/issues");
             }
         }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onExtractionNodePlace(BlockPlaceEvent e) {
+        if ((e.getBlock().getY() != e.getBlockAgainst().getY() || e.getBlockAgainst().getType() != Material.ENDER_CHEST)
+            && isExtractionNode(e.getItemInHand())) {
+            Utils.send(e.getPlayer(), "&cYou can only place this on an Ender Chest!");
+            e.setCancelled(true);
+        }
+    }
+
+    private boolean isExtractionNode(@Nonnull ItemStack item) {
+        SlimefunItem sfItem = SlimefunItem.getByItem(item);
+
+        if (sfItem == null) {
+            return false;
+        }
+        return sfItem.getId().equals(FluffyItems.ENDER_CHEST_EXTRACTION_NODE.getItemId()) || sfItem.getId().equals(FluffyItems.ENDER_CHEST_INSERTION_NODE.getItemId());
     }
 }

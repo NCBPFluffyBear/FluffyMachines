@@ -1,11 +1,11 @@
 package io.ncbpfluffybear.fluffymachines.items;
 
+import dev.j3fftw.extrautils.objects.NonHopperableBlock;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.ncbpfluffybear.fluffymachines.objects.FluffyHologram;
-import io.ncbpfluffybear.fluffymachines.objects.NonHopperableBlock;
 import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
@@ -389,13 +389,13 @@ public class Barrel extends NonHopperableBlock {
         inv.replaceExistingItem(STATUS_SLOT, new CustomItem(
             Material.LIME_STAINED_GLASS_PANE, "&6Items Stored: &e" + stored + " / " + MAX_STORAGE,
             "&b" + storedStacks + " Stacks &8| &7" + storedPercent + "&7%"));
-        if (showHologram.getValue() && hasHolo.equals("true")) {
+        if (showHologram.getValue() && (hasHolo == null || hasHolo.equals("true"))) {
             FluffyHologram.update(b, itemName + " &9x" + stored + " &7(" + storedPercent + "&7%)");
         }
 
         if (stored == 0) {
             inv.replaceExistingItem(DISPLAY_SLOT, new CustomItem(Material.BARRIER, "&cEmpty"));
-            if (showHologram.getValue() && hasHolo.equals("true")) {
+            if (showHologram.getValue() && (hasHolo == null || hasHolo.equals("true"))) {
                 FluffyHologram.update(b, "&cEmpty");
             }
         }
