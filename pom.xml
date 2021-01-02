@@ -3,7 +3,7 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>me.ncbpfluffybear</groupId>
+    <groupId>io.ncbpfluffybear</groupId>
     <artifactId>FluffyMachines</artifactId>
     <version>1.0.0</version>
 
@@ -59,7 +59,11 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>me.ncbpfluffybear.fluffymachines</shadedPattern>
+                            <shadedPattern>io.ncbpfluffybear.fluffymachines.bstats</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>dev.j3fftw.extrautils</pattern>
+                            <shadedPattern>io.ncbpfluffybear.fluffymachines.extrautils</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -86,7 +90,7 @@
         <dependency>
             <groupId>com.github.TheBusyBiscuit</groupId>
             <artifactId>CS-CoreLib</artifactId>
-            <version>v1.6.1</version>
+            <version>1.7</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -141,6 +145,7 @@
             <groupId>com.github.Slimefun-Addon-Community</groupId>
             <artifactId>extrautils</artifactId>
             <version>cea1be6550</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
