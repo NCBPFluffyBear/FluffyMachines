@@ -22,7 +22,6 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -30,7 +29,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.RecipeChoice;
 
 import javax.annotation.Nonnull;
@@ -39,7 +37,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This {@link SlimefunItem} automatically
@@ -298,7 +295,8 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                 // All slots are empty, no need to proceed
                 if (blankCounter == 9) {
                     if (menu.hasViewer()) {
-                        menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+                        menu.replaceExistingItem(statusSlot,
+                            new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
                             "&c&lInput Missing"));
                     }
                     return;
@@ -354,7 +352,8 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                     // We found the entire recipe!
                     if (index + 1 == rc.size()) {
                         if (menu.hasViewer()) {
-                            menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.GREEN_STAINED_GLASS_PANE),
+                            menu.replaceExistingItem(statusSlot,
+                                new CustomItem(new ItemStack(Material.GREEN_STAINED_GLASS_PANE),
                                 "&a&lCrafting"));
                         }
                         craft(menu, new ItemStack(keyItem.getType(), keyItem.getAmount()));
@@ -371,7 +370,8 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                     // The recipe started, but did not finish
                 } else if (hit) {
                     if (menu.hasViewer()) {
-                        menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+                        menu.replaceExistingItem(statusSlot,
+                            new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
                             "&c&lIncorrect Recipe"));
                     }
                     return;
@@ -401,7 +401,8 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
 
             if (existingItems.isEmpty() && rcCheck.isEmpty()) {
                 if (menu.hasViewer()) {
-                    menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.GREEN_STAINED_GLASS_PANE),
+                    menu.replaceExistingItem(statusSlot,
+                        new CustomItem(new ItemStack(Material.GREEN_STAINED_GLASS_PANE),
                         "&a&lCrafting"));
                 }
                 craft(menu, new ItemStack(keyItem.getType(), keyItem.getAmount()));
