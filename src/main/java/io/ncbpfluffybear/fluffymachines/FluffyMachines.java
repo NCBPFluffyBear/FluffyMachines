@@ -128,7 +128,7 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
                 return true;
             }
 
-        } else if (args[0].equalsIgnoreCase("ai")
+        } else if (args[0].equalsIgnoreCase("ai") && sender.hasPermission("fluffymachines.admin")
             && sender instanceof Player) {
             Player p = (Player) sender;
 
