@@ -186,6 +186,10 @@ public class SuperheatedFurnace extends NonHopperableBlock {
                             b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(dust, toRemove));
                         }
 
+                        if (BlockStorage.getLocationInfo(b.getLocation(), "stand") != null) {
+                            Bukkit.getEntity(UUID.fromString(BlockStorage.getLocationInfo(b.getLocation(), "stand"))).remove();
+                        }
+
                         BlockStorage.addBlockInfo(b, "stored", String.valueOf(stored - OVERFLOW_AMOUNT));
 
                         return false;
@@ -212,6 +216,9 @@ public class SuperheatedFurnace extends NonHopperableBlock {
                         BlockStorage.addBlockInfo(b, "stored", "0");
                         return true;
                     }
+                }
+                if (BlockStorage.getLocationInfo(b.getLocation(), "stand") != null) {
+                    Bukkit.getEntity(UUID.fromString(BlockStorage.getLocationInfo(b.getLocation(), "stand"))).remove();
                 }
             }
             return true;
@@ -265,7 +272,7 @@ public class SuperheatedFurnace extends NonHopperableBlock {
             if (type == null) {
 
                 if (sfItem != null) {
-                    if (sfItem.getID().endsWith("_DUST")) {
+                    if (sfItem.getId().endsWith("_DUST")) {
                         for (SlimefunItemStack dust : dusts) {
                             if (sfItem == dust.getItem()) {
 
@@ -276,7 +283,7 @@ public class SuperheatedFurnace extends NonHopperableBlock {
 
                             }
                         }
-                    } else if (sfItem.getID().endsWith("_INGOT")) {
+                    } else if (sfItem.getId().endsWith("_INGOT")) {
                         for (SlimefunItemStack ingot : ingots) {
                             if (sfItem == ingot.getItem()) {
 
@@ -286,7 +293,7 @@ public class SuperheatedFurnace extends NonHopperableBlock {
                                 break;
                             }
                         }
-                    } else if (sfItem.getID().equals(SlimefunItems.GOLD_4K.getItemId())) {
+                    } else if (sfItem.getId().equals(SlimefunItems.GOLD_4K.getItemId())) {
                         inv.consumeItem(INPUT_SLOT, amount);
 
                         registerDust(b, "GOLD", amount);
@@ -300,8 +307,8 @@ public class SuperheatedFurnace extends NonHopperableBlock {
                 }
 
             } else {
-                if (sfItem!= null && (sfItem.getID().equals(type + "_DUST") || sfItem.getID().equals(type + "_INGOT"))
-                    || (type.equals("GOLD") && sfItem.getID().equals(SlimefunItems.GOLD_4K.getItemId()))
+                if (sfItem!= null && (sfItem.getId().equals(type + "_DUST") || sfItem.getId().equals(type + "_INGOT"))
+                    || (type.equals("GOLD") && sfItem.getId().equals(SlimefunItems.GOLD_4K.getItemId()))
                     || (type.equals("IRON") && inputItem.getType() == Material.IRON_INGOT
                     && inputItem.getItemMeta().equals(new ItemStack(Material.IRON_INGOT).getItemMeta()))
                     && stored + amount < MAX_STORAGE) {

@@ -1,5 +1,6 @@
 package io.ncbpfluffybear.fluffymachines.machines;
 
+import io.ncbpfluffybear.fluffymachines.objects.AutoCrafter;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
