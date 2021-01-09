@@ -30,6 +30,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nonnull;
 
@@ -360,8 +361,13 @@ public class Barrel extends NonHopperableBlock {
      * @return if the items have the same meta
      */
     private boolean matchMeta(ItemStack item1, ItemStack item2) {
+        // Remove custom model data
+        ItemMeta item1Model=item1.getItemMeta();
+        ItemMeta item2Model=item2.getItemMeta();
+        item1Model.setCustomModelData(null);
+        item2Model.setCustomModelData(null);
         // It seems the meta comparisons are heavier than type checks
-        return item1.getType().equals(item2.getType()) && item1.getItemMeta().equals(item2.getItemMeta());
+        return item1.getType().equals(item2.getType()) && item1_model.equals(item2_model));
     }
 
     /**
