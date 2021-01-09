@@ -367,7 +367,7 @@ public class Barrel extends NonHopperableBlock {
         item1Model.setCustomModelData(null);
         item2Model.setCustomModelData(null);
         // It seems the meta comparisons are heavier than type checks
-        return item1.getType().equals(item2.getType()) && item1Model.equals(item2Model));
+        return item1.getType().equals(item2.getType()) && item1Model.equals(item2Model);
     }
 
     /**
