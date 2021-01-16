@@ -4,7 +4,6 @@ import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
-import io.github.thebusybiscuit.slimefun4.implementation.items.gps.ElevatorPlate;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
@@ -35,7 +34,7 @@ import java.util.UUID;
 /**
  * Alternative elevators that use a Chest GUI instead of
  * a Book GUI. Avoids issues with chat plugins.
- * Based off of the {@link ElevatorPlate}
+ * Based off of the ElevatorPlate
  *
  * @author NCBPFluffyBear
  * @author TheBusyBiscuit

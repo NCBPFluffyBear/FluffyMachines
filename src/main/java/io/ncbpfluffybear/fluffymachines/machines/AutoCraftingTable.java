@@ -9,7 +9,6 @@ import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu.AdvancedMenuClickHandler;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
@@ -21,7 +20,10 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
+import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
+import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -58,7 +60,7 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
     public AutoCraftingTable(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
-        new BlockMenuPreset(getID(), "&6Auto Crafting Table") {
+        new BlockMenuPreset(getId(), "&6Auto Crafting Table") {
 
             @Override
             public void init() {
@@ -73,6 +75,9 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                     menu.replaceExistingItem(4, new CustomItem(Material.GUNPOWDER, "&7Enabled: &4\u2718",
                         "", "&e> Click to enable this Machine")
                     );
+                    menu.replaceExistingItem(statusSlot,
+                        new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE),
+                        "&7&lDisabled"));
                     menu.addMenuClickHandler(4, (p, slot, item, action) -> {
                         BlockStorage.addBlockInfo(b, "enabled", String.valueOf(true));
                         newInstance(menu, b);
@@ -90,7 +95,7 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
             }
 
             @Override
-            public boolean canOpen(Block b, Player p) {
+            public boolean canOpen(@Nonnull Block b, @Nonnull Player p) {
                 return p.hasPermission("slimefun.inventory.bypass")
                     || SlimefunPlugin.getProtectionManager().hasPermission(p, b.getLocation(),
                     ProtectableAction.ACCESS_INVENTORIES
@@ -115,7 +120,7 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                     }
                 }
 
-                Collections.sort(slots, compareSlots(menu));
+                slots.sort(compareSlots(menu));
 
                 int[] array = new int[slots.size()];
 
@@ -128,7 +133,7 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
         };
 
         addItemHandler(onPlace());
-        registerBlockHandler(getID(), (p, b, stack, reason) -> {
+        registerBlockHandler(getId(), (p, b, stack, reason) -> {
             BlockMenu inv = BlockStorage.getInventory(b);
             Location location = b.getLocation();
 
@@ -184,7 +189,6 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                 public boolean onClick(InventoryClickEvent e, Player p, int slot, ItemStack cursor,
                                        ClickAction action) {
                     if (cursor == null) return true;
-                    cursor.getType();
                     return cursor.getType() == Material.AIR;
                 }
             });
@@ -283,7 +287,7 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
             return;
         }
 
-        Material[] existingMats = new Material[9];
+        List<Material> existingMats = new ArrayList<>();
         int blankCounter = 0;
 
         // Put each input item into the array
@@ -317,68 +321,41 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                 return;
             }
 
-            existingMats[i] = existingMat;
+            existingMats.add(existingMat);
 
         }
 
         // New HashMap System
         // This is semi-shapeless, since it reads left to right, top to bottom, and ignores empty spaces.
         // However, this isn't a concern since we have the key item.
-        if (FluffyMachines.shapedVanillaRecipes.containsKey(keyItem)) {
-            int index = 0;
-            boolean hit = false;
-            Map<Character, RecipeChoice> rc = FluffyMachines.shapedVanillaRecipes.get(keyItem);
-            for (Material mat : existingMats) {
+        ItemStack craftingItem = new ItemStack(keyItem.getType(), 1);
 
-                // Recipes are formatted with <Character, RecipeChoice>
-                char charIndex = (char) (index + 97);
+        if (FluffyMachines.shapedVanillaRecipes.containsKey(craftingItem)) {
+            List<RecipeChoice> rc = FluffyMachines.shapedVanillaRecipes.get(craftingItem).getSecondValue();
 
-                // Skip all nulls
-                ItemStack testItem;
-                if (mat != null) {
-                    testItem = new ItemStack(mat);
-                } else {
-                    continue;
+            if (existingMats.size() != rc.size()) {
+                if (menu.hasViewer()) {
+                    menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+                        "&c&lIncorrect Recipe"));
                 }
+                return;
+            }
 
-                if (rc.get(charIndex) == null) {
-                    // Increase both because we still need to check the materials
-                    index++;
-                    charIndex++;
-                }
-
-                if (rc.get(charIndex).test(testItem)) {
-
-                    // We found the entire recipe!
-                    if (index + 1 == rc.size()) {
-                        if (menu.hasViewer()) {
-                            menu.replaceExistingItem(statusSlot,
-                                new CustomItem(new ItemStack(Material.GREEN_STAINED_GLASS_PANE),
-                                "&a&lCrafting"));
-                        }
-                        craft(menu, new ItemStack(keyItem.getType(), keyItem.getAmount()));
-                        return;
-                    }
-
-                    // We found more parts of the recipe!
-                    index++;
-
-                    // We found the start of the recipe!
-                    if (!hit) {
-                        hit = true;
-                    }
-                    // The recipe started, but did not finish
-                } else if (hit) {
+            for (int i = 0; i < rc.size(); i++) {
+                if (!rc.get(i).test(new ItemStack(existingMats.get(i)))) {
                     if (menu.hasViewer()) {
-                        menu.replaceExistingItem(statusSlot,
-                            new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+                        menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
                             "&c&lIncorrect Recipe"));
                     }
                     return;
                 }
             }
-        } else if (FluffyMachines.shapelessVanillaRecipes.containsKey(keyItem)) {
-            List<RecipeChoice> rc = FluffyMachines.shapelessVanillaRecipes.get(keyItem);
+
+            // We found the entire recipe!
+            craft(menu, FluffyMachines.shapedVanillaRecipes.get(craftingItem).getFirstValue().clone());
+
+        } else if (FluffyMachines.shapelessVanillaRecipes.containsKey(craftingItem)) {
+            List<RecipeChoice> rc = FluffyMachines.shapelessVanillaRecipes.get(craftingItem).getSecondValue();
             List<RecipeChoice> rcCheck = new ArrayList<>(rc);
             List<ItemStack> existingItems = new ArrayList<>();
             for (Material mat : existingMats) {
@@ -405,7 +382,7 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                         new CustomItem(new ItemStack(Material.GREEN_STAINED_GLASS_PANE),
                         "&a&lCrafting"));
                 }
-                craft(menu, new ItemStack(keyItem.getType(), keyItem.getAmount()));
+                craft(menu, FluffyMachines.shapelessVanillaRecipes.get(craftingItem).getFirstValue().clone());
 
             } else {
                 if (menu.hasViewer()) {
@@ -415,7 +392,7 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
             }
         } else if (menu.hasViewer()) {
             menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
-                "&c&lInvalid Key!", "&7Do you have the correct number of items?"));
+                "&c&lInvalid Key!"));
         }
     }
 
@@ -427,11 +404,19 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
             }
             return;
         }
+
+        if (menu.hasViewer()) {
+            menu.replaceExistingItem(statusSlot,
+                new CustomItem(new ItemStack(Material.GREEN_STAINED_GLASS_PANE),
+                    "&a&lCrafting"));
+        }
+
         for (int slot : getInputSlots()) {
             if (menu.getItemInSlot(slot) != null) {
                 menu.consumeItem(slot, 1);
             }
         }
+
         menu.pushItem(item, getOutputSlots());
     }
 }
