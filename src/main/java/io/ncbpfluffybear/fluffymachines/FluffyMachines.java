@@ -7,6 +7,7 @@ import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.GlowEnchant;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import lombok.SneakyThrows;
+import me.mrCookieSlime.CSCoreLibPlugin.cscorelib2.collections.Pair;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.Slimefun;
@@ -30,6 +31,7 @@ import org.bukkit.util.RayTraceResult;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -39,8 +41,8 @@ import java.util.logging.Level;
 public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
     private static FluffyMachines instance;
-    public static HashMap<ItemStack, Map<Character, RecipeChoice>> shapedVanillaRecipes = new HashMap<>();
-    public static HashMap<ItemStack, List<RecipeChoice>> shapelessVanillaRecipes = new HashMap<>();
+    public static HashMap<ItemStack, Pair<ItemStack, List<RecipeChoice>>> shapedVanillaRecipes = new HashMap<>();
+    public static HashMap<ItemStack, Pair<ItemStack, List<RecipeChoice>>> shapelessVanillaRecipes = new HashMap<>();
 
     @SneakyThrows
     @Override
@@ -73,16 +75,21 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
             if (r instanceof ShapedRecipe) {
                 ShapedRecipe sr = (ShapedRecipe) r;
-                shapedVanillaRecipes.put(sr.getResult(), sr.getChoiceMap());
+                List<RecipeChoice> rc = new ArrayList<>();
 
+                // Convert the recipe to a list
+                for (Map.Entry<Character, RecipeChoice> choice : sr.getChoiceMap().entrySet()) {
+                    if (choice.getValue() != null) {
+                        rc.add(choice.getValue());
+                    }
+                }
+
+                shapedVanillaRecipes.put(new ItemStack(sr.getResult().getType(), 1), new Pair<>(sr.getResult(), rc));
             } else if (r instanceof ShapelessRecipe) {
                 ShapelessRecipe slr = (ShapelessRecipe) r;
-                shapelessVanillaRecipes.put(slr.getResult(), slr.getChoiceList());
-
+                shapelessVanillaRecipes.put(new ItemStack(slr.getResult().getType(), 1), new Pair<>(slr.getResult(), slr.getChoiceList()));
             }
-
         }
-
         // Registering Items
         FluffyItemSetup.setup(this);
 
@@ -172,7 +179,7 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
         }
 
         if (players > 0) {
-            Slimefun.getLogger().log(Level.INFO, "Auto-saved all player data for {0} player(s)!", players);
+            Bukkit.getLogger().log(Level.INFO, "Auto-saved all player data for {0} player(s)!", players);
         }
     }
 

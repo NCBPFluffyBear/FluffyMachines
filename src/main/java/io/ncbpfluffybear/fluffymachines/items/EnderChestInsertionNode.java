@@ -61,25 +61,20 @@ public class EnderChestInsertionNode extends SlimefunItem {
 
     private void tick(@Nonnull Block b) {
         ItemStack transferItemStack;
-        boolean valid = false;
-        BlockFace face = null;
+        BlockFace face;
 
         if (b.getRelative(BlockFace.NORTH).getType() == material) {
-            valid = true;
             face = BlockFace.SOUTH;
 
         } else if (b.getRelative(BlockFace.SOUTH).getType() == material) {
-            valid = true;
             face = BlockFace.NORTH;
 
 
         } else if (b.getRelative(BlockFace.EAST).getType() == material) {
-            valid = true;
             face = BlockFace.WEST;
 
 
         } else if (b.getRelative(BlockFace.WEST).getType() == material) {
-            valid = true;
             face = BlockFace.EAST;
 
         } else {
@@ -88,11 +83,11 @@ public class EnderChestInsertionNode extends SlimefunItem {
 
         BlockState state = PaperLib.getBlockState(b.getRelative(face), false).getState();
 
-        if (valid && b.getRelative(face).getState() instanceof InventoryHolder) {
-            Player p = Bukkit.getPlayer(UUID.fromString(BlockStorage.getLocationInfo(b.getLocation(), "owner")));
+        if (b.getRelative(face).getState() instanceof InventoryHolder) {
+            Player p = Bukkit.getOfflinePlayer(UUID.fromString(BlockStorage.getLocationInfo(b.getLocation(), "owner"))).getPlayer();
 
             // Ender chest null check necessary because Bukkit yes.
-            if (p != null && p.getEnderChest() != null) {
+            if (p != null) {
 
                 boolean enderValid = false;
                 boolean containerValid = false;
