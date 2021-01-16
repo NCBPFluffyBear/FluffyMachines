@@ -454,6 +454,13 @@ public class FluffyItems {
         "&eLeft&7/&eRight Click &7a compatible block to break it"
     );
 
+    public static final SlimefunItemStack PAXEL = new SlimefunItemStack("PAXEL",
+        Material.DIAMOND_PICKAXE,
+        "&bPaxel",
+        "",
+        "&7A pickaxe, axe, and shovel in one tool!"
+    );
+
     private static final Enchantment glowEnchant = Enchantment.getByKey(Constants.GLOW_ENCHANT);
 
     static {

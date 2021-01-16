@@ -9,7 +9,6 @@ import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
@@ -21,6 +20,7 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
+import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
@@ -103,7 +103,7 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
             public boolean canOpen(@Nonnull Block b, @Nonnull Player p) {
                 return (p.hasPermission("slimefun.inventory.bypass")
                     || SlimefunPlugin.getProtectionManager().hasPermission(
-                    p, b.getLocation(), ProtectableAction.ACCESS_INVENTORIES));
+                    p, b.getLocation(), ProtectableAction.INTERACT_BLOCK));
             }
 
             @Override
