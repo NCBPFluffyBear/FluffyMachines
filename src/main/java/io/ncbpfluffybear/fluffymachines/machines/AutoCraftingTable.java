@@ -22,6 +22,7 @@ import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -165,6 +166,12 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
     protected void constructMenu(BlockMenuPreset preset) {
         AutoAncientAltar.borders(preset, border, inputBorder, outputBorder);
 
+        preset.addItem(0, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+            "&c&lIMPORTANT",
+            "&cMake sure you have only 1 key item",
+            "&cunless you are crafting Netherite Ingots",
+            "&cfrom Netherite Blocks. Use 9 instead."));
+
         for (int i : keyBorder) {
             preset.addItem(i, new CustomItem(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE), "&e&lKey Item Slot"),
                 (p, slot, item, action) -> false);
@@ -283,7 +290,7 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
             return;
         }
 
-        List<Material> existingMats = new ArrayList<>();
+        List<ItemStack> existingItems = new ArrayList<>();
         int blankCounter = 0;
 
         // Put each input item into the array
@@ -305,7 +312,7 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                 continue;
             }
 
-            Material existingMat = slotItem.getType();
+            ItemStack existingItem = new ItemStack(slotItem.getType());
 
             // Checks if each slot has at least 1 item
             if (slotItem.getAmount() == 1) {
@@ -317,47 +324,58 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                 return;
             }
 
-            existingMats.add(existingMat);
+            existingItems.add(existingItem);
 
         }
 
         // New HashMap System
         // This is semi-shapeless, since it reads left to right, top to bottom, and ignores empty spaces.
         // However, this isn't a concern since we have the key item.
-        ItemStack craftingItem = new ItemStack(keyItem.getType(), 1);
+        boolean passOn = false;
 
-        if (FluffyMachines.shapedVanillaRecipes.containsKey(craftingItem)) {
-            List<RecipeChoice> rc = FluffyMachines.shapedVanillaRecipes.get(craftingItem).getSecondValue();
+        if (FluffyMachines.shapedVanillaRecipes.containsKey(keyItem)) {
+            List<RecipeChoice> rc = FluffyMachines.shapedVanillaRecipes.get(keyItem).getSecondValue();
 
-            if (existingMats.size() != rc.size()) {
+            if (existingItems.size() != rc.size()) {
                 if (menu.hasViewer()) {
                     menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
                         "&c&lIncorrect Recipe"));
                 }
-                return;
+                // The sizes don't match, but it can still be shapeless.
+                passOn = true;
             }
 
-            for (int i = 0; i < rc.size(); i++) {
-                if (!rc.get(i).test(new ItemStack(existingMats.get(i)))) {
-                    if (menu.hasViewer()) {
-                        menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
-                            "&c&lIncorrect Recipe"));
+            // If we already know this isn't a shaped recipe, no need to check.
+            if (!passOn) {
+                for (int i = 0; i < rc.size(); i++) {
+                    if (!rc.get(i).test(existingItems.get(i))) {
+                        if (menu.hasViewer()) {
+                            menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+                                "&c&lIncorrect Recipe"));
+                        }
+                        // We need to pass on to shapeless in case the key is shapeless.
+                        passOn = true;
+                        break;
                     }
-                    return;
                 }
             }
 
-            // We found the entire recipe!
-            craft(menu, FluffyMachines.shapedVanillaRecipes.get(craftingItem).getFirstValue().clone());
+            // We found the entire recipe! No need to pass on.
+            if (!passOn) {
+                craft(menu, FluffyMachines.shapedVanillaRecipes.get(keyItem).getFirstValue().clone());
+                return;
+            }
 
-        } else if (FluffyMachines.shapelessVanillaRecipes.containsKey(craftingItem)) {
-            List<RecipeChoice> rc = FluffyMachines.shapelessVanillaRecipes.get(craftingItem).getSecondValue();
+        }
+
+        if (FluffyMachines.shapelessVanillaRecipes.containsKey(keyItem)) {
+            List<RecipeChoice> rc = FluffyMachines.shapelessVanillaRecipes.get(keyItem).getSecondValue();
             List<RecipeChoice> rcCheck = new ArrayList<>(rc);
-            List<ItemStack> existingItems = new ArrayList<>();
-            for (Material mat : existingMats) {
-                // Skip all nulls
-                if (mat != null) {
-                    existingItems.add(new ItemStack(mat));
+
+            if (existingItems.size() != rc.size()) {
+                if (menu.hasViewer()) {
+                    menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+                        "&c&lIncorrect Recipe"));
                 }
             }
 
@@ -378,7 +396,7 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                         new CustomItem(new ItemStack(Material.GREEN_STAINED_GLASS_PANE),
                         "&a&lCrafting"));
                 }
-                craft(menu, FluffyMachines.shapelessVanillaRecipes.get(craftingItem).getFirstValue().clone());
+                craft(menu, FluffyMachines.shapelessVanillaRecipes.get(keyItem).getFirstValue().clone());
 
             } else {
                 if (menu.hasViewer()) {
@@ -386,7 +404,10 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                         "&c&lIncorrect Recipe"));
                 }
             }
-        } else if (menu.hasViewer()) {
+            return;
+        }
+
+        if (menu.hasViewer()) {
             menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
                 "&c&lInvalid Key!"));
         }

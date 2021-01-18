@@ -16,15 +16,25 @@ import io.ncbpfluffybear.fluffymachines.utils.Events;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.BlastingRecipe;
+import org.bukkit.inventory.CampfireRecipe;
+import org.bukkit.inventory.CookingRecipe;
+import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Merchant;
+import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.SmithingRecipe;
+import org.bukkit.inventory.SmokingRecipe;
+import org.bukkit.inventory.StonecuttingRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.RayTraceResult;
 
@@ -86,9 +96,14 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
                 shapedVanillaRecipes.put(new ItemStack(sr.getResult().getType(), 1), new Pair<>(sr.getResult(), rc));
             } else if (r instanceof ShapelessRecipe) {
                 ShapelessRecipe slr = (ShapelessRecipe) r;
-                shapelessVanillaRecipes.put(new ItemStack(slr.getResult().getType(), 1), new Pair<>(slr.getResult(), slr.getChoiceList()));
+                if (slr.getResult().getType() == Material.NETHERITE_INGOT && slr.getResult().getAmount() == 9) {
+                    shapelessVanillaRecipes.put(new ItemStack(slr.getResult().getType(), 9), new Pair<>(slr.getResult(), slr.getChoiceList()));
+                } else {
+                    shapelessVanillaRecipes.put(new ItemStack(slr.getResult().getType(), 1), new Pair<>(slr.getResult(), slr.getChoiceList()));
+                }
             }
         }
+
         // Registering Items
         FluffyItemSetup.setup(this);
 
