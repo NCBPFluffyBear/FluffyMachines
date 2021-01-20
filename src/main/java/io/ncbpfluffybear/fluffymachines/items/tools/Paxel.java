@@ -58,7 +58,7 @@ public class Paxel extends SlimefunItem implements Listener, NotPlaceable {
                 } else {
                     item.setType(Material.DIAMOND_SHOVEL);
                 }
-            } else if (Tag.LOGS.isTagged(b.getType()) || b.getType() == Material.CHEST) {
+            } else if (Tag.LOGS.isTagged(b.getType()) || Tag.PLANKS.isTagged(b.getType()) || b.getType() == Material.CHEST) {
                 if (netherite) {
                     item.setType(Material.NETHERITE_AXE);
                 } else {

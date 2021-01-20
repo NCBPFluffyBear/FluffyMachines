@@ -3,6 +3,7 @@ package io.ncbpfluffybear.fluffymachines;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.ncbpfluffybear.fluffymachines.utils.Constants;
+import io.ncbpfluffybear.fluffymachines.utils.Events;
 import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.GlowEnchant;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
@@ -12,35 +13,25 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.cscorelib2.collections.Pair;
 import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
-import io.ncbpfluffybear.fluffymachines.utils.Events;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.BlastingRecipe;
-import org.bukkit.inventory.CampfireRecipe;
-import org.bukkit.inventory.CookingRecipe;
-import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Merchant;
-import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
-import org.bukkit.inventory.SmithingRecipe;
-import org.bukkit.inventory.SmokingRecipe;
-import org.bukkit.inventory.StonecuttingRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.RayTraceResult;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -51,7 +42,8 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
     private static FluffyMachines instance;
     public static HashMap<ItemStack, Pair<ItemStack, List<RecipeChoice>>> shapedVanillaRecipes = new HashMap<>();
-    public static HashMap<ItemStack, Pair<ItemStack, List<RecipeChoice>>> shapelessVanillaRecipes = new HashMap<>();
+    public static HashMap<ItemStack, List<Pair<ItemStack, List<RecipeChoice>>>> shapelessVanillaRecipes =
+        new HashMap<>();
 
     @SneakyThrows
     @Override
@@ -96,10 +88,14 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
                 shapedVanillaRecipes.put(new ItemStack(sr.getResult().getType(), 1), new Pair<>(sr.getResult(), rc));
             } else if (r instanceof ShapelessRecipe) {
                 ShapelessRecipe slr = (ShapelessRecipe) r;
-                if (slr.getResult().getType() == Material.NETHERITE_INGOT && slr.getResult().getAmount() == 9) {
-                    shapelessVanillaRecipes.put(new ItemStack(slr.getResult().getType(), 9), new Pair<>(slr.getResult(), slr.getChoiceList()));
+                ItemStack key = new ItemStack(slr.getResult().getType(), 1);
+
+                // Key has a list of recipe options
+                if (!shapelessVanillaRecipes.containsKey(key)) {
+                    shapelessVanillaRecipes.put(key,
+                        new ArrayList<>(Collections.singletonList(new Pair<>(slr.getResult(), slr.getChoiceList()))));
                 } else {
-                    shapelessVanillaRecipes.put(new ItemStack(slr.getResult().getType(), 1), new Pair<>(slr.getResult(), slr.getChoiceList()));
+                    shapelessVanillaRecipes.get(key).add(new Pair<>(slr.getResult(), slr.getChoiceList()));
                 }
             }
         }
@@ -124,7 +120,8 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
     }
 
     @Override
-    public boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command cmd, @Nonnull String label, String[] args) {
+    public boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command cmd, @Nonnull String label,
+                             String[] args) {
 
         if (args.length == 0) {
             sender.sendMessage("FluffyMachines > Gotta be longer than that");

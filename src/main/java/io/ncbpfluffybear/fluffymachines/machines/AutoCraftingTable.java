@@ -20,6 +20,7 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
+import me.mrCookieSlime.Slimefun.cscorelib2.collections.Pair;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import org.bukkit.Bukkit;
@@ -165,12 +166,6 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
 
     protected void constructMenu(BlockMenuPreset preset) {
         AutoAncientAltar.borders(preset, border, inputBorder, outputBorder);
-
-        preset.addItem(0, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
-            "&c&lIMPORTANT",
-            "&cMake sure you have only 1 key item",
-            "&cunless you are crafting Netherite Ingots",
-            "&cfrom Netherite Blocks. Use 9 instead."));
 
         for (int i : keyBorder) {
             preset.addItem(i, new CustomItem(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE), "&e&lKey Item Slot"),
@@ -369,47 +364,49 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
         }
 
         if (FluffyMachines.shapelessVanillaRecipes.containsKey(keyItem)) {
-            List<RecipeChoice> rc = FluffyMachines.shapelessVanillaRecipes.get(keyItem).getSecondValue();
-            List<RecipeChoice> rcCheck = new ArrayList<>(rc);
+            for (Pair<ItemStack, List<RecipeChoice>> recipe : FluffyMachines.shapelessVanillaRecipes.get(keyItem)) {
+                List<RecipeChoice> rc = recipe.getSecondValue();
+                List<RecipeChoice> rcCheck = new ArrayList<>(rc);
 
-            if (existingItems.size() != rc.size()) {
-                if (menu.hasViewer()) {
-                    menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
-                        "&c&lIncorrect Recipe"));
+                if (existingItems.size() != rc.size()) {
+                    if (menu.hasViewer()) {
+                        menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+                            "&c&lIncorrect Recipe"));
+                    }
                 }
-            }
 
-            // Chop down the list until all items are tested
-            for (RecipeChoice r : rc) {
-                for (ItemStack item : existingItems) {
-                    if (r.test(item)) {
-                        existingItems.remove(item);
-                        rcCheck.remove(r);
-                        break;
+                // Chop down the list until all items are tested
+                for (RecipeChoice r : rc) {
+                    for (ItemStack item : existingItems) {
+                        if (r.test(item)) {
+                            existingItems.remove(item);
+                            rcCheck.remove(r);
+                            break;
+                        }
+                    }
+                }
+
+                if (existingItems.isEmpty() && rcCheck.isEmpty()) {
+                    if (menu.hasViewer()) {
+                        menu.replaceExistingItem(statusSlot,
+                            new CustomItem(new ItemStack(Material.GREEN_STAINED_GLASS_PANE),
+                                "&a&lCrafting"));
+                    }
+                    craft(menu, recipe.getFirstValue().clone());
+                    return;
+
+                } else {
+                    if (menu.hasViewer()) {
+                        menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+                            "&c&lIncorrect Recipe"));
                     }
                 }
             }
 
-            if (existingItems.isEmpty() && rcCheck.isEmpty()) {
-                if (menu.hasViewer()) {
-                    menu.replaceExistingItem(statusSlot,
-                        new CustomItem(new ItemStack(Material.GREEN_STAINED_GLASS_PANE),
-                        "&a&lCrafting"));
-                }
-                craft(menu, FluffyMachines.shapelessVanillaRecipes.get(keyItem).getFirstValue().clone());
-
-            } else {
-                if (menu.hasViewer()) {
-                    menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
-                        "&c&lIncorrect Recipe"));
-                }
+            if (menu.hasViewer()) {
+                menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+                    "&c&lInvalid Key!"));
             }
-            return;
-        }
-
-        if (menu.hasViewer()) {
-            menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
-                "&c&lInvalid Key!"));
         }
     }
 
