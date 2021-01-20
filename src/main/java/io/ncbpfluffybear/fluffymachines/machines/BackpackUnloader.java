@@ -40,7 +40,7 @@ public class BackpackUnloader extends SlimefunItem implements InventoryBlock, En
 
         setupInv();
 
-        registerBlockHandler(getID(), (p, b, stack, reason) -> {
+        registerBlockHandler(getId(), (p, b, stack, reason) -> {
             BlockMenu inv = BlockStorage.getInventory(b);
 
             if (inv != null) {

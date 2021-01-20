@@ -8,6 +8,7 @@ import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import io.ncbpfluffybear.fluffymachines.items.tools.Dolly;
 import io.ncbpfluffybear.fluffymachines.items.tools.FluffyWrench;
+import io.ncbpfluffybear.fluffymachines.items.tools.Paxel;
 import io.ncbpfluffybear.fluffymachines.items.tools.PortableCharger;
 import io.ncbpfluffybear.fluffymachines.items.tools.Scythe;
 import io.ncbpfluffybear.fluffymachines.items.tools.UpgradedExplosivePickaxe;
@@ -194,6 +195,13 @@ public final class FluffyItemSetup {
             null, new ItemStack(Material.OBSIDIAN), null
         }).register(plugin);
 
+        new Paxel(FluffyItems.fluffymachines, FluffyItems.PAXEL,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.SYNTHETIC_EMERALD, new ItemStack(Material.DIAMOND_PICKAXE), SlimefunItems.SYNTHETIC_EMERALD,
+            SlimefunItems.REINFORCED_ALLOY_INGOT, new ItemStack(Material.DIAMOND_AXE), SlimefunItems.REINFORCED_ALLOY_INGOT,
+            SlimefunItems.SYNTHETIC_DIAMOND, new ItemStack(Material.DIAMOND_SHOVEL), SlimefunItems.SYNTHETIC_DIAMOND,
+        }).register(plugin);
+
         // Machines
         new WaterSprinkler(FluffyItems.fluffymachines, FluffyItems.WATER_SPRINKER,
             RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
@@ -357,15 +365,6 @@ public final class FluffyItemSetup {
             SlimefunItems.ALUMINUM_BRONZE_INGOT},
             new SlimefunItemStack(FluffyItems.ALTERNATE_ELEVATOR_PLATE, 2)
         ).register(plugin);
-
-        /* Disabled due to impracticality
-        new ItemOverstacker(FluffyItems.fluffymachines, FluffyItems.ITEM_OVERSTACKER,
-        RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
-            new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
-            new ItemStack(Material.IRON_INGOT), SlimefunItems.ELECTRO_MAGNET, new ItemStack(Material.IRON_INGOT),
-            new ItemStack(Material.IRON_INGOT), advancedCircuitBoard, new ItemStack(Material.IRON_INGOT)
-        }).register(plugin);
-         */
 
         // Items
     }

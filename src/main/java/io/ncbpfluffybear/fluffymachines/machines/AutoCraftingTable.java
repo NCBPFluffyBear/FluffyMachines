@@ -20,7 +20,7 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
-import me.mrCookieSlime.Slimefun.cscorelib2.inventory.ItemUtils;
+import me.mrCookieSlime.Slimefun.cscorelib2.collections.Pair;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import org.bukkit.Bukkit;
@@ -35,10 +35,8 @@ import org.bukkit.inventory.RecipeChoice;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This {@link SlimefunItem} automatically
@@ -98,7 +96,7 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
             public boolean canOpen(@Nonnull Block b, @Nonnull Player p) {
                 return p.hasPermission("slimefun.inventory.bypass")
                     || SlimefunPlugin.getProtectionManager().hasPermission(p, b.getLocation(),
-                    ProtectableAction.ACCESS_INVENTORIES
+                    ProtectableAction.INTERACT_BLOCK
                 );
             }
 
@@ -287,7 +285,7 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
             return;
         }
 
-        List<Material> existingMats = new ArrayList<>();
+        List<ItemStack> existingItems = new ArrayList<>();
         int blankCounter = 0;
 
         // Put each input item into the array
@@ -309,7 +307,7 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                 continue;
             }
 
-            Material existingMat = slotItem.getType();
+            ItemStack existingItem = new ItemStack(slotItem.getType());
 
             // Checks if each slot has at least 1 item
             if (slotItem.getAmount() == 1) {
@@ -321,78 +319,94 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                 return;
             }
 
-            existingMats.add(existingMat);
+            existingItems.add(existingItem);
 
         }
 
         // New HashMap System
         // This is semi-shapeless, since it reads left to right, top to bottom, and ignores empty spaces.
         // However, this isn't a concern since we have the key item.
-        ItemStack craftingItem = new ItemStack(keyItem.getType(), 1);
+        boolean passOn = false;
 
-        if (FluffyMachines.shapedVanillaRecipes.containsKey(craftingItem)) {
-            List<RecipeChoice> rc = FluffyMachines.shapedVanillaRecipes.get(craftingItem).getSecondValue();
+        if (FluffyMachines.shapedVanillaRecipes.containsKey(keyItem)) {
+            List<RecipeChoice> rc = FluffyMachines.shapedVanillaRecipes.get(keyItem).getSecondValue();
 
-            if (existingMats.size() != rc.size()) {
+            if (existingItems.size() != rc.size()) {
                 if (menu.hasViewer()) {
                     menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
                         "&c&l配方不正確"));
                 }
-                return;
+                // The sizes don't match, but it can still be shapeless.
+                passOn = true;
             }
 
-            for (int i = 0; i < rc.size(); i++) {
-                if (!rc.get(i).test(new ItemStack(existingMats.get(i)))) {
-                    if (menu.hasViewer()) {
-                        menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
-                            "&c&l配方不正確"));
-                    }
-                    return;
-                }
-            }
-
-            // We found the entire recipe!
-            craft(menu, FluffyMachines.shapedVanillaRecipes.get(craftingItem).getFirstValue().clone());
-
-        } else if (FluffyMachines.shapelessVanillaRecipes.containsKey(craftingItem)) {
-            List<RecipeChoice> rc = FluffyMachines.shapelessVanillaRecipes.get(craftingItem).getSecondValue();
-            List<RecipeChoice> rcCheck = new ArrayList<>(rc);
-            List<ItemStack> existingItems = new ArrayList<>();
-            for (Material mat : existingMats) {
-                // Skip all nulls
-                if (mat != null) {
-                    existingItems.add(new ItemStack(mat));
-                }
-            }
-
-            // Chop down the list until all items are tested
-            for (RecipeChoice r : rc) {
-                for (ItemStack item : existingItems) {
-                    if (r.test(item)) {
-                        existingItems.remove(item);
-                        rcCheck.remove(r);
+            // If we already know this isn't a shaped recipe, no need to check.
+            if (!passOn) {
+                for (int i = 0; i < rc.size(); i++) {
+                    if (!rc.get(i).test(existingItems.get(i))) {
+                        if (menu.hasViewer()) {
+                            menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+                                "&c&l配方不正確"));
+                        }
+                        // We need to pass on to shapeless in case the key is shapeless.
+                        passOn = true;
                         break;
                     }
                 }
             }
 
-            if (existingItems.isEmpty() && rcCheck.isEmpty()) {
-                if (menu.hasViewer()) {
-                    menu.replaceExistingItem(statusSlot,
-                        new CustomItem(new ItemStack(Material.GREEN_STAINED_GLASS_PANE),
-                        "&a&l製作"));
-                }
-                craft(menu, FluffyMachines.shapelessVanillaRecipes.get(craftingItem).getFirstValue().clone());
+            // We found the entire recipe! No need to pass on.
+            if (!passOn) {
+                craft(menu, FluffyMachines.shapedVanillaRecipes.get(keyItem).getFirstValue().clone());
+                return;
+            }
 
-            } else {
-                if (menu.hasViewer()) {
-                    menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
-                        "&c&l配方不正確"));
+        }
+
+        if (FluffyMachines.shapelessVanillaRecipes.containsKey(keyItem)) {
+            for (Pair<ItemStack, List<RecipeChoice>> recipe : FluffyMachines.shapelessVanillaRecipes.get(keyItem)) {
+                List<RecipeChoice> rc = recipe.getSecondValue();
+                List<RecipeChoice> rcCheck = new ArrayList<>(rc);
+
+                if (existingItems.size() != rc.size()) {
+                    if (menu.hasViewer()) {
+                        menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+                            "&c&l配方不正確"));
+                    }
+                }
+
+                // Chop down the list until all items are tested
+                for (RecipeChoice r : rc) {
+                    for (ItemStack item : existingItems) {
+                        if (r.test(item)) {
+                            existingItems.remove(item);
+                            rcCheck.remove(r);
+                            break;
+                        }
+                    }
+                }
+
+                if (existingItems.isEmpty() && rcCheck.isEmpty()) {
+                    if (menu.hasViewer()) {
+                        menu.replaceExistingItem(statusSlot,
+                            new CustomItem(new ItemStack(Material.GREEN_STAINED_GLASS_PANE),
+                                "&a&l製作"));
+                    }
+                    craft(menu, recipe.getFirstValue().clone());
+                    return;
+
+                } else {
+                    if (menu.hasViewer()) {
+                        menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+                            "&c&l配方不正確"));
+                    }
                 }
             }
-        } else if (menu.hasViewer()) {
-            menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
-                "&c&l無效的成品!"));
+
+            if (menu.hasViewer()) {
+                menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+                    "&c&l無效的成品!"));
+            }
         }
     }
 

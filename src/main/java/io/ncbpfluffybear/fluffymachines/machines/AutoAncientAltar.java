@@ -14,7 +14,6 @@ import io.ncbpfluffybear.fluffymachines.utils.Constants;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu.AdvancedMenuClickHandler;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
-import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.Item.CustomItem;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
@@ -26,8 +25,8 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
+import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -41,7 +40,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * This {@link SlimefunItem} automatically crafts
@@ -69,7 +67,8 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
     private final ItemStack filledFlask = SlimefunItems.FILLED_FLASK_OF_KNOWLEDGE.clone();
     private final List<ItemStack> jarInputs = new ArrayList<>(Arrays.asList(ironBars, earthRune, ironBars, earthRune,
         ironBars, earthRune, ironBars, earthRune));
-    private final List<ItemStack> repairedInputs = new ArrayList<>(Arrays.asList(enderRune, filledFlask, essence, filledFlask,
+    private final List<ItemStack> repairedInputs = new ArrayList<>(Arrays.asList(enderRune, filledFlask, essence,
+        filledFlask,
         enderRune, filledFlask, essence, filledFlask));
 
     public AutoAncientAltar(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
@@ -118,10 +117,10 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
             }
 
             @Override
-            public boolean canOpen(Block b, Player p) {
+            public boolean canOpen(@Nonnull Block b, @Nonnull Player p) {
                 return p.hasPermission("slimefun.inventory.bypass")
                     || SlimefunPlugin.getProtectionManager().hasPermission(p, b.getLocation(),
-                    ProtectableAction.ACCESS_INVENTORIES);
+                    ProtectableAction.INTERACT_BLOCK);
             }
 
             @Override

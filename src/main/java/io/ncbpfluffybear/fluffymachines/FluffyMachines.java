@@ -3,17 +3,16 @@ package io.ncbpfluffybear.fluffymachines;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.ncbpfluffybear.fluffymachines.utils.Constants;
+import io.ncbpfluffybear.fluffymachines.utils.Events;
 import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.GlowEnchant;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import lombok.SneakyThrows;
-import me.mrCookieSlime.CSCoreLibPlugin.cscorelib2.collections.Pair;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.Slimefun;
+import me.mrCookieSlime.Slimefun.cscorelib2.collections.Pair;
 //import me.mrCookieSlime.Slimefun.cscorelib2.config.Config;
 //import me.mrCookieSlime.Slimefun.cscorelib2.updater.GitHubBuildsUpdater;
-import io.ncbpfluffybear.fluffymachines.utils.Events;
 //import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -32,6 +31,7 @@ import org.bukkit.util.RayTraceResult;
 import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -42,7 +42,8 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
     private static FluffyMachines instance;
     public static HashMap<ItemStack, Pair<ItemStack, List<RecipeChoice>>> shapedVanillaRecipes = new HashMap<>();
-    public static HashMap<ItemStack, Pair<ItemStack, List<RecipeChoice>>> shapelessVanillaRecipes = new HashMap<>();
+    public static HashMap<ItemStack, List<Pair<ItemStack, List<RecipeChoice>>>> shapelessVanillaRecipes =
+        new HashMap<>();
 
     @SneakyThrows
     @Override
@@ -87,9 +88,18 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
                 shapedVanillaRecipes.put(new ItemStack(sr.getResult().getType(), 1), new Pair<>(sr.getResult(), rc));
             } else if (r instanceof ShapelessRecipe) {
                 ShapelessRecipe slr = (ShapelessRecipe) r;
-                shapelessVanillaRecipes.put(new ItemStack(slr.getResult().getType(), 1), new Pair<>(slr.getResult(), slr.getChoiceList()));
+                ItemStack key = new ItemStack(slr.getResult().getType(), 1);
+
+                // Key has a list of recipe options
+                if (!shapelessVanillaRecipes.containsKey(key)) {
+                    shapelessVanillaRecipes.put(key,
+                        new ArrayList<>(Collections.singletonList(new Pair<>(slr.getResult(), slr.getChoiceList()))));
+                } else {
+                    shapelessVanillaRecipes.get(key).add(new Pair<>(slr.getResult(), slr.getChoiceList()));
+                }
             }
         }
+
         // Registering Items
         FluffyItemSetup.setup(this);
 
@@ -112,7 +122,8 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
     }
 
     @Override
-    public boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command cmd, @Nonnull String label, String[] args) {
+    public boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command cmd, @Nonnull String label,
+                             String[] args) {
 
         if (args.length == 0) {
             sender.sendMessage("FluffyMachines > Gotta be longer than that");

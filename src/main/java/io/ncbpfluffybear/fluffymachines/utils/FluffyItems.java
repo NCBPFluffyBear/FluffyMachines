@@ -454,6 +454,13 @@ public class FluffyItems {
         "&e左&7/&e右鍵 &7相容方塊來破壞它"
     );
 
+    public static final SlimefunItemStack PAXEL = new SlimefunItemStack("PAXEL",
+        Material.DIAMOND_PICKAXE,
+        "&b鎬尖斧",
+        "",
+        "&7一個包含了鎬子, 斧頭和鏟子的工具!"
+    );
+
     private static final Enchantment glowEnchant = Enchantment.getByKey(Constants.GLOW_ENCHANT);
 
     static {
