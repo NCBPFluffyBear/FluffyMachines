@@ -6,6 +6,7 @@ import io.ncbpfluffybear.fluffymachines.utils.Constants;
 import io.ncbpfluffybear.fluffymachines.utils.Events;
 import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.GlowEnchant;
+import io.ncbpfluffybear.fluffymachines.utils.McMMOEvents;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import lombok.SneakyThrows;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
@@ -98,6 +99,11 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
                     shapelessVanillaRecipes.get(key).add(new Pair<>(slr.getResult(), slr.getChoiceList()));
                 }
             }
+        }
+
+        if (getServer().getPluginManager().isPluginEnabled("McMMO")) {
+            Bukkit.getLogger().log(Level.INFO, "McMMO found!");
+            getServer().getPluginManager().registerEvents(new McMMOEvents(), this);
         }
 
         // Registering Items
@@ -195,7 +201,7 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
     private void registerGlow() {
         Enchantment glowEnchantment = new GlowEnchant(Constants.GLOW_ENCHANT, new String[] {
             "SMALL_PORTABLE_CHARGER", "MEDIUM_PORTABLE_CHARGER", "BIG_PORTABLE_CHARGER",
-            "LARGE_PORTABLE_CHARGER", "CARBONADO_PORTABLE_CHARGER"
+            "LARGE_PORTABLE_CHARGER", "CARBONADO_PORTABLE_CHARGER", "PAXEL"
         });
 
         // Prevent double-registration errors

@@ -23,7 +23,6 @@ import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import me.mrCookieSlime.Slimefun.cscorelib2.collections.Pair;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -75,7 +74,7 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                     );
                     menu.replaceExistingItem(statusSlot,
                         new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE),
-                        "&7&lDisabled"));
+                            "&7&lDisabled"));
                     menu.addMenuClickHandler(4, (p, slot, item, action) -> {
                         BlockStorage.addBlockInfo(b, "enabled", String.valueOf(true));
                         newInstance(menu, b);
@@ -299,7 +298,7 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                     if (menu.hasViewer()) {
                         menu.replaceExistingItem(statusSlot,
                             new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
-                            "&c&lInput Missing"));
+                                "&c&lInput Missing"));
                     }
                     return;
                 }
@@ -345,7 +344,8 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
                 for (int i = 0; i < rc.size(); i++) {
                     if (!rc.get(i).test(existingItems.get(i))) {
                         if (menu.hasViewer()) {
-                            menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+                            menu.replaceExistingItem(statusSlot,
+                                new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
                                 "&c&lIncorrect Recipe"));
                         }
                         // We need to pass on to shapeless in case the key is shapeless.
@@ -370,7 +370,8 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
 
                 if (existingItems.size() != rc.size()) {
                     if (menu.hasViewer()) {
-                        menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+                        menu.replaceExistingItem(statusSlot,
+                            new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
                             "&c&lIncorrect Recipe"));
                     }
                 }
@@ -397,7 +398,8 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
 
                 } else {
                     if (menu.hasViewer()) {
-                        menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+                        menu.replaceExistingItem(statusSlot,
+                            new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
                             "&c&lIncorrect Recipe"));
                     }
                 }
