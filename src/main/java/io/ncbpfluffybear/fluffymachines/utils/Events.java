@@ -1,5 +1,6 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
+import io.github.thebusybiscuit.slimefun4.implementation.listeners.DispenserListener;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import io.ncbpfluffybear.fluffymachines.items.tools.WateringCan;
@@ -7,6 +8,7 @@ import io.ncbpfluffybear.fluffymachines.machines.AlternateElevatorPlate;
 import javax.annotation.Nonnull;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -20,6 +22,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.ClickType;
@@ -186,6 +189,14 @@ public class Events implements Listener {
         if ((e.getBlock().getY() != e.getBlockAgainst().getY() || e.getBlockAgainst().getType() != Material.ENDER_CHEST)
             && isExtractionNode(e.getItemInHand())) {
             Utils.send(e.getPlayer(), "&c你只能把它放在終界箱上!");
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onDollyDispense(BlockDispenseEvent e) {
+        SlimefunItem sfItem = SlimefunItem.getByItem(e.getItem());
+        if (sfItem != null && sfItem.getId().equals(FluffyItems.DOLLY.getItemId())) {
             e.setCancelled(true);
         }
     }

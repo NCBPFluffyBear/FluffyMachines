@@ -90,7 +90,7 @@ public class AutoCrafter extends SlimefunItem implements InventoryBlock, EnergyN
             }
 
             @Override
-            public boolean canOpen(Block b, Player p) {
+            public boolean canOpen(@Nonnull Block b, @Nonnull Player p) {
                 return p.hasPermission("slimefun.inventory.bypass")
                     || SlimefunPlugin.getProtectionManager().hasPermission(p, b.getLocation(),
                     ProtectableAction.INTERACT_BLOCK);
