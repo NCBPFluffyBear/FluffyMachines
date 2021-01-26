@@ -84,8 +84,8 @@ public class SuperheatedFurnace extends NonHopperableBlock {
             public void newInstance(@Nonnull BlockMenu menu, @Nonnull Block b) {
                 if (BlockStorage.getLocationInfo(b.getLocation(), "stored") == null) {
 
-                    menu.replaceExistingItem(4, new CustomItem(Material.GUNPOWDER, "&6可用的粉: &e0", "&a> &e左鍵&a點擊來拿取1個", "&a> &e左鍵&a點擊來拿取64個"));
-                    menu.replaceExistingItem(7, new CustomItem(Material.IRON_INGOT, "&6可用的錠: &e0", "&a> &e右鍵&a點擊來拿取1個", "&a> &e左鍵&a點擊來拿取64個"));
+                    menu.replaceExistingItem(4, new CustomItem(Material.GUNPOWDER, "&6可用的粉: &e0", "&a> &e左鍵&a點擊來拿取1個", "&a> &e右鍵&a點擊來拿取64個"));
+                    menu.replaceExistingItem(7, new CustomItem(Material.IRON_INGOT, "&6可用的錠: &e0", "&a> &e左鍵&a點擊來拿取1個", "&a> &e右鍵&a點擊來拿取64個"));
                     menu.replaceExistingItem(1, new CustomItem(Material.CHEST, "&6融化的粉: &e0 &7(0%)", "&b類型: 無",  "&7組: 0"));
 
                     BlockStorage.addBlockInfo(b, "stored", "0");
@@ -345,7 +345,7 @@ public class SuperheatedFurnace extends NonHopperableBlock {
             inv.replaceExistingItem(INPUT_INDICATOR, new CustomItem(new ItemStack(Material.CHEST), "&6融化的粉: &e" + stored + " &7(" + Double.parseDouble(stored) / MAX_STORAGE + "%)", "&b類型: " + type, "&7組: " + Double.parseDouble(stored) / 64));
 
         }
-        inv.replaceExistingItem(DUST_INDICATOR, new CustomItem(new ItemStack(Material.GUNPOWDER), "&6可用的粉: &e" + stored, "&a> &e左鍵&a點擊來拿取1個", "&a> &e左鍵&a點擊來拿取64個"));
+        inv.replaceExistingItem(DUST_INDICATOR, new CustomItem(new ItemStack(Material.GUNPOWDER), "&6可用的粉: &e" + stored, "&a> &e左鍵&a點擊來拿取1個", "&a> &e右鍵&a點擊來拿取64個"));
         inv.replaceExistingItem(INGOT_INDICATOR, new CustomItem(new ItemStack(Material.IRON_INGOT), "&6可用的錠: &e" + stored, "&a> &e左鍵&a點擊來拿取1個", "&a> &e右鍵&a點擊來拿取64個"));
 
 
