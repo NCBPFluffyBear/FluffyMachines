@@ -186,10 +186,6 @@ public class SuperheatedFurnace extends NonHopperableBlock {
                             b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(dust, toRemove));
                         }
 
-                        if (BlockStorage.getLocationInfo(b.getLocation(), "stand") != null) {
-                            Bukkit.getEntity(UUID.fromString(BlockStorage.getLocationInfo(b.getLocation(), "stand"))).remove();
-                        }
-
                         BlockStorage.addBlockInfo(b, "stored", String.valueOf(stored - OVERFLOW_AMOUNT));
 
                         return false;
@@ -427,7 +423,7 @@ public class SuperheatedFurnace extends NonHopperableBlock {
     }
 
     private boolean checkStructure(Block b) {
-        BlockFace face = null;
+        BlockFace face;
         Block relative;
 
         if (b.getRelative(BlockFace.NORTH).getType() == netherite) {

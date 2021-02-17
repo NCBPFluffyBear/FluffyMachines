@@ -1,5 +1,6 @@
 package io.ncbpfluffybear.fluffymachines.items.tools;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
 import io.github.thebusybiscuit.slimefun4.core.attributes.NotPlaceable;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ToolUseHandler;
@@ -10,11 +11,13 @@ import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import org.bukkit.Axis;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Orientable;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -28,6 +31,8 @@ public class UpgradedLumberAxe extends SimpleSlimefunItem<ItemUseHandler> implem
     private static final int MAX_STRIPPED = 200;
     private static final int RANGE = 2;
 
+    private final ItemSetting<Boolean> triggerOtherPlugins = new ItemSetting<>("trigger-other-plugins", true);
+
     public UpgradedLumberAxe(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
     }
@@ -37,6 +42,7 @@ public class UpgradedLumberAxe extends SimpleSlimefunItem<ItemUseHandler> implem
         super.preRegister();
 
         addItemHandler(onBlockBreak());
+        addItemSetting(triggerOtherPlugins);
     }
 
     private ToolUseHandler onBlockBreak() {
@@ -50,6 +56,9 @@ public class UpgradedLumberAxe extends SimpleSlimefunItem<ItemUseHandler> implem
                     if (SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), b,
                         ProtectableAction.BREAK_BLOCK)) {
                         b.breakNaturally(tool);
+                        if (triggerOtherPlugins.getValue()) {
+                            Bukkit.getPluginManager().callEvent(new AlternateBreakEvent(b, e.getPlayer()));
+                        }
                     }
                 }
             }

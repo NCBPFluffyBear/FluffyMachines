@@ -1,5 +1,6 @@
 package io.ncbpfluffybear.fluffymachines.items.tools;
 
+import fr.neatmonster.nocheatplus.hooks.NCPExemptionManager;
 import io.github.thebusybiscuit.slimefun4.core.attributes.DamageableItem;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
@@ -9,6 +10,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import io.github.thebusybiscuit.slimefun4.implementation.items.cargo.TrashCan;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
+import io.ncbpfluffybear.fluffymachines.utils.Constants;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
@@ -40,7 +42,7 @@ import java.util.UUID;
 public class FluffyWrench extends SimpleSlimefunItem<ItemUseHandler> implements Listener, DamageableItem {
 
     private final HashMap<UUID, Long> cooldowns = new HashMap<>();
-    private final int WRENCH_DELAY = 200; // Not an itemsetting, too low causes dupes and no reason to increase
+    private final int WRENCH_DELAY = 250; // Not an itemsetting, too low causes dupes and no reason to increase
 
     public FluffyWrench(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
@@ -95,7 +97,13 @@ public class FluffyWrench extends SimpleSlimefunItem<ItemUseHandler> implements 
 
     public static void breakBlock(Block block, Player p) {
         BlockBreakEvent breakEvent = new BlockBreakEvent(block, p);
+        if (Constants.isNCPInstalled) {
+            NCPExemptionManager.exemptPermanently(p);
+        }
         Bukkit.getPluginManager().callEvent(breakEvent);
+        if (Constants.isNCPInstalled) {
+            NCPExemptionManager.unexempt(p);
+        }
     }
 
     @Override
