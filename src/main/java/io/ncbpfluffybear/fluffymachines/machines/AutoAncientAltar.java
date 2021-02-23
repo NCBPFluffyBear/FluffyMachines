@@ -130,13 +130,12 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
 
             @Override
             public int[] getSlotsAccessedByItemTransport(DirtyChestMenu menu, ItemTransportFlow flow, ItemStack item) {
-                Material type = item.getType();
 
                 if (flow == ItemTransportFlow.WITHDRAW) {
                     return getOutputSlots();
                 }
 
-                if (type == Material.WATER_BUCKET || type == Material.MILK_BUCKET || type == Material.FIRE_CHARGE) {
+                if (item.getType().getMaxStackSize() == 1) {
                     return getInputSlots();
                 }
 
@@ -206,7 +205,6 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
                 public boolean onClick(InventoryClickEvent e, Player p, int slot, ItemStack cursor,
                                        ClickAction action) {
                     if (cursor == null) return true;
-                    cursor.getType();
                     return cursor.getType() == Material.AIR;
                 }
             });
@@ -295,10 +293,7 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
 
             Material type = slotItem.getType();
 
-            if (!craftOnce && type != Material.WATER_BUCKET
-                && type != Material.MILK_BUCKET
-                && type != Material.FIRE_CHARGE
-                && slotItem.getAmount() == 1) {
+            if (!craftOnce && type.getMaxStackSize() != 1 && slotItem.getAmount() == 1) {
                 return;
             }
         }

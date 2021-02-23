@@ -98,15 +98,8 @@
 
         <dependency>
             <groupId>com.github.TheBusyBiscuit</groupId>
-            <artifactId>CS-CoreLib</artifactId>
-            <version>e9150d7291</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.TheBusyBiscuit</groupId>
             <artifactId>Slimefun4</artifactId>
-            <version>RC-19</version>
+            <version>RC-20</version>
             <scope>provided</scope>
         </dependency>
 
