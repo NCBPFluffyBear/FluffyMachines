@@ -29,9 +29,11 @@ public class Paxel extends SlimefunItem implements Listener, NotPlaceable {
 
     public Set<Material> axeBlocks = Stream.of(
         Tag.LOGS.getValues(),
+        Tag.PLANKS.getValues(),
         Tag.WOODEN_STAIRS.getValues(),
         Tag.SIGNS.getValues(),
         Tag.WOODEN_FENCES.getValues(),
+        Tag.FENCE_GATES.getValues(),
         Tag.WOODEN_TRAPDOORS.getValues(),
         Tag.WOODEN_PRESSURE_PLATES.getValues(),
         Tag.WOODEN_DOORS.getValues(),
