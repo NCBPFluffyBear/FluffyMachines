@@ -18,6 +18,7 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -101,6 +102,8 @@ public class FluffyWrench extends SimpleSlimefunItem<ItemUseHandler> implements 
             NCPExemptionManager.exemptPermanently(p);
         }
         Bukkit.getPluginManager().callEvent(breakEvent);
+        BlockStorage.clearBlockInfo(block);
+        block.setType(Material.AIR);
         if (Constants.isNCPInstalled) {
             NCPExemptionManager.unexempt(p);
         }

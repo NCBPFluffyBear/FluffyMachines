@@ -12,6 +12,8 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.blocks.Vein;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
@@ -59,11 +61,17 @@ public class Scythe extends SimpleSlimefunItem<ItemUseHandler> implements NotPla
                     crops.remove(e.getBlock());
                 }
 
+                boolean creative = e.getPlayer().getGameMode() == GameMode.CREATIVE;
+
                 for (Block b : crops) {
                     if (SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), b, ProtectableAction.BREAK_BLOCK)) {
                         AlternateBreakEvent breakEvent = new AlternateBreakEvent(b, e.getPlayer());
                         Bukkit.getPluginManager().callEvent(breakEvent);
-                        b.breakNaturally(tool);
+                        if (creative) {
+                            b.setType(Material.AIR);
+                        } else {
+                            b.breakNaturally(tool);
+                        }
                     }
                 }
             }
