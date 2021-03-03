@@ -325,40 +325,45 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
         // New HashMap System
         // This is semi-shapeless, since it reads left to right, top to bottom, and ignores empty spaces.
         // However, this isn't a concern since we have the key item.
-        boolean passOn = false;
 
         if (FluffyMachines.shapedVanillaRecipes.containsKey(keyItem)) {
-            List<RecipeChoice> rc = FluffyMachines.shapedVanillaRecipes.get(keyItem).getSecondValue();
 
-            if (existingItems.size() != rc.size()) {
-                if (menu.hasViewer()) {
-                    menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
-                        "&c&lIncorrect Recipe"));
+            for (Pair<ItemStack, List<RecipeChoice>> recipe : FluffyMachines.shapedVanillaRecipes.get(keyItem)) {
+
+                boolean passOn = false;
+
+                List<RecipeChoice> rc = recipe.getSecondValue();
+
+                if (existingItems.size() != rc.size()) {
+                    if (menu.hasViewer()) {
+                        menu.replaceExistingItem(statusSlot, new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+                            "&c&lIncorrect Recipe"));
+                    }
+                    // The sizes don't match, but it can still be shapeless.
+                    passOn = true;
                 }
-                // The sizes don't match, but it can still be shapeless.
-                passOn = true;
-            }
 
-            // If we already know this isn't a shaped recipe, no need to check.
-            if (!passOn) {
-                for (int i = 0; i < rc.size(); i++) {
-                    if (!rc.get(i).test(existingItems.get(i))) {
-                        if (menu.hasViewer()) {
-                            menu.replaceExistingItem(statusSlot,
-                                new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
-                                "&c&lIncorrect Recipe"));
+                // If we already know this isn't a shaped recipe, no need to check.
+                if (!passOn) {
+                    for (int i = 0; i < rc.size(); i++) {
+                        if (!rc.get(i).test(existingItems.get(i))) {
+                            if (menu.hasViewer()) {
+                                menu.replaceExistingItem(statusSlot,
+                                    new CustomItem(new ItemStack(Material.RED_STAINED_GLASS_PANE),
+                                        "&c&lIncorrect Recipe"));
+                            }
+                            // We need to pass on to shapeless in case the key is shapeless.
+                            passOn = true;
+                            break;
                         }
-                        // We need to pass on to shapeless in case the key is shapeless.
-                        passOn = true;
-                        break;
                     }
                 }
-            }
 
-            // We found the entire recipe! No need to pass on.
-            if (!passOn) {
-                craft(menu, FluffyMachines.shapedVanillaRecipes.get(keyItem).getFirstValue().clone());
-                return;
+                // We found the entire recipe! No need to pass on.
+                if (!passOn) {
+                    craft(menu, recipe.getFirstValue().clone());
+                    return;
+                }
             }
 
         }

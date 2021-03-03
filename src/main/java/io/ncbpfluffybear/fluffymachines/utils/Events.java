@@ -1,6 +1,7 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
 import io.github.thebusybiscuit.slimefun4.implementation.listeners.DispenserListener;
+import io.ncbpfluffybear.fluffymachines.items.Barrel;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import io.ncbpfluffybear.fluffymachines.items.tools.WateringCan;
@@ -22,6 +23,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -197,6 +199,13 @@ public class Events implements Listener {
     public void onDollyDispense(BlockDispenseEvent e) {
         SlimefunItem sfItem = SlimefunItem.getByItem(e.getItem());
         if (sfItem != null && sfItem.getId().equals(FluffyItems.DOLLY.getItemId())) {
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onBarrelBurn(BlockBurnEvent e) {
+        if (BlockStorage.check(e.getBlock()) instanceof Barrel) {
             e.setCancelled(true);
         }
     }
