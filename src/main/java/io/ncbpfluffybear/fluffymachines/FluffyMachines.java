@@ -42,7 +42,7 @@ import java.util.logging.Level;
 public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
     private static FluffyMachines instance;
-    public static HashMap<ItemStack, Pair<ItemStack, List<RecipeChoice>>> shapedVanillaRecipes = new HashMap<>();
+    public static HashMap<ItemStack, List<Pair<ItemStack, List<RecipeChoice>>>> shapedVanillaRecipes = new HashMap<>();
     public static HashMap<ItemStack, List<Pair<ItemStack, List<RecipeChoice>>>> shapelessVanillaRecipes =
         new HashMap<>();
 
@@ -78,6 +78,7 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
             if (r instanceof ShapedRecipe) {
                 ShapedRecipe sr = (ShapedRecipe) r;
                 List<RecipeChoice> rc = new ArrayList<>();
+                ItemStack key = new ItemStack(sr.getResult().getType(), 1);
 
                 // Convert the recipe to a list
                 for (Map.Entry<Character, RecipeChoice> choice : sr.getChoiceMap().entrySet()) {
@@ -86,7 +87,13 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
                     }
                 }
 
-                shapedVanillaRecipes.put(new ItemStack(sr.getResult().getType(), 1), new Pair<>(sr.getResult(), rc));
+                if (!shapedVanillaRecipes.containsKey(key)) {
+                    shapedVanillaRecipes.put(key,
+                        new ArrayList<>(Collections.singletonList(new Pair<>(sr.getResult(), rc))));
+                }else {
+                    shapedVanillaRecipes.get(key).add(new Pair<>(sr.getResult(), rc));
+                }
+
             } else if (r instanceof ShapelessRecipe) {
                 ShapelessRecipe slr = (ShapelessRecipe) r;
                 ItemStack key = new ItemStack(slr.getResult().getType(), 1);
