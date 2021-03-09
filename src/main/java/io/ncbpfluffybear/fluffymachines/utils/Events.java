@@ -1,15 +1,12 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
-import io.github.thebusybiscuit.slimefun4.implementation.listeners.DispenserListener;
 import io.ncbpfluffybear.fluffymachines.items.Barrel;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import io.ncbpfluffybear.fluffymachines.items.tools.WateringCan;
 import io.ncbpfluffybear.fluffymachines.machines.AlternateElevatorPlate;
-import javax.annotation.Nonnull;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -36,6 +33,8 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import javax.annotation.Nonnull;
 
 public class Events implements Listener {
 
@@ -69,7 +68,7 @@ public class Events implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerDamage(EntityDamageEvent e) {
         if (e.getEntity() instanceof Player && ((Player) e.getEntity()).getEquipment() != null
             && e.getCause() == EntityDamageEvent.DamageCause.FALL
@@ -84,7 +83,7 @@ public class Events implements Listener {
     }
 
     // This is used to make the non clickable GUI items non clickable
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onNonClickableClick(InventoryClickEvent e) {
         ItemStack item = e.getCurrentItem();
         if (item != null && item.getType() != Material.AIR && item.getItemMeta().hasCustomModelData()
@@ -93,7 +92,7 @@ public class Events implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onHeadRemove(PlayerArmorStandManipulateEvent e) {
         if (e.getRightClicked().getCustomName() != null
             && e.getRightClicked().getCustomName().equals("hehexdfluff"))
@@ -114,7 +113,6 @@ public class Events implements Listener {
             ) {
                 en.remove();
                 en.getLocation().getWorld().dropItem(en.getLocation(), item);
-
             }
         }
     }
@@ -195,7 +193,7 @@ public class Events implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onDollyDispense(BlockDispenseEvent e) {
         SlimefunItem sfItem = SlimefunItem.getByItem(e.getItem());
         if (sfItem != null && sfItem.getId().equals(FluffyItems.DOLLY.getItemId())) {
@@ -203,7 +201,7 @@ public class Events implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBarrelBurn(BlockBurnEvent e) {
         if (BlockStorage.check(e.getBlock()) instanceof Barrel) {
             e.setCancelled(true);

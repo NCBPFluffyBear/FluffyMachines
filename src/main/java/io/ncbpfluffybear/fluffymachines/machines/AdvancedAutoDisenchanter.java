@@ -206,7 +206,7 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
                 }
             }
 
-            // Dont produce the item if didnt finish
+            // Don't produce the item if didn't finish
             if (currentProgress < REQUIRED_TICKS) {
                 progress.put(pos, ++currentProgress);
 

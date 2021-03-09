@@ -65,10 +65,6 @@ public class AlternateElevatorPlate extends SimpleSlimefunItem<BlockUseHandler> 
     }
 
     @Nonnull
-    public Set<UUID> getUsers() {
-        return users;
-    }
-
     @Override
     public BlockUseHandler getItemHandler() {
         return e -> {
@@ -155,7 +151,7 @@ public class AlternateElevatorPlate extends SimpleSlimefunItem<BlockUseHandler> 
                 target.getZ() + 0.5, yaw, player.getEyeLocation().getPitch());
 
             PaperLib.teleportAsync(player, destination).thenAccept(teleported -> {
-                if (teleported.booleanValue()) {
+                if (teleported) {
                     player.sendTitle(ChatColor.WHITE + ChatColors.color(floorName), null, 20, 60, 20);
                 }
             });

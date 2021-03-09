@@ -56,7 +56,7 @@ public class SuperheatedFurnace extends NonHopperableBlock {
 
     private static final int MAX_STORAGE = 138240;
     private static final Material netherite = Material.NETHERITE_BLOCK;
-    private int MAX_STACK_SIZE = 64;
+    private final int MAX_STACK_SIZE = 64;
 
     private static final SlimefunItemStack[] dusts = new SlimefunItemStack[] {
         SlimefunItems.COPPER_DUST, SlimefunItems.GOLD_DUST, SlimefunItems.IRON_DUST,

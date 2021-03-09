@@ -93,8 +93,8 @@ public class BackpackUnloader extends SlimefunItem implements InventoryBlock, En
 
                 // No ID
                 List<String> lore = inputItem.getItemMeta().getLore();
-                for (int line = 0; line < lore.size(); line++) {
-                    if (lore.get(line).equals(ChatColor.GRAY + "ID: <ID>")) {
+                for (String s : lore) {
+                    if (s.equals(ChatColor.GRAY + "ID: <ID>")) {
                         rejectInput(inv);
                         return;
                     }

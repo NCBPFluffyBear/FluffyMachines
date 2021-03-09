@@ -41,7 +41,6 @@ public class ElectricDustRecycler extends AContainer implements RecipeDisplayIte
 
     @Override
     protected void registerDefaultRecipes() {
-
         for (SlimefunItemStack dust : Constants.dusts) {
             registerRecipe(1, new CustomItem(dust, 8), SlimefunItems.SIFTED_ORE);
         }
@@ -80,11 +79,13 @@ public class ElectricDustRecycler extends AContainer implements RecipeDisplayIte
         return 1;
     }
 
+    @Nonnull
     @Override
     public String getInventoryTitle() {
         return "&fElectric Dust Recycler";
     }
 
+    @Nonnull
     @Override
     public String getMachineIdentifier() {
         return "ELECTRIC_DUST_RECYCLER";

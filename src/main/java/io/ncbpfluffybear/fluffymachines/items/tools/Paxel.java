@@ -39,7 +39,13 @@ public class Paxel extends SlimefunItem implements Listener, NotPlaceable {
         Tag.WOODEN_DOORS.getValues(),
         Tag.WOODEN_SLABS.getValues(),
         Tag.WOODEN_BUTTONS.getValues(),
-        new HashSet<>(Arrays.asList(Material.CHEST, Material.TRAPPED_CHEST, Material.CRAFTING_TABLE))
+        Tag.BANNERS.getValues(),
+        new HashSet<>(Arrays.asList(Material.CHEST, Material.TRAPPED_CHEST, Material.CRAFTING_TABLE, Material.SMITHING_TABLE,
+                Material.LOOM, Material.CARTOGRAPHY_TABLE, Material.FLETCHING_TABLE, Material.BARREL, Material.JUKEBOX,
+                Material.CAMPFIRE, Material.BOOKSHELF, Material.JACK_O_LANTERN, Material.PUMPKIN, Material.MELON,
+                Material.COMPOSTER, Material.BEEHIVE, Material.BEE_NEST, Material.NOTE_BLOCK, Material.LADDER,
+                Material.COCOA_BEANS, Material.DAYLIGHT_DETECTOR, Material.MUSHROOM_STEM, Material.RED_MUSHROOM_BLOCK,
+                Material.RED_MUSHROOM_BLOCK, Material.BAMBOO, Material.VINE))
     ).flatMap(Set::stream).collect(Collectors.toSet());
 
     public Paxel(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
@@ -58,7 +64,6 @@ public class Paxel extends SlimefunItem implements Listener, NotPlaceable {
         SlimefunItem sfItem = SlimefunItem.getByItem(p.getInventory().getItemInMainHand());
 
         if (sfItem != null && sfItem == FluffyItems.PAXEL.getItem()) {
-            boolean netherite = false;
             Block b = e.getClickedBlock();
             ItemStack item = p.getInventory().getItemInMainHand();
 
@@ -67,6 +72,8 @@ public class Paxel extends SlimefunItem implements Listener, NotPlaceable {
             }
 
             Material blockType = b.getType();
+
+            boolean netherite = false;
 
             if (item.getType() == Material.NETHERITE_PICKAXE
                 || item.getType() == Material.NETHERITE_AXE
