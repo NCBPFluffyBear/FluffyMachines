@@ -21,9 +21,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -119,15 +117,9 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
 
                             if (neededCharge >= CHARGE_SPEED && availableCharge >= CHARGE_SPEED) {
                                 transferCharge(charger, chargerItem, device, deviceItem, CHARGE_SPEED);
-
-                            } else if (neededCharge < availableCharge) {
-                                transferCharge(charger, chargerItem, device, deviceItem, neededCharge);
-
                             } else {
-                                transferCharge(charger, chargerItem, device, deviceItem, availableCharge);
-
+                                transferCharge(charger, chargerItem, device, deviceItem, Math.min(neededCharge, availableCharge));
                             }
-
                         } else if (neededCharge == 0) {
                             Utils.send(p, "&cThis item is already full!");
 
@@ -157,7 +149,7 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
         };
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onChargerItemClick(InventoryClickEvent e) {
         SlimefunItem sfItem1 = SlimefunItem.getByItem(e.getCurrentItem());
         SlimefunItem sfItem2 = SlimefunItem.getByItem(e.getCursor());
@@ -177,12 +169,9 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
         }
 
         if (lore.length > 0) {
-            List<String> lines = new ArrayList();
-            String[] loreString = lore;
-            int loreLength = lore.length;
+            List<String> lines = new ArrayList<>();
 
-            for (int i = 0; i < loreLength; ++i) {
-                String line = loreString[i];
+            for (String line : lore) {
                 lines.add(ChatColor.translateAlternateColorCodes('&', line));
             }
             slotMeta.setLore(lines);

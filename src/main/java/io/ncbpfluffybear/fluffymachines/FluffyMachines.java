@@ -169,8 +169,6 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
             if (args.length != 3) {
                 Utils.send(p, "&cPlease specify the key and the data");
-                return true;
-
             } else {
                 RayTraceResult rayResult = p.rayTraceBlocks(5d);
                 if (rayResult != null && rayResult.getHitBlock() != null
@@ -182,8 +180,8 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
                 } else {
                     Utils.send(p, "&cYou must be looking at a Slimefun block");
                 }
-                return true;
             }
+            return true;
 
         }
         return false;

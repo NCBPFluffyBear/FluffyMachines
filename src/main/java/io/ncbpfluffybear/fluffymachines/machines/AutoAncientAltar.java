@@ -17,7 +17,6 @@ import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.interfaces.InventoryBlock;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
@@ -36,10 +35,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * This {@link SlimefunItem} automatically crafts
@@ -47,7 +43,7 @@ import java.util.List;
  *
  * @author NCBPFluffyBear
  */
-public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, EnergyNetComponent {
+public class AutoAncientAltar extends SlimefunItem implements EnergyNetComponent {
 
     public static final int ENERGY_CONSUMPTION = 128;
     public static final int CAPACITY = ENERGY_CONSUMPTION * 3;
@@ -224,12 +220,10 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
         return CAPACITY;
     }
 
-    @Override
     public int[] getInputSlots() {
         return new int[] {19, 20, 21, 28, 29, 30, 37, 38, 39};
     }
 
-    @Override
     public int[] getOutputSlots() {
         return new int[] {33, 34};
     }
@@ -348,7 +342,7 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
 
                 ItemStack spawnerItem = SlimefunItems.REPAIRED_SPAWNER.clone();
                 ItemMeta im = spawnerItem.getItemMeta();
-                im.setLore(Arrays.asList(wrapper.getItemMeta().getLore().get(0)));
+                im.setLore(Collections.singletonList(wrapper.getItemMeta().getLore().get(0)));
                 spawnerItem.setItemMeta(im);
 
                 menu.pushItem(spawnerItem.clone(), getOutputSlots());

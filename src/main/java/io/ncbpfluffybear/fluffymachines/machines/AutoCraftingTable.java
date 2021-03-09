@@ -12,7 +12,6 @@ import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.interfaces.InventoryBlock;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
@@ -43,7 +42,7 @@ import java.util.List;
  *
  * @author NCBPFluffyBear
  */
-public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, EnergyNetComponent {
+public class AutoCraftingTable extends SlimefunItem implements EnergyNetComponent {
 
     public static final int ENERGY_CONSUMPTION = 128;
     public static final int CAPACITY = ENERGY_CONSUMPTION * 3;
@@ -198,12 +197,10 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
             (p, slot, item, action) -> false);
     }
 
-    @Override
     public int[] getInputSlots() {
         return new int[] {19, 20, 21, 28, 29, 30, 37, 38, 39};
     }
 
-    @Override
     public int[] getOutputSlots() {
         return new int[] {42, 43};
     }
