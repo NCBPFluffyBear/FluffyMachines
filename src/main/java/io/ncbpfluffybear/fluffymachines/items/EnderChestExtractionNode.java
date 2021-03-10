@@ -3,6 +3,7 @@ package io.ncbpfluffybear.fluffymachines.items;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
+import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
@@ -11,15 +12,9 @@ import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.Objects.handlers.ItemHandler;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Container;
-import org.bukkit.block.EnderChest;
+import org.bukkit.block.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.Inventory;
@@ -43,8 +38,7 @@ public class EnderChestExtractionNode extends SlimefunItem {
                                     RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
-        addItemHandler(onPlace());
-        addItemHandler(onInteract());
+        addItemHandler(onPlace(), onInteract());
     }
 
     @Override
@@ -66,18 +60,12 @@ public class EnderChestExtractionNode extends SlimefunItem {
 
         if (b.getRelative(BlockFace.NORTH).getType() == material) {
             face = BlockFace.SOUTH;
-
         } else if (b.getRelative(BlockFace.SOUTH).getType() == material) {
             face = BlockFace.NORTH;
-
-
         } else if (b.getRelative(BlockFace.EAST).getType() == material) {
             face = BlockFace.WEST;
-
-
         } else if (b.getRelative(BlockFace.WEST).getType() == material) {
             face = BlockFace.EAST;
-
         } else {
             return;
         }

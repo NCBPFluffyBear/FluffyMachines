@@ -24,7 +24,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -102,8 +101,11 @@ public class FluffyWrench extends SimpleSlimefunItem<ItemUseHandler> implements 
             NCPExemptionManager.exemptPermanently(p);
         }
         Bukkit.getPluginManager().callEvent(breakEvent);
-        BlockStorage.clearBlockInfo(block);
-        block.setType(Material.AIR);
+
+        if (!breakEvent.isCancelled()) {
+            BlockStorage.clearBlockInfo(block);
+            block.setType(Material.AIR);
+        }
         if (Constants.isNCPInstalled) {
             NCPExemptionManager.unexempt(p);
         }

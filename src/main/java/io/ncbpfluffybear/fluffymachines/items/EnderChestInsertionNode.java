@@ -42,8 +42,7 @@ public class EnderChestInsertionNode extends SlimefunItem {
                                    ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
-        addItemHandler(onPlace());
-        addItemHandler(onInteract());
+        addItemHandler(onPlace(), onInteract());
     }
 
     @Override
@@ -65,18 +64,12 @@ public class EnderChestInsertionNode extends SlimefunItem {
 
         if (b.getRelative(BlockFace.NORTH).getType() == material) {
             face = BlockFace.SOUTH;
-
         } else if (b.getRelative(BlockFace.SOUTH).getType() == material) {
             face = BlockFace.NORTH;
-
-
         } else if (b.getRelative(BlockFace.EAST).getType() == material) {
             face = BlockFace.WEST;
-
-
         } else if (b.getRelative(BlockFace.WEST).getType() == material) {
             face = BlockFace.EAST;
-
         } else {
             return;
         }

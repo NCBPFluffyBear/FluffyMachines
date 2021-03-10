@@ -10,14 +10,9 @@ import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
-import org.bukkit.Axis;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.Tag;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Orientable;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -103,13 +98,12 @@ public class UpgradedLumberAxe extends SimpleSlimefunItem<ItemUseHandler> implem
     }
 
     public static List<Block> find(Block b, int limit, Predicate<Block> predicate) {
-        List<Block> list = new LinkedList();
+        List<Block> list = new LinkedList<>();
         expand(b, list, limit, predicate);
         return list;
     }
 
     private static void expand(Block anchor, List<Block> list, int limit, Predicate<Block> predicate) {
-
         if (list.size() < limit) {
             list.add(anchor);
             for (int x = -RANGE; x <= RANGE; x++) {
@@ -122,7 +116,6 @@ public class UpgradedLumberAxe extends SimpleSlimefunItem<ItemUseHandler> implem
                     }
                 }
             }
-
         }
     }
 }

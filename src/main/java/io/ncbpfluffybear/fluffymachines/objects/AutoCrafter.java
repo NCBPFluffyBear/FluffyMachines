@@ -13,7 +13,6 @@ import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.interfaces.InventoryBlock;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
@@ -35,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class AutoCrafter extends SlimefunItem implements InventoryBlock, EnergyNetComponent {
+public class AutoCrafter extends SlimefunItem implements EnergyNetComponent {
 
     public static final int ENERGY_CONSUMPTION = 128;
     public static final int CAPACITY = ENERGY_CONSUMPTION * 3;
@@ -46,7 +45,6 @@ public class AutoCrafter extends SlimefunItem implements InventoryBlock, EnergyN
     private final int[] outputSlots = {33, 34};
     private final String machineName;
     private final Material material;
-    private final RecipeType machineRecipes;
     private final MultiBlockMachine mblock;
 
     public AutoCrafter(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, String displayName, Material material, String machineName, RecipeType machineRecipes) {
@@ -54,7 +52,6 @@ public class AutoCrafter extends SlimefunItem implements InventoryBlock, EnergyN
 
         this.machineName = machineName;
         this.material = material;
-        this.machineRecipes = machineRecipes;
         this.mblock = (MultiBlockMachine) machineRecipes.getMachine();
 
         new BlockMenuPreset(getId(), displayName) {
@@ -192,12 +189,10 @@ public class AutoCrafter extends SlimefunItem implements InventoryBlock, EnergyN
         return CAPACITY;
     }
 
-    @Override
     public int[] getInputSlots() {
         return inputSlots;
     }
 
-    @Override
     public int[] getOutputSlots() {
         return outputSlots;
     }

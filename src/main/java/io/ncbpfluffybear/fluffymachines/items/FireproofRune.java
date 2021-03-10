@@ -3,19 +3,12 @@ package io.ncbpfluffybear.fluffymachines.items;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemDropHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
-import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.Slimefun;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -79,8 +72,8 @@ public class FireproofRune extends SimpleSlimefunItem<ItemDropHandler> {
         }
 
         Location l = rune.getLocation();
-        Collection<Entity> entites = l.getWorld().getNearbyEntities(l, RANGE, RANGE, RANGE, this::findCompatibleItem);
-        Optional<Entity> optional = entites.stream().findFirst();
+        Collection<Entity> entities = l.getWorld().getNearbyEntities(l, RANGE, RANGE, RANGE, this::findCompatibleItem);
+        Optional<Entity> optional = entities.stream().findFirst();
 
         if (optional.isPresent()) {
             Item item = (Item) optional.get();
@@ -131,7 +124,7 @@ public class FireproofRune extends SimpleSlimefunItem<ItemDropHandler> {
             PersistentDataContainer container = meta.getPersistentDataContainer();
             if (!isFireproof) {
                 container.set(FIREPROOF_KEY, PersistentDataType.BYTE, (byte) 1);
-                List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList();
+                List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
                 lore.add(FIREPROOF_LORE);
                 meta.setLore(lore);
                 item.setItemMeta(meta);

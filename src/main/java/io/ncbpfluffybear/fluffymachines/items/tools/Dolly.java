@@ -60,9 +60,7 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
                         PlayerProfile.get(p, profile -> {
                             int backpackId = profile.createBackpack(27).getId();
                             SlimefunPlugin.getBackpackListener().setBackpackId(p, dolly, 3, backpackId);
-                            PlayerProfile.getBackpack(dolly, backpack -> {
-                                backpack.getInventory().setItem(0, lockItem);
-                            });
+                            PlayerProfile.getBackpack(dolly, backpack -> backpack.getInventory().setItem(0, lockItem));
                         });
                     }
                 }
