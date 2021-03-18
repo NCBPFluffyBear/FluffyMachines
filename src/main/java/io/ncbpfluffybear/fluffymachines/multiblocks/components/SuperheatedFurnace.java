@@ -73,6 +73,8 @@ public class SuperheatedFurnace extends NonHopperableBlock {
     public SuperheatedFurnace(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
+        // addItemHandler(onBreak());
+
         new BlockMenuPreset(getId(), "&c鑄造廠") {
 
             @Override
@@ -219,7 +221,97 @@ public class SuperheatedFurnace extends NonHopperableBlock {
             }
             return true;
         });
+
     }
+
+    /*
+    private BlockBreakHandler onBreak() {
+        return new BlockBreakHandler(false, false) {
+            @Override
+            public void onPlayerBreak(@Nonnull BlockBreakEvent e, @Nonnull ItemStack item, @Nonnull List<ItemStack> drops) {
+                Block b = e.getBlock();
+                Player p = e.getPlayer();
+                BlockMenu inv = BlockStorage.getInventory(b);
+
+                if (inv != null) {
+
+                    int itemCount = 0;
+
+                    int stored = Integer.parseInt(getBlockInfo(b.getLocation(), "stored"));
+                    String type = getBlockInfo(b.getLocation(), "type");
+
+                    for (Entity en : p.getNearbyEntities(5, 5, 5)) {
+                        if (en instanceof Item) {
+                            itemCount++;
+                        }
+                    }
+
+                    if (itemCount > 5) {
+                        Utils.send(p, "&cPlease remove nearby items before breaking this superheated furnace!");
+                        e.setCancelled(true);
+                        return;
+                    }
+
+                    inv.dropItems(b.getLocation(), INPUT_SLOT);
+                    inv.dropItems(b.getLocation(), DUST_OUTPUT_SLOT);
+                    inv.dropItems(b.getLocation(), INGOT_OUTPUT_SLOT);
+
+                    if (stored > 0) {
+                        int stackSize = Constants.MAX_STACK_SIZE;
+                        ItemStack dust = SlimefunItem.getByID(type + "_DUST").getItem();
+
+                        if (stored > OVERFLOW_AMOUNT) {
+
+                            Utils.send(p, "&eThere are more than " + OVERFLOW_AMOUNT + " items in this superheated furnace! " +
+                                "Dropping " + OVERFLOW_AMOUNT + " items instead!");
+                            int toRemove = OVERFLOW_AMOUNT;
+                            while (toRemove >= stackSize) {
+
+                                b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(dust, stackSize));
+
+                                toRemove = toRemove - stackSize;
+                            }
+
+                            if (toRemove > 0) {
+                                b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(dust, toRemove));
+                            }
+
+                            BlockStorage.addBlockInfo(b, "stored", String.valueOf(stored - OVERFLOW_AMOUNT));
+
+                            e.setCancelled(true);
+                            return;
+                        } else {
+
+                            // Everything greater than 1 stack
+                            while (stored >= stackSize) {
+
+                                b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(dust, stackSize));
+
+                                stored = stored - stackSize;
+                            }
+
+                            // Drop remaining, if there is any
+                            if (stored > 0) {
+                                b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(dust, stored));
+                            }
+
+                            if (BlockStorage.getLocationInfo(b.getLocation(), "stand") != null) {
+                                Bukkit.getEntity(UUID.fromString(BlockStorage.getLocationInfo(b.getLocation(), "stand"))).remove();
+                            }
+
+                            // In case they use an explosive pick
+                            BlockStorage.addBlockInfo(b, "stored", "0");
+                            return;
+                        }
+                    }
+                    if (BlockStorage.getLocationInfo(b.getLocation(), "stand") != null) {
+                        Bukkit.getEntity(UUID.fromString(BlockStorage.getLocationInfo(b.getLocation(), "stand"))).remove();
+                    }
+                }
+            }
+        };
+    }
+    */
 
     protected void constructMenu(BlockMenuPreset preset) {
         for (int i : dustOutputBorder) {
@@ -303,8 +395,8 @@ public class SuperheatedFurnace extends NonHopperableBlock {
                 }
 
             } else {
-                if (sfItem!= null && (sfItem.getId().equals(type + "_DUST") || sfItem.getId().equals(type + "_INGOT"))
-                    || (type.equals("GOLD") && sfItem.getId().equals(SlimefunItems.GOLD_4K.getItemId()))
+                if (sfItem != null && ((sfItem.getId().equals(type + "_DUST") || sfItem.getId().equals(type + "_INGOT"))
+                    || (type.equals("GOLD") && sfItem.getId().equals(SlimefunItems.GOLD_4K.getItemId())))
                     || (type.equals("IRON") && inputItem.getType() == Material.IRON_INGOT
                     && inputItem.getItemMeta().equals(new ItemStack(Material.IRON_INGOT).getItemMeta()))
                     && stored + amount < MAX_STORAGE) {

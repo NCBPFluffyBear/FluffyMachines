@@ -2,6 +2,7 @@ package io.ncbpfluffybear.fluffymachines.objects;
 
 import io.github.thebusybiscuit.slimefun4.api.events.BlockPlacerPlaceEvent;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
+import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.multiblocks.MultiBlockMachine;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
@@ -25,6 +26,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -124,29 +126,36 @@ public class AutoCrafter extends SlimefunItem implements EnergyNetComponent {
         };
 
         addItemHandler(onPlace());
-        registerBlockHandler(getId(), (p, b, stack, reason) -> {
-            BlockMenu inv = BlockStorage.getInventory(b);
-
-            if (inv != null) {
-                inv.dropItems(b.getLocation(), getInputSlots());
-                inv.dropItems(b.getLocation(), getOutputSlots());
-            }
-
-            return true;
-        });
+        addItemHandler(onBreak());
     }
 
     private BlockPlaceHandler onPlace() {
         return new BlockPlaceHandler(true) {
 
             @Override
-            public void onPlayerPlace(BlockPlaceEvent e) {
+            public void onPlayerPlace(@Nonnull BlockPlaceEvent e) {
                 BlockStorage.addBlockInfo(e.getBlock(), "enabled", String.valueOf(false));
             }
 
             @Override
-            public void onBlockPlacerPlace(BlockPlacerPlaceEvent e) {
+            public void onBlockPlacerPlace(@Nonnull BlockPlacerPlaceEvent e) {
                 BlockStorage.addBlockInfo(e.getBlock(), "enabled", String.valueOf(false));
+            }
+        };
+    }
+
+    private BlockBreakHandler onBreak() {
+        return new BlockBreakHandler(false, false) {
+            @Override
+            public void onPlayerBreak(@Nonnull BlockBreakEvent e, @Nonnull ItemStack i, @Nonnull List<ItemStack> list) {
+                Block b = e.getBlock();
+                BlockMenu inv = BlockStorage.getInventory(b);
+
+                if (inv != null) {
+                    inv.dropItems(b.getLocation(), getInputSlots());
+                    inv.dropItems(b.getLocation(), getOutputSlots());
+                }
+
             }
         };
     }

@@ -38,15 +38,16 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
 
-    public static final ItemSetting<Integer> maxUses = new ItemSetting<>("max-uses", 10);
-    public static final ItemSetting<Double> sugarCaneSuccessChance = new ItemSetting<>("sugar-cane-success-chance",
+    public final ItemSetting<Integer> maxUses = new ItemSetting<>(this, "max-uses", 10);
+    public final ItemSetting<Double> sugarCaneSuccessChance = new ItemSetting<>(this, "sugar-cane-success-chance",
         0.3);
-    public static final ItemSetting<Double> cropSuccessChance = new ItemSetting<>("crop-success-chance", 0.3);
-    public static final ItemSetting<Double> treeSuccessChance = new ItemSetting<>("tree-success-chance", 0.3);
+    public final ItemSetting<Double> cropSuccessChance = new ItemSetting<>(this, "crop-success-chance", 0.3);
+    public final ItemSetting<Double> treeSuccessChance = new ItemSetting<>(this, "tree-success-chance", 0.3);
 
     private static final int USE_INDEX = 7;
     private static final int MAX_SUGAR_GROW_HEIGHT = 5;
     private static final NamespacedKey usageKey = new NamespacedKey(FluffyMachines.getInstance(), "watering_can_usage");
+    private static int maxUsesInt = 0;
 
     private static final String fullCan = "907a97c8c14e96b4eb2a0f84401959d76611e7547eeb2b6d3a6a62dd7894c2e";
     private static final String emptyCan = "495ab8fef8771f187286cb41be89b95b4cc0bb0e48fea73fb8a4a1427859dedc";
@@ -58,6 +59,9 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
         addItemSetting(sugarCaneSuccessChance);
         addItemSetting(cropSuccessChance);
         addItemSetting(treeSuccessChance);
+
+        maxUsesInt = maxUses.getDefaultValue();
+
     }
 
     @Nonnull
@@ -201,7 +205,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
         } else if (updateType == 2) {
             p.playSound(p.getLocation(), Sound.ENTITY_DROWNED_DEATH_WATER, 0.5F, 1F);
             Utils.send(p, "&a你已經裝滿你的灑水壺");
-            usesLeft = maxUses.getValue();
+            usesLeft = maxUsesInt;
 
         } else if (updateType == 3) {
             if (usesLeft == 0) {

@@ -117,9 +117,12 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
 
                             if (neededCharge >= CHARGE_SPEED && availableCharge >= CHARGE_SPEED) {
                                 transferCharge(charger, chargerItem, device, deviceItem, CHARGE_SPEED);
+
                             } else {
-                                transferCharge(charger, chargerItem, device, deviceItem, Math.min(neededCharge, availableCharge));
+                                transferCharge(charger, chargerItem, device, deviceItem, Math.min(neededCharge,
+                                    availableCharge));
                             }
+
                         } else if (neededCharge == 0) {
                             Utils.send(p, "&c此物品已被充飽!");
 
@@ -149,7 +152,7 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
         };
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onChargerItemClick(InventoryClickEvent e) {
         SlimefunItem sfItem1 = SlimefunItem.getByItem(e.getCurrentItem());
         SlimefunItem sfItem2 = SlimefunItem.getByItem(e.getCursor());

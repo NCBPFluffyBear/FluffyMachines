@@ -1,6 +1,7 @@
 package io.ncbpfluffybear.fluffymachines.machines;
 
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
+import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
@@ -29,6 +30,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -75,6 +77,8 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
 
     public AdvancedAutoDisenchanter(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
+
+        addItemHandler(onBreak());
 
         new BlockMenuPreset(getId(), "&c高級自動退魔器") {
 
@@ -126,17 +130,22 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
                 }
             }
         };
+    }
 
-        registerBlockHandler(getId(), (p, b, stack, reason) -> {
-            BlockMenu inv = BlockStorage.getInventory(b);
+    private BlockBreakHandler onBreak() {
+        return new BlockBreakHandler(false, false) {
+            @Override
+            public void onPlayerBreak(@Nonnull BlockBreakEvent e, @Nonnull ItemStack item, @Nonnull List<ItemStack> drops) {
+                Block b = e.getBlock();
+                BlockMenu inv = BlockStorage.getInventory(b);
 
-            if (inv != null) {
-                inv.dropItems(b.getLocation(), ITEM_SLOT);
-                inv.dropItems(b.getLocation(), BOOK_SLOT);
-                inv.dropItems(b.getLocation(), OUTPUT_SLOTS);
+                if (inv != null) {
+                    inv.dropItems(b.getLocation(), ITEM_SLOT);
+                    inv.dropItems(b.getLocation(), BOOK_SLOT);
+                    inv.dropItems(b.getLocation(), OUTPUT_SLOTS);
+                }
             }
-            return true;
-        });
+        };
     }
 
     @Override

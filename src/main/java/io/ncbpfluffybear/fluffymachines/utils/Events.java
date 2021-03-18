@@ -5,6 +5,7 @@ import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import io.ncbpfluffybear.fluffymachines.items.tools.WateringCan;
 import io.ncbpfluffybear.fluffymachines.machines.AlternateElevatorPlate;
+import javax.annotation.Nonnull;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.Location;
@@ -34,14 +35,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import javax.annotation.Nonnull;
-
 public class Events implements Listener {
 
-    HelicopterHat helicopterHat = (HelicopterHat) FluffyItems.HELICOPTER_HAT.getItem();
-    WateringCan wateringCan = (WateringCan) FluffyItems.WATERING_CAN.getItem();
+    final HelicopterHat helicopterHat = (HelicopterHat) FluffyItems.HELICOPTER_HAT.getItem();
+    final WateringCan wateringCan = (WateringCan) FluffyItems.WATERING_CAN.getItem();
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onHelicopterHatUse(PlayerToggleSneakEvent e) {
         Player p = e.getPlayer();
         if (e.isSneaking() && helicopterHat.isItem(p.getEquipment().getHelmet())) {
@@ -51,7 +50,7 @@ public class Events implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onWateringCanSplash(PlayerInteractEntityEvent e) {
         Player p = e.getPlayer();
         ItemStack item = p.getInventory().getItemInMainHand();
@@ -99,7 +98,7 @@ public class Events implements Listener {
             e.setCancelled(true);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onItemDamage(EntityDamageEvent e) {
         Entity en = e.getEntity();
         if (en instanceof Item) {
@@ -113,11 +112,12 @@ public class Events implements Listener {
             ) {
                 en.remove();
                 en.getLocation().getWorld().dropItem(en.getLocation(), item);
+
             }
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerWarp(PlayerToggleSneakEvent e) {
         if (e.isSneaking()) {
             Player p = e.getPlayer();
@@ -168,7 +168,7 @@ public class Events implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onFMInfoClick(InventoryClickEvent e) {
         if (SlimefunItem.getByItem(e.getCurrentItem()) != null
             && SlimefunItem.getByItem(e.getCurrentItem()) == FluffyItems.FLUFFYMACHINES_INFO.getItem()) {

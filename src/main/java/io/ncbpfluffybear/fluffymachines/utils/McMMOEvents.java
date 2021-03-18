@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 
 public class McMMOEvents implements Listener {
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     private void onAbility(McMMOPlayerAbilityActivateEvent e) {
         Player p = e.getPlayer();
         SlimefunItem sfItem = SlimefunItem.getByItem(p.getInventory().getItemInMainHand());

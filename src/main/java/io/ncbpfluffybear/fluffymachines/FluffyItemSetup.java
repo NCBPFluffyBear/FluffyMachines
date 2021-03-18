@@ -213,8 +213,8 @@ public final class FluffyItemSetup {
         new AutoCraftingTable(FluffyItems.fluffymachines, FluffyItems.AUTO_CRAFTING_TABLE,
             RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
             SlimefunItems.REINFORCED_PLATE, advancedCircuitBoard, SlimefunItems.REINFORCED_PLATE,
-            advancedCircuitBoard, SlimefunItems.AUTOMATED_CRAFTING_CHAMBER, advancedCircuitBoard,
-            SlimefunItems.REINFORCED_PLATE, advancedCircuitBoard, SlimefunItems.REINFORCED_PLATE
+            SlimefunItems.CARGO_MOTOR, SlimefunItems.BLISTERING_INGOT_3, SlimefunItems.CARGO_MOTOR,
+            SlimefunItems.REINFORCED_PLATE, SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.REINFORCED_PLATE
         }).register(plugin);
 
         new AutoAncientAltar(FluffyItems.fluffymachines, FluffyItems.AUTO_ANCIENT_ALTAR,
