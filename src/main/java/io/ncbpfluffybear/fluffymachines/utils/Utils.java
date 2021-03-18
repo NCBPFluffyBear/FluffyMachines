@@ -68,12 +68,9 @@ public final class Utils {
         }
 
         if (lore.length > 0) {
-            List<String> lines = new ArrayList();
-            String[] loreString = lore;
-            int loreLength = lore.length;
+            List<String> lines = new ArrayList<>();
 
-            for (int i = 0; i < loreLength; ++i) {
-                String line = loreString[i];
+            for (String line : lore) {
                 lines.add(ChatColor.translateAlternateColorCodes('&', line));
             }
             NCMeta.setLore(lines);

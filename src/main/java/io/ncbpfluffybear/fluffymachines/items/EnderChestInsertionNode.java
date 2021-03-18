@@ -126,11 +126,10 @@ public class EnderChestInsertionNode extends SlimefunItem {
         }
     }
 
-    private ItemHandler onPlace() {
+    private BlockPlaceHandler onPlace() {
         return new BlockPlaceHandler(false) {
-
             @Override
-            public void onPlayerPlace(BlockPlaceEvent e) {
+            public void onPlayerPlace(@Nonnull BlockPlaceEvent e) {
                 Player p = e.getPlayer();
                 Block b = e.getBlock();
 
@@ -144,8 +143,8 @@ public class EnderChestInsertionNode extends SlimefunItem {
         };
     }
 
-    private ItemHandler onInteract() {
-        return (BlockUseHandler) e -> {
+    private BlockUseHandler onInteract() {
+        return e -> {
             Player p = e.getPlayer();
             Block b = e.getClickedBlock().get();
             Utils.send(p, "&eThis Ender Chest Insertion Node belongs to " +

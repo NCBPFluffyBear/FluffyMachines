@@ -2,6 +2,7 @@ package io.ncbpfluffybear.fluffymachines.machines;
 
 import io.github.thebusybiscuit.slimefun4.api.events.BlockPlacerPlaceEvent;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
+import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
@@ -27,11 +28,13 @@ import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -61,9 +64,7 @@ public class AutoTableSaw extends SlimefunItem implements EnergyNetComponent {
         for (Material log : Tag.LOGS.getValues()) {
             Optional<Material> planks = MaterialConverter.getPlanksFromLog(log);
 
-            if (planks.isPresent()) {
-                tableSawRecipes.put(new ItemStack(log), new ItemStack(planks.get(), 8));
-            }
+            planks.ifPresent(material -> tableSawRecipes.put(new ItemStack(log), new ItemStack(material, 8)));
         }
 
         for (Material plank : Tag.PLANKS.getValues()) {
@@ -78,7 +79,7 @@ public class AutoTableSaw extends SlimefunItem implements EnergyNetComponent {
             }
 
             @Override
-            public void newInstance(BlockMenu menu, Block b) {
+            public void newInstance(@Nonnull BlockMenu menu, @Nonnull Block b) {
                 if (!BlockStorage.hasBlockInfo(b)
                     || BlockStorage.getLocationInfo(b.getLocation(), "enabled") == null
                     || BlockStorage.getLocationInfo(b.getLocation(), "enabled").equals(String.valueOf(false))) {
@@ -125,29 +126,36 @@ public class AutoTableSaw extends SlimefunItem implements EnergyNetComponent {
         };
 
         addItemHandler(onPlace());
-        registerBlockHandler(getId(), (p, b, stack, reason) -> {
-            BlockMenu inv = BlockStorage.getInventory(b);
-            Location location = b.getLocation();
+        addItemHandler(onBreak());
 
-            if (inv != null) {
-                inv.dropItems(location, inputSlots);
-                inv.dropItems(location, outputSlots);
+    }
+
+    private BlockBreakHandler onBreak() {
+        return new BlockBreakHandler(false, false) {
+            @Override
+            public void onPlayerBreak(@Nonnull BlockBreakEvent e, @Nonnull ItemStack item, @Nonnull List<ItemStack> drops) {
+                Block b = e.getBlock();
+                BlockMenu inv = BlockStorage.getInventory(b);
+                Location location = b.getLocation();
+
+                if (inv != null) {
+                    inv.dropItems(location, inputSlots);
+                    inv.dropItems(location, outputSlots);
+                }
             }
-
-            return true;
-        });
+        };
     }
 
     private BlockPlaceHandler onPlace() {
         return new BlockPlaceHandler(true) {
 
             @Override
-            public void onPlayerPlace(BlockPlaceEvent e) {
+            public void onPlayerPlace(@Nonnull BlockPlaceEvent e) {
                 BlockStorage.addBlockInfo(e.getBlock(), "enabled", String.valueOf(false));
             }
 
             @Override
-            public void onBlockPlacerPlace(BlockPlacerPlaceEvent e) {
+            public void onBlockPlacerPlace(@Nonnull BlockPlacerPlaceEvent e) {
                 BlockStorage.addBlockInfo(e.getBlock(), "enabled", String.valueOf(false));
             }
         };

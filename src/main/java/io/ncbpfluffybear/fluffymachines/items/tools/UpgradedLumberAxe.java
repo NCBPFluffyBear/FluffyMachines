@@ -17,7 +17,6 @@ import org.bukkit.Sound;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Orientable;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -31,7 +30,7 @@ public class UpgradedLumberAxe extends SimpleSlimefunItem<ItemUseHandler> implem
     private static final int MAX_STRIPPED = 200;
     private static final int RANGE = 2;
 
-    private final ItemSetting<Boolean> triggerOtherPlugins = new ItemSetting<>("trigger-other-plugins", true);
+    private final ItemSetting<Boolean> triggerOtherPlugins = new ItemSetting<>(this, "trigger-other-plugins", true);
 
     public UpgradedLumberAxe(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
@@ -103,7 +102,7 @@ public class UpgradedLumberAxe extends SimpleSlimefunItem<ItemUseHandler> implem
     }
 
     public static List<Block> find(Block b, int limit, Predicate<Block> predicate) {
-        List<Block> list = new LinkedList();
+        List<Block> list = new LinkedList<>();
         expand(b, list, limit, predicate);
         return list;
     }

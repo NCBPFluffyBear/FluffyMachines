@@ -1,8 +1,10 @@
 package io.ncbpfluffybear.fluffymachines.items;
 
+import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
+import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
@@ -11,16 +13,17 @@ import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.Objects.handlers.ItemHandler;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
 import org.bukkit.block.EnderChest;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Shulker;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -39,8 +42,7 @@ public class EnderChestExtractionNode extends SlimefunItem {
 
     private static final Material material = Material.ENDER_CHEST;
 
-    public EnderChestExtractionNode(Category category, SlimefunItemStack item,
-                                    RecipeType recipeType, ItemStack[] recipe) {
+    public EnderChestExtractionNode(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
         addItemHandler(onPlace());
@@ -99,7 +101,13 @@ public class EnderChestExtractionNode extends SlimefunItem {
 
                 for (int i = 0; i < enderInv.getSize(); i++) {
 
-                    if (enderInv.getItem(i) != null) {
+                    ItemStack enderItem = enderInv.getItem(i);
+
+                    if (enderItem != null && state instanceof ShulkerBox && !Tag.SHULKER_BOXES.isTagged(enderItem.getType())) {
+                        continue;
+                    }
+
+                    if (enderItem != null) {
                         enderIndex = i;
                         enderValid = true;
                         break;
@@ -127,11 +135,10 @@ public class EnderChestExtractionNode extends SlimefunItem {
         }
     }
 
-    private ItemHandler onPlace() {
+    private BlockPlaceHandler onPlace() {
         return new BlockPlaceHandler(false) {
-
             @Override
-            public void onPlayerPlace(BlockPlaceEvent e) {
+            public void onPlayerPlace(@Nonnull BlockPlaceEvent e) {
                 Player p = e.getPlayer();
                 Block b = e.getBlock();
 
@@ -145,8 +152,8 @@ public class EnderChestExtractionNode extends SlimefunItem {
         };
     }
 
-    private ItemHandler onInteract() {
-        return (BlockUseHandler) e -> {
+    private BlockUseHandler onInteract() {
+        return e -> {
             Player p = e.getPlayer();
             Block b = e.getClickedBlock().get();
             Utils.send(p, "&eThis Ender Chest Extraction Node belongs to " +

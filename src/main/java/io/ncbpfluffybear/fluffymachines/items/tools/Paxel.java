@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 
 public class Paxel extends SlimefunItem implements Listener, NotPlaceable {
 
-    public Set<Material> axeBlocks = Stream.of(
+    public final Set<Material> axeBlocks = Stream.of(
         Tag.LOGS.getValues(),
         Tag.PLANKS.getValues(),
         Tag.WOODEN_STAIRS.getValues(),
@@ -39,7 +39,8 @@ public class Paxel extends SlimefunItem implements Listener, NotPlaceable {
         Tag.WOODEN_DOORS.getValues(),
         Tag.WOODEN_SLABS.getValues(),
         Tag.WOODEN_BUTTONS.getValues(),
-        new HashSet<>(Arrays.asList(Material.CHEST, Material.TRAPPED_CHEST, Material.CRAFTING_TABLE))
+        new HashSet<>(Arrays.asList(Material.CHEST, Material.TRAPPED_CHEST, Material.CRAFTING_TABLE, Material.BARREL,
+            Material.LECTERN))
     ).flatMap(Set::stream).collect(Collectors.toSet());
 
     public Paxel(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {

@@ -24,7 +24,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -43,7 +42,7 @@ import java.util.UUID;
 public class FluffyWrench extends SimpleSlimefunItem<ItemUseHandler> implements Listener, DamageableItem {
 
     private final HashMap<UUID, Long> cooldowns = new HashMap<>();
-    private final int WRENCH_DELAY = 250; // Not an itemsetting, too low causes dupes and no reason to increase
+    private static final int WRENCH_DELAY = 250; // Not an itemsetting, too low causes dupes and no reason to increase
 
     public FluffyWrench(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);

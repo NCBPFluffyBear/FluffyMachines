@@ -104,6 +104,7 @@ public class ElectricDustFabricator extends AContainer implements RecipeDisplayI
         return new ItemStack(Material.CAULDRON);
     }
 
+    @Nonnull
     @Override
     public String getMachineIdentifier() {
         return "DUST_FABRICATOR";

@@ -1,6 +1,7 @@
 package io.ncbpfluffybear.fluffymachines.machines;
 
 import io.github.thebusybiscuit.slimefun4.core.attributes.RecipeDisplayItem;
+import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.ncbpfluffybear.fluffymachines.utils.Constants;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -12,6 +13,8 @@ import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -26,17 +29,23 @@ public class ElectricDustRecycler extends AContainer implements RecipeDisplayIte
     public ElectricDustRecycler(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
-        registerBlockHandler(getId(), (p, b, stack, reason) -> {
-            BlockMenu inv = BlockStorage.getInventory(b);
+        addItemHandler(onBreak());
 
-            if (inv != null) {
-                inv.dropItems(b.getLocation(), getOutputSlots());
-                inv.dropItems(b.getLocation(), getInputSlots());
+    }
+
+    private BlockBreakHandler onBreak() {
+        return new BlockBreakHandler(false, false) {
+            @Override
+            public void onPlayerBreak(@Nonnull BlockBreakEvent e, @Nonnull ItemStack item, @Nonnull List<ItemStack> drops) {
+                Block b = e.getBlock();
+                BlockMenu inv = BlockStorage.getInventory(b);
+
+                if (inv != null) {
+                    inv.dropItems(b.getLocation(), getInputSlots());
+                    inv.dropItems(b.getLocation(), getOutputSlots());
+                }
             }
-
-            return true;
-        });
-
+        };
     }
 
     @Override
@@ -80,11 +89,13 @@ public class ElectricDustRecycler extends AContainer implements RecipeDisplayIte
         return 1;
     }
 
+    @Nonnull
     @Override
     public String getInventoryTitle() {
         return "&fElectric Dust Recycler";
     }
 
+    @Nonnull
     @Override
     public String getMachineIdentifier() {
         return "ELECTRIC_DUST_RECYCLER";

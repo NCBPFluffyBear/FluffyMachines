@@ -1,6 +1,5 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
-import io.github.thebusybiscuit.slimefun4.implementation.listeners.DispenserListener;
 import io.ncbpfluffybear.fluffymachines.items.Barrel;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
@@ -9,7 +8,6 @@ import io.ncbpfluffybear.fluffymachines.machines.AlternateElevatorPlate;
 import javax.annotation.Nonnull;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -39,8 +37,8 @@ import org.bukkit.potion.PotionEffectType;
 
 public class Events implements Listener {
 
-    HelicopterHat helicopterHat = (HelicopterHat) FluffyItems.HELICOPTER_HAT.getItem();
-    WateringCan wateringCan = (WateringCan) FluffyItems.WATERING_CAN.getItem();
+    final HelicopterHat helicopterHat = (HelicopterHat) FluffyItems.HELICOPTER_HAT.getItem();
+    final WateringCan wateringCan = (WateringCan) FluffyItems.WATERING_CAN.getItem();
 
     @EventHandler
     public void onHelicopterHatUse(PlayerToggleSneakEvent e) {

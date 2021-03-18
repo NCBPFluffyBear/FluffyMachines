@@ -2,6 +2,7 @@ package io.ncbpfluffybear.fluffymachines.machines;
 
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
+import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
 import io.github.thebusybiscuit.slimefun4.implementation.items.backpacks.SlimefunBackpack;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
@@ -18,6 +19,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -45,17 +47,24 @@ public class BackpackLoader extends SlimefunItem implements InventoryBlock, Ener
 
         setupInv();
 
-        registerBlockHandler(getId(), (p, b, stack, reason) -> {
-            BlockMenu inv = BlockStorage.getInventory(b);
+        addItemHandler(onBreak());
 
-            if (inv != null) {
-                inv.dropItems(b.getLocation(), getInputSlots());
-                inv.dropItems(b.getLocation(), getOutputSlots());
-                inv.dropItems(b.getLocation(), BACKPACK_SLOT);
+    }
+
+    private BlockBreakHandler onBreak() {
+        return new BlockBreakHandler(false, false) {
+            @Override
+            public void onPlayerBreak(@Nonnull BlockBreakEvent e, @Nonnull ItemStack item, @Nonnull List<ItemStack> drops) {
+                Block b = e.getBlock();
+                BlockMenu inv = BlockStorage.getInventory(b);
+
+                if (inv != null) {
+                    inv.dropItems(b.getLocation(), getInputSlots());
+                    inv.dropItems(b.getLocation(), getOutputSlots());
+                    inv.dropItems(b.getLocation(), BACKPACK_SLOT);
+                }
             }
-
-            return true;
-        });
+        };
     }
 
     protected void setupInv() {
@@ -89,7 +98,7 @@ public class BackpackLoader extends SlimefunItem implements InventoryBlock, Ener
             return;
         }
 
-        @Nullable final BlockMenu inv = BlockStorage.getInventory(b);
+        final BlockMenu inv = BlockStorage.getInventory(b);
         boolean invalidItem = false;
 
         // If no backpack in backpack slot, search for one and if found move to BACKPACK_SLOT

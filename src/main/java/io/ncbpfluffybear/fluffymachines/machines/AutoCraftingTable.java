@@ -2,6 +2,7 @@ package io.ncbpfluffybear.fluffymachines.machines;
 
 import io.github.thebusybiscuit.slimefun4.api.events.BlockPlacerPlaceEvent;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
+import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
@@ -27,6 +28,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -130,30 +132,37 @@ public class AutoCraftingTable extends SlimefunItem implements InventoryBlock, E
         };
 
         addItemHandler(onPlace());
-        registerBlockHandler(getId(), (p, b, stack, reason) -> {
-            BlockMenu inv = BlockStorage.getInventory(b);
-            Location location = b.getLocation();
+        addItemHandler(onBreak());
 
-            if (inv != null) {
-                inv.dropItems(location, getInputSlots());
-                inv.dropItems(location, getOutputSlots());
-                inv.dropItems(location, keySlot);
+    }
+
+    private BlockBreakHandler onBreak() {
+        return new BlockBreakHandler(false, false) {
+            @Override
+            public void onPlayerBreak(@Nonnull BlockBreakEvent e, @Nonnull ItemStack item, @Nonnull List<ItemStack> drops) {
+                Block b = e.getBlock();
+                BlockMenu inv = BlockStorage.getInventory(b);
+                Location location = b.getLocation();
+
+                if (inv != null) {
+                    inv.dropItems(location, getInputSlots());
+                    inv.dropItems(location, getOutputSlots());
+                    inv.dropItems(location, keySlot);
+                }
             }
-
-            return true;
-        });
+        };
     }
 
     private BlockPlaceHandler onPlace() {
         return new BlockPlaceHandler(true) {
 
             @Override
-            public void onPlayerPlace(BlockPlaceEvent e) {
+            public void onPlayerPlace(@Nonnull BlockPlaceEvent e) {
                 BlockStorage.addBlockInfo(e.getBlock(), "enabled", String.valueOf(false));
             }
 
             @Override
-            public void onBlockPlacerPlace(BlockPlacerPlaceEvent e) {
+            public void onBlockPlacerPlace(@Nonnull BlockPlacerPlaceEvent e) {
                 BlockStorage.addBlockInfo(e.getBlock(), "enabled", String.valueOf(false));
             }
         };

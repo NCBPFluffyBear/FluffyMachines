@@ -43,7 +43,7 @@ public class AlternateElevatorPlate extends SimpleSlimefunItem<BlockUseHandler> 
 
     private static final String DATA_KEY = "floor";
     private final Set<UUID> users = new HashSet<>();
-    private final int MAX_CHEST_INDEX = 53;
+    private static final int MAX_CHEST_INDEX = 53;
 
     public AlternateElevatorPlate(Category category, SlimefunItemStack item, RecipeType recipeType,
                                   ItemStack[] recipe, ItemStack recipeOutput) {
@@ -56,7 +56,7 @@ public class AlternateElevatorPlate extends SimpleSlimefunItem<BlockUseHandler> 
         return new BlockPlaceHandler(false) {
 
             @Override
-            public void onPlayerPlace(BlockPlaceEvent e) {
+            public void onPlayerPlace(@Nonnull BlockPlaceEvent e) {
                 Block b = e.getBlock();
                 BlockStorage.addBlockInfo(b, DATA_KEY, "&fFloor #0");
                 BlockStorage.addBlockInfo(b, "owner", e.getPlayer().getUniqueId().toString());
@@ -69,6 +69,7 @@ public class AlternateElevatorPlate extends SimpleSlimefunItem<BlockUseHandler> 
         return users;
     }
 
+    @Nonnull
     @Override
     public BlockUseHandler getItemHandler() {
         return e -> {
@@ -155,7 +156,7 @@ public class AlternateElevatorPlate extends SimpleSlimefunItem<BlockUseHandler> 
                 target.getZ() + 0.5, yaw, player.getEyeLocation().getPitch());
 
             PaperLib.teleportAsync(player, destination).thenAccept(teleported -> {
-                if (teleported.booleanValue()) {
+                if (teleported) {
                     player.sendTitle(ChatColor.WHITE + ChatColors.color(floorName), null, 20, 60, 20);
                 }
             });

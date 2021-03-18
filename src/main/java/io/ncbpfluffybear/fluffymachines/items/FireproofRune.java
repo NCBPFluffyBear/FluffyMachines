@@ -3,14 +3,11 @@ package io.ncbpfluffybear.fluffymachines.items;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemDropHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
-import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.Slimefun;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -61,7 +58,7 @@ public class FireproofRune extends SimpleSlimefunItem<ItemDropHandler> {
         return (e, p, item) -> {
             if (isItem(item.getItemStack())) {
 
-                if (!Slimefun.hasUnlocked(p, this, true)) {
+                if (!this.canUse(p, true)) {
                     return true;
                 }
 
@@ -131,7 +128,7 @@ public class FireproofRune extends SimpleSlimefunItem<ItemDropHandler> {
             PersistentDataContainer container = meta.getPersistentDataContainer();
             if (!isFireproof) {
                 container.set(FIREPROOF_KEY, PersistentDataType.BYTE, (byte) 1);
-                List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList();
+                List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
                 lore.add(FIREPROOF_LORE);
                 meta.setLore(lore);
                 item.setItemMeta(meta);
