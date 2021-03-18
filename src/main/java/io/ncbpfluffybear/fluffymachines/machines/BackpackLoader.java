@@ -4,21 +4,25 @@ import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.backpacks.SlimefunBackpack;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.interfaces.InventoryBlock;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
+import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
+import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
+import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -26,7 +30,7 @@ import org.bukkit.inventory.ItemStack;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class BackpackLoader extends SlimefunItem implements InventoryBlock, EnergyNetComponent {
+public class BackpackLoader extends SlimefunItem implements EnergyNetComponent {
 
     public static final int ENERGY_CONSUMPTION = 16;
     public static final int CAPACITY = ENERGY_CONSUMPTION * 3;
@@ -44,9 +48,42 @@ public class BackpackLoader extends SlimefunItem implements InventoryBlock, Ener
     public BackpackLoader(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
-        setupInv();
-
         addItemHandler(onBreak());
+
+        new BlockMenuPreset(getId(), "&eBackpack Loader") {
+
+            @Override
+            public void init() {
+                buildBorder(this, PLAIN_BORDER, INPUT_BORDER, OUTPUT_BORDER);
+
+                for (int i : BACKPACK_BORDER) {
+                    this.addItem(i, new CustomItem(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE), " "),
+                        (p, slot, item, action) -> false
+                    );
+                }
+            }
+
+            @Override
+            public boolean canOpen(@Nonnull Block b, @Nonnull Player p) {
+                return p.hasPermission("slimefun.inventory.bypass")
+                    || SlimefunPlugin.getProtectionManager().hasPermission(p, b.getLocation(),
+                    ProtectableAction.INTERACT_BLOCK);
+            }
+
+            @Override
+            public int[] getSlotsAccessedByItemTransport(ItemTransportFlow flow) {
+                return new int[0];
+            }
+
+            @Override
+            public int[] getSlotsAccessedByItemTransport(DirtyChestMenu menu, ItemTransportFlow flow, ItemStack item) {
+                if (flow == ItemTransportFlow.WITHDRAW) {
+                    return getOutputSlots();
+                } else {
+                    return getInputSlots();
+                }
+            }
+        };
 
     }
 
@@ -64,18 +101,6 @@ public class BackpackLoader extends SlimefunItem implements InventoryBlock, Ener
                 }
             }
         };
-    }
-
-    protected void setupInv() {
-        createPreset(this, "&eBackpack Loader", preset -> {
-            border(preset, PLAIN_BORDER, INPUT_BORDER, OUTPUT_BORDER);
-
-            for (int i : BACKPACK_BORDER) {
-                preset.addItem(i, new CustomItem(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE), " "),
-                    (p, slot, item, action) -> false
-                );
-            }
-        });
     }
 
     @Override
@@ -189,17 +214,15 @@ public class BackpackLoader extends SlimefunItem implements InventoryBlock, Ener
         return CAPACITY;
     }
 
-    @Override
     public int[] getInputSlots() {
         return INPUT_SLOTS;
     }
 
-    @Override
     public int[] getOutputSlots() {
         return OUTPUT_SLOTS;
     }
 
-    static void border(BlockMenuPreset preset, int[] plainBorder, int[] inputBorder, int[] outputBorder) {
+    static void buildBorder(BlockMenuPreset preset, int[] plainBorder, int[] inputBorder, int[] outputBorder) {
         for (int i : plainBorder) {
             preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
                 (p, slot, item, action) -> false

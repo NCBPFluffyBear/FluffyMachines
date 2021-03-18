@@ -1,10 +1,12 @@
 package io.ncbpfluffybear.fluffymachines.items.tools;
 
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
+import io.github.thebusybiscuit.slimefun4.core.attributes.HologramOwner;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import io.github.thebusybiscuit.slimefun4.utils.holograms.SimpleHologram;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
+import io.ncbpfluffybear.fluffymachines.machines.WarpPad;
 import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -30,7 +32,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
 
-public class WarpPadConfigurator extends SlimefunItem implements Listener {
+public class WarpPadConfigurator extends SlimefunItem implements HologramOwner, Listener {
 
     private final NamespacedKey xCoord = new NamespacedKey(FluffyMachines.getInstance(), "xCoordinate");
     private final NamespacedKey yCoord = new NamespacedKey(FluffyMachines.getInstance(), "yCoordinate");
@@ -84,7 +86,7 @@ public class WarpPadConfigurator extends SlimefunItem implements Listener {
                         meta.setLore(lore);
                         item.setItemMeta(meta);
 
-                        SimpleHologram.update(b, "&a&lDestination");
+                        updateHologram(b, "&a&lDestination");
                         BlockStorage.addBlockInfo(b, "type", "destination");
                         Utils.send(p, "&3This pad has been marked as a &aDestination &3and bound to your configurator");
 
@@ -130,6 +132,6 @@ public class WarpPadConfigurator extends SlimefunItem implements Listener {
         BlockStorage.addBlockInfo(b, "y", String.valueOf(y));
         BlockStorage.addBlockInfo(b, "z", String.valueOf(z));
 
-        SimpleHologram.update(b, "&a&lOrigin");
+        updateHologram(b, "&a&lOrigin");
     }
 }
