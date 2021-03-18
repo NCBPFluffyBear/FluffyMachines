@@ -64,7 +64,7 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
 
     private final int MAX_STORAGE;
 
-    private final ItemSetting<Boolean> showHologram = new ItemSetting<>("show-hologram", true);
+    private final ItemSetting<Boolean> showHologram = new ItemSetting<>(this, "show-hologram", true);
 
     public Barrel(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, String name,
                   int MAX_STORAGE) {
@@ -231,7 +231,94 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
         });
 
         addItemSetting(showHologram);
+        // addItemHandler(onBreak());
+
     }
+
+    /*
+
+    private ItemHandler onBreak() {
+        return new BlockBreakHandler(false, false) {
+            @Override
+            public void onPlayerBreak(@Nonnull BlockBreakEvent e, @Nonnull ItemStack item, @Nonnull List<ItemStack> drops) {
+                Block b = e.getBlock();
+                Player p = e.getPlayer();
+                BlockMenu inv = BlockStorage.getInventory(b);
+                String storedString = BlockStorage.getLocationInfo(b.getLocation(), "stored");
+                int stored = Integer.parseInt(storedString);
+
+                if (inv != null) {
+
+                    int itemCount = 0;
+
+                    for (Entity en : p.getNearbyEntities(5, 5, 5)) {
+                        if (en instanceof Item) {
+                            itemCount++;
+                        }
+                    }
+
+                    if (itemCount > 5) {
+                        Utils.send(p, "&cPlease remove nearby items before breaking this barrel!");
+                        e.setCancelled(true);
+                        return;
+                    }
+
+                    inv.dropItems(b.getLocation(), INPUT_SLOTS);
+                    inv.dropItems(b.getLocation(), OUTPUT_SLOTS);
+
+                    if (stored > 0) {
+                        int stackSize = inv.getItemInSlot(DISPLAY_SLOT).getMaxStackSize();
+                        ItemStack unKeyed = Utils.unKeyItem(inv.getItemInSlot(DISPLAY_SLOT));
+
+                        if (stored > OVERFLOW_AMOUNT) {
+
+                            Utils.send(p, "&eThere are more than " + OVERFLOW_AMOUNT + " items in this barrel! " +
+                                "Dropping " + OVERFLOW_AMOUNT + " items instead!");
+                            int toRemove = OVERFLOW_AMOUNT;
+                            while (toRemove >= stackSize) {
+
+                                b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(unKeyed, stackSize));
+
+                                toRemove = toRemove - stackSize;
+                            }
+
+                            if (toRemove > 0) {
+                                b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(unKeyed, toRemove));
+                            }
+
+                            BlockStorage.addBlockInfo(b, "stored", String.valueOf(stored - OVERFLOW_AMOUNT));
+                            updateMenu(b, inv);
+
+                            e.setCancelled(true);
+                        } else {
+
+                            // Everything greater than 1 stack
+                            while (stored >= stackSize) {
+
+                                b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(unKeyed, stackSize));
+
+                                stored = stored - stackSize;
+                            }
+
+                            // Drop remaining, if there is any
+                            if (stored > 0) {
+                                b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(unKeyed, stored));
+                            }
+
+                            // In case they use an explosive pick
+                            BlockStorage.addBlockInfo(b, "stored", "0");
+                            updateMenu(b, inv);
+                            FluffyHologram.remove(b);
+                        }
+                    } else {
+                        FluffyHologram.remove(b);
+                    }
+
+                }
+            }
+        };
+    }
+    */
 
     protected void constructMenu(BlockMenuPreset preset) {
         for (int i : outputBorder) {

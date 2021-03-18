@@ -8,7 +8,6 @@ import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
-import me.mrCookieSlime.Slimefun.Objects.handlers.ItemHandler;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
@@ -42,7 +41,8 @@ public class EnderChestInsertionNode extends SlimefunItem {
                                    ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
-        addItemHandler(onPlace(), onInteract());
+        addItemHandler(onPlace());
+        addItemHandler(onInteract());
     }
 
     @Override
@@ -64,12 +64,18 @@ public class EnderChestInsertionNode extends SlimefunItem {
 
         if (b.getRelative(BlockFace.NORTH).getType() == material) {
             face = BlockFace.SOUTH;
+
         } else if (b.getRelative(BlockFace.SOUTH).getType() == material) {
             face = BlockFace.NORTH;
+
+
         } else if (b.getRelative(BlockFace.EAST).getType() == material) {
             face = BlockFace.WEST;
+
+
         } else if (b.getRelative(BlockFace.WEST).getType() == material) {
             face = BlockFace.EAST;
+
         } else {
             return;
         }
@@ -119,11 +125,10 @@ public class EnderChestInsertionNode extends SlimefunItem {
         }
     }
 
-    private ItemHandler onPlace() {
+    private BlockPlaceHandler onPlace() {
         return new BlockPlaceHandler(false) {
-
             @Override
-            public void onPlayerPlace(BlockPlaceEvent e) {
+            public void onPlayerPlace(@Nonnull BlockPlaceEvent e) {
                 Player p = e.getPlayer();
                 Block b = e.getBlock();
 
@@ -137,8 +142,8 @@ public class EnderChestInsertionNode extends SlimefunItem {
         };
     }
 
-    private ItemHandler onInteract() {
-        return (BlockUseHandler) e -> {
+    private BlockUseHandler onInteract() {
+        return e -> {
             Player p = e.getPlayer();
             Block b = e.getClickedBlock().get();
             Utils.send(p, "&eThis Ender Chest Insertion Node belongs to " +

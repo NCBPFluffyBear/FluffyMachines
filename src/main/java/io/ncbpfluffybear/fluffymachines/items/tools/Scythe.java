@@ -55,9 +55,7 @@ public class Scythe extends SimpleSlimefunItem<ItemUseHandler> implements NotPla
                 == ((Ageable) e.getBlock().getBlockData()).getMaximumAge()) {
                 List<Block> crops = Vein.find(e.getBlock(), MAX_BROKEN, b -> Tag.CROPS.isTagged(b.getType()));
 
-                if (crops.contains(e.getBlock())) {
-                    crops.remove(e.getBlock());
-                }
+                crops.remove(e.getBlock());
 
                 boolean creative = e.getPlayer().getGameMode() == GameMode.CREATIVE;
 

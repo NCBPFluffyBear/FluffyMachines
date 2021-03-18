@@ -42,7 +42,7 @@ import java.util.UUID;
 public class FluffyWrench extends SimpleSlimefunItem<ItemUseHandler> implements Listener, DamageableItem {
 
     private final HashMap<UUID, Long> cooldowns = new HashMap<>();
-    private final int WRENCH_DELAY = 250; // Not an itemsetting, too low causes dupes and no reason to increase
+    private static final int WRENCH_DELAY = 250; // Not an itemsetting, too low causes dupes and no reason to increase
 
     public FluffyWrench(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
@@ -101,7 +101,6 @@ public class FluffyWrench extends SimpleSlimefunItem<ItemUseHandler> implements 
             NCPExemptionManager.exemptPermanently(p);
         }
         Bukkit.getPluginManager().callEvent(breakEvent);
-
         if (!breakEvent.isCancelled()) {
             BlockStorage.clearBlockInfo(block);
             block.setType(Material.AIR);

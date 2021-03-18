@@ -39,10 +39,10 @@ import java.util.List;
  */
 class UpgradedExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implements NotPlaceable, DamageableItem {
 
-    private final ItemSetting<Boolean> damageOnUse = new ItemSetting<>("damage-on-use", true);
-    private final ItemSetting<Boolean> callExplosionEvent = new ItemSetting<>("call-explosion-event", false);
-    private final ItemSetting<Boolean> breakFromCenter = new ItemSetting<>("break-from-center", false);
-    private final ItemSetting<Boolean> triggerOtherPlugins = new ItemSetting<>("trigger-other-plugins", true);
+    private final ItemSetting<Boolean> damageOnUse = new ItemSetting<>(this, "damage-on-use", true);
+    private final ItemSetting<Boolean> callExplosionEvent = new ItemSetting<>(this, "call-explosion-event", false);
+    private final ItemSetting<Boolean> breakFromCenter = new ItemSetting<>(this, "break-from-center", false);
+    private final ItemSetting<Boolean> triggerOtherPlugins = new ItemSetting<>(this, "trigger-other-plugins", true);
 
     public UpgradedExplosiveTool(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
