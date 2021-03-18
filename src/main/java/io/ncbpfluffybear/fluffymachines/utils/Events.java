@@ -40,7 +40,7 @@ public class Events implements Listener {
     final HelicopterHat helicopterHat = (HelicopterHat) FluffyItems.HELICOPTER_HAT.getItem();
     final WateringCan wateringCan = (WateringCan) FluffyItems.WATERING_CAN.getItem();
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onHelicopterHatUse(PlayerToggleSneakEvent e) {
         Player p = e.getPlayer();
         if (e.isSneaking() && helicopterHat.isItem(p.getEquipment().getHelmet())) {
@@ -50,7 +50,7 @@ public class Events implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onWateringCanSplash(PlayerInteractEntityEvent e) {
         Player p = e.getPlayer();
         ItemStack item = p.getInventory().getItemInMainHand();
@@ -67,7 +67,7 @@ public class Events implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerDamage(EntityDamageEvent e) {
         if (e.getEntity() instanceof Player && ((Player) e.getEntity()).getEquipment() != null
             && e.getCause() == EntityDamageEvent.DamageCause.FALL
@@ -82,7 +82,7 @@ public class Events implements Listener {
     }
 
     // This is used to make the non clickable GUI items non clickable
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onNonClickableClick(InventoryClickEvent e) {
         ItemStack item = e.getCurrentItem();
         if (item != null && item.getType() != Material.AIR && item.getItemMeta().hasCustomModelData()
@@ -91,14 +91,14 @@ public class Events implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onHeadRemove(PlayerArmorStandManipulateEvent e) {
         if (e.getRightClicked().getCustomName() != null
             && e.getRightClicked().getCustomName().equals("hehexdfluff"))
             e.setCancelled(true);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onItemDamage(EntityDamageEvent e) {
         Entity en = e.getEntity();
         if (en instanceof Item) {
@@ -117,7 +117,7 @@ public class Events implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerWarp(PlayerToggleSneakEvent e) {
         if (e.isSneaking()) {
             Player p = e.getPlayer();
@@ -168,7 +168,7 @@ public class Events implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onFMInfoClick(InventoryClickEvent e) {
         if (SlimefunItem.getByItem(e.getCurrentItem()) != null
             && SlimefunItem.getByItem(e.getCurrentItem()) == FluffyItems.FLUFFYMACHINES_INFO.getItem()) {
@@ -193,7 +193,7 @@ public class Events implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onDollyDispense(BlockDispenseEvent e) {
         SlimefunItem sfItem = SlimefunItem.getByItem(e.getItem());
         if (sfItem != null && sfItem.getId().equals(FluffyItems.DOLLY.getItemId())) {
@@ -201,7 +201,7 @@ public class Events implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBarrelBurn(BlockBurnEvent e) {
         if (BlockStorage.check(e.getBlock()) instanceof Barrel) {
             e.setCancelled(true);

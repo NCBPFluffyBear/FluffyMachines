@@ -28,7 +28,7 @@ public final class Utils {
     public static final DecimalFormat powerFormat = new DecimalFormat("###,###.##",
         DecimalFormatSymbols.getInstance(Locale.ROOT));
 
-    private final static TreeMap<Integer, String> map = new TreeMap<Integer, String>();
+    private final static TreeMap<Integer, String> map = new TreeMap<>();
 
     static {
 

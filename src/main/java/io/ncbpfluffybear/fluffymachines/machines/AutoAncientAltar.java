@@ -50,7 +50,7 @@ import java.util.List;
  *
  * @author NCBPFluffyBear
  */
-public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, EnergyNetComponent {
+public class AutoAncientAltar extends SlimefunItem implements EnergyNetComponent {
 
     public static final int ENERGY_CONSUMPTION = 128;
     public static final int CAPACITY = ENERGY_CONSUMPTION * 3;
@@ -234,12 +234,10 @@ public class AutoAncientAltar extends SlimefunItem implements InventoryBlock, En
         return CAPACITY;
     }
 
-    @Override
     public int[] getInputSlots() {
         return new int[] {19, 20, 21, 28, 29, 30, 37, 38, 39};
     }
 
-    @Override
     public int[] getOutputSlots() {
         return new int[] {33, 34};
     }

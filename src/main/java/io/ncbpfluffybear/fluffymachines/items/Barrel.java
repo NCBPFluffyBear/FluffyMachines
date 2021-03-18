@@ -2,11 +2,10 @@ package io.ncbpfluffybear.fluffymachines.items;
 
 import dev.j3fftw.extrautils.objects.NonHopperableBlock;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
-import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
+import io.github.thebusybiscuit.slimefun4.core.attributes.HologramOwner;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
-import io.ncbpfluffybear.fluffymachines.objects.FluffyHologram;
 import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
@@ -14,7 +13,6 @@ import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
-import me.mrCookieSlime.Slimefun.Objects.handlers.ItemHandler;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
@@ -35,6 +33,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -45,7 +44,7 @@ import java.util.List;
  * @author NCBPFluffyBear
  */
 
-public class Barrel extends NonHopperableBlock implements Listener {
+public class Barrel extends NonHopperableBlock implements HologramOwner {
 
     private final int[] inputBorder = {9, 10, 11, 12, 18, 21, 27, 28, 29, 30};
     private final int[] outputBorder = {14, 15, 16, 17, 23, 26, 32, 33, 34, 35};
@@ -99,7 +98,7 @@ public class Barrel extends NonHopperableBlock implements Listener {
                     BlockStorage.addBlockInfo(b, "stored", "0");
 
                     if (showHologram.getValue()) {
-                        FluffyHologram.update(b, "&cEmpty");
+                        updateHologram(b, "&cEmpty");
                     }
 
                     // We still need the click handlers though
@@ -108,7 +107,7 @@ public class Barrel extends NonHopperableBlock implements Listener {
                     menu.addMenuClickHandler(DISPLAY_SLOT, ChestMenuUtils.getEmptyClickHandler());
 
                     if (!showHologram.getValue()) {
-                        FluffyHologram.remove(b);
+                        removeHologram(b);
                     }
                 }
             }
@@ -163,7 +162,7 @@ public class Barrel extends NonHopperableBlock implements Listener {
                         || sfItem == FluffyItems.UPGRADED_EXPLOSIVE_SHOVEL.getItem()
                 )) {
                     Utils.send(p, "&cYou can not break barrels using explosive tools!");
-                    FluffyHologram.remove(b);
+                    removeHologram(b);
                     return true;
                 }
 
@@ -223,11 +222,11 @@ public class Barrel extends NonHopperableBlock implements Listener {
                         // In case they use an explosive pick
                         BlockStorage.addBlockInfo(b, "stored", "0");
                         updateMenu(b, inv);
-                        FluffyHologram.remove(b);
+                        removeHologram(b);
                         return true;
                     }
                 } else {
-                    FluffyHologram.remove(b);
+                    removeHologram(b);
                     return true;
                 }
 
@@ -483,13 +482,13 @@ public class Barrel extends NonHopperableBlock implements Listener {
             Material.LIME_STAINED_GLASS_PANE, "&6Items Stored: &e" + stored + " / " + MAX_STORAGE,
             "&b" + storedStacks + " Stacks &8| &7" + storedPercent + "&7%"));
         if (showHologram.getValue() && (hasHolo == null || hasHolo.equals("true"))) {
-            FluffyHologram.update(b, itemName + " &9x" + stored + " &7(" + storedPercent + "&7%)");
+            updateHologram(b, itemName + " &9x" + stored + " &7(" + storedPercent + "&7%)");
         }
 
         if (stored == 0) {
             inv.replaceExistingItem(DISPLAY_SLOT, new CustomItem(Material.BARRIER, "&cEmpty"));
             if (showHologram.getValue() && (hasHolo == null || hasHolo.equals("true"))) {
-                FluffyHologram.update(b, "&cEmpty");
+                updateHologram(b, "&cEmpty");
             }
         }
     }
@@ -503,7 +502,7 @@ public class Barrel extends NonHopperableBlock implements Listener {
         String toggle = BlockStorage.getLocationInfo(b.getLocation(), "holo");
         if (toggle == null || toggle.equals("true")) {
             BlockStorage.addBlockInfo(b.getLocation(), "holo", "false");
-            FluffyHologram.remove(b);
+            removeHologram(b);
         } else {
             BlockStorage.addBlockInfo(b.getLocation(), "holo", "true");
             updateMenu(b, BlockStorage.getInventory(b));
@@ -519,5 +518,11 @@ public class Barrel extends NonHopperableBlock implements Listener {
         } else {
             return formattedString;
         }
+    }
+
+    @Nonnull
+    @Override
+    public Vector getHologramOffset(@Nonnull Block b) {
+        return new Vector(0.5, 0.9, 0.5);
     }
 }

@@ -6,7 +6,6 @@ import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.Slimefun;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -76,8 +75,8 @@ public class FireproofRune extends SimpleSlimefunItem<ItemDropHandler> {
         }
 
         Location l = rune.getLocation();
-        Collection<Entity> entites = l.getWorld().getNearbyEntities(l, RANGE, RANGE, RANGE, this::findCompatibleItem);
-        Optional<Entity> optional = entites.stream().findFirst();
+        Collection<Entity> entities = l.getWorld().getNearbyEntities(l, RANGE, RANGE, RANGE, this::findCompatibleItem);
+        Optional<Entity> optional = entities.stream().findFirst();
 
         if (optional.isPresent()) {
             Item item = (Item) optional.get();

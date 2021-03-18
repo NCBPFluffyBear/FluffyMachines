@@ -101,8 +101,10 @@ public class FluffyWrench extends SimpleSlimefunItem<ItemUseHandler> implements 
             NCPExemptionManager.exemptPermanently(p);
         }
         Bukkit.getPluginManager().callEvent(breakEvent);
-        BlockStorage.clearBlockInfo(block);
-        block.setType(Material.AIR);
+        if (!breakEvent.isCancelled()) {
+            BlockStorage.clearBlockInfo(block);
+            block.setType(Material.AIR);
+        }
         if (Constants.isNCPInstalled) {
             NCPExemptionManager.unexempt(p);
         }

@@ -21,7 +21,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class BackpackUnloader extends SlimefunItem implements InventoryBlock, EnergyNetComponent {

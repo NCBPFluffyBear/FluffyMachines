@@ -173,10 +173,8 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
 
         if (lore.length > 0) {
             List<String> lines = new ArrayList<>();
-            int loreLength = lore.length;
 
-            for (int i = 0; i < loreLength; ++i) {
-                String line = lore[i];
+            for (String line : lore) {
                 lines.add(ChatColor.translateAlternateColorCodes('&', line));
             }
             slotMeta.setLore(lines);
