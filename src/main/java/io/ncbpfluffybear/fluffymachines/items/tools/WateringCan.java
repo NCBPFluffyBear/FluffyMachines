@@ -60,7 +60,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
         addItemSetting(cropSuccessChance);
         addItemSetting(treeSuccessChance);
 
-        maxUsesInt = maxUses.getDefaultValue();
+        maxUsesInt = maxUses.getValue();
 
     }
 
