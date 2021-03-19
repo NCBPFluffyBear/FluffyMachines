@@ -14,6 +14,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunIte
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
+import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
@@ -25,15 +26,19 @@ import org.bukkit.Tag;
 import org.bukkit.TreeType;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
+import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.RayTraceResult;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -44,6 +49,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
         0.3);
     public final ItemSetting<Double> cropSuccessChance = new ItemSetting<>(this, "crop-success-chance", 0.3);
     public final ItemSetting<Double> treeSuccessChance = new ItemSetting<>(this, "tree-success-chance", 0.3);
+    public final ItemSetting<Double> exoticGardenSuccessChance = new ItemSetting<>(this, "exotic-garden-success-chance", 0.3);
 
     private static final int USE_INDEX = 7;
     private static final int MAX_SUGAR_GROW_HEIGHT = 5;
@@ -56,6 +62,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
         addItemSetting(sugarCaneSuccessChance);
         addItemSetting(cropSuccessChance);
         addItemSetting(treeSuccessChance);
+        addItemSetting(exoticGardenSuccessChance);
     }
 
     @Nonnull
@@ -151,19 +158,28 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
                         // Trees
                     } else if (Tag.SAPLINGS.isTagged(b.getType())) {
 
+                        if (!updateUses(this, p, item, 1)) {
+                            return;
+                        }
+
+                        blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
+                        double random = ThreadLocalRandom.current().nextDouble();
+                        Material saplingMaterial = b.getType();
+
                         if (BlockStorage.hasBlockInfo(b)) {
-                            //Utils.send(p, "&cSorry, this is a Slimefun plant!");
+                            if (random <= exoticGardenSuccessChance.getValue()) {
+                                Bukkit.getPluginManager().callEvent(new StructureGrowEvent(
+                                    b.getLocation(), getTreeFromSapling(saplingMaterial), false, p, Collections.singletonList(b.getState())
+                                ));
+                                blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
+
+                            }
 
                         } else {
 
-                            if (!updateUses(this, p, item, 1))
-                                return;
-                            blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
-                            double random = ThreadLocalRandom.current().nextDouble();
                             if (Constants.SERVER_VERSION < 1163) {
                                 if (random <= treeSuccessChance.getValue()) {
 
-                                    Material saplingMaterial = b.getType();
                                     b.setType(Material.AIR);
                                     if (!blockLocation.getWorld().generateTree(blockLocation,
                                         getTreeFromSapling(saplingMaterial))) {
