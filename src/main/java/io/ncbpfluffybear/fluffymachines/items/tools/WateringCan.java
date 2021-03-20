@@ -1,6 +1,7 @@
 package io.ncbpfluffybear.fluffymachines.items.tools;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
@@ -13,6 +14,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunIte
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
+import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
@@ -24,15 +26,19 @@ import org.bukkit.Tag;
 import org.bukkit.TreeType;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
+import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.RayTraceResult;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -43,14 +49,11 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
         0.3);
     public final ItemSetting<Double> cropSuccessChance = new ItemSetting<>(this, "crop-success-chance", 0.3);
     public final ItemSetting<Double> treeSuccessChance = new ItemSetting<>(this, "tree-success-chance", 0.3);
+    public final ItemSetting<Double> exoticGardenSuccessChance = new ItemSetting<>(this, "exotic-garden-success-chance", 0.3);
 
     private static final int USE_INDEX = 7;
     private static final int MAX_SUGAR_GROW_HEIGHT = 5;
     private static final NamespacedKey usageKey = new NamespacedKey(FluffyMachines.getInstance(), "watering_can_usage");
-    private static int maxUsesInt = 0;
-
-    private static final String fullCan = "907a97c8c14e96b4eb2a0f84401959d76611e7547eeb2b6d3a6a62dd7894c2e";
-    private static final String emptyCan = "495ab8fef8771f187286cb41be89b95b4cc0bb0e48fea73fb8a4a1427859dedc";
 
     public WateringCan(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
@@ -59,9 +62,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
         addItemSetting(sugarCaneSuccessChance);
         addItemSetting(cropSuccessChance);
         addItemSetting(treeSuccessChance);
-
-        maxUsesInt = maxUses.getDefaultValue();
-
+        addItemSetting(exoticGardenSuccessChance);
     }
 
     @Nonnull
@@ -95,7 +96,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
 
                     // Fill if it hits water
                     if (b.getType() == Material.WATER) {
-                        updateUses(p, item, 2);
+                        updateUses(this, p, item, 2);
 
                         // Sugar Cane
                     } else if (b.getType() == Material.SUGAR_CANE) {
@@ -117,7 +118,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
 
                         if (above.getType() == Material.AIR) {
 
-                            if (!updateUses(p, item, 1))
+                            if (!updateUses(this, p, item, 1))
                                 return;
                             blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
                             double random = ThreadLocalRandom.current().nextDouble();
@@ -138,7 +139,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
                         int maxAge = crop.getMaximumAge();
 
                         if (currentAge < maxAge) {
-                            if (updateUses(p, item, 1)) {
+                            if (updateUses(this, p, item, 1)) {
                                 blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
                                 double random = ThreadLocalRandom.current().nextDouble();
                                 if (random <= cropSuccessChance.getValue()) {
@@ -157,19 +158,28 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
                         // Trees
                     } else if (Tag.SAPLINGS.isTagged(b.getType())) {
 
+                        if (!updateUses(this, p, item, 1)) {
+                            return;
+                        }
+
+                        blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
+                        double random = ThreadLocalRandom.current().nextDouble();
+                        Material saplingMaterial = b.getType();
+
                         if (BlockStorage.hasBlockInfo(b)) {
-                            //Utils.send(p, "&cSorry, this is a Slimefun plant!");
+                            if (random <= exoticGardenSuccessChance.getValue()) {
+                                Bukkit.getPluginManager().callEvent(new StructureGrowEvent(
+                                    b.getLocation(), getTreeFromSapling(saplingMaterial), false, p, Collections.singletonList(b.getState())
+                                ));
+                                blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
+
+                            }
 
                         } else {
 
-                            if (!updateUses(p, item, 1))
-                                return;
-                            blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
-                            double random = ThreadLocalRandom.current().nextDouble();
                             if (Constants.SERVER_VERSION < 1163) {
                                 if (random <= treeSuccessChance.getValue()) {
 
-                                    Material saplingMaterial = b.getType();
                                     b.setType(Material.AIR);
                                     if (!blockLocation.getWorld().generateTree(blockLocation,
                                         getTreeFromSapling(saplingMaterial))) {
@@ -187,7 +197,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
         };
     }
 
-    public static boolean updateUses(Player p, ItemStack item, int updateType) {
+    public static boolean updateUses(WateringCan can, Player p, ItemStack item, int updateType) {
 
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
@@ -205,7 +215,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
         } else if (updateType == 2) {
             p.playSound(p.getLocation(), Sound.ENTITY_DROWNED_DEATH_WATER, 0.5F, 1F);
             Utils.send(p, "&a你已經裝滿你的灑水壺");
-            usesLeft = maxUsesInt;
+            usesLeft = can.getUses().getValue();
 
         } else if (updateType == 3) {
             if (usesLeft == 0) {
@@ -246,4 +256,9 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
         }
         return treeType;
     }
+
+    public ItemSetting<Integer> getUses() {
+        return this.maxUses;
+    }
+
 }
