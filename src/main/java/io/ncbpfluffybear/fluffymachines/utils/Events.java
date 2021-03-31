@@ -30,6 +30,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -39,6 +40,17 @@ public class Events implements Listener {
 
     final HelicopterHat helicopterHat = (HelicopterHat) FluffyItems.HELICOPTER_HAT.getItem();
     final WateringCan wateringCan = (WateringCan) FluffyItems.WATERING_CAN.getItem();
+
+    @EventHandler
+    public void onAdminJoin(PlayerJoinEvent e) {
+        if (e.getPlayer().isOp()) {
+            Utils.send(e.getPlayer(), "&cYou are running a version of Slimefun before DEV 844, RC version of Slimefun " +
+                "or running a custom build. FluffyMachines requires you to update your Slimefun version so that " +
+                "barrels remain functional. Update before 4/15/2021, or players may encounter issues with " +
+                "FluffyMachines that I am not accountable for. Add ignore-outdated-warning: false to the " +
+                "FluffyMachines config to stop receiving this warning.");
+        }
+    }
 
     @EventHandler(ignoreCancelled = true)
     public void onHelicopterHatUse(PlayerToggleSneakEvent e) {
