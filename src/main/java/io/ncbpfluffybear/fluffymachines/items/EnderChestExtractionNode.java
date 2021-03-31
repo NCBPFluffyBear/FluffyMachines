@@ -3,6 +3,7 @@ package io.ncbpfluffybear.fluffymachines.items;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
+import io.ncbpfluffybear.fluffymachines.objects.EnderChestNode;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
@@ -11,6 +12,9 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
+import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
+import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Tag;
@@ -35,15 +39,10 @@ import java.util.UUID;
  *
  * @author NCBPFluffyBear
  */
-public class EnderChestExtractionNode extends SlimefunItem {
-
-    private static final Material material = Material.ENDER_CHEST;
+public class EnderChestExtractionNode extends EnderChestNode {
 
     public EnderChestExtractionNode(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
-        super(category, item, recipeType, recipe);
-
-        addItemHandler(onPlace());
-        addItemHandler(onInteract());
+        super(category, item, recipeType, recipe, Type.EXTRACTION);
     }
 
     @Override
@@ -61,23 +60,10 @@ public class EnderChestExtractionNode extends SlimefunItem {
 
     private void tick(@Nonnull Block b) {
         ItemStack transferItemStack;
-        BlockFace face;
 
-        if (b.getRelative(BlockFace.NORTH).getType() == material) {
-            face = BlockFace.SOUTH;
-
-        } else if (b.getRelative(BlockFace.SOUTH).getType() == material) {
-            face = BlockFace.NORTH;
-
-
-        } else if (b.getRelative(BlockFace.EAST).getType() == material) {
-            face = BlockFace.WEST;
-
-
-        } else if (b.getRelative(BlockFace.WEST).getType() == material) {
-            face = BlockFace.EAST;
-
-        } else {
+        // Make sure this node is still attached to an Ender Chest
+        BlockFace face = checkEChest(b);
+        if (face == null) {
             return;
         }
 
@@ -130,32 +116,5 @@ public class EnderChestExtractionNode extends SlimefunItem {
                 }
             }
         }
-    }
-
-    private BlockPlaceHandler onPlace() {
-        return new BlockPlaceHandler(false) {
-            @Override
-            public void onPlayerPlace(@Nonnull BlockPlaceEvent e) {
-                Player p = e.getPlayer();
-                Block b = e.getBlock();
-
-                if (!e.isCancelled()) {
-                    BlockStorage.addBlockInfo(b, "owner", p.getUniqueId().toString());
-                    BlockStorage.addBlockInfo(b, "playername", p.getDisplayName());
-                    Utils.send(p, "&aEnder Chest Extraction Node registered to " + p.getDisplayName()
-                        + " &7(UUID: " + p.getUniqueId().toString() + ")");
-                }
-            }
-        };
-    }
-
-    private BlockUseHandler onInteract() {
-        return e -> {
-            Player p = e.getPlayer();
-            Block b = e.getClickedBlock().get();
-            Utils.send(p, "&eThis Ender Chest Extraction Node belongs to " +
-                BlockStorage.getLocationInfo(b.getLocation(), "playername")
-                + " &7(UUID: " + BlockStorage.getLocationInfo(b.getLocation(), "owner") + ")");
-        };
     }
 }
