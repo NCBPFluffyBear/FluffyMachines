@@ -1,6 +1,7 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import org.bukkit.Bukkit;
@@ -9,12 +10,17 @@ import org.bukkit.NamespacedKey;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public final class Constants {
 
-
     public static final int SERVER_VERSION = Integer.parseInt(Bukkit.getVersion().replaceFirst(".*MC: ", "").replace(
         ")", "").replace(".", ""));
+
+    public static final String SLIMEFUN_VERSION = SlimefunPlugin.getVersion();
+    public static boolean SLIMEFUN_UPDATED = false;
+
+    public static final Pattern VERSION_PATTERN = Pattern.compile("(DEV - )([0-9]+)");
 
     public static final NamespacedKey GLOW_ENCHANT = new NamespacedKey(FluffyMachines.getInstance(),
         "fm_glow_enchant");

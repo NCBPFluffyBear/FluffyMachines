@@ -38,6 +38,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
 
 public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
@@ -71,6 +72,7 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
         registerGlow();
 
+        // Register ACT Recipes
         Iterator<Recipe> recipeIterator = Bukkit.recipeIterator();
         while (recipeIterator.hasNext()) {
             Recipe r = recipeIterator.next();
@@ -108,9 +110,33 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
             }
         }
 
+        // Register McMMO Events
         if (getServer().getPluginManager().isPluginEnabled("McMMO")) {
             Bukkit.getLogger().log(Level.INFO, "McMMO found!");
             getServer().getPluginManager().registerEvents(new McMMOEvents(), this);
+        }
+
+        // Get Slimefun Numerical Version
+        try {
+            Matcher matcher = Constants.VERSION_PATTERN.matcher(Constants.SLIMEFUN_VERSION);
+            if (matcher.find()) {
+                int parsedVersion = Integer.parseInt(matcher.group(2));
+                if (parsedVersion < 844) {
+                    getLogger().log(Level.INFO, ChatColor.YELLOW + "You are running a Slimefun version before DEV 844. " +
+                        "FluffyMachines requires you to update your Slimefun version so that barrels remain functional. " +
+                        "Update before 4/15/2021, or players may encounter issues with FluffyMachines that " +
+                        "I am not accountable for.");
+                } else {
+                    Constants.SLIMEFUN_UPDATED = true;
+                }
+            } else {
+                getLogger().log(Level.INFO, ChatColor.YELLOW + "You are running a RC version of Slimefun " +
+                    "or running a custom build. FluffyMachines requires you to update your Slimefun version so that " +
+                    "barrels remain functional. Update before 4/15/2021, or players may encounter issues with " +
+                    "FluffyMachines that I am not accountable for");
+            }
+        } catch (NumberFormatException e) {
+            return;
         }
 
         // Registering Items
@@ -150,6 +176,9 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
                     p.getInventory().setItemInMainHand(FluffyItems.WATERING_CAN.clone());
                 }
             }
+            return true;
+        } else if (args[0].equalsIgnoreCase("debug") && sender.hasPermission("fluffymachines.admin")) {
+
             return true;
         } else if (args[0].equalsIgnoreCase("save") && sender.hasPermission("fluffymachines.admin")) {
             saveAllPlayers();
