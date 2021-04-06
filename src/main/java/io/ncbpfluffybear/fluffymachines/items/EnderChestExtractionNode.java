@@ -2,7 +2,9 @@ package io.ncbpfluffybear.fluffymachines.items;
 
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
+import io.github.thebusybiscuit.slimefun4.implementation.items.magical.talismans.Talisman;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
+import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import io.ncbpfluffybear.fluffymachines.objects.EnderChestNode;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
@@ -12,11 +14,7 @@ import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
-import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -25,7 +23,6 @@ import org.bukkit.block.Container;
 import org.bukkit.block.EnderChest;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -59,7 +56,6 @@ public class EnderChestExtractionNode extends EnderChestNode {
     }
 
     private void tick(@Nonnull Block b) {
-        ItemStack transferItemStack;
 
         // Make sure this node is still attached to an Ender Chest
         BlockFace face = checkEChest(b);
@@ -69,52 +65,73 @@ public class EnderChestExtractionNode extends EnderChestNode {
 
         BlockState state = PaperLib.getBlockState(b.getRelative(face), false).getState();
 
-        if (state instanceof InventoryHolder) {
-            Player p = Bukkit.getOfflinePlayer(UUID.fromString(BlockStorage.getLocationInfo(b.getLocation(), "owner"))).getPlayer();
+        if (!(state instanceof InventoryHolder)) {
+            return;
+        }
 
-            // Ender chest null check necessary because Bukkit yes.
-            if (p != null) {
+        Player p = Bukkit.getOfflinePlayer(UUID.fromString(BlockStorage.getLocationInfo(b.getLocation(), "owner"))).getPlayer();
+        String filterType = BlockStorage.getLocationInfo(b.getLocation(), "filter-type");
+        String filterTalismans = BlockStorage.getLocationInfo(b.getLocation(), "filter-talismans");
+        ItemStack transferItemStack = null;
 
-                boolean enderValid = false;
-                boolean containerValid = false;
-                int enderIndex = -1;
-                int containerIndex = -1;
+        // Ender chest null check necessary because Bukkit yes.
+        if (p != null) {
 
-                Inventory enderInv = p.getEnderChest();
+            Inventory enderInv = p.getEnderChest();
+            int enderIndex = -1;
+            boolean isAcceptable = false;
 
-                for (int i = 0; i < enderInv.getSize(); i++) {
+            for (int i = 0; i < enderInv.getSize(); i++) {
 
-                    ItemStack enderItem = enderInv.getItem(i);
+                transferItemStack = enderInv.getItem(i);
 
-                    if (enderItem != null && state instanceof ShulkerBox && !Tag.SHULKER_BOXES.isTagged(enderItem.getType())) {
-                        continue;
+                if (transferItemStack == null) {
+                    continue;
+                }
+
+                if (state instanceof ShulkerBox && Tag.SHULKER_BOXES.isTagged(transferItemStack.getType())) {
+                    continue;
+                }
+
+                /*
+                if (filterType.equals("blacklist")) {
+                    boolean isBlacklisted = false;
+                    for (ItemStack item : getFilterContents(b)) {
+                        if (SlimefunUtils.isItemSimilar(item, transferItemStack, true, false)) {
+                            Bukkit.broadcastMessage("Blocked " + transferItemStack.getType());
+                            break;
+                        }
+                        Bukkit.broadcastMessage("Acceptable");
+
+                        isAcceptable = true;
                     }
-
-                    if (enderItem != null) {
-                        enderIndex = i;
-                        enderValid = true;
-                        break;
+                } else { // Whitelist
+                    for (ItemStack item : getFilterContents(b)) {
+                        if (SlimefunUtils.isItemSimilar(item, transferItemStack, true, false)) {
+                            isAcceptable = true;
+                            break;
+                        }
                     }
                 }
 
-                Inventory containerInv = ((InventoryHolder) state).getInventory();
+                 */
 
-                for (int i = 0; i < containerInv.getSize(); i++) {
-
-                    if (containerInv.getItem(i) == null) {
-                        containerIndex = i;
-                        containerValid = true;
-                        break;
-                    }
+                if (filterTalismans.equals("true")
+                    && SlimefunItem.getByItem(transferItemStack) instanceof Talisman) {
+                    continue;
                 }
 
-                if (enderValid && containerValid) {
-                    transferItemStack = enderInv.getItem(enderIndex);
-                    enderInv.setItem(enderIndex, null);
-
-                    containerInv.setItem(containerIndex, transferItemStack);
-                }
+                enderIndex = i;
+                break;
             }
+
+            if (!isAcceptable) {
+                return;
+            }
+
+            Inventory containerInv = ((InventoryHolder) state).getInventory();
+            ItemStack remaining = EnderChestNode.insertIntoVanillaInventory(transferItemStack, containerInv);
+            enderInv.setItem(enderIndex, remaining);
         }
     }
 }
