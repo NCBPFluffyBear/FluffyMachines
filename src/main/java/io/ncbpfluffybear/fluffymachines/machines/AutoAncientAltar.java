@@ -9,6 +9,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.implementation.items.altar.AltarRecipe;
 import io.github.thebusybiscuit.slimefun4.implementation.items.altar.AncientAltar;
+import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.RepairedSpawner;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import io.github.thebusybiscuit.slimefun4.utils.itemstack.ItemStackWrapper;
 import io.ncbpfluffybear.fluffymachines.utils.Constants;
@@ -29,6 +30,7 @@ import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -42,6 +44,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This {@link SlimefunItem} automatically crafts
@@ -346,6 +349,14 @@ public class AutoAncientAltar extends SlimefunItem implements EnergyNetComponent
             }
         } else if (SlimefunUtils.isItemSimilar(catalystItem, SlimefunItems.BROKEN_SPAWNER, false, false)) {
 
+            Optional<ItemStack> result = checkRecipe(SlimefunItems.BROKEN_SPAWNER, pedestalItems);
+            if (result.isPresent()) {
+                RepairedSpawner spawner = (RepairedSpawner) SlimefunItems.REPAIRED_SPAWNER.getItem();
+                ItemStack spawnerResult = spawner.getItemForEntityType(spawner.getEntityType(catalystItem).orElse(EntityType.PIG));
+                craft(block, menu, spawnerResult);
+            }
+
+            /*
             if (pedestalItems.equals(repairedInputs)) {
                 removeCharge(block.getLocation(), ENERGY_CONSUMPTION);
                 for (int slot : getInputSlots()) {
@@ -360,21 +371,39 @@ public class AutoAncientAltar extends SlimefunItem implements EnergyNetComponent
 
                 menu.pushItem(spawnerItem.clone(), getOutputSlots());
             }
+
+             */
         } else {
 
-            // Find matching recipe
-            for (AltarRecipe recipe : altarItem.getRecipes()) {
+            Optional<ItemStack> result = checkRecipe(catalyst, pedestalItems);
+            if (result.isPresent()) {
+                craft(block, menu, result.get());
+            }
 
-                if (SlimefunUtils.isItemSimilar(recipe.getCatalyst(), catalyst, true) && recipe.getInput().equals(pedestalItems)) {
-                    removeCharge(block.getLocation(), ENERGY_CONSUMPTION);
-                    for (int slot : getInputSlots()) {
-                        menu.consumeItem(slot);
-                    }
-                    menu.pushItem(recipe.getOutput().clone(), getOutputSlots());
-                    break;
-                }
+        }
+    }
+
+    private Optional<ItemStack> checkRecipe(ItemStack catalyst, List<ItemStack> pedestalItems) {
+        // Find matching recipe
+        for (AltarRecipe recipe : altarItem.getRecipes()) {
+
+            if (SlimefunUtils.isItemSimilar(recipe.getCatalyst(), catalyst, true) && recipe.getInput().equals(pedestalItems)) {
+                return Optional.of(recipe.getOutput().clone());
             }
         }
+
+        return Optional.empty();
+    }
+
+    private void craft(Block b, BlockMenu menu, ItemStack result) {
+        if (!menu.fits(result, getOutputSlots())) {
+            return;
+        }
+        removeCharge(b.getLocation(), ENERGY_CONSUMPTION);
+        for (int slot : getInputSlots()) {
+            menu.consumeItem(slot);
+        }
+        menu.pushItem(result, getOutputSlots());
     }
 
     static void borders(BlockMenuPreset preset, int[] border, int[] inputBorder, int[] outputBorder) {

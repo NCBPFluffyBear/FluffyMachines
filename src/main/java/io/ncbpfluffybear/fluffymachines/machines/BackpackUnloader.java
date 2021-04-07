@@ -46,7 +46,7 @@ public class BackpackUnloader extends SlimefunItem implements EnergyNetComponent
 
         addItemHandler(onBreak());
 
-        new BlockMenuPreset(getId(), "&eBackpack Loader") {
+        new BlockMenuPreset(getId(), "&eBackpack Unloader") {
 
             @Override
             public void init() {
