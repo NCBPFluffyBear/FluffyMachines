@@ -8,6 +8,7 @@ import io.github.thebusybiscuit.slimefun4.utils.itemstack.ColoredFireworkStar;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import io.ncbpfluffybear.fluffymachines.items.Barrel;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
+import io.ncbpfluffybear.fluffymachines.items.tools.FluffyWrench;
 import io.ncbpfluffybear.fluffymachines.items.tools.PortableCharger;
 import io.ncbpfluffybear.fluffymachines.machines.AdvancedAutoDisenchanter;
 import io.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
@@ -445,13 +446,37 @@ public class FluffyItems {
     );
 
     public static final SlimefunItemStack FLUFFY_WRENCH = new SlimefunItemStack("FLUFFY_WRENCH",
-        Material.GOLDEN_AXE,
+        FluffyWrench.Wrench.DEFAULT.getMaterial(),
         "&6Fluffy Wrench",
         "",
         "&7Used to quickly remove Slimefun cargo nodes",
         "&7and electricity components",
         "",
         "&eLeft&7/&eRight Click &7a compatible block to break it"
+    );
+
+    public static final SlimefunItemStack REINFORCED_FLUFFY_WRENCH =
+        new SlimefunItemStack("REINFORCED_FLUFFY_WRENCH",
+        FluffyWrench.Wrench.REINFORCED.getMaterial(),
+        "&bReinforced Fluffy Wrench",
+        "",
+        "&7Used to quickly remove Slimefun cargo nodes",
+        "&7and electricity components",
+        "",
+        "&eLeft&7/&eRight Click &7a compatible block to break it"
+    );
+
+    public static final SlimefunItemStack CARBONADO_FLUFFY_WRENCH =
+        new SlimefunItemStack("CARBONADO_FLUFFY_WRENCH",
+        FluffyWrench.Wrench.CARBONADO.getMaterial(),
+        "&7Carbonado Fluffy Wrench",
+        "",
+        "&7Used to quickly remove Slimefun cargo nodes",
+        "&7and electricity components",
+        "",
+        "&eLeft&7/&eRight Click &7a compatible block to break it",
+        "",
+        LoreBuilder.powerCharged(0, FluffyWrench.Wrench.CARBONADO.getMaxCharge())
     );
 
     public static final SlimefunItemStack PAXEL = new SlimefunItemStack("PAXEL",
