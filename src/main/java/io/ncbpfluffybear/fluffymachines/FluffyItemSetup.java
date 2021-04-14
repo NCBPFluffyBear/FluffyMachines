@@ -172,7 +172,21 @@ public final class FluffyItemSetup {
             SlimefunItems.COPPER_INGOT, null, SlimefunItems.COPPER_INGOT,
             SlimefunItems.COPPER_INGOT, SlimefunItems.COPPER_INGOT, SlimefunItems.COPPER_INGOT,
             null, SlimefunItems.COPPER_INGOT, null
-        }).register(plugin);
+        }, FluffyWrench.Wrench.DEFAULT).register(plugin);
+
+        new FluffyWrench(FluffyItems.fluffymachines, FluffyItems.REINFORCED_FLUFFY_WRENCH,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.REINFORCED_ALLOY_INGOT, null, SlimefunItems.REINFORCED_ALLOY_INGOT,
+            SlimefunItems.REINFORCED_ALLOY_INGOT, FluffyItems.FLUFFY_WRENCH, SlimefunItems.REINFORCED_ALLOY_INGOT,
+            null, SlimefunItems.SYNTHETIC_DIAMOND, null
+        }, FluffyWrench.Wrench.REINFORCED).register(plugin);
+
+        new FluffyWrench(FluffyItems.fluffymachines, FluffyItems.CARBONADO_FLUFFY_WRENCH,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.CARBONADO, null, SlimefunItems.CARBONADO,
+            SlimefunItems.CARBONADO, FluffyItems.REINFORCED_FLUFFY_WRENCH, SlimefunItems.CARBONADO,
+            null, SlimefunItems.CARBONADO_EDGED_CAPACITOR, null
+        }, FluffyWrench.Wrench.CARBONADO).register(plugin);
 
         new UpgradedLumberAxe(FluffyItems.fluffymachines, FluffyItems.UPGRADED_LUMBER_AXE,
             RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {

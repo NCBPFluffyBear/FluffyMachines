@@ -8,6 +8,7 @@ import io.github.thebusybiscuit.slimefun4.utils.itemstack.ColoredFireworkStar;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import io.ncbpfluffybear.fluffymachines.items.Barrel;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
+import io.ncbpfluffybear.fluffymachines.items.tools.FluffyWrench;
 import io.ncbpfluffybear.fluffymachines.items.tools.PortableCharger;
 import io.ncbpfluffybear.fluffymachines.machines.AdvancedAutoDisenchanter;
 import io.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
@@ -445,13 +446,37 @@ public class FluffyItems {
     );
 
     public static final SlimefunItemStack FLUFFY_WRENCH = new SlimefunItemStack("FLUFFY_WRENCH",
-        Material.GOLDEN_AXE,
+        FluffyWrench.Wrench.DEFAULT.getMaterial(),
         "&6Fluffy扳手",
         "",
-        "&7用於快速移除黏液科技的物流節點",
-        "&7與能源組件",
+        "&7用於快速移除黏液科技",
+        "&7的物流節點與能源組件",
         "",
         "&e左&7/&e右鍵 &7相容方塊來破壞它"
+    );
+
+    public static final SlimefunItemStack REINFORCED_FLUFFY_WRENCH =
+        new SlimefunItemStack("REINFORCED_FLUFFY_WRENCH",
+        FluffyWrench.Wrench.REINFORCED.getMaterial(),
+        "&b強化合金Fluffy扳手",
+        "",
+        "&7用於快速移除黏液科技",
+        "&7的物流節點與能源組件",
+        "",
+        "&e左&7/&e右鍵 &7相容方塊來破壞它"
+    );
+
+    public static final SlimefunItemStack CARBONADO_FLUFFY_WRENCH =
+        new SlimefunItemStack("CARBONADO_FLUFFY_WRENCH",
+        FluffyWrench.Wrench.CARBONADO.getMaterial(),
+        "&7黑鑽石Fluffy扳手",
+        "",
+        "&7用於快速移除黏液科技",
+        "&7的物流節點與能源組件",
+        "",
+        "&e左&7/&e右鍵 &7相容方塊來破壞它",
+        "",
+        LoreBuilder.powerCharged(0, FluffyWrench.Wrench.CARBONADO.getMaxCharge())
     );
 
     public static final SlimefunItemStack PAXEL = new SlimefunItemStack("PAXEL",
