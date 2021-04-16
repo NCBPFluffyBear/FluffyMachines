@@ -1,6 +1,7 @@
 package io.ncbpfluffybear.fluffymachines.multiblocks.components;
 
 import dev.j3fftw.extrautils.objects.NonHopperableBlock;
+import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.ncbpfluffybear.fluffymachines.utils.Constants;
@@ -29,9 +30,11 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -73,7 +76,7 @@ public class SuperheatedFurnace extends NonHopperableBlock {
     public SuperheatedFurnace(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
-        // addItemHandler(onBreak());
+        addItemHandler(onBreak());
 
         new BlockMenuPreset(getId(), "&c鑄造廠") {
 
@@ -132,99 +135,8 @@ public class SuperheatedFurnace extends NonHopperableBlock {
             }
         };
 
-        registerBlockHandler(getId(), (p, b, stack, reason) -> {
-            BlockMenu inv = BlockStorage.getInventory(b);
-
-            if (inv != null) {
-
-                int itemCount = 0;
-
-                SlimefunItem sfItem = SlimefunItem.getByItem(p.getInventory().getItemInMainHand());
-                if (sfItem != null && (
-                    sfItem == SlimefunItems.EXPLOSIVE_PICKAXE.getItem()
-                        || sfItem == SlimefunItems.EXPLOSIVE_SHOVEL.getItem()
-                        || sfItem == FluffyItems.UPGRADED_EXPLOSIVE_PICKAXE.getItem()
-                        || sfItem == FluffyItems.UPGRADED_EXPLOSIVE_SHOVEL.getItem()
-                )) {
-                    Utils.send(p, "&c你不能使用爆炸工具破壞超級炙熱熔爐!");
-                    return true;
-                }
-
-                int stored = Integer.parseInt(getBlockInfo(b.getLocation(), "stored"));
-                String type = getBlockInfo(b.getLocation(), "type");
-
-                for (Entity e : p.getNearbyEntities(5, 5, 5)) {
-                    if (e instanceof Item) {
-                        itemCount++;
-                    }
-                }
-
-                if (itemCount > 5) {
-                    Utils.send(p, "&c請先移除附近物品, 再破壞超級炙熱熔爐!");
-                    return false;
-                }
-
-                inv.dropItems(b.getLocation(), INPUT_SLOT);
-                inv.dropItems(b.getLocation(), DUST_OUTPUT_SLOT);
-                inv.dropItems(b.getLocation(), INGOT_OUTPUT_SLOT);
-
-                if (stored > 0) {
-                    int stackSize = Constants.MAX_STACK_SIZE;
-                    ItemStack dust = SlimefunItem.getByID(type + "_DUST").getItem();
-
-                    if (stored > OVERFLOW_AMOUNT) {
-
-                        Utils.send(p, "&e此超級炙熱熔爐內有超過 " + OVERFLOW_AMOUNT + " 個物品! " +
-                            "掉落 " + OVERFLOW_AMOUNT + " 個替代物品!");
-                        int toRemove = OVERFLOW_AMOUNT;
-                        while (toRemove >= stackSize) {
-
-                            b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(dust, stackSize));
-
-                            toRemove = toRemove - stackSize;
-                        }
-
-                        if (toRemove > 0) {
-                            b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(dust, toRemove));
-                        }
-
-                        BlockStorage.addBlockInfo(b, "stored", String.valueOf(stored - OVERFLOW_AMOUNT));
-
-                        return false;
-                    } else {
-
-                        // Everything greater than 1 stack
-                        while (stored >= stackSize) {
-
-                            b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(dust, stackSize));
-
-                            stored = stored - stackSize;
-                        }
-
-                        // Drop remaining, if there is any
-                        if (stored > 0) {
-                            b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(dust, stored));
-                        }
-
-                        if (BlockStorage.getLocationInfo(b.getLocation(), "stand") != null) {
-                            Bukkit.getEntity(UUID.fromString(BlockStorage.getLocationInfo(b.getLocation(), "stand"))).remove();
-                        }
-
-                        // In case they use an explosive pick
-                        BlockStorage.addBlockInfo(b, "stored", "0");
-                        return true;
-                    }
-                }
-                if (BlockStorage.getLocationInfo(b.getLocation(), "stand") != null) {
-                    Bukkit.getEntity(UUID.fromString(BlockStorage.getLocationInfo(b.getLocation(), "stand"))).remove();
-                }
-            }
-            return true;
-        });
-
     }
 
-    /*
     private BlockBreakHandler onBreak() {
         return new BlockBreakHandler(false, false) {
             @Override
@@ -279,6 +191,7 @@ public class SuperheatedFurnace extends NonHopperableBlock {
                             BlockStorage.addBlockInfo(b, "stored", String.valueOf(stored - OVERFLOW_AMOUNT));
 
                             e.setCancelled(true);
+                            updateIndicator(b);
                             return;
                         } else {
 
@@ -301,6 +214,7 @@ public class SuperheatedFurnace extends NonHopperableBlock {
 
                             // In case they use an explosive pick
                             BlockStorage.addBlockInfo(b, "stored", "0");
+                            updateIndicator(b);
                             return;
                         }
                     }
@@ -311,7 +225,6 @@ public class SuperheatedFurnace extends NonHopperableBlock {
             }
         };
     }
-    */
 
     protected void constructMenu(BlockMenuPreset preset) {
         for (int i : dustOutputBorder) {

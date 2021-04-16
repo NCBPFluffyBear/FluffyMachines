@@ -3,16 +3,16 @@ package io.ncbpfluffybear.fluffymachines.items;
 import dev.j3fftw.extrautils.objects.NonHopperableBlock;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
 import io.github.thebusybiscuit.slimefun4.core.attributes.HologramOwner;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
-import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Lists.RecipeType;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
+import me.mrCookieSlime.Slimefun.Objects.handlers.ItemHandler;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
@@ -29,10 +29,12 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
  * A Remake of Barrels by John000708
@@ -141,101 +143,10 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
             }
         };
 
-        registerBlockHandler(getId(), (p, b, stack, reason) -> {
-            BlockMenu inv = BlockStorage.getInventory(b);
-            String storedString = BlockStorage.getLocationInfo(b.getLocation(), "stored");
-            int stored = Integer.parseInt(storedString);
-
-            if (inv != null) {
-
-                int itemCount = 0;
-
-                SlimefunItem sfItem = SlimefunItem.getByItem(p.getInventory().getItemInMainHand());
-                if (sfItem != null && (
-                    sfItem == SlimefunItems.EXPLOSIVE_PICKAXE.getItem()
-                        || sfItem == SlimefunItems.EXPLOSIVE_SHOVEL.getItem()
-                        || sfItem == FluffyItems.UPGRADED_EXPLOSIVE_PICKAXE.getItem()
-                        || sfItem == FluffyItems.UPGRADED_EXPLOSIVE_SHOVEL.getItem()
-                )) {
-                    Utils.send(p, "&c你不能使用爆炸工具破壞木桶!");
-                    removeHologram(b);
-                    return true;
-                }
-
-                for (Entity e : p.getNearbyEntities(5, 5, 5)) {
-                    if (e instanceof Item) {
-                        itemCount++;
-                    }
-                }
-
-                if (itemCount > 5) {
-                    Utils.send(p, "&c請在破壞木桶之前移走附近的物品!");
-                    return false;
-                }
-
-                inv.dropItems(b.getLocation(), INPUT_SLOTS);
-                inv.dropItems(b.getLocation(), OUTPUT_SLOTS);
-
-                if (stored > 0) {
-                    int stackSize = inv.getItemInSlot(DISPLAY_SLOT).getMaxStackSize();
-                    ItemStack unKeyed = Utils.unKeyItem(inv.getItemInSlot(DISPLAY_SLOT));
-
-                    if (stored > OVERFLOW_AMOUNT) {
-
-                        Utils.send(p, "&e此木桶內有超過 " + OVERFLOW_AMOUNT + " 個物品! " +
-                            "掉落 " + OVERFLOW_AMOUNT + " 個替代物品!");
-                        int toRemove = OVERFLOW_AMOUNT;
-                        while (toRemove >= stackSize) {
-
-                            b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(unKeyed, stackSize));
-
-                            toRemove = toRemove - stackSize;
-                        }
-
-                        if (toRemove > 0) {
-                            b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(unKeyed, toRemove));
-                        }
-
-                        BlockStorage.addBlockInfo(b, "stored", String.valueOf(stored - OVERFLOW_AMOUNT));
-                        updateMenu(b, inv);
-
-                        return false;
-                    } else {
-
-                        // Everything greater than 1 stack
-                        while (stored >= stackSize) {
-
-                            b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(unKeyed, stackSize));
-
-                            stored = stored - stackSize;
-                        }
-
-                        // Drop remaining, if there is any
-                        if (stored > 0) {
-                            b.getWorld().dropItemNaturally(b.getLocation(), new CustomItem(unKeyed, stored));
-                        }
-
-                        // In case they use an explosive pick
-                        BlockStorage.addBlockInfo(b, "stored", "0");
-                        updateMenu(b, inv);
-                        removeHologram(b);
-                        return true;
-                    }
-                } else {
-                    removeHologram(b);
-                    return true;
-                }
-
-            }
-            return true;
-        });
-
+        addItemHandler(onBreak());
         addItemSetting(showHologram);
-        // addItemHandler(onBreak());
 
     }
-
-    /*
 
     private ItemHandler onBreak() {
         return new BlockBreakHandler(false, false) {
@@ -308,17 +219,16 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
                             // In case they use an explosive pick
                             BlockStorage.addBlockInfo(b, "stored", "0");
                             updateMenu(b, inv);
-                            FluffyHologram.remove(b);
+                            removeHologram(b);
                         }
                     } else {
-                        FluffyHologram.remove(b);
+                        removeHologram(b);
                     }
 
                 }
             }
         };
     }
-    */
 
     protected void constructMenu(BlockMenuPreset preset) {
         for (int i : outputBorder) {
