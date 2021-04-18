@@ -219,7 +219,10 @@ public class SuperheatedFurnace extends NonHopperableBlock {
                         }
                     }
                     if (BlockStorage.getLocationInfo(b.getLocation(), "stand") != null) {
-                        Bukkit.getEntity(UUID.fromString(BlockStorage.getLocationInfo(b.getLocation(), "stand"))).remove();
+                        Entity en = Bukkit.getEntity(UUID.fromString(BlockStorage.getLocationInfo(b.getLocation(), "stand")));
+                        if (en != null) {
+                            en.remove();
+                        }
                     }
                 }
             }
