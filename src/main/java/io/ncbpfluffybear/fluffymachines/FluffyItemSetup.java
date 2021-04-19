@@ -6,6 +6,7 @@ import io.ncbpfluffybear.fluffymachines.items.EnderChestExtractionNode;
 import io.ncbpfluffybear.fluffymachines.items.EnderChestInsertionNode;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
+import io.ncbpfluffybear.fluffymachines.items.tools.ACBUpgradeCard;
 import io.ncbpfluffybear.fluffymachines.items.tools.Dolly;
 import io.ncbpfluffybear.fluffymachines.items.tools.FluffyWrench;
 import io.ncbpfluffybear.fluffymachines.items.tools.Paxel;
@@ -17,6 +18,7 @@ import io.ncbpfluffybear.fluffymachines.items.tools.UpgradedLumberAxe;
 import io.ncbpfluffybear.fluffymachines.items.tools.WarpPadConfigurator;
 import io.ncbpfluffybear.fluffymachines.items.tools.WateringCan;
 import io.ncbpfluffybear.fluffymachines.machines.AdvancedAutoDisenchanter;
+import io.ncbpfluffybear.fluffymachines.machines.AdvancedChargingBench;
 import io.ncbpfluffybear.fluffymachines.machines.AlternateElevatorPlate;
 import io.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
 import io.ncbpfluffybear.fluffymachines.machines.AutoArmorForge;
@@ -380,7 +382,19 @@ public final class FluffyItemSetup {
             new SlimefunItemStack(FluffyItems.ALTERNATE_ELEVATOR_PLATE, 2)
         ).register(plugin);
 
-        // Items
+        new AdvancedChargingBench(FluffyItems.fluffymachines, FluffyItems.ADVANCED_CHARGING_BENCH,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.CORINTHIAN_BRONZE_INGOT, advancedCircuitBoard, SlimefunItems.CORINTHIAN_BRONZE_INGOT,
+            advancedCircuitBoard, SlimefunItems.CHARGING_BENCH, advancedCircuitBoard,
+            SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.SMALL_CAPACITOR, SlimefunItems.ELECTRIC_MOTOR
+        }).register(plugin);
+
+        new ACBUpgradeCard(FluffyItems.fluffymachines, FluffyItems.ACB_UPGRADE_CARD,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.CORINTHIAN_BRONZE_INGOT, advancedCircuitBoard, SlimefunItems.CORINTHIAN_BRONZE_INGOT,
+            advancedCircuitBoard, SlimefunItems.ELECTRIC_MOTOR, advancedCircuitBoard,
+            SlimefunItems.GOLD_24K, SlimefunItems.SMALL_CAPACITOR, SlimefunItems.GOLD_24K
+        }).register(plugin);
     }
 
 }

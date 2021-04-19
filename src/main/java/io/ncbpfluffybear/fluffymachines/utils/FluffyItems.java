@@ -11,6 +11,7 @@ import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.tools.FluffyWrench;
 import io.ncbpfluffybear.fluffymachines.items.tools.PortableCharger;
 import io.ncbpfluffybear.fluffymachines.machines.AdvancedAutoDisenchanter;
+import io.ncbpfluffybear.fluffymachines.machines.AdvancedChargingBench;
 import io.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
 import io.ncbpfluffybear.fluffymachines.objects.AutoCrafter;
 import io.ncbpfluffybear.fluffymachines.machines.AutoCraftingTable;
@@ -484,6 +485,27 @@ public class FluffyItems {
         "&b鎬尖斧",
         "",
         "&7一個包含了鎬子, 斧頭和鏟子的工具!"
+    );
+
+    public static final SlimefunItemStack ADVANCED_CHARGING_BENCH = new SlimefunItemStack(
+        "ADVANCED_CHARGING_BENCH",
+        Material.SMITHING_TABLE,
+        "&cAdvanced Charging Bench",
+        "",
+        "&7Charges items",
+        "&7Can be upgraded using an &6ACB Upgrade Card"
+    );
+
+    public static final SlimefunItemStack ACB_UPGRADE_CARD = new SlimefunItemStack(
+        "ACB_UPGRADE_CARD",
+        Material.PAPER,
+        "&6ACB Upgrade Card",
+        "",
+        "&eRight Click &7onto an &cAdvanced Charging Bench",
+        "",
+        "&6Charge Speed &a+" + AdvancedChargingBench.CHARGE + "J",
+        "&6Capacity &a+" + AdvancedChargingBench.CAPACITY +"J",
+        "&6Energy Consumption &c+" + AdvancedChargingBench.ENERGY_CONSUMPTION + "J"
     );
 
     private static final Enchantment glowEnchant = Enchantment.getByKey(Constants.GLOW_ENCHANT);
