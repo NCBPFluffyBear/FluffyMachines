@@ -490,22 +490,22 @@ public class FluffyItems {
     public static final SlimefunItemStack ADVANCED_CHARGING_BENCH = new SlimefunItemStack(
         "ADVANCED_CHARGING_BENCH",
         Material.SMITHING_TABLE,
-        "&cAdvanced Charging Bench",
+        "&c進階充電台",
         "",
-        "&7Charges items",
-        "&7Can be upgraded using an &6ACB Upgrade Card"
+        "&7給物品充電",
+        "&7可以用&6進階充電升級卡&7升級"
     );
 
     public static final SlimefunItemStack ACB_UPGRADE_CARD = new SlimefunItemStack(
         "ACB_UPGRADE_CARD",
         Material.PAPER,
-        "&6ACB Upgrade Card",
+        "&6進階充電升級卡",
         "",
-        "&eRight Click &7onto an &cAdvanced Charging Bench",
+        "&e右鍵&7點擊在&c進階充電台",
         "",
-        "&6Charge Speed &a+" + AdvancedChargingBench.CHARGE + "J",
-        "&6Capacity &a+" + AdvancedChargingBench.CAPACITY +"J",
-        "&6Energy Consumption &c+" + AdvancedChargingBench.ENERGY_CONSUMPTION + "J"
+        "&6充電速度 &a+" + AdvancedChargingBench.CHARGE + "J",
+        "&6容量 &a+" + AdvancedChargingBench.CAPACITY +"J",
+        "&6能源消耗 &c+" + AdvancedChargingBench.ENERGY_CONSUMPTION + "J"
     );
 
     private static final Enchantment glowEnchant = Enchantment.getByKey(Constants.GLOW_ENCHANT);
