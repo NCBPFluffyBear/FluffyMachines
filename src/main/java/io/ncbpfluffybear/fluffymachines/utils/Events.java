@@ -55,10 +55,12 @@ public class Events implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onHelicopterHatUse(PlayerToggleSneakEvent e) {
         Player p = e.getPlayer();
-        if (e.isSneaking() && helicopterHat.isItem(p.getEquipment().getHelmet())) {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 1000000, 4));
-        } else {
-            p.removePotionEffect(PotionEffectType.LEVITATION);
+        if (helicopterHat.isItem(p.getEquipment().getHelmet())) {
+            if (e.isSneaking()) {
+                p.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 1000000, 4));
+            } else {
+                p.removePotionEffect(PotionEffectType.LEVITATION);
+            }
         }
     }
 
