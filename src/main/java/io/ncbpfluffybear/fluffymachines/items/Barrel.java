@@ -448,7 +448,7 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
                 continue;
             }
             int amount = item.getAmount();
-            if (SlimefunUtils.isItemSimilar(item, storedItem, true, false) && stored + amount <= MAX_STORAGE) {
+            if (matchMeta(item, storedItem) && stored + amount <= MAX_STORAGE) {
                 inv.setItem(i, null);
                 stored += amount;
             }
