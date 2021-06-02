@@ -159,7 +159,7 @@ public class SuperheatedFurnace extends NonHopperableBlock {
                     }
 
                     if (itemCount > 5) {
-                        Utils.send(p, "&cPlease remove nearby items before breaking this superheated furnace!");
+                        Utils.send(p, "&c在打破此超級炙熱熔爐前, 請移除附近的物品!");
                         e.setCancelled(true);
                         return;
                     }
@@ -174,8 +174,8 @@ public class SuperheatedFurnace extends NonHopperableBlock {
 
                         if (stored > OVERFLOW_AMOUNT) {
 
-                            Utils.send(p, "&eThere are more than " + OVERFLOW_AMOUNT + " items in this superheated furnace! " +
-                                "Dropping " + OVERFLOW_AMOUNT + " items instead!");
+                            Utils.send(p, "&e此超級炙熱熔爐內有超過 " + OVERFLOW_AMOUNT + " 個物品! " +
+                                "掉落 " + OVERFLOW_AMOUNT + " 個替代物品!");
                             int toRemove = OVERFLOW_AMOUNT;
                             while (toRemove >= stackSize) {
 
