@@ -1,6 +1,7 @@
 package io.ncbpfluffybear.fluffymachines.multiblocks.components;
 
 import dev.j3fftw.extrautils.objects.NonHopperableBlock;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
@@ -73,10 +74,13 @@ public class SuperheatedFurnace extends NonHopperableBlock {
 
     private final int OVERFLOW_AMOUNT = 3240;
 
+    private final ItemSetting<Boolean> breakOnlyWhenEmpty = new ItemSetting<>(this, "break-only-when-empty", false);
+
     public SuperheatedFurnace(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
         addItemHandler(onBreak());
+        addItemSetting(breakOnlyWhenEmpty);
 
         new BlockMenuPreset(getId(), "&c鑄造廠") {
 
@@ -151,6 +155,12 @@ public class SuperheatedFurnace extends NonHopperableBlock {
 
                     int stored = Integer.parseInt(getBlockInfo(b.getLocation(), "stored"));
                     String type = getBlockInfo(b.getLocation(), "type");
+
+                    if (breakOnlyWhenEmpty.getValue() && stored != 0) {
+                        Utils.send(p, "&cThis barrel can't be broken since it has items inside it!");
+                        e.setCancelled(true);
+                        return;
+                    }
 
                     for (Entity en : p.getNearbyEntities(5, 5, 5)) {
                         if (en instanceof Item) {

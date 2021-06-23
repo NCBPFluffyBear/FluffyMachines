@@ -47,6 +47,7 @@ public class GlowEnchant extends Enchantment {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public EnchantmentTarget getItemTarget() {
         return EnchantmentTarget.ALL;
     }

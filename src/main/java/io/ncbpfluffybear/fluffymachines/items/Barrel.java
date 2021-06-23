@@ -68,6 +68,7 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
     private final int MAX_STORAGE;
 
     private final ItemSetting<Boolean> showHologram = new ItemSetting<>(this, "show-hologram", true);
+    private final ItemSetting<Boolean> breakOnlyWhenEmpty = new ItemSetting<>(this, "break-only-when-empty", false);
 
     public Barrel(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, String name,
                   int MAX_STORAGE) {
@@ -163,7 +164,7 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
         };
 
         addItemHandler(onBreak());
-        addItemSetting(showHologram);
+        addItemSetting(showHologram, breakOnlyWhenEmpty);
 
     }
 
@@ -179,6 +180,12 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
                 if (inv != null) {
 
                     int itemCount = 0;
+
+                    if (breakOnlyWhenEmpty.getValue() && stored != 0) {
+                        Utils.send(p, "&cThis barrel can't be broken since it has items inside it!");
+                        e.setCancelled(true);
+                        return;
+                    }
 
                     for (Entity en : p.getNearbyEntities(5, 5, 5)) {
                         if (en instanceof Item) {
