@@ -157,7 +157,7 @@ public class SuperheatedFurnace extends NonHopperableBlock {
                     String type = getBlockInfo(b.getLocation(), "type");
 
                     if (breakOnlyWhenEmpty.getValue() && stored != 0) {
-                        Utils.send(p, "&cThis barrel can't be broken since it has items inside it!");
+                        Utils.send(p, "&c這個超級炙熱熔爐不能被破壞, 因為它裡面還存有物品!");
                         e.setCancelled(true);
                         return;
                     }

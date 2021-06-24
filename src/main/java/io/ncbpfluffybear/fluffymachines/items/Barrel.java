@@ -182,7 +182,7 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
                     int itemCount = 0;
 
                     if (breakOnlyWhenEmpty.getValue() && stored != 0) {
-                        Utils.send(p, "&cThis barrel can't be broken since it has items inside it!");
+                        Utils.send(p, "&c這個木桶不能被破壞, 因為它裡面還存有物品!");
                         e.setCancelled(true);
                         return;
                     }
@@ -194,7 +194,7 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
                     }
 
                     if (itemCount > 5) {
-                        Utils.send(p, "&cPlease remove nearby items before breaking this barrel!");
+                        Utils.send(p, "&c在打破此木桶之前, 請先移除附近的物品!");
                         e.setCancelled(true);
                         return;
                     }
