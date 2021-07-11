@@ -46,10 +46,10 @@ public class Paxel extends SlimefunItem implements Listener, NotPlaceable {
         Tag.LEAVES.getValues(),
         new HashSet<>(Arrays.asList(Material.CHEST, Material.TRAPPED_CHEST, Material.CRAFTING_TABLE, Material.SMITHING_TABLE,
             Material.LOOM, Material.CARTOGRAPHY_TABLE, Material.FLETCHING_TABLE, Material.BARREL, Material.JUKEBOX,
-            Material.CAMPFIRE, Material.BOOKSHELF, Material.JACK_O_LANTERN, Material.PUMPKIN, Material.MELON,
-            Material.COMPOSTER, Material.BEEHIVE, Material.BEE_NEST, Material.NOTE_BLOCK, Material.LADDER,
-            Material.COCOA_BEANS, Material.DAYLIGHT_DETECTOR, Material.MUSHROOM_STEM, Material.RED_MUSHROOM_BLOCK,
-            Material.RED_MUSHROOM_BLOCK, Material.BAMBOO, Material.VINE))
+            Material.CAMPFIRE, Material.BOOKSHELF, Material.JACK_O_LANTERN, Material.CARVED_PUMPKIN,
+            Material.PUMPKIN, Material.MELON, Material.COMPOSTER, Material.BEEHIVE, Material.BEE_NEST,
+            Material.NOTE_BLOCK, Material.LADDER, Material.COCOA_BEANS, Material.DAYLIGHT_DETECTOR, Material.MUSHROOM_STEM,
+            Material.RED_MUSHROOM_BLOCK, Material.RED_MUSHROOM_BLOCK, Material.BAMBOO, Material.VINE))
     ).flatMap(Set::stream).collect(Collectors.toSet());
 
     public Paxel(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
