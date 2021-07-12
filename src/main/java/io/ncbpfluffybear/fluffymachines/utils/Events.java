@@ -193,7 +193,7 @@ public class Events implements Listener {
             if (e.getClick() == ClickType.LEFT) {
                 Utils.send(p, "&7Wiki連結: https://github.com/NCBPFluffyBear/FluffyMachines/blob/master/README.md");
             } else if (e.getClick() == ClickType.RIGHT) {
-                Utils.send(p, "&7回報Bugs: https://github.com/xMikux/FluffyMachines/issues");
+                Utils.send(p, "&7回報Bugs: https://github.com/SlimeTraditionalTranslation/FluffyMachines/issues");
             }
         }
     }
