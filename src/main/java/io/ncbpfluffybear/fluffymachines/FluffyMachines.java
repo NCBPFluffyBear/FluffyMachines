@@ -249,7 +249,7 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
     @Override
     public String getBugTrackerURL() {
-        return "https://github.com/xMikux/FluffyMachines/issues";
+        return "https://github.com/SlimeTraditionalTranslation/FluffyMachines/issues";
     }
 
     @Nonnull
