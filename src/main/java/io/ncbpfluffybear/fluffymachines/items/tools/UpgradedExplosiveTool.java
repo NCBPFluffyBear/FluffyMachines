@@ -37,7 +37,7 @@ import java.util.List;
 class UpgradedExplosiveTool extends ExplosiveTool {
 
     private final ItemSetting<Boolean> damageOnUse;
-    private final ItemSetting<Boolean> callExplosionEvent ;
+    private final ItemSetting<Boolean> callExplosionEvent;
     private final ItemSetting<Boolean> breakFromCenter = new ItemSetting<>(this, "break-from-center", false);
     private final ItemSetting<Boolean> triggerOtherPlugins = new ItemSetting<>(this, "trigger-other-plugins", true);
 
