@@ -230,4 +230,13 @@ public class Events implements Listener {
         }
         return sfItem.getId().equals(FluffyItems.ENDER_CHEST_EXTRACTION_NODE.getItemId()) || sfItem.getId().equals(FluffyItems.ENDER_CHEST_INSERTION_NODE.getItemId());
     }
+
+    @EventHandler(ignoreCancelled = true)
+    private void onCancelPlace(BlockPlaceEvent e) {
+        ItemStack item = e.getItemInHand();
+        SlimefunItem sfItem = SlimefunItem.getByItem(item);
+        if (sfItem instanceof CancelPlace) {
+            e.setCancelled(true);
+        }
+    }
 }
