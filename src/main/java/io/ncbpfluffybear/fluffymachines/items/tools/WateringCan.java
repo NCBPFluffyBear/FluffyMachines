@@ -1,6 +1,7 @@
 package io.ncbpfluffybear.fluffymachines.items.tools;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.ncbpfluffybear.fluffymachines.utils.CancelPlace;
 import me.mrCookieSlime.Slimefun.Objects.Category;
 import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
@@ -39,7 +40,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> {
+public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> implements CancelPlace {
 
     public final ItemSetting<Integer> maxUses = new ItemSetting<>(this, "max-uses", 10);
     public final ItemSetting<Double> sugarCaneSuccessChance = new ItemSetting<>(this, "sugar-cane-success-chance",
