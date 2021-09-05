@@ -1,6 +1,6 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -72,7 +72,7 @@ public class GlowEnchant extends Enchantment {
     public boolean canEnchantItem(ItemStack item) {
         if (item.hasItemMeta()) {
             final ItemMeta itemMeta = item.getItemMeta();
-            final Optional<String> id = SlimefunPlugin.getItemDataService().getItemData(itemMeta);
+            final Optional<String> id = Slimefun.getItemDataService().getItemData(itemMeta);
 
             if (id.isPresent()) {
                 return ids.contains(id.get());

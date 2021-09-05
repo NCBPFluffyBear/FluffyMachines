@@ -1,19 +1,19 @@
 package io.ncbpfluffybear.fluffymachines.items.tools;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.common.ChatColors;
 import io.ncbpfluffybear.fluffymachines.utils.CancelPlace;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import io.ncbpfluffybear.fluffymachines.utils.Constants;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.FluidCollisionMode;
@@ -53,7 +53,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> implements C
     private static final int MAX_SUGAR_GROW_HEIGHT = 5;
     private static final NamespacedKey usageKey = new NamespacedKey(FluffyMachines.getInstance(), "watering_can_usage");
 
-    public WateringCan(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public WateringCan(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
         addItemSetting(maxUses);
@@ -86,8 +86,8 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> implements C
                 Block b = rayResult.getHitBlock();
                 Location blockLocation = b.getLocation();
 
-                if (SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), blockLocation,
-                    ProtectableAction.BREAK_BLOCK)) {
+                if (Slimefun.getProtectionManager().hasPermission(e.getPlayer(), blockLocation,
+                    Interaction.BREAK_BLOCK)) {
 
                     ItemStack item = e.getItem();
                     BlockData blockData = b.getBlockData();
@@ -225,12 +225,6 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> implements C
         } else {
             p.sendMessage("Error");
         }
-
-        /*
-        if (usesLeft == 0) {
-            changeSkull(meta, emptyCan);
-        }
-         */
 
         lore.set(USE_INDEX, ChatColors.color("&aUses Left: &e" + usesLeft));
         meta.setLore(lore);

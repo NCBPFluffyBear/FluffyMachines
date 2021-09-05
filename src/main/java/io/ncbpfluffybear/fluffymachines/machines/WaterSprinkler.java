@@ -4,13 +4,12 @@ import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
 import io.github.thebusybiscuit.slimefun4.implementation.items.electric.machines.accelerators.AbstractGrowthAccelerator;
 import io.github.thebusybiscuit.slimefun4.implementation.items.electric.machines.accelerators.CropGrowthAccelerator;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
-import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
@@ -36,20 +35,20 @@ public class WaterSprinkler extends AbstractGrowthAccelerator {
     public static final int CAPACITY = 128;
     private static final int RADIUS = 2;
     private static final int PROGRESS_SLOT = 4;
-    private static final CustomItem noWaterItem = new CustomItem(Material.BUCKET,
+    private static final CustomItemStack noWaterItem = new CustomItemStack(Material.BUCKET,
         "&cNo water found",
         "",
         "&cPlease place water under the sprinkler!"
     );
-    private static final CustomItem waterFoundItem = new CustomItem(Material.WATER_BUCKET,
+    private static final CustomItemStack waterFoundItem = new CustomItemStack(Material.WATER_BUCKET,
         "&bWater detected"
     );
     private final ItemSetting<Boolean> particles = new ItemSetting<>(this, "particles", true);
 
-    public WaterSprinkler(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public WaterSprinkler(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
-        createPreset(this, FluffyItems.WATER_SPRINKER.getImmutableMeta().getDisplayName().orElse("&bWater Sprinkler"),
+        createPreset(this, "&bWater Sprinkler",
             blockMenuPreset -> {
                 for (int i = 0; i < 9; i++)
                     blockMenuPreset.addItem(i, ChestMenuUtils.getBackground(), ChestMenuUtils.getEmptyClickHandler());
