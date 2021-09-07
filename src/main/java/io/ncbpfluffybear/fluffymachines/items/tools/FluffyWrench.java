@@ -7,17 +7,17 @@ import io.github.thebusybiscuit.slimefun4.core.attributes.Rechargeable;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.core.networks.cargo.CargoNet;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import io.github.thebusybiscuit.slimefun4.implementation.items.cargo.TrashCan;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import io.ncbpfluffybear.fluffymachines.utils.Constants;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -47,7 +47,7 @@ public class FluffyWrench extends SimpleSlimefunItem<ItemUseHandler> implements 
     private final HashMap<UUID, Long> cooldowns = new HashMap<>();
     private static final int WRENCH_DELAY = 250; // Not an itemsetting, too low causes dupes and no reason to increase
 
-    public FluffyWrench(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, Wrench type) {
+    public FluffyWrench(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, Wrench type) {
         super(category, item, recipeType, recipe);
         this.type = type;
 
@@ -79,8 +79,8 @@ public class FluffyWrench extends SimpleSlimefunItem<ItemUseHandler> implements 
         // Can't use offhand because a player can offhand the wrench to escape the event
         if (isItem(e.getItem()) && !isItem(p.getInventory().getItemInOffHand())
             && e.getAction().toString().endsWith("_BLOCK")
-            && SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(),
-            block.getLocation(), ProtectableAction.BREAK_BLOCK)
+            && Slimefun.getProtectionManager().hasPermission(e.getPlayer(),
+            block.getLocation(), Interaction.BREAK_BLOCK)
         ) {
             e.setCancelled(true);
             SlimefunItem slimefunBlock = BlockStorage.check(block);

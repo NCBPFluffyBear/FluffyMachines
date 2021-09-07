@@ -21,10 +21,9 @@ import io.ncbpfluffybear.fluffymachines.machines.BackpackUnloader;
 import io.ncbpfluffybear.fluffymachines.machines.ElectricDustFabricator;
 import io.ncbpfluffybear.fluffymachines.machines.ElectricDustRecycler;
 import io.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
-import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullItem;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -36,15 +35,15 @@ public class FluffyItems {
     private FluffyItems() {
     }
 
-    // Category
-    public static final Category fluffymachines = new Category(new NamespacedKey(FluffyMachines.getInstance(),
+    // ItemGroup
+    public static final ItemGroup fluffymachines = new ItemGroup(new NamespacedKey(FluffyMachines.getInstance(),
         "fluffymachines"),
-        new CustomItem(Material.SMOKER, "&6Fluffy機器")
+        new CustomItemStack(Material.SMOKER, "&6Fluffy機器")
     );
 
-    public static final Category fluffybarrels = new Category(new NamespacedKey(FluffyMachines.getInstance(),
+    public static final ItemGroup fluffybarrels = new ItemGroup(new NamespacedKey(FluffyMachines.getInstance(),
         "fluffybarrels"),
-        new CustomItem(Material.BARREL, "&6Fluffy木桶")
+        new CustomItemStack(Material.BARREL, "&6Fluffy木桶")
     );
 
     public static final SlimefunItemStack FLUFFYMACHINES_INFO = new SlimefunItemStack("FLUFFYMACHINES_INFO",
@@ -194,7 +193,7 @@ public class FluffyItems {
         "&e蹲下 &7來使用"
     );
     public static final SlimefunItemStack WATERING_CAN = new SlimefunItemStack("WATERING_CAN",
-        new CustomItem(SkullItem.fromHash("6484da45301625dee79ae29ff513efa583f1ed838033f20db80963cedf8aeb0e")),
+        "6484da45301625dee79ae29ff513efa583f1ed838033f20db80963cedf8aeb0e",
         "&b灑水壺",
         "",
         "&f灌溉植物",
@@ -207,7 +206,7 @@ public class FluffyItems {
     );
     public static final SlimefunItemStack ENDER_CHEST_EXTRACTION_NODE = new SlimefunItemStack(
         "ENDER_CHEST_EXTRACTION_NODE",
-        new CustomItem(SkullItem.fromHash("e707c7f6c3a056a377d4120028405fdd09acfcd5ae804bfde0f653be866afe39")),
+        "e707c7f6c3a056a377d4120028405fdd09acfcd5ae804bfde0f653be866afe39",
         "&6終界箱提取節點",
         "",
         "&7將此放置在&5終界箱&7來綁定",
@@ -217,7 +216,7 @@ public class FluffyItems {
     );
     public static final SlimefunItemStack ENDER_CHEST_INSERTION_NODE = new SlimefunItemStack(
         "ENDER_CHEST_INSERTION_NODE",
-        new CustomItem(SkullItem.fromHash("7e5dc50c0186d53381d9430a2eff4c38f816b8791890c7471ffdb65ba202bc5")),
+        "7e5dc50c0186d53381d9430a2eff4c38f816b8791890c7471ffdb65ba202bc5",
         "&b終界箱存放節點",
         "",
         "&7將此放置在&5終界箱&7來綁定",
@@ -254,8 +253,7 @@ public class FluffyItems {
         LoreBuilderDynamic.powerPerTick(AutoTableSaw.ENERGY_CONSUMPTION)
     );
     public static final SlimefunItemStack WATER_SPRINKER = new SlimefunItemStack("WATER_SPRINKLER",
-        new CustomItem(SkullItem.fromHash("d6b13d69d1929dcf8edf99f3901415217c6a567d3a6ead12f75a4de3ed835e85"),
-            "灑水器"),
+        "d6b13d69d1929dcf8edf99f3901415217c6a567d3a6ead12f75a4de3ed835e85",
         "&b灑水器",
         "",
         "&7灑水 灑水",

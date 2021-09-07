@@ -4,9 +4,9 @@ import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetProvider;
 import io.github.thebusybiscuit.slimefun4.core.multiblocks.MultiBlockMachine;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.Slimefun.Objects.Category;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,7 +23,7 @@ public class CrankGenerator extends MultiBlockMachine implements EnergyNetProvid
     public static final int RATE = 16;
     public static final int CAPACITY = 64;
 
-    public CrankGenerator(Category category, SlimefunItemStack item) {
+    public CrankGenerator(ItemGroup category, SlimefunItemStack item) {
         super(category, item, new ItemStack[] {null, null, null, null, new ItemStack(Material.LEVER), null, null,
             FluffyItems.GENERATOR_CORE, null}, BlockFace.SELF);
     }

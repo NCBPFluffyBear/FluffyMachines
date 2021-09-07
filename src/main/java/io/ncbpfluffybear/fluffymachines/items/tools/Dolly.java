@@ -3,14 +3,14 @@ package io.ncbpfluffybear.fluffymachines.items.tools;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerBackpack;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -26,7 +26,7 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
 
     private static final ItemStack lockItem = Utils.buildNonInteractable(Material.DIRT, "&4&l搬運器", "&c你怎麼進來的?");
 
-    public Dolly(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public Dolly(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
     }
 
@@ -45,8 +45,8 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
 
             Block b = e.getClickedBlock().get();
 
-            if (!SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), b.getLocation(),
-                ProtectableAction.BREAK_BLOCK)) {
+            if (!Slimefun.getProtectionManager().hasPermission(e.getPlayer(), b.getLocation(),
+                Interaction.BREAK_BLOCK)) {
                 return;
             }
 
@@ -59,7 +59,7 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
                     if (line.contains("ID: <ID>")) {
                         PlayerProfile.get(p, profile -> {
                             int backpackId = profile.createBackpack(27).getId();
-                            SlimefunPlugin.getBackpackListener().setBackpackId(p, dolly, 3, backpackId);
+                            Slimefun.getBackpackListener().setBackpackId(p, dolly, 3, backpackId);
                             PlayerProfile.getBackpack(dolly, backpack -> backpack.getInventory().setItem(0, lockItem));
                         });
                     }

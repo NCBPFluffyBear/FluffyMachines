@@ -6,13 +6,13 @@ import io.github.thebusybiscuit.slimefun4.implementation.items.electric.machines
 import io.github.thebusybiscuit.slimefun4.implementation.items.multiblocks.OreWasher;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import io.ncbpfluffybear.fluffymachines.utils.Constants;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AContainer;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.MachineRecipe;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -38,7 +38,7 @@ public class ElectricDustFabricator extends AContainer implements RecipeDisplayI
         new ItemStack(Material.DIORITE), new ItemStack(Material.GRANITE)
     ));
 
-    public ElectricDustFabricator(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public ElectricDustFabricator(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
     }
 
@@ -55,7 +55,7 @@ public class ElectricDustFabricator extends AContainer implements RecipeDisplayI
         List<ItemStack> displayRecipes = new ArrayList<>();
 
         for (SlimefunItemStack dust : Constants.dusts) {
-            displayRecipes.add(new CustomItem(Material.COBBLESTONE,
+            displayRecipes.add(new CustomItemStack(Material.COBBLESTONE,
                 "&f任何鵝卵石種類", "&7鵝卵石", "&7安山岩", "&7閃長岩", "&7花崗岩"
             ));
             displayRecipes.add(dust);
