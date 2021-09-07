@@ -111,7 +111,7 @@
         <dependency>
             <groupId>com.github.TheBusyBiscuit</groupId>
             <artifactId>Slimefun4</artifactId>
-            <version>RC-25</version>
+            <version>RC-27</version>
             <scope>provided</scope>
         </dependency>
 
@@ -157,9 +157,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.xmikux</groupId>
+            <groupId>com.github.SlimeTraditionalTranslation</groupId>
             <artifactId>extrautils</artifactId>
-            <version>4608dbc</version>
+            <version>33c4e0d</version>
         </dependency>
 
         <dependency>

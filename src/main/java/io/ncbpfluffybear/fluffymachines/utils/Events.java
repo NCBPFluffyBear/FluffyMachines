@@ -6,7 +6,7 @@ import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import io.ncbpfluffybear.fluffymachines.items.tools.WateringCan;
 import io.ncbpfluffybear.fluffymachines.machines.AlternateElevatorPlate;
 import javax.annotation.Nonnull;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.Location;
 import org.bukkit.Material;

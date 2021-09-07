@@ -1,9 +1,9 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 
@@ -17,7 +17,7 @@ public final class Constants {
     public static final int SERVER_VERSION = Integer.parseInt(Bukkit.getVersion().replaceFirst(".*MC: ", "").replace(
         ")", "").replace(".", ""));
 
-    public static final String SLIMEFUN_VERSION = SlimefunPlugin.getVersion();
+    public static final String SLIMEFUN_VERSION = Slimefun.getVersion();
     public static boolean SLIMEFUN_UPDATED = false;
 
     public static final Pattern VERSION_PATTERN = Pattern.compile("(DEV - )([0-9]+)");

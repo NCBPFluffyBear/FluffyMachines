@@ -3,13 +3,13 @@ package io.ncbpfluffybear.fluffymachines.items.tools;
 import io.github.thebusybiscuit.slimefun4.core.attributes.NotPlaceable;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ToolUseHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.cscorelib2.blocks.Vein;
-import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.blocks.Vein;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -26,7 +26,7 @@ public class Scythe extends SimpleSlimefunItem<ItemUseHandler> implements NotPla
 
     private static final int MAX_BROKEN = 5;
 
-    public Scythe(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public Scythe(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
     }
 
@@ -60,7 +60,7 @@ public class Scythe extends SimpleSlimefunItem<ItemUseHandler> implements NotPla
                 boolean creative = e.getPlayer().getGameMode() == GameMode.CREATIVE;
 
                 for (Block b : crops) {
-                    if (SlimefunPlugin.getProtectionManager().hasPermission(e.getPlayer(), b, ProtectableAction.BREAK_BLOCK)) {
+                    if (Slimefun.getProtectionManager().hasPermission(e.getPlayer(), b, Interaction.BREAK_BLOCK)) {
                         AlternateBreakEvent breakEvent = new AlternateBreakEvent(b, e.getPlayer());
                         Bukkit.getPluginManager().callEvent(breakEvent);
                         if (creative) {

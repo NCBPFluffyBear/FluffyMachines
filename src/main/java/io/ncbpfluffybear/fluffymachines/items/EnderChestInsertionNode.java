@@ -4,12 +4,12 @@ import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -37,7 +37,7 @@ public class EnderChestInsertionNode extends SlimefunItem {
 
     private static final Material material = Material.ENDER_CHEST;
 
-    public EnderChestInsertionNode(Category category, SlimefunItemStack item, RecipeType recipeType,
+    public EnderChestInsertionNode(ItemGroup category, SlimefunItemStack item, RecipeType recipeType,
                                    ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 

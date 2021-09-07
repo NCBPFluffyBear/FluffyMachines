@@ -4,21 +4,21 @@ import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.backpacks.SlimefunBackpack;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
-import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -45,7 +45,7 @@ public class BackpackLoader extends SlimefunItem implements EnergyNetComponent {
     private static final int BACKPACK_SLOT = 45;
 
 
-    public BackpackLoader(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public BackpackLoader(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
         addItemHandler(onBreak());
@@ -57,7 +57,7 @@ public class BackpackLoader extends SlimefunItem implements EnergyNetComponent {
                 buildBorder(this, PLAIN_BORDER, INPUT_BORDER, OUTPUT_BORDER);
 
                 for (int i : BACKPACK_BORDER) {
-                    this.addItem(i, new CustomItem(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE), " "),
+                    this.addItem(i, new CustomItemStack(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE), " "),
                         (p, slot, item, action) -> false
                     );
                 }
@@ -66,8 +66,8 @@ public class BackpackLoader extends SlimefunItem implements EnergyNetComponent {
             @Override
             public boolean canOpen(@Nonnull Block b, @Nonnull Player p) {
                 return p.hasPermission("slimefun.inventory.bypass")
-                    || SlimefunPlugin.getProtectionManager().hasPermission(p, b.getLocation(),
-                    ProtectableAction.INTERACT_BLOCK);
+                    || Slimefun.getProtectionManager().hasPermission(p, b.getLocation(),
+                    Interaction.INTERACT_BLOCK);
             }
 
             @Override
@@ -224,19 +224,19 @@ public class BackpackLoader extends SlimefunItem implements EnergyNetComponent {
 
     static void buildBorder(BlockMenuPreset preset, int[] plainBorder, int[] inputBorder, int[] outputBorder) {
         for (int i : plainBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
+            preset.addItem(i, new CustomItemStack(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
                 (p, slot, item, action) -> false
             );
         }
 
         for (int i : inputBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.CYAN_STAINED_GLASS_PANE), " "),
+            preset.addItem(i, new CustomItemStack(new ItemStack(Material.CYAN_STAINED_GLASS_PANE), " "),
                 (p, slot, item, action) -> false
             );
         }
 
         for (int i : outputBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "),
+            preset.addItem(i, new CustomItemStack(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "),
                 (p, slot, item, action) -> false
             );
         }
