@@ -4,10 +4,10 @@ import io.github.thebusybiscuit.slimefun4.core.attributes.NotPlaceable;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Tag;
@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -40,21 +41,22 @@ public class Paxel extends SlimefunItem implements Listener, NotPlaceable {
         Tag.WOODEN_SLABS.getValues(),
         Tag.WOODEN_BUTTONS.getValues(),
         Tag.BANNERS.getValues(),
+        Tag.LEAVES.getValues(),
         new HashSet<>(Arrays.asList(Material.CHEST, Material.TRAPPED_CHEST, Material.CRAFTING_TABLE, Material.SMITHING_TABLE,
             Material.LOOM, Material.CARTOGRAPHY_TABLE, Material.FLETCHING_TABLE, Material.BARREL, Material.JUKEBOX,
-            Material.CAMPFIRE, Material.BOOKSHELF, Material.JACK_O_LANTERN, Material.PUMPKIN, Material.MELON,
-            Material.COMPOSTER, Material.BEEHIVE, Material.BEE_NEST, Material.NOTE_BLOCK, Material.LADDER,
-            Material.COCOA_BEANS, Material.DAYLIGHT_DETECTOR, Material.MUSHROOM_STEM, Material.RED_MUSHROOM_BLOCK,
-            Material.RED_MUSHROOM_BLOCK, Material.BAMBOO, Material.VINE))
+            Material.CAMPFIRE, Material.BOOKSHELF, Material.JACK_O_LANTERN, Material.CARVED_PUMPKIN,
+            Material.PUMPKIN, Material.MELON, Material.COMPOSTER, Material.BEEHIVE, Material.BEE_NEST,
+            Material.NOTE_BLOCK, Material.LADDER, Material.COCOA_BEANS, Material.DAYLIGHT_DETECTOR, Material.MUSHROOM_STEM,
+            Material.RED_MUSHROOM_BLOCK, Material.RED_MUSHROOM_BLOCK, Material.BAMBOO, Material.VINE))
     ).flatMap(Set::stream).collect(Collectors.toSet());
 
-    public Paxel(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public Paxel(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
         Bukkit.getPluginManager().registerEvents(this, FluffyMachines.getInstance());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     private void onMine(PlayerInteractEvent e) {
         if (e.getAction() != Action.LEFT_CLICK_BLOCK) {
             return;
@@ -101,5 +103,30 @@ public class Paxel extends SlimefunItem implements Listener, NotPlaceable {
                 }
             }
         }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    private void onEntityHit(EntityDamageByEntityEvent e) {
+        if (!(e.getDamager() instanceof Player)) {
+            return;
+        }
+
+        Player p = (Player) e.getDamager();
+        ItemStack item = p.getInventory().getItemInMainHand();
+        SlimefunItem sfItem = SlimefunItem.getByItem(item);
+
+        if (sfItem instanceof Paxel) {
+
+            boolean netherite = item.getType() == Material.NETHERITE_PICKAXE
+                    || item.getType() == Material.NETHERITE_AXE
+                    || item.getType() == Material.NETHERITE_SHOVEL;
+
+            if (netherite) {
+                item.setType(Material.NETHERITE_AXE);
+            } else {
+                item.setType(Material.DIAMOND_AXE);
+            }
+        }
+
     }
 }

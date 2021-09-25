@@ -62,17 +62,29 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.2.4</version>
                 <configuration>
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
                             <shadedPattern>io.ncbpfluffybear.fluffymachines.bstats</shadedPattern>
+                            <excludes>
+                                <exclude>META-INF/*.MF</exclude>
+                            </excludes>
                         </relocation>
                         <relocation>
                             <pattern>com.github.Slimefun-Addon-Community.extrautils</pattern>
                             <shadedPattern>io.ncbpfluffybear.fluffymachines.extrautils</shadedPattern>
+                            <excludes>
+                                <exclude>META-INF/*.MF</exclude>
+                            </excludes>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -99,7 +111,7 @@
         <dependency>
             <groupId>com.github.TheBusyBiscuit</groupId>
             <artifactId>Slimefun4</artifactId>
-            <version>RC-21</version>
+            <version>RC-27</version>
             <scope>provided</scope>
         </dependency>
 
@@ -133,7 +145,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
+            <version>1.18.20</version>
             <scope>provided</scope>
         </dependency>
 
@@ -147,7 +159,7 @@
         <dependency>
             <groupId>com.github.Slimefun-Addon-Community</groupId>
             <artifactId>extrautils</artifactId>
-            <version>cea1be6550</version>
+            <version>73e76ac06c</version>
         </dependency>
 
         <dependency>

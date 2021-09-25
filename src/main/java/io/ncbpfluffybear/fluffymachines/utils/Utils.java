@@ -1,7 +1,9 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.common.ChatColors;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
-import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -14,6 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitTask;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -113,6 +116,12 @@ public final class Utils {
         meta.getPersistentDataContainer().remove(fluffykey);
         clone.setItemMeta(meta);
         return clone;
+    }
+
+    public static boolean canOpen(@Nonnull Block b, @Nonnull Player p) {
+        return (p.hasPermission("slimefun.inventory.bypass")
+            || Slimefun.getProtectionManager().hasPermission(
+            p, b.getLocation(), Interaction.INTERACT_BLOCK));
     }
 
     // Don't use Slimefun's runsync

@@ -6,6 +6,7 @@ import io.ncbpfluffybear.fluffymachines.items.EnderChestExtractionNode;
 import io.ncbpfluffybear.fluffymachines.items.EnderChestInsertionNode;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
+import io.ncbpfluffybear.fluffymachines.items.tools.ACBUpgradeCard;
 import io.ncbpfluffybear.fluffymachines.items.tools.Dolly;
 import io.ncbpfluffybear.fluffymachines.items.tools.FluffyWrench;
 import io.ncbpfluffybear.fluffymachines.items.tools.Paxel;
@@ -17,6 +18,7 @@ import io.ncbpfluffybear.fluffymachines.items.tools.UpgradedLumberAxe;
 import io.ncbpfluffybear.fluffymachines.items.tools.WarpPadConfigurator;
 import io.ncbpfluffybear.fluffymachines.items.tools.WateringCan;
 import io.ncbpfluffybear.fluffymachines.machines.AdvancedAutoDisenchanter;
+import io.ncbpfluffybear.fluffymachines.machines.AdvancedChargingBench;
 import io.ncbpfluffybear.fluffymachines.machines.AlternateElevatorPlate;
 import io.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
 import io.ncbpfluffybear.fluffymachines.machines.AutoArmorForge;
@@ -34,9 +36,9 @@ import io.ncbpfluffybear.fluffymachines.multiblocks.Foundry;
 import io.ncbpfluffybear.fluffymachines.multiblocks.components.GeneratorCore;
 import io.ncbpfluffybear.fluffymachines.multiblocks.components.SuperheatedFurnace;
 import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -172,7 +174,21 @@ public final class FluffyItemSetup {
             SlimefunItems.COPPER_INGOT, null, SlimefunItems.COPPER_INGOT,
             SlimefunItems.COPPER_INGOT, SlimefunItems.COPPER_INGOT, SlimefunItems.COPPER_INGOT,
             null, SlimefunItems.COPPER_INGOT, null
-        }).register(plugin);
+        }, FluffyWrench.Wrench.DEFAULT).register(plugin);
+
+        new FluffyWrench(FluffyItems.fluffymachines, FluffyItems.REINFORCED_FLUFFY_WRENCH,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.REINFORCED_ALLOY_INGOT, null, SlimefunItems.REINFORCED_ALLOY_INGOT,
+            SlimefunItems.REINFORCED_ALLOY_INGOT, FluffyItems.FLUFFY_WRENCH, SlimefunItems.REINFORCED_ALLOY_INGOT,
+            null, SlimefunItems.SYNTHETIC_DIAMOND, null
+        }, FluffyWrench.Wrench.REINFORCED).register(plugin);
+
+        new FluffyWrench(FluffyItems.fluffymachines, FluffyItems.CARBONADO_FLUFFY_WRENCH,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.CARBONADO, null, SlimefunItems.CARBONADO,
+            SlimefunItems.CARBONADO, FluffyItems.REINFORCED_FLUFFY_WRENCH, SlimefunItems.CARBONADO,
+            null, SlimefunItems.CARBONADO_EDGED_CAPACITOR, null
+        }, FluffyWrench.Wrench.CARBONADO).register(plugin);
 
         new UpgradedLumberAxe(FluffyItems.fluffymachines, FluffyItems.UPGRADED_LUMBER_AXE,
             RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
@@ -366,7 +382,19 @@ public final class FluffyItemSetup {
             new SlimefunItemStack(FluffyItems.ALTERNATE_ELEVATOR_PLATE, 2)
         ).register(plugin);
 
-        // Items
+        new AdvancedChargingBench(FluffyItems.fluffymachines, FluffyItems.ADVANCED_CHARGING_BENCH,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.CORINTHIAN_BRONZE_INGOT, advancedCircuitBoard, SlimefunItems.CORINTHIAN_BRONZE_INGOT,
+            advancedCircuitBoard, SlimefunItems.CHARGING_BENCH, advancedCircuitBoard,
+            SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.SMALL_CAPACITOR, SlimefunItems.ELECTRIC_MOTOR
+        }).register(plugin);
+
+        new ACBUpgradeCard(FluffyItems.fluffymachines, FluffyItems.ACB_UPGRADE_CARD,
+            RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
+            SlimefunItems.CORINTHIAN_BRONZE_INGOT, advancedCircuitBoard, SlimefunItems.CORINTHIAN_BRONZE_INGOT,
+            advancedCircuitBoard, SlimefunItems.ELECTRIC_MOTOR, advancedCircuitBoard,
+            SlimefunItems.GOLD_24K, SlimefunItems.SMALL_CAPACITOR, SlimefunItems.GOLD_24K
+        }).register(plugin);
     }
 
 }
