@@ -1,19 +1,15 @@
 package io.ncbpfluffybear.fluffymachines.items;
 
-import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
-import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.items.magical.talismans.Talisman;
-import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
-import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
-import io.ncbpfluffybear.fluffymachines.objects.EnderChestNode;
-import io.ncbpfluffybear.fluffymachines.utils.Utils;
-import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.implementation.items.magical.talismans.Talisman;
+import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
+import io.ncbpfluffybear.fluffymachines.objects.EnderChestNode;
+import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
@@ -27,7 +23,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nonnull;
 import java.util.UUID;
 
 /**
@@ -39,11 +34,6 @@ import java.util.UUID;
 public class EnderChestExtractionNode extends EnderChestNode {
 
     public EnderChestExtractionNode(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
-        super(category, item, recipeType, recipe);
-
-        addItemHandler(onPlace());
-        addItemHandler(onInteract());
-    public EnderChestExtractionNode(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe, Type.EXTRACTION);
     }
 
@@ -60,7 +50,7 @@ public class EnderChestExtractionNode extends EnderChestNode {
         });
     }
 
-    private void tick(@Nonnull Block b) {
+    private void tick(Block b) {
 
         // Make sure this node is still attached to an Ender Chest
         BlockFace face = checkEChest(b);
@@ -98,29 +88,6 @@ public class EnderChestExtractionNode extends EnderChestNode {
                     continue;
                 }
 
-                /*
-                if (filterType.equals("blacklist")) {
-                    boolean isBlacklisted = false;
-                    for (ItemStack item : getFilterContents(b)) {
-                        if (SlimefunUtils.isItemSimilar(item, transferItemStack, true, false)) {
-                            Bukkit.broadcastMessage("Blocked " + transferItemStack.getType());
-                            break;
-                        }
-                        Bukkit.broadcastMessage("Acceptable");
-
-                        isAcceptable = true;
-                    }
-                } else { // Whitelist
-                    for (ItemStack item : getFilterContents(b)) {
-                        if (SlimefunUtils.isItemSimilar(item, transferItemStack, true, false)) {
-                            isAcceptable = true;
-                            break;
-                        }
-                    }
-                }
-
-                 */
-
                 if (filterTalismans.equals("true")
                     && SlimefunItem.getByItem(transferItemStack) instanceof Talisman) {
                     continue;
@@ -130,13 +97,6 @@ public class EnderChestExtractionNode extends EnderChestNode {
                 break;
             }
 
-            if (!isAcceptable) {
-                return;
-            }
-
-            Inventory containerInv = ((InventoryHolder) state).getInventory();
-            ItemStack remaining = EnderChestNode.insertIntoVanillaInventory(transferItemStack, containerInv);
-            enderInv.setItem(enderIndex, remaining);
         }
     }
 }
