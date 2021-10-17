@@ -10,6 +10,7 @@ import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
+import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.Axis;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -47,6 +48,12 @@ public class UpgradedLumberAxe extends SimpleSlimefunItem<ItemUseHandler> implem
     private ToolUseHandler onBlockBreak() {
         return (e, tool, fortune, drops) -> {
             if (Tag.LOGS.getValues().contains(e.getBlock().getType())) {
+
+                // Prevent use on Slimefun blocks
+                if (BlockStorage.checkID(e.getBlock()) != null) {
+                    return;
+                }
+
                 List<Block> logs = find(e.getBlock(), MAX_BROKEN, b -> Tag.LOGS.isTagged(b.getType()));
 
                 logs.remove(e.getBlock());
