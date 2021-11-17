@@ -336,22 +336,23 @@ public class AutoAncientAltar extends SlimefunItem implements EnergyNetComponent
         if (Constants.isSoulJarsInstalled && sfCatalyst != null
             && sfCatalyst.getId().startsWith("FILLED") && sfCatalyst.getId().endsWith("SOUL_JAR")) {
 
-//            SlimefunItem spawnerItem = SlimefunItem.getById(sfCatalyst.getId().replace("FILLED_", "").replace(
-//            "_SOUL_JAR", "_BROKEN_SPAWNER"));
-            EntityType entityType = EntityType.valueOf(sfCatalyst.getId()
-                    .replace("FILLED_", "")
-                    .replace("_SOUL_JAR", ""));
+            try {
+                EntityType entityType = EntityType.valueOf(sfCatalyst.getId()
+                        .replace("FILLED_", "")
+                        .replace("_SOUL_JAR", ""));
 
-            BrokenSpawner brokenSpawner = SlimefunItems.BROKEN_SPAWNER.getItem(BrokenSpawner.class);
-            ItemStack spawnerItem = brokenSpawner.getItemForEntityType(entityType);
+                BrokenSpawner brokenSpawner = SlimefunItems.BROKEN_SPAWNER.getItem(BrokenSpawner.class);
+                ItemStack spawnerItem = brokenSpawner.getItemForEntityType(entityType);
 
-            if (pedestalItems.equals(jarInputs) && spawnerItem != null) {
-                removeCharge(block.getLocation(), ENERGY_CONSUMPTION);
-                for (int slot : getInputSlots()) {
-                    menu.consumeItem(slot);
+                if (pedestalItems.equals(jarInputs)) {
+                    removeCharge(block.getLocation(), ENERGY_CONSUMPTION);
+                    for (int slot : getInputSlots()) {
+                        menu.consumeItem(slot);
+                    }
+                    menu.pushItem(spawnerItem.clone(), getOutputSlots());
                 }
-                menu.pushItem(spawnerItem.clone(), getOutputSlots());
-            }
+            } catch (IllegalArgumentException ignored) {}
+
         } else if (SlimefunUtils.isItemSimilar(catalystItem, SlimefunItems.BROKEN_SPAWNER, false, false)) {
 
             Optional<ItemStack> result = checkRecipe(SlimefunItems.BROKEN_SPAWNER, pedestalItems);
