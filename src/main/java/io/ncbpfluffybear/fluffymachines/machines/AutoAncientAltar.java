@@ -9,6 +9,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.altar.AltarRecipe;
 import io.github.thebusybiscuit.slimefun4.implementation.items.altar.AncientAltar;
+import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.BrokenSpawner;
 import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.RepairedSpawner;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import io.ncbpfluffybear.fluffymachines.utils.Constants;
@@ -335,15 +336,28 @@ public class AutoAncientAltar extends SlimefunItem implements EnergyNetComponent
         if (Constants.isSoulJarsInstalled && sfCatalyst != null
             && sfCatalyst.getId().startsWith("FILLED") && sfCatalyst.getId().endsWith("SOUL_JAR")) {
 
-            SlimefunItem spawnerItem = SlimefunItem.getById(sfCatalyst.getId().replace("FILLED_", "").replace(
-                "_SOUL_JAR", "_BROKEN_SPAWNER"));
-            if (pedestalItems.equals(jarInputs) && spawnerItem != null) {
-                removeCharge(block.getLocation(), ENERGY_CONSUMPTION);
-                for (int slot : getInputSlots()) {
-                    menu.consumeItem(slot);
+            try {
+                EntityType entityType = EntityType.valueOf(sfCatalyst.getId()
+                        .replace("FILLED_", "")
+                        .replace("_SOUL_JAR", "")
+                );
+
+                if (entityType == EntityType.UNKNOWN) {
+                    return;
                 }
-                menu.pushItem(spawnerItem.getItem().clone(), getOutputSlots());
-            }
+
+                BrokenSpawner brokenSpawner = SlimefunItems.BROKEN_SPAWNER.getItem(BrokenSpawner.class);
+                ItemStack spawnerItem = brokenSpawner.getItemForEntityType(entityType);
+
+                if (pedestalItems.equals(jarInputs)) {
+                    removeCharge(block.getLocation(), ENERGY_CONSUMPTION);
+                    for (int slot : getInputSlots()) {
+                        menu.consumeItem(slot);
+                    }
+                    menu.pushItem(spawnerItem.clone(), getOutputSlots());
+                }
+            } catch (IllegalArgumentException ignored) {}
+
         } else if (SlimefunUtils.isItemSimilar(catalystItem, SlimefunItems.BROKEN_SPAWNER, false, false)) {
 
             Optional<ItemStack> result = checkRecipe(SlimefunItems.BROKEN_SPAWNER, pedestalItems);
