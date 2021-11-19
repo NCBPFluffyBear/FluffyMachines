@@ -339,9 +339,12 @@ public class AutoAncientAltar extends SlimefunItem implements EnergyNetComponent
             try {
                 EntityType entityType = EntityType.valueOf(sfCatalyst.getId()
                         .replace("FILLED_", "")
-                        .replace("_SOUL_JAR", ""));
+                        .replace("_SOUL_JAR", "")
+                );
 
-                if (entityType == EntityType.UNKNOWN) { return; }
+                if (entityType == EntityType.UNKNOWN) {
+                    return;
+                }
 
                 BrokenSpawner brokenSpawner = SlimefunItems.BROKEN_SPAWNER.getItem(BrokenSpawner.class);
                 ItemStack spawnerItem = brokenSpawner.getItemForEntityType(entityType);
