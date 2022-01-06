@@ -85,7 +85,7 @@ public class AlternateElevatorPlate extends SimpleSlimefunItem<BlockUseHandler> 
     public List<Block> getFloors(@Nonnull Block b) {
         List<Block> floors = new LinkedList<>();
 
-        for (int y = b.getWorld().getMaxHeight(); y > 0; y--) {
+        for (int y = b.getWorld().getMaxHeight(); y > -64; y--) {
             if (y == b.getY()) {
                 floors.add(b);
                 continue;
