@@ -6,6 +6,7 @@ import io.ncbpfluffybear.fluffymachines.multiblocks.components.SuperheatedFurnac
 import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import java.util.Objects;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
@@ -35,6 +36,11 @@ public class Foundry extends MultiBlockMachine {
 
     @Override
     public void onInteract(Player p, Block b) {
+        // Verify a vanilla blast furnace is not being used
+        if (BlockStorage.checkID(b) == null || BlockStorage.checkID(b).equals("SUPERHEATED_FURNACE")) {
+            return;
+        }
+
         if (BlockStorage.getLocationInfo(b.getLocation(), "accessible") == null) {
             BlockStorage.addBlockInfo(b, "accessible", "true");
             //p.closeInventory();

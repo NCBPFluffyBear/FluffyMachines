@@ -183,22 +183,6 @@ public class Events implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onFMInfoClick(InventoryClickEvent e) {
-        if (SlimefunItem.getByItem(e.getCurrentItem()) != null
-            && SlimefunItem.getByItem(e.getCurrentItem()) == FluffyItems.FLUFFYMACHINES_INFO.getItem()) {
-
-            Player p = (Player) e.getWhoClicked();
-            p.closeInventory();
-
-            if (e.getClick() == ClickType.LEFT) {
-                Utils.send(p, "&7Wiki Link: https://github.com/NCBPFluffyBear/FluffyMachines/blob/master/README.md");
-            } else if (e.getClick() == ClickType.RIGHT) {
-                Utils.send(p, "&7Report Bugs: https://github.com/NCBPFluffyBear/FluffyMachines/issues");
-            }
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true)
     public void onExtractionNodePlace(BlockPlaceEvent e) {
         if ((e.getBlock().getY() != e.getBlockAgainst().getY() || e.getBlockAgainst().getType() != Material.ENDER_CHEST)
             && isExtractionNode(e.getItemInHand())) {
