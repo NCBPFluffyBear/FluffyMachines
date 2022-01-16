@@ -37,7 +37,7 @@ public class Foundry extends MultiBlockMachine {
     @Override
     public void onInteract(Player p, Block b) {
         // Verify a vanilla blast furnace is not being used
-        if (BlockStorage.checkID(b) == null || BlockStorage.checkID(b).equals("SUPERHEATED_FURNACE")) {
+        if (BlockStorage.checkID(b) == null || !BlockStorage.checkID(b).equals("SUPERHEATED_FURNACE")) {
             return;
         }
 
