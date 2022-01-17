@@ -50,10 +50,7 @@ public class FluffyItems {
         Material.ORANGE_WOOL,
         "&6&lFluffy機器 版本資訊",
         "",
-        "&e" + FluffyMachines.getInstance().getName() + " " + FluffyMachines.getInstance().getPluginVersion(),
-        "",
-        "&e左鍵點擊 &7獲取Wiki連結",
-        "&e右鍵點擊 &7獲取Bug回報連結"
+        "&e" + FluffyMachines.getInstance().getName() + " " + FluffyMachines.getInstance().getPluginVersion()
     );
 
     // Barrels
