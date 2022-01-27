@@ -1,5 +1,7 @@
 package io.ncbpfluffybear.fluffymachines.machines;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
+import io.github.thebusybiscuit.slimefun4.api.items.settings.IntRangeSetting;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
@@ -59,6 +61,8 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
     public static final int CAPACITY = 4096;
     private static final int REQUIRED_TICKS = 60; // "Number of seconds", except 1 Slimefun "second" = 1.6 IRL seconds
 
+    private final ItemSetting<Boolean> useLevelLimit = new ItemSetting<>(this, "use-enchant-level-limit", false);
+    private final IntRangeSetting levelLimit = new IntRangeSetting(this, "enchant-level-limit", 0, 10, Short.MAX_VALUE);
     private static final Map<BlockPosition, Integer> progress = new HashMap<>();
 
     private static final NamespacedKey selection = new NamespacedKey(FluffyMachines.getInstance(), "selection");
@@ -68,7 +72,7 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
 
     private static final ItemStack progressItem = new CustomItemStack(Material.EXPERIENCE_BOTTLE, "&aProgress");
 
-
+    // Why am I doing this... TODO: Replace with BlockStorage
     static {
         ItemMeta meta = selectionItem.getItemMeta();
         meta.getPersistentDataContainer().set(selection, PersistentDataType.INTEGER, -1);
@@ -79,6 +83,7 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
         super(category, item, recipeType, recipe);
 
         addItemHandler(onBreak());
+        addItemSetting(useLevelLimit, levelLimit);
 
         new BlockMenuPreset(getId(), "&cAdvanced Auto Disenchanter") {
 
@@ -238,6 +243,11 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
             }
 
             enchantMap.forEach((enchant, level) -> {
+                if (useLevelLimit.getValue()) {
+                    if (level > levelLimit.getValue()) {
+                        return; // Equivalent of continue
+                    }
+                }
                 enchants.add(enchant.getKey());
                 levels.add(level);
             });
@@ -275,9 +285,15 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
             }
 
             // Convert to a list
-            enchantMap.forEach((enchant, level) ->
+            enchantMap.forEach((enchant, level) -> {
+                if (useLevelLimit.getValue()) {
+                    if (level > levelLimit.getValue()) {
+                        return; // Equivalent of continue
+                    }
+                }
                 enchants.add(WordUtils.capitalizeFully(enchant.getKey().toString()
-                .replace("minecraft:", "").replace("_", " ")) + " " + Utils.toRoman(level)));
+                        .replace("minecraft:", "").replace("_", " ")) + " " + Utils.toRoman(level));
+            });
 
             ItemMeta meta = clickedItem.getItemMeta();
             List<String> lore = meta.getLore();
