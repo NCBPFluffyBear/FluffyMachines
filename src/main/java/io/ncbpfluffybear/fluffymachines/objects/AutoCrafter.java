@@ -56,6 +56,12 @@ public class AutoCrafter extends SlimefunItem implements EnergyNetComponent {
         this.material = material;
         this.mblock = (MultiBlockMachine) machineRecipes.getMachine();
 
+        constructMenu(displayName);
+        addItemHandler(onPlace());
+        addItemHandler(onBreak());
+    }
+
+    private void constructMenu(String displayName) {
         new BlockMenuPreset(getId(), displayName) {
 
             @Override
@@ -66,10 +72,10 @@ public class AutoCrafter extends SlimefunItem implements EnergyNetComponent {
             @Override
             public void newInstance(@Nonnull BlockMenu menu, @Nonnull Block b) {
                 if (!BlockStorage.hasBlockInfo(b)
-                    || BlockStorage.getLocationInfo(b.getLocation(), "enabled") == null
-                    || BlockStorage.getLocationInfo(b.getLocation(), "enabled").equals(String.valueOf(false))) {
+                        || BlockStorage.getLocationInfo(b.getLocation(), "enabled") == null
+                        || BlockStorage.getLocationInfo(b.getLocation(), "enabled").equals(String.valueOf(false))) {
                     menu.replaceExistingItem(6, new CustomItemStack(Material.GUNPOWDER, "&7已啟用: &4\u2718", "",
-                        "&e> 點擊啟用此機器")
+                            "&e> 點擊啟用此機器")
                     );
                     menu.addMenuClickHandler(6, (p, slot, item, action) -> {
                         BlockStorage.addBlockInfo(b, "enabled", String.valueOf(true));
@@ -78,7 +84,7 @@ public class AutoCrafter extends SlimefunItem implements EnergyNetComponent {
                     });
                 } else {
                     menu.replaceExistingItem(6, new CustomItemStack(Material.REDSTONE, "&7已啟用: &2\u2714",
-                        "", "&e> 點擊禁用此機器")
+                            "", "&e> 點擊禁用此機器")
                     );
                     menu.addMenuClickHandler(6, (p, slot, item, action) -> {
                         BlockStorage.addBlockInfo(b, "enabled", String.valueOf(false));
@@ -91,8 +97,8 @@ public class AutoCrafter extends SlimefunItem implements EnergyNetComponent {
             @Override
             public boolean canOpen(@Nonnull Block b, @Nonnull Player p) {
                 return p.hasPermission("slimefun.inventory.bypass")
-                    || Slimefun.getProtectionManager().hasPermission(p, b.getLocation(),
-                    Interaction.INTERACT_BLOCK);
+                        || Slimefun.getProtectionManager().hasPermission(p, b.getLocation(),
+                        Interaction.INTERACT_BLOCK);
             }
 
             @Override
@@ -102,31 +108,32 @@ public class AutoCrafter extends SlimefunItem implements EnergyNetComponent {
 
             @Override
             public int[] getSlotsAccessedByItemTransport(DirtyChestMenu menu, ItemTransportFlow flow, ItemStack item) {
-                if (flow == ItemTransportFlow.WITHDRAW) {
-                    return getOutputSlots();
-                }
-
-                List<Integer> slots = new ArrayList<>();
-                for (int slot : getInputSlots()) {
-                    if (menu.getItemInSlot(slot) != null) {
-                        slots.add(slot);
-                    }
-                }
-
-                slots.sort(compareSlots(menu));
-
-                int[] array = new int[slots.size()];
-
-                for (int i = 0; i < slots.size(); i++) {
-                    array[i] = slots.get(i);
-                }
-
-                return array;
+                return getCustomItemTransport(menu, flow, item);
             }
         };
+    }
 
-        addItemHandler(onPlace());
-        addItemHandler(onBreak());
+    protected int[] getCustomItemTransport(DirtyChestMenu menu, ItemTransportFlow flow, ItemStack item) {
+        if (flow == ItemTransportFlow.WITHDRAW) {
+            return getOutputSlots();
+        }
+
+        List<Integer> slots = new ArrayList<>();
+        for (int slot : getInputSlots()) {
+            if (menu.getItemInSlot(slot) != null) {
+                slots.add(slot);
+            }
+        }
+
+        slots.sort(compareSlots(menu));
+
+        int[] array = new int[slots.size()];
+
+        for (int i = 0; i < slots.size(); i++) {
+            array[i] = slots.get(i);
+        }
+
+        return array;
     }
 
     private BlockPlaceHandler onPlace() {
@@ -160,7 +167,7 @@ public class AutoCrafter extends SlimefunItem implements EnergyNetComponent {
         };
     }
 
-    private Comparator<Integer> compareSlots(DirtyChestMenu menu) {
+    protected Comparator<Integer> compareSlots(DirtyChestMenu menu) {
         return Comparator.comparingInt(slot -> menu.getItemInSlot(slot).getAmount());
     }
 
