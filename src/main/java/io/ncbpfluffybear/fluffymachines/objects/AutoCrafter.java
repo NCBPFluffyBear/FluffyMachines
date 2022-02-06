@@ -277,7 +277,7 @@ public class AutoCrafter extends SlimefunItem implements EnergyNetComponent {
     private boolean isCraftable(BlockMenu inv, ItemStack[] recipe) {
         for (int j = 0; j < 9; j++) {
             ItemStack item = inv.getItemInSlot(getInputSlots()[j]);
-            if ((item != null && item.getAmount() == 1)
+            if ((item != null && item.getAmount() == 1 && item.getType().getMaxStackSize() != 1)
                 || !SlimefunUtils.isItemSimilar(inv.getItemInSlot(getInputSlots()[j]), recipe[j], true)) {
                 return false;
             }
