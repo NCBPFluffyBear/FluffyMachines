@@ -1,12 +1,12 @@
 package io.ncbpfluffybear.fluffymachines.items.tools;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.tools.ExplosivePickaxe;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -22,7 +22,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public class UpgradedExplosiveShovel extends UpgradedExplosiveTool {
 
-    public UpgradedExplosiveShovel(Category category, SlimefunItemStack item, RecipeType recipeType,
+    public UpgradedExplosiveShovel(ItemGroup category, SlimefunItemStack item, RecipeType recipeType,
                                    ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
     }
@@ -30,7 +30,7 @@ public class UpgradedExplosiveShovel extends UpgradedExplosiveTool {
     @Override
     protected boolean canBreak(Player p, Block b) {
         return SlimefunTag.EXPLOSIVE_SHOVEL_BLOCKS.isTagged(b.getType())
-            && SlimefunPlugin.getProtectionManager().hasPermission(p, b.getLocation(), ProtectableAction.BREAK_BLOCK);
+            && Slimefun.getProtectionManager().hasPermission(p, b.getLocation(), Interaction.BREAK_BLOCK);
     }
 
 }

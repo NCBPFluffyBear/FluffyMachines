@@ -28,6 +28,8 @@ Custom item settings can be changed in `plugins/Slimefun/Items.yml`
 
 **Electric Dust Recycler**: Turns eight of the same dust into one sifted ore
 
+**Advanced Charging Bench & ACB Upgrade Card**: A charging bench which can be upgraded using upgrade cards.
+
 ## Generators
 **Crank Generator**: Multiblock machine that generates power when clicked
 
@@ -48,6 +50,8 @@ Custom item settings can be changed in `plugins/Slimefun/Items.yml`
 **Scythe**: Breaks 5 crops per swing
 
 **Wrench**: Quickly breaks Slimefun cargo and energy components.
+
+**Paxel**: A pickaxe, axe, and shovel all in one.
 
 ## Misc
 **Ender Chest Extraction Node**: Moves items from ender chest to a chest

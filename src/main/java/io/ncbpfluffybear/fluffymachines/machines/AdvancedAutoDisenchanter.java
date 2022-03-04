@@ -1,28 +1,30 @@
 package io.ncbpfluffybear.fluffymachines.machines;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
+import io.github.thebusybiscuit.slimefun4.api.items.settings.IntRangeSetting;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.blocks.BlockPosition;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
-import me.mrCookieSlime.Slimefun.cscorelib2.blocks.BlockPosition;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
-import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -59,26 +61,29 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
     public static final int CAPACITY = 4096;
     private static final int REQUIRED_TICKS = 60; // "Number of seconds", except 1 Slimefun "second" = 1.6 IRL seconds
 
+    private final ItemSetting<Boolean> useLevelLimit = new ItemSetting<>(this, "use-enchant-level-limit", false);
+    private final IntRangeSetting levelLimit = new IntRangeSetting(this, "enchant-level-limit", 0, 10, Short.MAX_VALUE);
     private static final Map<BlockPosition, Integer> progress = new HashMap<>();
 
     private static final NamespacedKey selection = new NamespacedKey(FluffyMachines.getInstance(), "selection");
 
-    private static final ItemStack selectionItem = new CustomItem(Material.ENCHANTED_BOOK,
+    private static final ItemStack selectionItem = new CustomItemStack(Material.ENCHANTED_BOOK,
         "&6Selected Enchant", "&a> Click here to cycle through enchants", "&5Current Enchant: None");
 
-    private static final ItemStack progressItem = new CustomItem(Material.EXPERIENCE_BOTTLE, "&aProgress");
+    private static final ItemStack progressItem = new CustomItemStack(Material.EXPERIENCE_BOTTLE, "&aProgress");
 
-
+    // Why am I doing this... TODO: Replace with BlockStorage
     static {
         ItemMeta meta = selectionItem.getItemMeta();
         meta.getPersistentDataContainer().set(selection, PersistentDataType.INTEGER, -1);
         selectionItem.setItemMeta(meta);
     }
 
-    public AdvancedAutoDisenchanter(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public AdvancedAutoDisenchanter(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
         addItemHandler(onBreak());
+        addItemSetting(useLevelLimit, levelLimit);
 
         new BlockMenuPreset(getId(), "&cAdvanced Auto Disenchanter") {
 
@@ -106,8 +111,8 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
             @Override
             public boolean canOpen(@Nonnull Block b, @Nonnull Player p) {
                 return (p.hasPermission("slimefun.inventory.bypass")
-                    || SlimefunPlugin.getProtectionManager().hasPermission(
-                    p, b.getLocation(), ProtectableAction.INTERACT_BLOCK));
+                    || Slimefun.getProtectionManager().hasPermission(
+                    p, b.getLocation(), Interaction.INTERACT_BLOCK));
             }
 
             @Override
@@ -166,19 +171,19 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
 
     protected void constructMenu(BlockMenuPreset preset) {
         for (int i : plainBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
+            preset.addItem(i, new CustomItemStack(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
         }
 
         for (int i : inputItemBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.CYAN_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
+            preset.addItem(i, new CustomItemStack(new ItemStack(Material.CYAN_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
         }
 
         for (int i : inputBookBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
+            preset.addItem(i, new CustomItemStack(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
         }
 
         for (int i : outputBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
+            preset.addItem(i, new CustomItemStack(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
         }
 
         preset.addItem(PROGRESS_SLOT, progressItem, (p, slot, item, action) -> false);
@@ -238,6 +243,11 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
             }
 
             enchantMap.forEach((enchant, level) -> {
+                if (useLevelLimit.getValue()) {
+                    if (level > levelLimit.getValue()) {
+                        return; // Equivalent of continue
+                    }
+                }
                 enchants.add(enchant.getKey());
                 levels.add(level);
             });
@@ -275,9 +285,15 @@ public class AdvancedAutoDisenchanter extends SlimefunItem implements EnergyNetC
             }
 
             // Convert to a list
-            enchantMap.forEach((enchant, level) ->
+            enchantMap.forEach((enchant, level) -> {
+                if (useLevelLimit.getValue()) {
+                    if (level > levelLimit.getValue()) {
+                        return; // Equivalent of continue
+                    }
+                }
                 enchants.add(WordUtils.capitalizeFully(enchant.getKey().toString()
-                .replace("minecraft:", "").replace("_", " ")) + " " + Utils.toRoman(level)));
+                        .replace("minecraft:", "").replace("_", " ")) + " " + Utils.toRoman(level));
+            });
 
             ItemMeta meta = clickedItem.getItemMeta();
             List<String> lore = meta.getLore();

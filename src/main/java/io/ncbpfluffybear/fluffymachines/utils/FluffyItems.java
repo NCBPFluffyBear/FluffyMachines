@@ -21,10 +21,9 @@ import io.ncbpfluffybear.fluffymachines.machines.BackpackUnloader;
 import io.ncbpfluffybear.fluffymachines.machines.ElectricDustFabricator;
 import io.ncbpfluffybear.fluffymachines.machines.ElectricDustRecycler;
 import io.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
-import me.mrCookieSlime.Slimefun.cscorelib2.skull.SkullItem;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -36,25 +35,22 @@ public class FluffyItems {
     private FluffyItems() {
     }
 
-    // Category
-    public static final Category fluffymachines = new Category(new NamespacedKey(FluffyMachines.getInstance(),
+    // ItemGroup
+    public static final ItemGroup fluffymachines = new ItemGroup(new NamespacedKey(FluffyMachines.getInstance(),
         "fluffymachines"),
-        new CustomItem(Material.SMOKER, "&6Fluffy Machines")
+        new CustomItemStack(Material.SMOKER, "&6Fluffy Machines")
     );
 
-    public static final Category fluffybarrels = new Category(new NamespacedKey(FluffyMachines.getInstance(),
+    public static final ItemGroup fluffybarrels = new ItemGroup(new NamespacedKey(FluffyMachines.getInstance(),
         "fluffybarrels"),
-        new CustomItem(Material.BARREL, "&6Fluffy Barrels")
+        new CustomItemStack(Material.BARREL, "&6Fluffy Barrels")
     );
 
     public static final SlimefunItemStack FLUFFYMACHINES_INFO = new SlimefunItemStack("FLUFFYMACHINES_INFO",
         Material.ORANGE_WOOL,
         "&6&lFluffyMachines Info",
         "",
-        "&e" + FluffyMachines.getInstance().getName() + " " + FluffyMachines.getInstance().getPluginVersion(),
-        "",
-        "&eLeft Click &7to get the wiki link",
-        "&eRight Click &7to get the bug report link"
+        "&e" + FluffyMachines.getInstance().getName() + " " + FluffyMachines.getInstance().getPluginVersion()
     );
 
     // Barrels
@@ -194,7 +190,7 @@ public class FluffyItems {
         "&eSneak &7to use"
     );
     public static final SlimefunItemStack WATERING_CAN = new SlimefunItemStack("WATERING_CAN",
-        new CustomItem(SkullItem.fromHash("6484da45301625dee79ae29ff513efa583f1ed838033f20db80963cedf8aeb0e")),
+        "6484da45301625dee79ae29ff513efa583f1ed838033f20db80963cedf8aeb0e",
         "&bWatering Can",
         "",
         "&fWaters Plants",
@@ -207,7 +203,7 @@ public class FluffyItems {
     );
     public static final SlimefunItemStack ENDER_CHEST_EXTRACTION_NODE = new SlimefunItemStack(
         "ENDER_CHEST_EXTRACTION_NODE",
-        new CustomItem(SkullItem.fromHash("e707c7f6c3a056a377d4120028405fdd09acfcd5ae804bfde0f653be866afe39")),
+        "e707c7f6c3a056a377d4120028405fdd09acfcd5ae804bfde0f653be866afe39",
         "&6Ender Chest Extraction Node",
         "",
         "&7Place this on the side of an &5Ender Chest &7to bind",
@@ -217,7 +213,7 @@ public class FluffyItems {
     );
     public static final SlimefunItemStack ENDER_CHEST_INSERTION_NODE = new SlimefunItemStack(
         "ENDER_CHEST_INSERTION_NODE",
-        new CustomItem(SkullItem.fromHash("7e5dc50c0186d53381d9430a2eff4c38f816b8791890c7471ffdb65ba202bc5")),
+        "7e5dc50c0186d53381d9430a2eff4c38f816b8791890c7471ffdb65ba202bc5",
         "&bEnder Chest Insertion Node",
         "",
         "&7Place this on the side of an &5Ender Chest &7to bind",
@@ -254,8 +250,7 @@ public class FluffyItems {
         LoreBuilderDynamic.powerPerTick(AutoTableSaw.ENERGY_CONSUMPTION)
     );
     public static final SlimefunItemStack WATER_SPRINKER = new SlimefunItemStack("WATER_SPRINKLER",
-        new CustomItem(SkullItem.fromHash("d6b13d69d1929dcf8edf99f3901415217c6a567d3a6ead12f75a4de3ed835e85"),
-            "Water Sprinkler"),
+        "d6b13d69d1929dcf8edf99f3901415217c6a567d3a6ead12f75a4de3ed835e85",
         "&bWater Sprinkler",
         "",
         "&7Sprinkly sprinkly",

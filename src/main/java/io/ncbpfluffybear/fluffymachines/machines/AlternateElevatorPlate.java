@@ -2,19 +2,19 @@ package io.ncbpfluffybear.fluffymachines.machines;
 
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.common.ChatColors;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
-import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -45,7 +45,7 @@ public class AlternateElevatorPlate extends SimpleSlimefunItem<BlockUseHandler> 
     private final Set<UUID> users = new HashSet<>();
     private static final int MAX_CHEST_INDEX = 53;
 
-    public AlternateElevatorPlate(Category category, SlimefunItemStack item, RecipeType recipeType,
+    public AlternateElevatorPlate(ItemGroup category, SlimefunItemStack item, RecipeType recipeType,
                                   ItemStack[] recipe, ItemStack recipeOutput) {
         super(category, item, recipeType, recipe, recipeOutput);
 
@@ -85,7 +85,7 @@ public class AlternateElevatorPlate extends SimpleSlimefunItem<BlockUseHandler> 
     public List<Block> getFloors(@Nonnull Block b) {
         List<Block> floors = new LinkedList<>();
 
-        for (int y = b.getWorld().getMaxHeight(); y > 0; y--) {
+        for (int y = b.getWorld().getMaxHeight(); y > -64; y--) {
             if (y == b.getY()) {
                 floors.add(b);
                 continue;
@@ -110,7 +110,7 @@ public class AlternateElevatorPlate extends SimpleSlimefunItem<BlockUseHandler> 
         List<Block> floors = getFloors(b);
 
         if (floors.size() < 2) {
-            SlimefunPlugin.getLocalization().sendMessage(p, "machines.ELEVATOR.no-destinations", true);
+            Slimefun.getLocalization().sendMessage(p, "machines.ELEVATOR.no-destinations", true);
         } else {
             openFloorSelector(b, floors, p);
         }
@@ -133,7 +133,7 @@ public class AlternateElevatorPlate extends SimpleSlimefunItem<BlockUseHandler> 
 
         if (floors.size() < MAX_CHEST_INDEX) {
             for (int i = floors.size(); i <= MAX_CHEST_INDEX; i++) {
-                elevatorMenu.addItem(i, new CustomItem(Material.LIGHT_GRAY_STAINED_GLASS_PANE, ""));
+                elevatorMenu.addItem(i, new CustomItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE, ""));
                 elevatorMenu.addMenuClickHandler(i, ChestMenuUtils.getEmptyClickHandler());
             }
         }
@@ -167,19 +167,19 @@ public class AlternateElevatorPlate extends SimpleSlimefunItem<BlockUseHandler> 
     public void openEditor(Player p, Block b) {
         ChestMenu menu = new ChestMenu("Elevator Settings");
 
-        menu.addItem(4, new CustomItem(Material.NAME_TAG, "&7Floor Name &e(Click to edit)", "",
+        menu.addItem(4, new CustomItemStack(Material.NAME_TAG, "&7Floor Name &e(Click to edit)", "",
             "&f" + ChatColors.color(BlockStorage.getLocationInfo(b.getLocation(), DATA_KEY))));
         menu.addMenuClickHandler(4, (pl, slot, item, action) -> {
             pl.closeInventory();
             pl.sendMessage("");
-            SlimefunPlugin.getLocalization().sendMessage(p, "machines.ELEVATOR.enter-name");
+            Slimefun.getLocalization().sendMessage(p, "machines.ELEVATOR.enter-name");
             pl.sendMessage("");
 
             ChatUtils.awaitInput(pl, message -> {
                 BlockStorage.addBlockInfo(b, DATA_KEY, message.replace(ChatColor.COLOR_CHAR, '&'));
 
                 pl.sendMessage("");
-                SlimefunPlugin.getLocalization().sendMessage(p, "machines.ELEVATOR.named", msg -> msg.replace("%floor" +
+                Slimefun.getLocalization().sendMessage(p, "machines.ELEVATOR.named", msg -> msg.replace("%floor" +
                     "%", message));
                 pl.sendMessage("");
 
@@ -194,14 +194,14 @@ public class AlternateElevatorPlate extends SimpleSlimefunItem<BlockUseHandler> 
 
     private void addFloor(ChestMenu menu, int slot, Player p, String floor, Block b, Block destination) {
         if (destination.getY() == b.getY()) {
-            menu.addItem(slot, new CustomItem(Material.LIME_STAINED_GLASS_PANE,
-                ChatColors.color(SlimefunPlugin.getLocalization().getMessage(p, "machines.ELEVATOR.current-floor")),
+            menu.addItem(slot, new CustomItemStack(Material.LIME_STAINED_GLASS_PANE,
+                ChatColors.color(Slimefun.getLocalization().getMessage(p, "machines.ELEVATOR.current-floor")),
                 "", ChatColor.WHITE + floor, ""));
             menu.addMenuClickHandler(slot, ChestMenuUtils.getEmptyClickHandler());
 
         } else {
-            menu.addItem(slot, new CustomItem(Material.GRAY_STAINED_GLASS_PANE,
-                ChatColors.color(SlimefunPlugin.getLocalization().getMessage(p,
+            menu.addItem(slot, new CustomItemStack(Material.GRAY_STAINED_GLASS_PANE,
+                ChatColors.color(Slimefun.getLocalization().getMessage(p,
                     "machines.ELEVATOR.click-to-teleport")), "", ChatColor.WHITE + floor, ""));
             menu.addMenuClickHandler(slot, (player, clickSlot, item, action) -> {
                 teleport(p, floor, destination);

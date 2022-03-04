@@ -5,24 +5,23 @@ import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.networks.energy.EnergyNetComponentType;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.multiblocks.TableSaw;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
-import me.mrCookieSlime.Slimefun.Lists.RecipeType;
-import me.mrCookieSlime.Slimefun.Objects.Category;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
-import me.mrCookieSlime.Slimefun.api.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
-import me.mrCookieSlime.Slimefun.cscorelib2.item.CustomItem;
-import me.mrCookieSlime.Slimefun.cscorelib2.materials.MaterialConverter;
-import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Tag;
@@ -57,12 +56,11 @@ public class AutoTableSaw extends SlimefunItem implements EnergyNetComponent {
 
     private final Map<ItemStack, ItemStack> tableSawRecipes = new HashMap<>();
 
-
-    public AutoTableSaw(Category category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public AutoTableSaw(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
 
         for (Material log : Tag.LOGS.getValues()) {
-            Optional<Material> planks = MaterialConverter.getPlanksFromLog(log);
+            Optional<Material> planks = getPlanks(log);
 
             planks.ifPresent(material -> tableSawRecipes.put(new ItemStack(log), new ItemStack(material, 8)));
         }
@@ -83,7 +81,7 @@ public class AutoTableSaw extends SlimefunItem implements EnergyNetComponent {
                 if (!BlockStorage.hasBlockInfo(b)
                     || BlockStorage.getLocationInfo(b.getLocation(), "enabled") == null
                     || BlockStorage.getLocationInfo(b.getLocation(), "enabled").equals(String.valueOf(false))) {
-                    menu.replaceExistingItem(6, new CustomItem(Material.GUNPOWDER, "&7Enabled: &4\u2718",
+                    menu.replaceExistingItem(6, new CustomItemStack(Material.GUNPOWDER, "&7Enabled: &4\u2718",
                         "", "&e> Click to enable this Machine")
                     );
                     menu.addMenuClickHandler(6, (p, slot, item, action) -> {
@@ -92,7 +90,7 @@ public class AutoTableSaw extends SlimefunItem implements EnergyNetComponent {
                         return false;
                     });
                 } else {
-                    menu.replaceExistingItem(6, new CustomItem(Material.REDSTONE, "&7Enabled: &2\u2714",
+                    menu.replaceExistingItem(6, new CustomItemStack(Material.REDSTONE, "&7Enabled: &2\u2714",
                         "", "&e> Click to disable this Machine"));
                     menu.addMenuClickHandler(6, (p, slot, item, action) -> {
                         BlockStorage.addBlockInfo(b, "enabled", String.valueOf(false));
@@ -105,8 +103,8 @@ public class AutoTableSaw extends SlimefunItem implements EnergyNetComponent {
             @Override
             public boolean canOpen(@Nonnull Block b, @Nonnull Player p) {
                 return p.hasPermission("slimefun.inventory.bypass")
-                    || SlimefunPlugin.getProtectionManager().hasPermission(p, b.getLocation(),
-                    ProtectableAction.INTERACT_BLOCK
+                    || Slimefun.getProtectionManager().hasPermission(p, b.getLocation(),
+                    Interaction.INTERACT_BLOCK
                 );
             }
 
@@ -164,7 +162,7 @@ public class AutoTableSaw extends SlimefunItem implements EnergyNetComponent {
     protected void constructMenu(BlockMenuPreset preset) {
 
         borders(preset, border, inputBorder, outputBorder);
-        preset.addItem(2, new CustomItem(new ItemStack(Material.STONECUTTER), "&eRecipe", "",
+        preset.addItem(2, new CustomItemStack(new ItemStack(Material.STONECUTTER), "&eRecipe", "",
                 "&bPut in the Recipe you want to craft",
                 "&4Table Saw Recipes ONLY"
             ),
@@ -223,19 +221,29 @@ public class AutoTableSaw extends SlimefunItem implements EnergyNetComponent {
         });
     }
 
+    /**
+     * Method that finds planks associated with a log
+     * @author TheBusyBiscuit
+     */
+    private @Nonnull Optional<Material> getPlanks(@Nonnull Material log) {
+        String materialName = log.name().replace("STRIPPED_", "");
+        materialName = materialName.substring(0, materialName.lastIndexOf('_')) + "_PLANKS";
+        return Optional.ofNullable(Material.getMaterial(materialName));
+    }
+
     static void borders(BlockMenuPreset preset, int[] border, int[] inputBorder, int[] outputBorder) {
         for (int i : border) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
+            preset.addItem(i, new CustomItemStack(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
                 (p, slot, item, action) -> false);
         }
 
         for (int i : inputBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.CYAN_STAINED_GLASS_PANE), " "),
+            preset.addItem(i, new CustomItemStack(new ItemStack(Material.CYAN_STAINED_GLASS_PANE), " "),
                 (p, slot, item, action) -> false);
         }
 
         for (int i : outputBorder) {
-            preset.addItem(i, new CustomItem(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "),
+            preset.addItem(i, new CustomItemStack(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "),
                 (p, slot, item, action) -> false);
         }
     }

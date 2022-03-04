@@ -6,7 +6,7 @@ import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import io.ncbpfluffybear.fluffymachines.items.tools.WateringCan;
 import io.ncbpfluffybear.fluffymachines.machines.AlternateElevatorPlate;
 import javax.annotation.Nonnull;
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -55,10 +55,12 @@ public class Events implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onHelicopterHatUse(PlayerToggleSneakEvent e) {
         Player p = e.getPlayer();
-        if (e.isSneaking() && helicopterHat.isItem(p.getEquipment().getHelmet())) {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 1000000, 4));
-        } else {
-            p.removePotionEffect(PotionEffectType.LEVITATION);
+        if (helicopterHat.isItem(p.getEquipment().getHelmet())) {
+            if (e.isSneaking()) {
+                p.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 1000000, 4));
+            } else {
+                p.removePotionEffect(PotionEffectType.LEVITATION);
+            }
         }
     }
 
@@ -181,22 +183,6 @@ public class Events implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onFMInfoClick(InventoryClickEvent e) {
-        if (SlimefunItem.getByItem(e.getCurrentItem()) != null
-            && SlimefunItem.getByItem(e.getCurrentItem()) == FluffyItems.FLUFFYMACHINES_INFO.getItem()) {
-
-            Player p = (Player) e.getWhoClicked();
-            p.closeInventory();
-
-            if (e.getClick() == ClickType.LEFT) {
-                Utils.send(p, "&7Wiki Link: https://github.com/NCBPFluffyBear/FluffyMachines/blob/master/README.md");
-            } else if (e.getClick() == ClickType.RIGHT) {
-                Utils.send(p, "&7Report Bugs: https://github.com/NCBPFluffyBear/FluffyMachines/issues");
-            }
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true)
     public void onExtractionNodePlace(BlockPlaceEvent e) {
         if ((e.getBlock().getY() != e.getBlockAgainst().getY() || e.getBlockAgainst().getType() != Material.ENDER_CHEST)
             && isExtractionNode(e.getItemInHand())) {
@@ -227,5 +213,14 @@ public class Events implements Listener {
             return false;
         }
         return sfItem.getId().equals(FluffyItems.ENDER_CHEST_EXTRACTION_NODE.getItemId()) || sfItem.getId().equals(FluffyItems.ENDER_CHEST_INSERTION_NODE.getItemId());
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    private void onCancelPlace(BlockPlaceEvent e) {
+        ItemStack item = e.getItemInHand();
+        SlimefunItem sfItem = SlimefunItem.getByItem(item);
+        if (sfItem instanceof CancelPlace) {
+            e.setCancelled(true);
+        }
     }
 }

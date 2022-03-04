@@ -1,9 +1,9 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunPlugin;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.common.ChatColors;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
-import me.mrCookieSlime.Slimefun.cscorelib2.chat.ChatColors;
-import me.mrCookieSlime.Slimefun.cscorelib2.protection.ProtectableAction;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -120,8 +120,8 @@ public final class Utils {
 
     public static boolean canOpen(@Nonnull Block b, @Nonnull Player p) {
         return (p.hasPermission("slimefun.inventory.bypass")
-            || SlimefunPlugin.getProtectionManager().hasPermission(
-            p, b.getLocation(), ProtectableAction.INTERACT_BLOCK));
+            || Slimefun.getProtectionManager().hasPermission(
+            p, b.getLocation(), Interaction.INTERACT_BLOCK));
     }
 
     // Don't use Slimefun's runsync
