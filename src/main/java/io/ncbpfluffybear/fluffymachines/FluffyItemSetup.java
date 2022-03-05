@@ -7,7 +7,7 @@ import io.ncbpfluffybear.fluffymachines.items.EnderChestInsertionNode;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import io.ncbpfluffybear.fluffymachines.items.tools.ACBUpgradeCard;
-import io.ncbpfluffybear.fluffymachines.items.tools.CargoWand;
+import io.ncbpfluffybear.fluffymachines.items.tools.CargoManipulator;
 import io.ncbpfluffybear.fluffymachines.items.tools.Dolly;
 import io.ncbpfluffybear.fluffymachines.items.tools.FluffyWrench;
 import io.ncbpfluffybear.fluffymachines.items.tools.Paxel;
@@ -397,7 +397,7 @@ public final class FluffyItemSetup {
             SlimefunItems.GOLD_24K, SlimefunItems.SMALL_CAPACITOR, SlimefunItems.GOLD_24K
         }).register(plugin);
 
-        new CargoWand(FluffyItems.fluffymachines, FluffyItems.CARGO_WAND,
+        new CargoManipulator(FluffyItems.fluffymachines, FluffyItems.CARGO_MANIPULATOR,
             RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
             SlimefunItems.CARGO_MOTOR, new ItemStack(Material.ENDER_EYE), SlimefunItems.ELECTRIC_MOTOR,
             new ItemStack(Material.ENDER_EYE), new ItemStack(Material.COMPASS), new ItemStack(Material.ENDER_EYE),

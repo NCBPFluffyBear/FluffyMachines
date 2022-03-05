@@ -503,13 +503,13 @@ public class FluffyItems {
         "&6Energy Consumption &c+" + AdvancedChargingBench.ENERGY_CONSUMPTION + "J"
     );
 
-    public static final SlimefunItemStack CARGO_WAND = new SlimefunItemStack("CARGO_WAND",
+    public static final SlimefunItemStack CARGO_MANIPULATOR = new SlimefunItemStack("CARGO_MANIPULATOR",
         Material.SEA_PICKLE,
-        "&9Cargo Wand",
+        "&9Cargo Manipulator",
         "",
         "&eRight Click &7to copy cargo node settings",
         "&eLeft Click &7to paste cargo node settings",
-        "&eSneak and Left Click &7to wipe settings"
+        "&eSneak and Right Click &7to clear a cargo node"
     );
 
     private static final Enchantment glowEnchant = Enchantment.getByKey(Constants.GLOW_ENCHANT);
