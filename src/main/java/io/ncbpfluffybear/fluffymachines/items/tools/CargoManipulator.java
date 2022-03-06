@@ -1,6 +1,5 @@
 package io.ncbpfluffybear.fluffymachines.items.tools;
 
-import fr.neatmonster.nocheatplus.utilities.InventoryUtil;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
@@ -11,7 +10,6 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.collections.Pair;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import io.github.thebusybiscuit.slimefun4.libraries.unirest.json.JSONObject;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
@@ -23,7 +21,6 @@ import javax.annotation.Nonnull;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import org.bukkit.Bukkit;
-import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -73,7 +70,12 @@ public class CargoManipulator extends SimpleSlimefunItem<ItemUseHandler> impleme
         Block b = e.getClickedBlock();
 
         // Check if targeted block is cargo node
-        if (getCargoNodeType(b) == null) {
+        SlimefunItemStack nodeType = getCargoNodeType(b);
+        if (nodeType == null || (
+                nodeType != SlimefunItems.CARGO_OUTPUT_NODE &&
+                        nodeType != SlimefunItems.CARGO_OUTPUT_NODE_2 &&
+                        nodeType != SlimefunItems.CARGO_INPUT_NODE
+        )) {
             return;
         }
 
