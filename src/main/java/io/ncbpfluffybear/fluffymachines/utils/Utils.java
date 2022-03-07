@@ -4,6 +4,8 @@ import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.common.ChatColors;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
+import java.util.Map;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -11,6 +13,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -92,6 +95,20 @@ public final class Utils {
             || b.getRelative(BlockFace.EAST).getType() == material
             || b.getRelative(BlockFace.SOUTH).getType() == material
             || b.getRelative(BlockFace.WEST).getType() == material;
+    }
+
+    public static void giveOrDropItem(Player p, ItemStack toGive) {
+        for (ItemStack leftover : p.getInventory().addItem(toGive).values()) {
+            p.getWorld().dropItemNaturally(p.getLocation(), leftover);
+        }
+    }
+
+    public static String getViewableName(ItemStack item) {
+        if (item.getItemMeta().hasDisplayName()) {
+            return item.getItemMeta().getDisplayName();
+        } else {
+            return WordUtils.capitalizeFully(item.getType().name().replace("_", " "));
+        }
     }
 
     public static String toRoman(int number) {

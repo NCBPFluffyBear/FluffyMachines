@@ -123,7 +123,7 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
 
                 // Insert all
                 menu.replaceExistingItem(INSERT_ALL_SLOT,
-                    new CustomItemStack(Material.CYAN_STAINED_GLASS_PANE, "&b放入全部",
+                    new CustomItemStack(Material.LIME_STAINED_GLASS, "&b放入全部",
                         "&7> 點此放入全部", "&7兼容的物品進入木桶"));
                 menu.addMenuClickHandler(INSERT_ALL_SLOT, (pl, slot, item, action) -> {
                     insertAll(pl, menu, b);
@@ -132,7 +132,7 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
 
                 // Extract all
                 menu.replaceExistingItem(EXTRACT_ALL_SLOT,
-                    new CustomItemStack(Material.ORANGE_STAINED_GLASS_PANE, "&6提取全部",
+                    new CustomItemStack(Material.RED_STAINED_GLASS_PANE, "&6提取全部",
                         "&7> 點此提取", "&7所有物品至你的背包"));
                 menu.addMenuClickHandler(EXTRACT_ALL_SLOT, (pl, slot, item, action) -> {
                     extractAll(pl, menu, b);

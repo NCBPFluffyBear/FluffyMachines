@@ -503,6 +503,15 @@ public class FluffyItems {
         "&6能源消耗 &c+" + AdvancedChargingBench.ENERGY_CONSUMPTION + "J"
     );
 
+    public static final SlimefunItemStack CARGO_MANIPULATOR = new SlimefunItemStack("CARGO_MANIPULATOR",
+        Material.SEA_PICKLE,
+        "&9物流機器手臂",
+        "",
+        "&e右鍵點擊 &7來複製物流節點的設定",
+        "&e左鍵點擊 &7來貼上物流節點的設定",
+        "&e蹲下和右鍵點擊 &7來清除物流節點的設定"
+    );
+
     private static final Enchantment glowEnchant = Enchantment.getByKey(Constants.GLOW_ENCHANT);
 
     static {
