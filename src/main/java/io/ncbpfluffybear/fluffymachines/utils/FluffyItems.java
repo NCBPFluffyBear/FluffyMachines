@@ -59,8 +59,6 @@ public class FluffyItems {
         "&eSmall Fluffy Barrel",
         "",
         "&7Stores a large amount of an item",
-        "&cDon't break with explosive tools...",
-        "&cUnless you want to lose everything inside",
         "",
         "&bCapacity: &e" + Barrel.SMALL_BARREL_SIZE + " Items"
     );
@@ -70,8 +68,6 @@ public class FluffyItems {
         "&6Medium Fluffy Barrel",
         "",
         "&7Stores a large amount of an item",
-        "&cDon't break with explosive tools...",
-        "&cUnless you want to lose everything inside",
         "",
         "&bCapacity: &e" + Barrel.MEDIUM_BARREL_SIZE + " Items"
     );
@@ -81,8 +77,6 @@ public class FluffyItems {
         "&bBig Fluffy Barrel",
         "",
         "&7Stores a large amount of an item",
-        "&cDon't break with explosive tools...",
-        "&cUnless you want to lose everything inside",
         "",
         "&bCapacity: &e" + Barrel.BIG_BARREL_SIZE + " Items"
     );
@@ -92,8 +86,6 @@ public class FluffyItems {
         "&aLarge Fluffy Barrel",
         "",
         "&7Stores a large amount of an item",
-        "&cDon't break with explosive tools...",
-        "&cUnless you want to lose everything inside",
         "",
         "&bCapacity: &e" + Barrel.LARGE_BARREL_SIZE + " Items"
     );
@@ -103,8 +95,6 @@ public class FluffyItems {
         "&5Massive Fluffy Barrel",
         "",
         "&7Stores a large amount of an item",
-        "&cDon't break with explosive tools...",
-        "&cUnless you want to lose everything inside",
         "",
         "&bCapacity: &e" + Barrel.MASSIVE_BARREL_SIZE + " Items"
     );
@@ -114,8 +104,6 @@ public class FluffyItems {
         "&cBottomless Fluffy Barrel",
         "",
         "&7Stores a large amount of an item",
-        "&cDon't break with explosive tools...",
-        "&cUnless you want to lose everything inside",
         "",
         "&bCapacity: &e" + Barrel.BOTTOMLESS_BARREL_SIZE + " Items"
     );

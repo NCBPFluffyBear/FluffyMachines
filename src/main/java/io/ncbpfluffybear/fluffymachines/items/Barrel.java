@@ -4,10 +4,12 @@ import io.github.thebusybiscuit.slimefun4.api.items.ItemHandler;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
 import io.github.thebusybiscuit.slimefun4.core.attributes.HologramOwner;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.ncbpfluffybear.fluffymachines.objects.NonHopperableBlock;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
+import java.util.ArrayList;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
@@ -52,6 +54,7 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
     private final int STATUS_SLOT = 22;
     private final int DISPLAY_SLOT = 31;
     private final int HOLOGRAM_TOGGLE_SLOT = 36;
+    private final int TRASH_TOGGLE_SLOT = 37;
     private final int INSERT_ALL_SLOT = 43;
     private final int EXTRACT_ALL_SLOT = 44;
 
@@ -65,6 +68,14 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
     private final int OVERFLOW_AMOUNT = 3240;
 
     private final int MAX_STORAGE;
+
+    private final ItemStack HOLOGRAM_OFF_ITEM = new CustomItemStack(Material.QUARTZ_SLAB, "&3Toggle Hologram &c(Off)");
+    private final ItemStack HOLOGRAM_ON_ITEM = new CustomItemStack(Material.QUARTZ_SLAB, "&3Toggle Hologram &a(On)");
+    private final ItemStack TRASH_ON_ITEM = new CustomItemStack(SlimefunItems.TRASH_CAN, "&3Toggle Overfill Trash &a(On)",
+            "&7Turn on to delete unstorable items");
+    private final ItemStack TRASH_OFF_ITEM = new CustomItemStack(SlimefunItems.TRASH_CAN, "&3Toggle Overfill Trash &c(Off)",
+            "&7Turn on to delete unstorable items"
+    );
 
     private final ItemSetting<Boolean> showHologram = new ItemSetting<>(this, "show-hologram", true);
     private final ItemSetting<Boolean> breakOnlyWhenEmpty = new ItemSetting<>(this, "break-only-when-empty", false);
@@ -110,20 +121,30 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
                 // Toggle hologram (Dynamic button)
                 String holo = BlockStorage.getLocationInfo(b.getLocation(), "holo");
                 if (holo == null || holo.equals("true")) {
-                    menu.replaceExistingItem(HOLOGRAM_TOGGLE_SLOT,
-                        new CustomItemStack(Material.QUARTZ_SLAB, "&3Toggle Hologram &a(On)"));
+                    menu.replaceExistingItem(HOLOGRAM_TOGGLE_SLOT, HOLOGRAM_ON_ITEM);
                 } else {
-                    menu.replaceExistingItem(HOLOGRAM_TOGGLE_SLOT,
-                        new CustomItemStack(Material.QUARTZ_SLAB, "&3Toggle Hologram &c(Off)"));
+                    menu.replaceExistingItem(HOLOGRAM_TOGGLE_SLOT, HOLOGRAM_OFF_ITEM);
                 }
                 menu.addMenuClickHandler(HOLOGRAM_TOGGLE_SLOT, (pl, slot, item, action) -> {
                     toggleHolo(b);
                     return false;
                 });
 
+                // Toggle trash (Dynamic button)
+                String trash = BlockStorage.getLocationInfo(b.getLocation(), "trash");
+                if (trash == null || trash.equals("false")) {
+                    menu.replaceExistingItem(TRASH_TOGGLE_SLOT, TRASH_OFF_ITEM);
+                } else {
+                    menu.replaceExistingItem(TRASH_TOGGLE_SLOT, TRASH_ON_ITEM);
+                }
+                menu.addMenuClickHandler(TRASH_TOGGLE_SLOT, (pl, slot, item, action) -> {
+                    toggleTrash(b);
+                    return false;
+                });
+
                 // Insert all
                 menu.replaceExistingItem(INSERT_ALL_SLOT,
-                    new CustomItemStack(Material.LIME_STAINED_GLASS, "&bInsert All",
+                    new CustomItemStack(Material.LIME_STAINED_GLASS_PANE, "&bInsert All",
                         "&7> Click here to insert all", "&7compatible items into the barrel"));
                 menu.addMenuClickHandler(INSERT_ALL_SLOT, (pl, slot, item, action) -> {
                     insertAll(pl, menu, b);
@@ -299,20 +320,29 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
                 if (stored == 0) {
                     registerItem(b, inv, slot, item, stored);
                 } else if (stored > 0 && inv.getItemInSlot(DISPLAY_SLOT) != null
-                    && matchMeta(Utils.unKeyItem(inv.getItemInSlot(DISPLAY_SLOT)), item)
-                    && stored < MAX_STORAGE) {
+                    && matchMeta(Utils.unKeyItem(inv.getItemInSlot(DISPLAY_SLOT)), item)) {
 
-                    // Can fit entire itemstack
-                    if (stored + item.getAmount() <= MAX_STORAGE) {
-                        storeItem(b, inv, slot, item, stored);
+                    if (stored < MAX_STORAGE) {
 
-                        // Split itemstack
+                        // Can fit entire itemstack
+                        if (stored + item.getAmount() <= MAX_STORAGE) {
+                            storeItem(b, inv, slot, item, stored);
+
+                            // Split itemstack
+                        } else {
+                            int amount = MAX_STORAGE - stored;
+                            inv.consumeItem(slot, amount);
+
+                            BlockStorage.addBlockInfo(b, "stored", String.valueOf((stored + amount)));
+                            updateMenu(b, inv, false);
+                        }
                     } else {
-                        int amount = MAX_STORAGE - stored;
-                        inv.consumeItem(slot, amount);
+                        String useTrash = BlockStorage.getLocationInfo(b.getLocation(), "trash");
 
-                        BlockStorage.addBlockInfo(b, "stored", String.valueOf((stored + amount)));
-                        updateMenu(b, inv, false);
+                        if (useTrash != null && useTrash.equals("true")) {
+                            inv.replaceExistingItem(slot, null);
+                        }
+
                     }
                 }
             }
@@ -428,18 +458,33 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
      */
     private void toggleHolo(Block b) {
         String toggle = BlockStorage.getLocationInfo(b.getLocation(), "holo");
-        BlockMenu menu = BlockStorage.getInventory(b);
         if (toggle == null || toggle.equals("true")) {
-            BlockStorage.addBlockInfo(b.getLocation(), "holo", "false");
-            menu.replaceExistingItem(HOLOGRAM_TOGGLE_SLOT,
-                new CustomItemStack(Material.QUARTZ_SLAB, "&3Toggle Hologram &c(Off)"));
+            putBlockData(b, HOLOGRAM_TOGGLE_SLOT, "holo", HOLOGRAM_OFF_ITEM, false);
             removeHologram(b);
         } else {
-            BlockStorage.addBlockInfo(b.getLocation(), "holo", "true");
-            menu.replaceExistingItem(HOLOGRAM_TOGGLE_SLOT,
-                new CustomItemStack(Material.QUARTZ_SLAB, "&3Toggle Hologram &a(On)"));
+            putBlockData(b, HOLOGRAM_TOGGLE_SLOT, "holo", HOLOGRAM_ON_ITEM, true);
             updateMenu(b, BlockStorage.getInventory(b), false);
         }
+    }
+
+    /**
+     * Toggle auto dispose status of barrel
+     */
+    private void toggleTrash(Block b) {
+        String toggle = BlockStorage.getLocationInfo(b.getLocation(), "trash");
+        if (toggle == null || toggle.equals("false")) {
+            putBlockData(b, TRASH_TOGGLE_SLOT, "trash", TRASH_ON_ITEM, true);
+        } else {
+            putBlockData(b, TRASH_TOGGLE_SLOT, "trash", TRASH_OFF_ITEM, false);
+        }
+    }
+
+    /**
+     * Sets a key in BlockStorage and replaces an item
+     */
+    private void putBlockData(Block b, int slot, String key, ItemStack displayItem, boolean data) {
+        BlockStorage.addBlockInfo(b.getLocation(), key, String.valueOf(data));
+        BlockStorage.getInventory(b).replaceExistingItem(slot, displayItem);
     }
 
     public void insertAll(Player p, BlockMenu menu, Block b) {
