@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -56,7 +57,7 @@ public final class Utils {
 
     private Utils() {}
 
-    public static void send(Player p, String message) {
+    public static void send(CommandSender p, String message) {
         p.sendMessage(ChatColor.GRAY + "[FluffyMachines] " + ChatColors.color(message));
     }
 

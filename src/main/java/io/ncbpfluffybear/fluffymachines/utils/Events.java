@@ -41,17 +41,6 @@ public class Events implements Listener {
     final HelicopterHat helicopterHat = (HelicopterHat) FluffyItems.HELICOPTER_HAT.getItem();
     final WateringCan wateringCan = (WateringCan) FluffyItems.WATERING_CAN.getItem();
 
-    @EventHandler
-    public void onAdminJoin(PlayerJoinEvent e) {
-        if (e.getPlayer().isOp() && !Constants.SLIMEFUN_UPDATED) {
-            Utils.send(e.getPlayer(), "&cYou are running a version of Slimefun before DEV 844, RC version of Slimefun " +
-                "or running a custom build. FluffyMachines requires you to update your Slimefun version so that " +
-                "barrels remain functional. Update before 4/15/2021, or players may encounter issues with " +
-                "FluffyMachines that I am not accountable for. Add ignore-outdated-warning: false to the " +
-                "FluffyMachines config to stop receiving this warning.");
-        }
-    }
-
     @EventHandler(ignoreCancelled = true)
     public void onHelicopterHatUse(PlayerToggleSneakEvent e) {
         Player p = e.getPlayer();

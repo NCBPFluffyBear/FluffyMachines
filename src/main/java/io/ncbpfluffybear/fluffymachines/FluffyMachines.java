@@ -116,29 +116,6 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
             getServer().getPluginManager().registerEvents(new McMMOEvents(), this);
         }
 
-        // Get Slimefun Numerical Version
-        try {
-            Matcher matcher = Constants.VERSION_PATTERN.matcher(Constants.SLIMEFUN_VERSION);
-            if (matcher.find()) {
-                int parsedVersion = Integer.parseInt(matcher.group(2));
-                if (parsedVersion < 844) {
-                    getLogger().log(Level.INFO, ChatColor.YELLOW + "You are running a Slimefun version before DEV 844. " +
-                        "FluffyMachines requires you to update your Slimefun version so that barrels remain functional. " +
-                        "Update before 4/15/2021, or players may encounter issues with FluffyMachines that " +
-                        "I am not accountable for.");
-                } else {
-                    Constants.SLIMEFUN_UPDATED = true;
-                }
-            } else {
-                getLogger().log(Level.INFO, ChatColor.YELLOW + "You are running a RC version of Slimefun " +
-                    "or running a custom build. FluffyMachines requires you to update your Slimefun version so that " +
-                    "barrels remain functional. Update before 4/15/2021, or players may encounter issues with " +
-                    "FluffyMachines that I am not accountable for");
-            }
-        } catch (NumberFormatException e) {
-            return;
-        }
-
         // Registering Items
         FluffyItemSetup.setup(this);
 
@@ -159,61 +136,61 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
     }
 
     @Override
-    public boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command cmd, @Nonnull String label,
-                             String[] args) {
+    public boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command cmd, @Nonnull String label, String[] args) {
 
         if (args.length == 0) {
-            sender.sendMessage("FluffyMachines > Gotta be longer than that");
+            Utils.send(sender, "&cInvalid command");
             return true;
         }
-        if (args[0].equalsIgnoreCase("replace") && sender instanceof Player) {
-            Player p = ((Player) sender);
-            ItemStack item = p.getInventory().getItemInMainHand();
-            if (SlimefunItem.getByItem(item) != null) {
-                if (SlimefunItem.getByItem(item) == FluffyItems.WATERING_CAN.getItem()) {
-                    p.getInventory().setItemInMainHand(FluffyItems.WATERING_CAN.clone());
-                }
-            }
+
+        if (!(sender instanceof Player)) {
+            Utils.send(sender, "&cThere are no console commands available");
             return true;
-        } else if (args[0].equalsIgnoreCase("debug") && sender.hasPermission("fluffymachines.admin")) {
-
-            return true;
-        } else if (args[0].equalsIgnoreCase("save") && sender.hasPermission("fluffymachines.admin")) {
-            saveAllPlayers();
-            return true;
-
-        } else if (args[0].equalsIgnoreCase("meta") && sender instanceof Player) {
-            Player p = (Player) sender;
-            Utils.send(p, String.valueOf(p.getInventory().getItemInMainHand().getItemMeta()));
-            return true;
-
-        } else if (args[0].equalsIgnoreCase("rawmeta") && sender instanceof Player) {
-            Player p = (Player) sender;
-            p.sendMessage(String.valueOf(p.getInventory().getItemInMainHand().getItemMeta()).replace("§", "&"));
-            return true;
-
-        } else if (args[0].equalsIgnoreCase("addinfo") && sender.hasPermission("fluffymachines.admin")
-            && sender instanceof Player) {
-            Player p = (Player) sender;
-
-            if (args.length != 3) {
-                Utils.send(p, "&cPlease specify the key and the data");
-
-            } else {
-                RayTraceResult rayResult = p.rayTraceBlocks(5d);
-                if (rayResult != null && rayResult.getHitBlock() != null
-                    && BlockStorage.hasBlockInfo(rayResult.getHitBlock())) {
-
-                    BlockStorage.addBlockInfo(rayResult.getHitBlock(), args[1], args[2]);
-                    Utils.send(p, "&aInfo has been added.");
-
-                } else {
-                    Utils.send(p, "&cYou must be looking at a Slimefun block");
-                }
-            }
-            return true;
-
         }
+
+        Player p = (Player) sender;
+
+        switch (args[0].toUpperCase()) {
+            case "META":
+                Utils.send(p, String.valueOf(p.getInventory().getItemInMainHand().getItemMeta()));
+                return true;
+            case "RAWMETA":
+                p.sendMessage(String.valueOf(p.getInventory().getItemInMainHand().getItemMeta()).replace("§", "&"));
+                return true;
+            case "VERSION":
+            case "V":
+                Utils.send(p, "&eThe current version is " + this.getPluginVersion());
+                return true;
+        }
+
+        if (p.hasPermission("fluffymachines.admin")) {
+            switch (args[0].toUpperCase()) {
+                case "ADDINFO":
+
+                    if (args.length != 3) {
+                        Utils.send(p, "&cPlease specify the key and the data");
+
+                    } else {
+                        RayTraceResult rayResult = p.rayTraceBlocks(5d);
+                        if (rayResult != null && rayResult.getHitBlock() != null
+                                && BlockStorage.hasBlockInfo(rayResult.getHitBlock())) {
+
+                            BlockStorage.addBlockInfo(rayResult.getHitBlock(), args[1], args[2]);
+                            Utils.send(p, "&aInfo has been added.");
+
+                        } else {
+                            Utils.send(p, "&cYou must be looking at a Slimefun block");
+                        }
+                    }
+                    return true;
+                case "SAVEPLAYERS":
+                    saveAllPlayers();
+                    return true;
+            }
+        }
+
+        Utils.send(p, "&cCommand not found");
+
         return false;
     }
 
