@@ -482,7 +482,7 @@ public class FluffyItems {
             "",
             "&7Right click to receive all exp",
             "&7from exp bottles in the dispenser",
-            "&7and facing barrels",
+            "&7and barrel the dispenser is facing",
             "",
             Utils.multiBlockWarning()
     );

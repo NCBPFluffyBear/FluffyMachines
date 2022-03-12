@@ -224,7 +224,13 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
 
                     if (stored > 0) {
                         int stackSize = inv.getItemInSlot(DISPLAY_SLOT).getMaxStackSize();
-                        ItemStack unKeyed = Utils.unKeyItem(inv.getItemInSlot(DISPLAY_SLOT));
+                        ItemStack unKeyed = getStoredItem(b);
+
+                        if (unKeyed.getType() == Material.BARRIER) {
+                            setStored(b, 0);
+                            updateMenu(b, inv, true);
+                            return;
+                        }
 
                         if (stored > OVERFLOW_AMOUNT) {
 
@@ -510,7 +516,13 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
     }
 
     public void extractAll(Player p, BlockMenu menu, Block b) {
-        ItemStack storedItem = Utils.unKeyItem(menu.getItemInSlot(DISPLAY_SLOT));
+        ItemStack storedItem = getStoredItem(b);
+
+        if (storedItem.getType() == Material.BARRIER) {
+            Utils.send(p, "&cThis barrel is empty!");
+            return;
+        }
+
         PlayerInventory inv = p.getInventory();
         ItemStack[] contents = inv.getStorageContents().clone();
 
