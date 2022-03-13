@@ -2,6 +2,7 @@ package io.ncbpfluffybear.fluffymachines.items;
 
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
+import io.github.thebusybiscuit.slimefun4.implementation.items.magical.talismans.Talisman;
 import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
@@ -100,15 +101,26 @@ public class EnderChestExtractionNode extends SlimefunItem {
 
                     ItemStack enderItem = enderInv.getItem(i);
 
-                    if (enderItem != null && state instanceof ShulkerBox && !Tag.SHULKER_BOXES.isTagged(enderItem.getType())) {
+                    // Ignore null items
+                    if (enderItem == null) {
                         continue;
                     }
 
-                    if (enderItem != null) {
-                        enderIndex = i;
-                        enderValid = true;
-                        break;
+                    // Prevent putting shulkers in shulkers
+                    if (state instanceof ShulkerBox && !Tag.SHULKER_BOXES.isTagged(enderItem.getType())) {
+                        continue;
                     }
+
+                    SlimefunItem sfEnderItem = SlimefunItem.getByItem(enderItem);
+
+                    // Ignore Talismen
+                    if (sfEnderItem instanceof Talisman) {
+                        continue;
+                    }
+
+                    enderIndex = i;
+                    enderValid = true;
+                    break;
                 }
 
                 Inventory containerInv = ((InventoryHolder) state).getInventory();
@@ -143,7 +155,7 @@ public class EnderChestExtractionNode extends SlimefunItem {
                     BlockStorage.addBlockInfo(b, "owner", p.getUniqueId().toString());
                     BlockStorage.addBlockInfo(b, "playername", p.getDisplayName());
                     Utils.send(p, "&a終界箱提取節點已註冊到 " + p.getDisplayName()
-                        + " &7(UUID: " + p.getUniqueId().toString() + ")");
+                        + " &7(UUID: " + p.getUniqueId() + ")");
                 }
             }
         };

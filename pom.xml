@@ -76,16 +76,10 @@
                         <relocation>
                             <pattern>org.bstats</pattern>
                             <shadedPattern>io.ncbpfluffybear.fluffymachines.bstats</shadedPattern>
-                            <excludes>
-                                <exclude>META-INF/*.MF</exclude>
-                            </excludes>
                         </relocation>
                         <relocation>
                             <pattern>com.github.Slimefun-Addon-Community.extrautils</pattern>
                             <shadedPattern>io.ncbpfluffybear.fluffymachines.extrautils</shadedPattern>
-                            <excludes>
-                                <exclude>META-INF/*.MF</exclude>
-                            </excludes>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -155,12 +149,24 @@
             <artifactId>bstats-bukkit</artifactId>
             <version>1.8</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bstats.*</groupId>
+                    <artifactId>*.MF</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>com.github.SlimeTraditionalTranslation</groupId>
             <artifactId>extrautils</artifactId>
             <version>33c4e0d</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.github.Slimefun-Addon-Community.*</groupId>
+                    <artifactId>*.MF</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
