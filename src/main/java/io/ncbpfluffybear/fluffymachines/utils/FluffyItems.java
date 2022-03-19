@@ -300,8 +300,7 @@ public class FluffyItems {
             "&cSuper Heated Furnace",
             "",
             "&7Multiblock component of the Foundry",
-            "&cMust be used in the Foundry",
-            "&cDO NOT BREAK USING EXPLOSIVE TOOLS!"
+            "&cMust be used in the Foundry"
     );
     public static final SlimefunItemStack AUTO_MAGIC_WORKBENCH = new SlimefunItemStack("AUTO_MAGIC_WORKBENCH",
             Material.BOOKSHELF,
