@@ -112,7 +112,7 @@ public class Barrel extends NonHopperableBlock implements DoubleHologramOwner {
                     setStored(b, 0);
 
                     if (showHologram.getValue()) {
-                        updateHologram(b, " ", "&cEmpty");
+                        updateHologram(b, null, "&cEmpty");
                     }
 
                 // Change hologram settings
@@ -458,7 +458,7 @@ public class Barrel extends NonHopperableBlock implements DoubleHologramOwner {
         if (stored == 0) {
             inv.replaceExistingItem(DISPLAY_SLOT, new CustomItemStack(Material.BARRIER, "&cEmpty"));
             if (showHologram.getValue() && (hasHolo == null || hasHolo.equals("true"))) {
-                updateHologram(b, " ", "&cEmpty");
+                updateHologram(b, null, "&cEmpty");
             }
         }
     }

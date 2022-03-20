@@ -6,7 +6,9 @@ import io.github.thebusybiscuit.slimefun4.core.services.holograms.HologramsServi
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.HologramProjector;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.common.ChatColors;
+import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
@@ -25,11 +27,11 @@ import org.bukkit.util.Vector;
  */
 public interface DoubleHologramOwner extends ItemAttribute {
 
-    default void updateHologram(@Nonnull Block b, @Nonnull String topText, @Nonnull String bottomText) {
+    default void updateHologram(@Nonnull Block b, @Nullable String topText, @Nonnull String bottomText) {
         Location locTop = b.getLocation().add(getTopHologramOffset(b));
         Location locBot = b.getLocation().add(getBottomHologramOffset(b));
-        Slimefun.getHologramsService().setHologramLabel(locTop, ChatColors.color(topText));
-        Slimefun.getHologramsService().setHologramLabel(locBot, ChatColors.color(bottomText));
+        Slimefun.getHologramsService().setHologramLabel(locTop, Utils.color(topText));
+        Slimefun.getHologramsService().setHologramLabel(locBot, Utils.color(bottomText));
     }
 
     default void removeHologram(@Nonnull Block b) {
@@ -46,17 +48,17 @@ public interface DoubleHologramOwner extends ItemAttribute {
 
     @Nonnull
     default double getHologramSpacing() {
-        return 0.5;
+        return 0.2;
     }
 
     @Nonnull
     default Vector getTopHologramOffset(@Nonnull Block block) {
-        return getHologramOffset(block).add(new Vector(0.0, getHologramSpacing() / 2, 0.0));
+        return getHologramOffset(block).add(new Vector(0.0, getHologramSpacing(), 0.0));
     }
 
     @Nonnull
     default Vector getBottomHologramOffset(@Nonnull Block block) {
-        return getHologramOffset(block).add(new Vector(0.0, -getHologramSpacing() / 2, 0.0));
+        return getHologramOffset(block);
     }
 
 }
