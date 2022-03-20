@@ -7,9 +7,13 @@ import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
+import io.ncbpfluffybear.fluffymachines.objects.DoubleHologramOwner;
 import io.ncbpfluffybear.fluffymachines.objects.NonHopperableBlock;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Locale;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
@@ -42,7 +46,7 @@ import java.util.List;
  * @author NCBPFluffyBear
  */
 
-public class Barrel extends NonHopperableBlock implements HologramOwner {
+public class Barrel extends NonHopperableBlock implements DoubleHologramOwner {
 
     private final int[] inputBorder = {9, 10, 11, 12, 18, 21, 27, 28, 29, 30};
     private final int[] outputBorder = {14, 15, 16, 17, 23, 26, 32, 33, 34, 35};
@@ -58,14 +62,16 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
     private final int INSERT_ALL_SLOT = 43;
     private final int EXTRACT_ALL_SLOT = 44;
 
-    public static final int SMALL_BARREL_SIZE = 17280; // 5 Double chests
-    public static final int MEDIUM_BARREL_SIZE = 34560; // 10 Double chests
-    public static final int BIG_BARREL_SIZE = 69120; // 20 Double chests
-    public static final int LARGE_BARREL_SIZE = 138240; // 40 Double chests
-    public static final int MASSIVE_BARREL_SIZE = 276480; // 80 Double chests
-    public static final int BOTTOMLESS_BARREL_SIZE = 1728000; // 500 Double chests
+    public static final int SMALL_BARREL_SIZE = 17280000; // 5000 Double chests
+    public static final int MEDIUM_BARREL_SIZE = 34560000; // 10000 Double chests
+    public static final int BIG_BARREL_SIZE = 69120000; // 20000 Double chests
+    public static final int LARGE_BARREL_SIZE = 138240000; // 40000 Double chests
+    public static final int MASSIVE_BARREL_SIZE = 276480000; // 80000 Double chests
+    public static final int BOTTOMLESS_BARREL_SIZE = 1728000000; // 500000 Double chests
 
     private final int OVERFLOW_AMOUNT = 3240;
+    public static final DecimalFormat STORAGE_INDICATOR_FORMAT = new DecimalFormat("###,###.####",
+            DecimalFormatSymbols.getInstance(Locale.ROOT));
 
     private final int MAX_STORAGE;
 
@@ -106,7 +112,7 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
                     setStored(b, 0);
 
                     if (showHologram.getValue()) {
-                        updateHologram(b, "&c空");
+                        updateHologram(b, " ", "&c空");
                     }
 
                 // Change hologram settings
@@ -446,13 +452,13 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
         }
 
         if (showHologram.getValue() && (hasHolo == null || hasHolo.equals("true"))) {
-            updateHologram(b, itemName + " &9x" + stored + " &7(" + storedPercent + "&7%)");
+            updateHologram(b, itemName , " &9x" + stored + " &7(" + storedPercent + "&7%)");
         }
 
         if (stored == 0) {
             inv.replaceExistingItem(DISPLAY_SLOT, new CustomItemStack(Material.BARRIER, "&c空"));
             if (showHologram.getValue() && (hasHolo == null || hasHolo.equals("true"))) {
-                updateHologram(b, "&c空");
+                updateHologram(b, " ", "&c空");
             }
         }
     }
@@ -564,7 +570,7 @@ public class Barrel extends NonHopperableBlock implements HologramOwner {
 
     public static String doubleRoundAndFade(double num) {
         // Using same format that is used on lore power
-        String formattedString = Utils.powerFormat.format(num);
+        String formattedString = STORAGE_INDICATOR_FORMAT.format(num);
         if (formattedString.indexOf('.') != -1) {
             return formattedString.substring(0, formattedString.indexOf('.')) + ChatColor.DARK_GRAY
                 + formattedString.substring(formattedString.indexOf('.')) + ChatColor.GRAY;

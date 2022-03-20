@@ -21,6 +21,7 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -155,7 +156,8 @@ public class BackpackLoader extends SlimefunItem implements EnergyNetComponent {
         // Are there any items in the input?
         for (int inputSlot : getInputSlots()) {
             if (inv.getItemInSlot(inputSlot) != null
-                && !(SlimefunItem.getByItem(inv.getItemInSlot(inputSlot)) instanceof SlimefunBackpack)) {
+                && !(SlimefunItem.getByItem(inv.getItemInSlot(inputSlot)) instanceof SlimefunBackpack)
+                && !Tag.SHULKER_BOXES.isTagged(inv.getItemInSlot(inputSlot).getType())) {
                 occupiedInputSlot = inputSlot;
                 break;
             } else if (inputSlot == getInputSlots()[13]) {

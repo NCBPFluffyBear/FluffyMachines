@@ -300,8 +300,7 @@ public class FluffyItems {
             "&c超級炙熱熔爐",
             "",
             "&7鑄造廠的多重方塊一部份",
-            "&c必須在鑄造廠上使用",
-            "&c不要使用爆炸工具破壞!"
+            "&c必須在鑄造廠上使用"
     );
     public static final SlimefunItemStack AUTO_MAGIC_WORKBENCH = new SlimefunItemStack("AUTO_MAGIC_WORKBENCH",
             Material.BOOKSHELF,

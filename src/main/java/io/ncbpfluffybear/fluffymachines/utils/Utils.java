@@ -57,8 +57,12 @@ public final class Utils {
 
     private Utils() {}
 
+    public static String color(String str) {
+        return ChatColor.translateAlternateColorCodes('&', str);
+    }
+
     public static void send(CommandSender p, String message) {
-        p.sendMessage(ChatColor.GRAY + "[Fluffy機器] " + ChatColors.color(message));
+        p.sendMessage(color("&7[&6Fluffy機器&7] &r" + message));
     }
 
     public static String multiBlockWarning() {
