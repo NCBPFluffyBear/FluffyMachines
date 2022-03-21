@@ -32,8 +32,7 @@ import java.util.TreeMap;
 public final class Utils {
 
     private static final NamespacedKey fluffykey = new NamespacedKey(FluffyMachines.getInstance(), "fluffykey");
-    public static final DecimalFormat powerFormat = new DecimalFormat("###,###.##",
-        DecimalFormatSymbols.getInstance(Locale.ROOT));
+    private static final NamespacedKey nonClickable = new NamespacedKey(FluffyMachines.getInstance(), "nonclickable");
 
     private final static TreeMap<Integer, String> map = new TreeMap<>();
 
@@ -58,6 +57,10 @@ public final class Utils {
     private Utils() {}
 
     public static String color(String str) {
+        if (str == null) {
+            return null;
+        }
+
         return ChatColor.translateAlternateColorCodes('&', str);
     }
 
@@ -69,9 +72,10 @@ public final class Utils {
         return "&c這是一台多重方塊機器!";
     }
 
+    // TODO: Deprecate custom model data method of detecting non interactables
     public static ItemStack buildNonInteractable(Material material, @Nullable String name, @Nullable String... lore) {
-        ItemStack nonClickable = new ItemStack(material);
-        ItemMeta NCMeta = nonClickable.getItemMeta();
+        ItemStack nonClickableItem = new ItemStack(material);
+        ItemMeta NCMeta = nonClickableItem.getItemMeta();
         if (name != null) {
             NCMeta.setDisplayName(ChatColors.color(name));
         } else {
@@ -86,13 +90,15 @@ public final class Utils {
             }
             NCMeta.setLore(lines);
         }
-        NCMeta.setCustomModelData(6969);
-        nonClickable.setItemMeta(NCMeta);
-        return nonClickable;
+
+        NCMeta.getPersistentDataContainer().set(nonClickable, PersistentDataType.BYTE, (byte) 1);
+        nonClickableItem.setItemMeta(NCMeta);
+        return nonClickableItem;
     }
 
+    // TODO: Deprecate custom model data method of detecting non interactables
     public static boolean checkNonInteractable(ItemStack item) {
-        return item.getItemMeta().hasCustomModelData() && item.getItemMeta().getCustomModelData() == 6969;
+        return item.getItemMeta().getPersistentDataContainer().getOrDefault(nonClickable, PersistentDataType.BYTE, (byte) 0) == 1;
     }
 
     public static boolean checkAdjacent(Block b, Material material) {

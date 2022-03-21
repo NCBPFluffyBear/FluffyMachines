@@ -7,12 +7,19 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
 //import io.github.thebusybiscuit.slimefun4.libraries.dough.updater.GitHubBuildsUpdater;
 import io.ncbpfluffybear.fluffymachines.utils.Constants;
 import io.ncbpfluffybear.fluffymachines.utils.Events;
-import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.GlowEnchant;
 import io.ncbpfluffybear.fluffymachines.utils.McMMOEvents;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import javax.annotation.Nonnull;
 import lombok.SneakyThrows;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 //import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -29,23 +36,12 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.RayTraceResult;
 
-import javax.annotation.Nonnull;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.regex.Matcher;
-
 public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
     private static FluffyMachines instance;
     public static final HashMap<ItemStack, List<Pair<ItemStack, List<RecipeChoice>>>> shapedVanillaRecipes = new HashMap<>();
     public static final HashMap<ItemStack, List<Pair<ItemStack, List<RecipeChoice>>>> shapelessVanillaRecipes =
-        new HashMap<>();
+            new HashMap<>();
 
     @SneakyThrows
     @Override
@@ -91,8 +87,8 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
                 if (!shapedVanillaRecipes.containsKey(key)) {
                     shapedVanillaRecipes.put(key,
-                        new ArrayList<>(Collections.singletonList(new Pair<>(sr.getResult(), rc))));
-                }else {
+                            new ArrayList<>(Collections.singletonList(new Pair<>(sr.getResult(), rc))));
+                } else {
                     shapedVanillaRecipes.get(key).add(new Pair<>(sr.getResult(), rc));
                 }
 
@@ -103,7 +99,7 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
                 // Key has a list of recipe options
                 if (!shapelessVanillaRecipes.containsKey(key)) {
                     shapelessVanillaRecipes.put(key,
-                        new ArrayList<>(Collections.singletonList(new Pair<>(slr.getResult(), slr.getChoiceList()))));
+                            new ArrayList<>(Collections.singletonList(new Pair<>(slr.getResult(), slr.getChoiceList()))));
                 } else {
                     shapelessVanillaRecipes.get(key).add(new Pair<>(slr.getResult(), slr.getChoiceList()));
                 }
@@ -125,11 +121,11 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
         //final Metrics metrics = new Metrics(this, 8927);
 
         getLogger().log(Level.INFO, ChatColor.GREEN + "Hi 你好! 想要分享你的伺服器到" +
-            "Slimefun社群?");
-        getLogger().log(Level.INFO, ChatColor.GREEN + "加入官方Slimefun Discord 伺服器 " +
-            "https://discord.gg/slimefun");
-        getLogger().log(Level.WARNING, ChatColor.RED + "此為繁體翻譯版 非官方版本");
-        getLogger().log(Level.WARNING, ChatColor.RED + "請勿在黏液科技伺服器官方問!");
+                "Slimefun社群?");
+        getLogger().log(Level.INFO, ChatColor.GREEN + "加入官方 Slimefun Discord 伺服器 " +
+                "https://discord.gg/slimefun");
+        getLogger().log(Level.WARNING, ChatColor.RED + "此為繁體翻譯版 非官方版本" +
+                "勿在黏液科技伺服器官方問!");
     }
 
     @Override
@@ -213,9 +209,9 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
     }
 
     private void registerGlow() {
-        Enchantment glowEnchantment = new GlowEnchant(Constants.GLOW_ENCHANT, new String[] {
-            "SMALL_PORTABLE_CHARGER", "MEDIUM_PORTABLE_CHARGER", "BIG_PORTABLE_CHARGER",
-            "LARGE_PORTABLE_CHARGER", "CARBONADO_PORTABLE_CHARGER", "PAXEL"
+        Enchantment glowEnchantment = new GlowEnchant(Constants.GLOW_ENCHANT, new String[]{
+                "SMALL_PORTABLE_CHARGER", "MEDIUM_PORTABLE_CHARGER", "BIG_PORTABLE_CHARGER",
+                "LARGE_PORTABLE_CHARGER", "CARBONADO_PORTABLE_CHARGER", "PAXEL"
         });
 
         // Prevent double-registration errors
