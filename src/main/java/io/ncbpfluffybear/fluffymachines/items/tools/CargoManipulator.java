@@ -21,6 +21,8 @@ import javax.annotation.Nonnull;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -119,6 +121,7 @@ public class CargoManipulator extends SimpleSlimefunItem<ItemUseHandler> impleme
         storedFilters.put(p, new Pair<>(nodeData, filterItems)); // Save cargo slots into map
 
         Utils.send(p, "&aYour " + SlimefunItem.getById((String) nodeData.get("id")).getItemName() + " &ahas been copied.");
+        createParticle(parent, Color.fromRGB(255, 252, 51)); // Bright Yellow
     }
 
     /**
@@ -141,6 +144,7 @@ public class CargoManipulator extends SimpleSlimefunItem<ItemUseHandler> impleme
         if (savedNodeType != nodeType) {
             Utils.send(p, "&cYou copied a " + savedNodeType.getDisplayName() +
                     " &cbut you are trying to modify a " + nodeType.getDisplayName() + "&c!");
+            createParticle(child, Color.RED);
             return;
         }
 
@@ -170,6 +174,7 @@ public class CargoManipulator extends SimpleSlimefunItem<ItemUseHandler> impleme
 
                 // Check if item not in inventory
                 if (!SlimefunUtils.containsSimilarItem(playerInventory, filterItems[i], true)) {
+                    createParticle(child, Color.AQUA);
                     Utils.send(p, "&cYou do not have " + Utils.getViewableName(filterItems[i]) + "&c. Skipping this item.");
                     continue;
                 }
@@ -190,6 +195,7 @@ public class CargoManipulator extends SimpleSlimefunItem<ItemUseHandler> impleme
         // Force menu update
         BlockStorage.getStorage(child.getWorld()).reloadInventory(child.getLocation());
         Utils.send(p, "&aYour " + savedNodeType.getDisplayName() + " &ahas been pasted.");
+        createParticle(child, Color.LIME);
 
     }
 
@@ -222,6 +228,7 @@ public class CargoManipulator extends SimpleSlimefunItem<ItemUseHandler> impleme
             BlockStorage.getStorage(node.getWorld()).reloadInventory(node.getLocation());
 
             Utils.send(p, "&aThe selected Cargo Node has been cleared");
+            createParticle(node, Color.fromRGB(255, 152, 56)); // Light orange
         }
     }
 
@@ -252,5 +259,10 @@ public class CargoManipulator extends SimpleSlimefunItem<ItemUseHandler> impleme
         }
 
         return (SlimefunItemStack) SlimefunItem.getById(blockId).getItem();
+    }
+
+    private void createParticle(Block b, Color color) {
+        Particle.DustOptions dustOption = new Particle.DustOptions(color, 1);
+        b.getLocation().getWorld().spawnParticle(Particle.REDSTONE, b.getLocation().add(0.5, 0.5, 0.5), 1, dustOption);
     }
 }

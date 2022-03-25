@@ -2,32 +2,27 @@ package io.ncbpfluffybear.fluffymachines.utils;
 
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.common.ChatColors;
-import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
-import java.util.Map;
+import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
+import io.ncbpfluffybear.fluffymachines.FluffyMachines;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitTask;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.TreeMap;
 
 public final class Utils {
 
@@ -54,7 +49,8 @@ public final class Utils {
 
     }
 
-    private Utils() {}
+    private Utils() {
+    }
 
     public static String color(String str) {
         if (str == null) {
@@ -98,14 +94,17 @@ public final class Utils {
 
     // TODO: Deprecate custom model data method of detecting non interactables
     public static boolean checkNonInteractable(ItemStack item) {
+        if (item == null || item.getItemMeta() == null) {
+            return false;
+        }
+
         return item.getItemMeta().getPersistentDataContainer().getOrDefault(nonClickable, PersistentDataType.BYTE, (byte) 0) == 1;
     }
 
-    public static boolean checkAdjacent(Block b, Material material) {
-        return b.getRelative(BlockFace.NORTH).getType() == material
-            || b.getRelative(BlockFace.EAST).getType() == material
-            || b.getRelative(BlockFace.SOUTH).getType() == material
-            || b.getRelative(BlockFace.WEST).getType() == material;
+    public static void createBorder(ChestMenu menu, ItemStack backgroundItem, int[] slots) {
+        for (int slot : slots) {
+            menu.addItem(slot, backgroundItem, ChestMenuUtils.getEmptyClickHandler());
+        }
     }
 
     public static void giveOrDropItem(Player p, ItemStack toGive) {
@@ -148,19 +147,19 @@ public final class Utils {
 
     public static boolean canOpen(@Nonnull Block b, @Nonnull Player p) {
         return (p.hasPermission("slimefun.inventory.bypass")
-            || Slimefun.getProtectionManager().hasPermission(
-            p, b.getLocation(), Interaction.INTERACT_BLOCK));
+                || Slimefun.getProtectionManager().hasPermission(
+                p, b.getLocation(), Interaction.INTERACT_BLOCK));
     }
 
     // Don't use Slimefun's runsync
     public static BukkitTask runSync(Runnable r) {
         return FluffyMachines.getInstance() != null && FluffyMachines.getInstance().isEnabled() ?
-            Bukkit.getScheduler().runTask(FluffyMachines.getInstance(), r) : null;
+                Bukkit.getScheduler().runTask(FluffyMachines.getInstance(), r) : null;
     }
 
     public static BukkitTask runSync(Runnable r, long delay) {
         return FluffyMachines.getInstance() != null && FluffyMachines.getInstance().isEnabled() ?
-            Bukkit.getScheduler().runTaskLater(FluffyMachines.getInstance(), r, delay) : null;
+                Bukkit.getScheduler().runTaskLater(FluffyMachines.getInstance(), r, delay) : null;
     }
 }
 
