@@ -252,6 +252,10 @@ public class CargoManipulator extends SimpleSlimefunItem<ItemUseHandler> impleme
      * Get the SlimefunItemStack of the cargo node
      */
     private SlimefunItemStack getCargoNodeType(Block b) {
+        if (b == null) {
+            return null;
+        }
+
         String blockId = BlockStorage.checkID(b);
 
         if (blockId == null) {
