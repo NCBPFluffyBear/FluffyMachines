@@ -6,7 +6,6 @@ import io.github.thebusybiscuit.slimefun4.core.attributes.MachineTier;
 import io.github.thebusybiscuit.slimefun4.core.attributes.MachineType;
 import io.github.thebusybiscuit.slimefun4.utils.LoreBuilder;
 import io.github.thebusybiscuit.slimefun4.utils.itemstack.ColoredFireworkStar;
-import io.ncbpfluffybear.fluffymachines.items.Barrel;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.tools.FluffyWrench;
 import io.ncbpfluffybear.fluffymachines.items.tools.PortableCharger;
@@ -33,61 +32,6 @@ public class FluffyItems {
 
     private FluffyItems() {
     }
-
-    // Barrels
-    public static final SlimefunItemStack SMALL_FLUFFY_BARREL = new SlimefunItemStack("SMALL_FLUFFY_BARREL",
-            Material.BEEHIVE,
-            "&e小型 Fluffy木桶",
-            "",
-            "&7可存儲多個相同的物品",
-            "",
-            "&b容量: &e" + Barrel.SMALL_BARREL_SIZE + " 物品"
-    );
-
-    public static final SlimefunItemStack MEDIUM_FLUFFY_BARREL = new SlimefunItemStack("MEDIUM_FLUFFY_BARREL",
-            Material.BARREL,
-            "&6中型 Fluffy木桶",
-            "",
-            "&7可存儲多個相同的物品",
-            "",
-            "&b容量: &e" + Barrel.MEDIUM_BARREL_SIZE + " 物品"
-    );
-
-    public static final SlimefunItemStack BIG_FLUFFY_BARREL = new SlimefunItemStack("BIG_FLUFFY_BARREL",
-            Material.SMOKER,
-            "&b大型 Fluffy木桶",
-            "",
-            "&7可存儲多個相同的物品",
-            "",
-            "&b容量: &e" + Barrel.BIG_BARREL_SIZE + " 物品"
-    );
-
-    public static final SlimefunItemStack LARGE_FLUFFY_BARREL = new SlimefunItemStack("LARGE_FLUFFY_BARREL",
-            Material.LODESTONE,
-            "&a巨型 Fluffy木桶",
-            "",
-            "&7可存儲多個相同的物品",
-            "",
-            "&b容量: &e" + Barrel.LARGE_BARREL_SIZE + " 物品"
-    );
-
-    public static final SlimefunItemStack MASSIVE_FLUFFY_BARREL = new SlimefunItemStack("MASSIVE_FLUFFY_BARREL",
-            Material.CRYING_OBSIDIAN,
-            "&5超大 Fluffy木桶",
-            "",
-            "&7可存儲多個相同的物品",
-            "",
-            "&b容量: &e" + Barrel.MASSIVE_BARREL_SIZE + " 物品"
-    );
-
-    public static final SlimefunItemStack BOTTOMLESS_FLUFFY_BARREL = new SlimefunItemStack("BOTTOMLESS_FLUFFY_BARREL",
-            Material.RESPAWN_ANCHOR,
-            "&c無底洞 Fluffy木桶",
-            "",
-            "&7可存儲多個相同的物品",
-            "",
-            "&b容量: &e" + Barrel.BOTTOMLESS_BARREL_SIZE + " 物品"
-    );
 
     // Portable Chargers
     public static final SlimefunItemStack SMALL_PORTABLE_CHARGER = new SlimefunItemStack("SMALL_PORTABLE_CHARGER",

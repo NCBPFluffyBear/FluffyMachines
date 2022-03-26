@@ -1,12 +1,12 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.ncbpfluffybear.fluffymachines.items.Barrel;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import io.ncbpfluffybear.fluffymachines.items.tools.WateringCan;
 import io.ncbpfluffybear.fluffymachines.machines.AlternateElevatorPlate;
 import javax.annotation.Nonnull;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,12 +25,10 @@ import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -73,7 +71,7 @@ public class Events implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPlayerDamage(EntityDamageEvent e) {
         if (e.getEntity() instanceof Player && ((Player) e.getEntity()).getEquipment() != null
-            && e.getCause() == EntityDamageEvent.DamageCause.FALL
+                && e.getCause() == EntityDamageEvent.DamageCause.FALL
         ) {
             Player p = (Player) e.getEntity();
             ItemStack helmet = p.getEquipment().getHelmet();
@@ -88,8 +86,8 @@ public class Events implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onNonClickableClick(InventoryClickEvent e) {
         ItemStack item = e.getCurrentItem();
-        if (item != null && item.getType() != Material.AIR && item.getItemMeta().hasCustomModelData()
-            && item.getItemMeta().getCustomModelData() == 6969) {
+        if (item != null && item.getType() != Material.AIR && (item.getItemMeta().hasCustomModelData()
+                && item.getItemMeta().getCustomModelData() == 6969) || Utils.checkNonInteractable(item)) {
             e.setCancelled(true);
         }
     }
@@ -97,7 +95,7 @@ public class Events implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onHeadRemove(PlayerArmorStandManipulateEvent e) {
         if (e.getRightClicked().getCustomName() != null
-            && e.getRightClicked().getCustomName().equals("hehexdfluff"))
+                && e.getRightClicked().getCustomName().equals("hehexdfluff"))
             e.setCancelled(true);
     }
 
@@ -107,11 +105,11 @@ public class Events implements Listener {
         if (en instanceof Item) {
             ItemStack item = ((Item) en).getItemStack();
             if (FireproofRune.isFireproof(item)
-                && (e.getCause() == EntityDamageEvent.DamageCause.FIRE
-                || e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK
-                || e.getCause() == EntityDamageEvent.DamageCause.LAVA
-                || e.getCause() == EntityDamageEvent.DamageCause.LIGHTNING)
-                && !en.isDead()
+                    && (e.getCause() == EntityDamageEvent.DamageCause.FIRE
+                    || e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK
+                    || e.getCause() == EntityDamageEvent.DamageCause.LAVA
+                    || e.getCause() == EntityDamageEvent.DamageCause.LIGHTNING)
+                    && !en.isDead()
             ) {
                 en.remove();
                 en.getLocation().getWorld().dropItem(en.getLocation(), item);
@@ -127,21 +125,21 @@ public class Events implements Listener {
             Block b = p.getLocation().subtract(0, 1, 0).getBlock();
 
             if (BlockStorage.hasBlockInfo(b) && BlockStorage.check(b) == FluffyItems.WARP_PAD.getItem()
-                && BlockStorage.getLocationInfo(b.getLocation(), "type").equals("origin")) {
+                    && BlockStorage.getLocationInfo(b.getLocation(), "type").equals("origin")) {
 
                 Location l = b.getLocation();
                 Location destination = new Location(b.getWorld(),
-                    Integer.parseInt(BlockStorage.getLocationInfo(l, "x")),
-                    Integer.parseInt(BlockStorage.getLocationInfo(l, "y")),
-                    Integer.parseInt(BlockStorage.getLocationInfo(l, "z")));
+                        Integer.parseInt(BlockStorage.getLocationInfo(l, "x")),
+                        Integer.parseInt(BlockStorage.getLocationInfo(l, "y")),
+                        Integer.parseInt(BlockStorage.getLocationInfo(l, "z")));
 
                 float yaw = p.getLocation().getYaw();
                 float pitch = p.getLocation().getPitch();
 
                 if (BlockStorage.hasBlockInfo(destination) && BlockStorage.getLocationInfo(destination, "type") != null
-                    && BlockStorage.getLocationInfo(destination, "type").equals("destination")
-                    && destination.getBlock().getRelative(BlockFace.UP).getType() == Material.AIR
-                    && destination.getBlock().getRelative(BlockFace.UP, 2).getType() == Material.AIR) {
+                        && BlockStorage.getLocationInfo(destination, "type").equals("destination")
+                        && destination.getBlock().getRelative(BlockFace.UP).getType() == Material.AIR
+                        && destination.getBlock().getRelative(BlockFace.UP, 2).getType() == Material.AIR) {
 
                     destination.setPitch(pitch);
                     destination.setYaw(yaw);
@@ -174,7 +172,7 @@ public class Events implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onExtractionNodePlace(BlockPlaceEvent e) {
         if ((e.getBlock().getY() != e.getBlockAgainst().getY() || e.getBlockAgainst().getType() != Material.ENDER_CHEST)
-            && isExtractionNode(e.getItemInHand())) {
+                && isExtractionNode(e.getItemInHand())) {
             Utils.send(e.getPlayer(), "&c你只能把它放在終界箱上!");
             e.setCancelled(true);
         }
