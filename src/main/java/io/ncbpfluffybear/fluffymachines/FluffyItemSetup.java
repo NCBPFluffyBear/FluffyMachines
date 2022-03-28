@@ -112,6 +112,8 @@ public final class FluffyItemSetup {
 
     public static void setupBarrels(@Nonnull FluffyMachines plugin) {
 
+        ItemStack previousBarrel = new ItemStack(Material.BARREL);
+
         for (Barrel.BarrelType barrelType : Barrel.BarrelType.values()) {
 
             SlimefunItemStack barrelStack = new SlimefunItemStack(barrelType.getKey(),
@@ -123,13 +125,13 @@ public final class FluffyItemSetup {
                     "&b容量: &e" + Barrel.getBarrelCapacity(barrelType) + " 物品"
             );
 
-            new Barrel(fluffybarrels, barrelStack, RecipeType.ENHANCED_CRAFTING_TABLE,
-                    new ItemStack[]{
-                            new ItemStack(Material.OAK_LOG), new ItemStack(Material.BARREL), new ItemStack(Material.OAK_LOG),
-                            new ItemStack(Material.OAK_LOG), new ItemStack(Material.BARREL), new ItemStack(Material.OAK_LOG),
-                            new ItemStack(Material.OAK_LOG), SlimefunItems.REINFORCED_PLATE, new ItemStack(Material.OAK_LOG)},
-                    barrelType.getDefaultSize()
-            ).register(plugin);
+            new Barrel(fluffybarrels, barrelStack, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+                    barrelType.getBorder(), previousBarrel, barrelType.getBorder(),
+                    barrelType.getBorder(), previousBarrel, barrelType.getBorder(),
+                    barrelType.getBorder(), barrelType.getReinforcement(), barrelType.getBorder()
+            }, barrelType.getDefaultSize()).register(plugin);
+
+            previousBarrel = barrelStack;
 
         }
     }

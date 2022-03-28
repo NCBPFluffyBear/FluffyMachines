@@ -607,21 +607,25 @@ public class Barrel extends NonHopperableBlock implements DoubleHologramOwner {
 
     public enum BarrelType {
 
-        SMALL(17280000, "&e小型 Fluffy木桶", Material.BEEHIVE),
-        MEDIUM(34560000, "&6中型 Fluffy木桶", Material.BARREL),
-        BIG(69120000, "&b大型 Fluffy木桶", Material.SMOKER),
-        LARGE(138240000, "&a巨型 Fluffy木桶", Material.LODESTONE),
-        MASSIVE(276480000, "&5超大 Fluffy木桶", Material.CRYING_OBSIDIAN),
-        BOTTOMLESS(1728000000, "&c無底洞 Fluffy木桶", Material.RESPAWN_ANCHOR);
+        SMALL(17280000, "&e小型 Fluffy木桶", Material.BEEHIVE, SlimefunItems.REINFORCED_PLATE, new ItemStack(Material.OAK_LOG)),
+        MEDIUM(34560000, "&6中型 Fluffy木桶", Material.BARREL, SlimefunItems.REINFORCED_PLATE, new ItemStack(Material.SMOOTH_STONE)),
+        BIG(69120000, "&b大型 Fluffy木桶", Material.SMOKER, SlimefunItems.REINFORCED_PLATE, new ItemStack(Material.BRICKS)),
+        LARGE(138240000, "&a巨型 Fluffy木桶", Material.LODESTONE, SlimefunItems.REINFORCED_PLATE, new ItemStack(Material.IRON_BLOCK)),
+        MASSIVE(276480000, "&5超大 Fluffy木桶", Material.CRYING_OBSIDIAN, SlimefunItems.REINFORCED_PLATE, new ItemStack(Material.OBSIDIAN)),
+        BOTTOMLESS(1728000000, "&c無底洞 Fluffy木桶", Material.RESPAWN_ANCHOR, SlimefunItems.BLISTERING_INGOT_3, SlimefunItems.REINFORCED_PLATE);
 
-        private int defaultSize;
-        private String displayName;
-        private Material itemMaterial;
+        private final int defaultSize;
+        private final String displayName;
+        private final Material itemMaterial;
+        private final ItemStack reinforcement;
+        private final ItemStack border;
 
-        BarrelType(int defaultSize, String displayName, Material itemMaterial) {
+        BarrelType(int defaultSize, String displayName, Material itemMaterial, ItemStack reinforcement, ItemStack border) {
             this.defaultSize = defaultSize;
             this.displayName = displayName;
             this.itemMaterial = itemMaterial;
+            this.reinforcement = reinforcement;
+            this.border = border;
         }
 
         public int getDefaultSize() {
@@ -640,6 +644,13 @@ public class Barrel extends NonHopperableBlock implements DoubleHologramOwner {
             return this.name().toUpperCase() + "_FLUFFY_BARREL";
         }
 
+        public ItemStack getReinforcement() {
+            return reinforcement;
+        }
+
+        public ItemStack getBorder() {
+            return border;
+        }
     }
 
 }
