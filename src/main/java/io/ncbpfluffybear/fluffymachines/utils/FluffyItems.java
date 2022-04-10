@@ -18,6 +18,7 @@ import io.ncbpfluffybear.fluffymachines.machines.BackpackLoader;
 import io.ncbpfluffybear.fluffymachines.machines.BackpackUnloader;
 import io.ncbpfluffybear.fluffymachines.machines.ElectricDustFabricator;
 import io.ncbpfluffybear.fluffymachines.machines.ElectricDustRecycler;
+import io.ncbpfluffybear.fluffymachines.machines.SmartFactory;
 import io.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
 import io.ncbpfluffybear.fluffymachines.multiblocks.CrankGenerator;
 import io.ncbpfluffybear.fluffymachines.objects.AutoCrafter;
@@ -428,6 +429,19 @@ public class FluffyItems {
             "&7and barrel the dispenser is facing",
             "",
             Utils.multiBlockWarning()
+    );
+
+    public static final SlimefunItemStack SMART_FACTORY = new SlimefunItemStack("SMART_FACTORY",
+            Material.SMOKER,
+            "&cSmart Factory",
+            "",
+            "&7An all-in-one machine that crafts",
+            "&7resources from raw materials",
+            "",
+            LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE),
+            LoreBuilder.speed(1),
+            LoreBuilderDynamic.powerBuffer(SmartFactory.getEnergyCapacity()),
+            LoreBuilderDynamic.powerPerTick(SmartFactory.getEnergyConsumption())
     );
 
 
