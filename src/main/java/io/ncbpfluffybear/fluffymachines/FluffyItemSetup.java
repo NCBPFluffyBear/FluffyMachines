@@ -37,6 +37,7 @@ import io.ncbpfluffybear.fluffymachines.machines.BackpackLoader;
 import io.ncbpfluffybear.fluffymachines.machines.BackpackUnloader;
 import io.ncbpfluffybear.fluffymachines.machines.ElectricDustFabricator;
 import io.ncbpfluffybear.fluffymachines.machines.ElectricDustRecycler;
+import io.ncbpfluffybear.fluffymachines.machines.SmartFactory;
 import io.ncbpfluffybear.fluffymachines.machines.WarpPad;
 import io.ncbpfluffybear.fluffymachines.machines.WaterSprinkler;
 import io.ncbpfluffybear.fluffymachines.multiblocks.CrankGenerator;
@@ -360,7 +361,7 @@ public final class FluffyItemSetup {
                 RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
                 SlimefunItems.ENDER_LUMP_2, SlimefunItems.BASIC_CIRCUIT_BOARD, SlimefunItems.ENDER_LUMP_2,
                 new ItemStack(Material.HOPPER), new ItemStack(Material.ENDER_PEARL), new ItemStack(Material.DISPENSER),
-                SlimefunItems.ENDER_LUMP_2, advancedCircuitBoard, SlimefunItems.ENDER_LUMP_2
+                SlimefunItems.ENDER_LUMP_2, SlimefunItems.BASIC_CIRCUIT_BOARD, SlimefunItems.ENDER_LUMP_2
         }).register(plugin);
 
         new Dolly(misc, FluffyItems.DOLLY, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
@@ -435,6 +436,13 @@ public final class FluffyItemSetup {
                 SlimefunItems.CARGO_MOTOR, new ItemStack(Material.ENDER_EYE), SlimefunItems.ELECTRIC_MOTOR,
                 new ItemStack(Material.ENDER_EYE), new ItemStack(Material.COMPASS), new ItemStack(Material.ENDER_EYE),
                 SlimefunItems.ELECTRIC_MOTOR, new ItemStack(Material.ENDER_EYE), SlimefunItems.CARGO_MOTOR
+        }).register(plugin);
+
+        new SmartFactory(machines, FluffyItems.SMART_FACTORY,
+                RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+                SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.ELECTRIC_SMELTERY_2, SlimefunItems.ELECTRIC_MOTOR,
+                SlimefunItems.ENHANCED_AUTO_CRAFTER, SlimefunItems.CARBON_PRESS, SlimefunItems.VANILLA_AUTO_CRAFTER,
+                SlimefunItems.CARGO_MOTOR, SlimefunItems.ELECTRIC_INGOT_FACTORY_3, SlimefunItems.CARGO_MOTOR
         }).register(plugin);
     }
 

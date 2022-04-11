@@ -27,8 +27,6 @@ public final class Constants {
 
     public static final boolean isSoulJarsInstalled = Bukkit.getPluginManager().isPluginEnabled("SoulJars");
 
-    public static final boolean isNCPInstalled = Bukkit.getPluginManager().isPluginEnabled("NoCheatPlus");
-
     public static final List<SlimefunItemStack> dusts = new ArrayList<>(Arrays.asList(
         SlimefunItems.COPPER_DUST, SlimefunItems.GOLD_DUST, SlimefunItems.IRON_DUST,
         SlimefunItems.LEAD_DUST, SlimefunItems.ALUMINUM_DUST, SlimefunItems.ZINC_DUST,

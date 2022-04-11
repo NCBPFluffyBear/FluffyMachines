@@ -1,6 +1,8 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
+import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.implementation.handlers.SimpleBlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.common.ChatColors;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
@@ -11,6 +13,8 @@ import java.util.TreeMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
+import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -105,6 +109,22 @@ public final class Utils {
         for (int slot : slots) {
             menu.addItem(slot, backgroundItem, ChestMenuUtils.getEmptyClickHandler());
         }
+    }
+
+    public static BlockBreakHandler getDefaultBreakHandler(int[] inputs, int[] outputs) {
+        return new SimpleBlockBreakHandler() {
+
+            @Override
+            public void onBlockBreak(@Nonnull Block b) {
+                BlockMenu inv = BlockStorage.getInventory(b);
+
+                if (inv != null) {
+                    inv.dropItems(b.getLocation(), inputs);
+                    inv.dropItems(b.getLocation(), outputs);
+                }
+            }
+
+        };
     }
 
     public static void giveOrDropItem(Player p, ItemStack toGive) {

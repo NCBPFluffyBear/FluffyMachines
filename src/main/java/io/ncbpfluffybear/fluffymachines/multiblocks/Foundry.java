@@ -43,7 +43,6 @@ public class Foundry extends MultiBlockMachine {
 
         if (BlockStorage.getLocationInfo(b.getLocation(), "accessible") == null) {
             BlockStorage.addBlockInfo(b, "accessible", "true");
-            //p.closeInventory();
             Utils.send(p, "&e鑄造廠已註冊. 用熔岩桶右鍵點擊熔爐來加熱.");
         } else if (BlockStorage.getLocationInfo(b.getLocation(), "ignited") == null) {
             if (p.getInventory().getItemInMainHand().getType() == Material.LAVA_BUCKET) {
@@ -68,6 +67,7 @@ public class Foundry extends MultiBlockMachine {
                 Utils.send(p, "&c此鑄造廠仍需要裝滿熔岩!");
             }
         } else if (BlockStorage.getLocationInfo(b.getLocation(), "ignited") != null) {
+            // Reheat furnace (Cosmetic)
             Furnace furnace = (Furnace) b.getState();
             furnace.setBurnTime((short)1000000);
             furnace.update(true);
