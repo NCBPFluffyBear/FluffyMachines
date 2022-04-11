@@ -1,6 +1,5 @@
 package io.ncbpfluffybear.fluffymachines.items.tools;
 
-import fr.neatmonster.nocheatplus.hooks.NCPExemptionManager;
 import io.github.thebusybiscuit.slimefun4.core.attributes.DamageableItem;
 import io.github.thebusybiscuit.slimefun4.core.attributes.EnergyNetComponent;
 import io.github.thebusybiscuit.slimefun4.core.attributes.Rechargeable;
@@ -106,16 +105,10 @@ public class FluffyWrench extends SimpleSlimefunItem<ItemUseHandler> implements 
 
     public static void breakBlock(Block block, Player p) {
         BlockBreakEvent breakEvent = new BlockBreakEvent(block, p);
-        if (Constants.isNCPInstalled) {
-            NCPExemptionManager.exemptPermanently(p);
-        }
         Bukkit.getPluginManager().callEvent(breakEvent);
         if (!breakEvent.isCancelled()) {
             BlockStorage.clearBlockInfo(block);
             block.setType(Material.AIR);
-        }
-        if (Constants.isNCPInstalled) {
-            NCPExemptionManager.unexempt(p);
         }
     }
 
