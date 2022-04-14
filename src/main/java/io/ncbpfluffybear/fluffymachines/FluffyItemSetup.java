@@ -263,9 +263,9 @@ public final class FluffyItemSetup {
 
         new AutoCraftingTable(machines, FluffyItems.AUTO_CRAFTING_TABLE,
                 RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
-                SlimefunItems.REINFORCED_PLATE, advancedCircuitBoard, SlimefunItems.REINFORCED_PLATE,
+                new ItemStack(Material.CRAFTING_TABLE), SlimefunItems.BASIC_CIRCUIT_BOARD, new ItemStack(Material.CRAFTING_TABLE),
                 SlimefunItems.CARGO_MOTOR, SlimefunItems.BLISTERING_INGOT_3, SlimefunItems.CARGO_MOTOR,
-                SlimefunItems.REINFORCED_PLATE, SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.REINFORCED_PLATE
+                new ItemStack(Material.CRAFTING_TABLE), SlimefunItems.ELECTRIC_MOTOR, new ItemStack(Material.CRAFTING_TABLE)
         }).register(plugin);
 
         new AutoAncientAltar(machines, FluffyItems.AUTO_ANCIENT_ALTAR,
@@ -440,9 +440,9 @@ public final class FluffyItemSetup {
 
         new SmartFactory(machines, FluffyItems.SMART_FACTORY,
                 RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
-                SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.ELECTRIC_SMELTERY_2, SlimefunItems.ELECTRIC_MOTOR,
-                SlimefunItems.ENHANCED_AUTO_CRAFTER, SlimefunItems.CARBON_PRESS, SlimefunItems.VANILLA_AUTO_CRAFTER,
-                SlimefunItems.CARGO_MOTOR, SlimefunItems.ELECTRIC_INGOT_FACTORY_3, SlimefunItems.CARGO_MOTOR
+                SlimefunItems.CARGO_MOTOR, SlimefunItems.ELECTRIC_SMELTERY_2, SlimefunItems.CARGO_MOTOR,
+                SlimefunItems.ENHANCED_AUTO_CRAFTER, SlimefunItems.CARBON_PRESS_3, SlimefunItems.VANILLA_AUTO_CRAFTER,
+                SlimefunItems.CRAFTING_MOTOR, SlimefunItems.ELECTRIC_INGOT_FACTORY_3, SlimefunItems.CRAFTING_MOTOR
         }).register(plugin);
     }
 

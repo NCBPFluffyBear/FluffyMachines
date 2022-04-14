@@ -63,7 +63,7 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Li
     private static final ItemStack PROGRESS_ITEM = new CustomItemStack(Material.FLINT_AND_STEEL, "&aProgress");
 
     private static final Map<BlockPosition, Integer> progress = new HashMap<>();
-    private static final int PROCESS_TIME_TICKS = 6; // "Number of seconds", except 1 Slimefun "second" = 1.6 IRL seconds
+    private static final int PROCESS_TIME_TICKS = 10; // "Number of seconds", except 1 Slimefun "second" = 1.6 IRL seconds
 
     private final List<SlimefunItemStack> ACCEPTED_ITEMS = new ArrayList<>(Arrays.asList(
             SlimefunItems.BILLON_INGOT, SlimefunItems.SOLDER_INGOT, SlimefunItems.NICKEL_INGOT,
@@ -71,7 +71,11 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Li
             SlimefunItems.BRASS_INGOT, SlimefunItems.ALUMINUM_BRASS_INGOT, SlimefunItems.STEEL_INGOT,
             SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.ALUMINUM_BRONZE_INGOT,
             SlimefunItems.CORINTHIAN_BRONZE_INGOT, SlimefunItems.GILDED_IRON, SlimefunItems.REDSTONE_ALLOY,
-            SlimefunItems.HARDENED_METAL_INGOT, SlimefunItems.REINFORCED_ALLOY_INGOT
+            SlimefunItems.HARDENED_METAL_INGOT, SlimefunItems.REINFORCED_ALLOY_INGOT, SlimefunItems.FERROSILICON,
+            SlimefunItems.ELECTRO_MAGNET, SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.HEATING_COIL,
+            SlimefunItems.SYNTHETIC_EMERALD, SlimefunItems.GOLD_4K, SlimefunItems.GOLD_6K, SlimefunItems.GOLD_8K,
+            SlimefunItems.GOLD_10K, SlimefunItems.GOLD_12K, SlimefunItems.GOLD_14K, SlimefunItems.GOLD_16K,
+            SlimefunItems.GOLD_18K, SlimefunItems.GOLD_20K, SlimefunItems.GOLD_22K, SlimefunItems.GOLD_24K
     ));
     private final Map<SlimefunItem, ItemStack[]> ITEM_RECIPES = new HashMap<>();
 
@@ -442,7 +446,7 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Li
     }
 
     public static int getEnergyConsumption() {
-        return 256;
+        return 1024;
     }
 
     public static int getEnergyCapacity() {
