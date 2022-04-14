@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Locale;
 import javax.annotation.Nonnull;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
+import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
@@ -59,7 +60,7 @@ public class Barrel extends NonHopperableBlock implements DoubleHologramOwner {
     private final int HOLOGRAM_TOGGLE_SLOT = 36;
     private final int TRASH_TOGGLE_SLOT = 37;
     private final int INSERT_ALL_SLOT = 43;
-    private final int EXTRACT_ALL_SLOT = 44;
+    private final int EXTRACT_SLOT = 44;
 
     private final int OVERFLOW_AMOUNT = 3240;
     public static final DecimalFormat STORAGE_INDICATOR_FORMAT = new DecimalFormat("###,###.####",
@@ -152,11 +153,13 @@ public class Barrel extends NonHopperableBlock implements DoubleHologramOwner {
                 });
 
                 // Extract all
-                menu.replaceExistingItem(EXTRACT_ALL_SLOT,
+                menu.replaceExistingItem(EXTRACT_SLOT,
                         new CustomItemStack(Material.RED_STAINED_GLASS_PANE, "&6提取全部",
-                                "&7> 點此提取", "&7所有物品至你的背包"));
-                menu.addMenuClickHandler(EXTRACT_ALL_SLOT, (pl, slot, item, action) -> {
-                    extractAll(pl, menu, b);
+                                "&7> 左鍵點擊提取", "&7所有物品至你的背包",
+                                "&7> 右鍵點擊提取一個物品"
+                        ));
+                menu.addMenuClickHandler(EXTRACT_SLOT, (pl, slot, item, action) -> {
+                    extract(pl, menu, b, action);
                     return false;
                 });
             }
@@ -428,7 +431,7 @@ public class Barrel extends NonHopperableBlock implements DoubleHologramOwner {
      * @param b   is the barrel block
      * @param inv is the barrel's inventory
      */
-    public void updateMenu(Block b, BlockMenu inv, boolean needsViewer) {
+    public void updateMenu(Block b, BlockMenu inv, boolean force) {
         String hasHolo = BlockStorage.getLocationInfo(b.getLocation(), "holo");
         int stored = getStored(b);
         String itemName;
@@ -438,7 +441,7 @@ public class Barrel extends NonHopperableBlock implements DoubleHologramOwner {
                 doubleRoundAndFade((double) stored / (double) inv.getItemInSlot(DISPLAY_SLOT).getMaxStackSize());
 
         // This helps a bit with lag, but may have visual impacts
-        if (inv.hasViewer() || needsViewer) {
+        if (inv.hasViewer() || force) {
             inv.replaceExistingItem(STATUS_SLOT, new CustomItemStack(
                     Material.LIME_STAINED_GLASS_PANE, "&6儲存物品: &e" + stored + " / " + barrelCapacity.getValue(),
                     "&b" + storedStacks + " 組 &8| &7" + storedPercent + "&7%"));
@@ -520,18 +523,39 @@ public class Barrel extends NonHopperableBlock implements DoubleHologramOwner {
         updateMenu(b, menu, false);
     }
 
-    public void extractAll(Player p, BlockMenu menu, Block b) {
+    public void extract(Player p, BlockMenu menu, Block b, ClickAction action) {
         ItemStack storedItem = getStoredItem(b);
+
+        PlayerInventory inv = p.getInventory();
+        int stored = getStored(b);
+
+        // Extract single
+        if (action.isRightClicked()) {
+            if (stored > 0) { // Extract from stored
+                Utils.giveOrDropItem(p, new CustomItemStack(storedItem));
+                setStored(b, --stored);
+                updateMenu(b, menu, false);
+                return;
+            } else {
+                for (int slot : OUTPUT_SLOTS) { // Extract from slot
+                    if (menu.getItemInSlot(slot) != null) {
+                        Utils.giveOrDropItem(p, new CustomItemStack(menu.getItemInSlot(slot), 1));
+                        menu.consumeItem(slot);
+                        return;
+                    }
+                }
+            }
+            Utils.send(p, "&cThis barrel is empty!");
+            return;
+        }
 
         if (storedItem.getType() == Material.BARRIER) {
             Utils.send(p, "&c這個木桶是空的!");
             return;
         }
 
-        PlayerInventory inv = p.getInventory();
+        // Extract all
         ItemStack[] contents = inv.getStorageContents().clone();
-
-        int stored = getStored(b);
         int maxStackSize = storedItem.getMaxStackSize();
         int outI = 0;
 
