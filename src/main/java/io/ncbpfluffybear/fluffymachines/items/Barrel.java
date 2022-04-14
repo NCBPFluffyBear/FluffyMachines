@@ -545,7 +545,7 @@ public class Barrel extends NonHopperableBlock implements DoubleHologramOwner {
                     }
                 }
             }
-            Utils.send(p, "&cThis barrel is empty!");
+            Utils.send(p, "&c這個木桶是空的!");
             return;
         }
 
