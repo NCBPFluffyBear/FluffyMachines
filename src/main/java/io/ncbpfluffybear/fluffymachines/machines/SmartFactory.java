@@ -1,6 +1,5 @@
 package io.ncbpfluffybear.fluffymachines.machines;
 
-import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
@@ -16,7 +15,6 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.collections.Pair;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
-import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +22,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import javax.annotation.Nonnull;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
@@ -33,14 +30,9 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -50,22 +42,22 @@ import org.bukkit.inventory.meta.ItemMeta;
  *
  * @author NCBPFluffyBear
  */
-public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Listener, RecipeDisplayItem {
+public class SmartFactory extends SlimefunItem implements EnergyNetComponent, RecipeDisplayItem {
 
-    private final int[] BORDER = new int[]{5, 6, 7, 8, 41, 42, 43, 44, 50, 51, 52, 53};
-    private final int[] BORDER_IN = new int[]{0, 1, 2, 3, 4, 9, 13, 18, 22, 27, 31, 36, 40, 45, 46, 47, 48, 49};
-    private final int[] BORDER_OUT = new int[]{14, 15, 16, 17, 23, 26, 32, 33, 34, 35};
-    private final int[] COAL_SLOTS = new int[]{10, 11, 12};
-    private final int[] MISC_SLOTS = new int[]{19, 20, 21, 28, 29, 30, 37, 38, 39};
-    private final int[] INPUT_SLOTS = new int[]{10, 11, 12, 19, 20, 21, 28, 29, 30, 37, 38, 39};
-    private final int PROGRESS_SLOT = 42;
-    private final int RECIPE_SLOT = 43;
+    private static final int[] BORDER = new int[]{5, 6, 7, 8, 41, 42, 44, 50, 51, 52, 53};
+    private static final int[] BORDER_IN = new int[]{0, 1, 2, 3, 4, 9, 13, 18, 22, 27, 31, 36, 40, 45, 46, 47, 48, 49};
+    private static final int[] BORDER_OUT = new int[]{14, 15, 16, 17, 23, 26, 32, 33, 34, 35};
+    private static final int[] COAL_SLOTS = new int[]{10, 11, 12};
+    private static final int[] MISC_SLOTS = new int[]{19, 20, 21, 28, 29, 30, 37, 38, 39};
+    private static final int[] INPUT_SLOTS = new int[]{10, 11, 12, 19, 20, 21, 28, 29, 30, 37, 38, 39};
+    private static final int PROGRESS_SLOT = 42;
+    public static final int RECIPE_SLOT = 43;
     private static final ItemStack PROGRESS_ITEM = new CustomItemStack(Material.FLINT_AND_STEEL, "&aProgress");
 
     private static final Map<BlockPosition, Integer> progress = new HashMap<>();
     private static final int PROCESS_TIME_TICKS = 10; // "Number of seconds", except 1 Slimefun "second" = 1.6 IRL seconds
 
-    private final List<SlimefunItemStack> ACCEPTED_ITEMS = new ArrayList<>(Arrays.asList(
+    private static final List<SlimefunItemStack> ACCEPTED_ITEMS = new ArrayList<>(Arrays.asList(
             SlimefunItems.BILLON_INGOT, SlimefunItems.SOLDER_INGOT, SlimefunItems.NICKEL_INGOT,
             SlimefunItems.COBALT_INGOT, SlimefunItems.DURALUMIN_INGOT, SlimefunItems.BRONZE_INGOT,
             SlimefunItems.BRASS_INGOT, SlimefunItems.ALUMINUM_BRASS_INGOT, SlimefunItems.STEEL_INGOT,
@@ -88,7 +80,6 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Li
 
         buildPreset();
         addItemHandler(onBreak());
-        Bukkit.getPluginManager().registerEvents(this, FluffyMachines.getInstance());
     }
 
     private void buildPreset() {
@@ -105,6 +96,7 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Li
                 this.addItem(18, new CustomItemStack(Material.YELLOW_STAINED_GLASS_PANE, "&bMisc Slots",
                         "&eThe remaining rows accept any item", "&eCargo will only complete the stacks"
                 ));
+                this.addMenuClickHandler(RECIPE_SLOT, ChestMenuUtils.getEmptyClickHandler());
             }
 
             @Override
@@ -114,14 +106,14 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Li
 
             @Override
             public void newInstance(@Nonnull BlockMenu menu, @Nonnull Block b) {
-                String recipe = BlockStorage.getLocationInfo(b.getLocation(), "recipe");
+                SlimefunItem recipe = SlimefunItem.getByItem(BlockStorage.getInventory(b).getItemInSlot(RECIPE_SLOT));
 
                 if (recipe == null) {
                     menu.replaceExistingItem(RECIPE_SLOT, new CustomItemStack(Material.BARRIER, "&bRecipe",
-                            "&eSneak and right click the", "&cfactory with a supported resource", "&cto set the recipe"
+                            "&cSneak and Right Click the", "&cfactory with a supported resource", "&cto set the recipe"
                     ));
                 } else {
-                    menu.replaceExistingItem(RECIPE_SLOT, getDisplayItem(SlimefunItem.getById(recipe)));
+                    menu.replaceExistingItem(RECIPE_SLOT, getDisplayItem(recipe, getDisplayRecipes()));
                 }
             }
 
@@ -179,41 +171,6 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Li
         };
     }
 
-    @EventHandler
-    private void onInteract(PlayerRightClickEvent e) {
-        Optional<Block> clickedBlock = e.getClickedBlock();
-
-        if (e.getHand() == EquipmentSlot.HAND && e.useBlock() != Event.Result.DENY && clickedBlock.isPresent() && e.getPlayer().isSneaking()) {
-            Optional<SlimefunItem> slimefunBlock = e.getSlimefunBlock();
-
-            if (!slimefunBlock.isPresent()) {
-                return;
-            }
-
-            SlimefunItem block = slimefunBlock.get();
-
-            if (block instanceof SmartFactory) {
-                SlimefunItem recipe = SlimefunItem.getByItem(e.getItem());
-                if (recipe == null || recipe.getItem() == SlimefunItems.CARGO_INPUT_NODE
-                        || recipe.getItem() == SlimefunItems.CARGO_OUTPUT_NODE || recipe.getItem() == SlimefunItems.CARGO_OUTPUT_NODE_2
-                ) {
-                    return;
-                }
-
-                e.cancel();
-
-                if (ACCEPTED_ITEMS.contains((SlimefunItemStack) recipe.getItem())) {
-                    BlockStorage.addBlockInfo(e.getClickedBlock().get(), "recipe", recipe.getId());
-                    BlockStorage.getInventory(e.getClickedBlock().get()).replaceExistingItem(RECIPE_SLOT,
-                            getDisplayItem(recipe));
-                    Utils.send(e.getPlayer(), "&aTarget recipe set to " + recipe.getItemName());
-                } else {
-                    Utils.send(e.getPlayer(), "&cThis item is not supported!");
-                }
-            }
-        }
-    }
-
     @Override
     public void preRegister() {
         addItemHandler(new BlockTicker() {
@@ -242,7 +199,7 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Li
         int currentProgress = progress.getOrDefault(pos, 0); // Get current progress from map
 
         // Check if we are ready to send the output
-        HashMap<Integer, Integer> ingredients = getIngredientSlots(b);
+        HashMap<Integer, Integer> ingredients = getIngredientSlots(b, inv);
         if (ingredients == null) {
             resetProgress(pos, inv);
             return;
@@ -269,13 +226,11 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Li
         resetProgress(pos, inv);
     }
 
-    private HashMap<Integer, Integer> getIngredientSlots(Block b) {
-        SlimefunItem key = SlimefunItem.getById(BlockStorage.getLocationInfo(b.getLocation(), "recipe"));
+    private HashMap<Integer, Integer> getIngredientSlots(Block b, BlockMenu inv) {
+        SlimefunItem key = SlimefunItem.getByItem(inv.getItemInSlot(RECIPE_SLOT));
         if (key == null) {
             return null;
         }
-
-        BlockMenu inv = BlockStorage.getInventory(b);
 
         if (!inv.fits(key.getItem(), getOutputSlots())) {
             return null;
@@ -314,8 +269,7 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Li
     }
 
     private void craft(Block b) {
-        SlimefunItem key = SlimefunItem.getById(BlockStorage.getLocationInfo(b.getLocation(), "recipe"));
-
+        SlimefunItem key = SlimefunItem.getByItem(BlockStorage.getInventory(b).getItemInSlot(RECIPE_SLOT));
         BlockStorage.getInventory(b).pushItem(key.getItem().clone(), getOutputSlots());
     }
 
@@ -403,8 +357,8 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Li
     /**
      * Adds the selection instructions onto display recipe
      */
-    private ItemStack getDisplayItem(SlimefunItem key) {
-        ItemStack item = getDisplayRecipes().get(ACCEPTED_ITEMS.indexOf(key.getItem())).clone(); // Get item with ingredients
+    public static ItemStack getDisplayItem(SlimefunItem key, List<ItemStack> displayRecipes) {
+        ItemStack item = displayRecipes.get(ACCEPTED_ITEMS.indexOf(key.getItem())).clone(); // Get item with ingredients
         ItemMeta displayMeta = item.getItemMeta();
 
         List<String> lore = displayMeta.getLore();
@@ -459,6 +413,10 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Li
 
     private int[] getOutputSlots() {
         return new int[]{24, 25};
+    }
+
+    public static List<SlimefunItemStack> getAcceptedItems() {
+        return ACCEPTED_ITEMS;
     }
 
     @Nonnull

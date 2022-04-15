@@ -247,6 +247,15 @@ public class FluffyItems {
             "&7Multiblock component of the Foundry",
             "&cMust be used in the Foundry"
     );
+    public static final SlimefunItemStack AUTO_ENHANCED_CRAFTING_TABLE = new SlimefunItemStack("AUTO_ENHANCED_CRAFTING_TABLE",
+            Material.CRAFTING_TABLE,
+            "&eAuto Enhanced Crafting Table",
+            "",
+            "&7Automatically crafts &eEnhanced Crafting Table &7recipes",
+            "",
+            LoreBuilderDynamic.powerBuffer(AutoCrafter.CAPACITY),
+            LoreBuilderDynamic.powerPerTick(AutoCrafter.ENERGY_CONSUMPTION)
+    );
     public static final SlimefunItemStack AUTO_MAGIC_WORKBENCH = new SlimefunItemStack("AUTO_MAGIC_WORKBENCH",
             Material.BOOKSHELF,
             "&6Auto Magic Workbench",
