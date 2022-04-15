@@ -31,6 +31,7 @@ import io.ncbpfluffybear.fluffymachines.machines.AlternateElevatorPlate;
 import io.ncbpfluffybear.fluffymachines.machines.AutoAncientAltar;
 import io.ncbpfluffybear.fluffymachines.machines.AutoArmorForge;
 import io.ncbpfluffybear.fluffymachines.machines.AutoCraftingTable;
+import io.ncbpfluffybear.fluffymachines.machines.AutoEnhancedCraftingTable;
 import io.ncbpfluffybear.fluffymachines.machines.AutoMagicWorkbench;
 import io.ncbpfluffybear.fluffymachines.machines.AutoTableSaw;
 import io.ncbpfluffybear.fluffymachines.machines.BackpackLoader;
@@ -273,6 +274,13 @@ public final class FluffyItemSetup {
                 SlimefunItems.ANCIENT_PEDESTAL, SlimefunItems.MEDIUM_CAPACITOR, SlimefunItems.ANCIENT_PEDESTAL,
                 SlimefunItems.ANCIENT_PEDESTAL, SlimefunItems.ANCIENT_ALTAR, SlimefunItems.ANCIENT_PEDESTAL,
                 SlimefunItems.ANCIENT_PEDESTAL, SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.ANCIENT_PEDESTAL
+        }).register(plugin);
+
+        new AutoEnhancedCraftingTable(machines, FluffyItems.AUTO_ENHANCED_CRAFTING_TABLE,
+                RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+                new ItemStack(Material.CRAFTING_TABLE), advancedCircuitBoard, new ItemStack(Material.CRAFTING_TABLE),
+                SlimefunItems.CARGO_MOTOR, SlimefunItems.BLISTERING_INGOT_3, SlimefunItems.CARGO_MOTOR,
+                new ItemStack(Material.CRAFTING_TABLE), SlimefunItems.ELECTRIC_MOTOR, new ItemStack(Material.CRAFTING_TABLE)
         }).register(plugin);
 
         new AutoTableSaw(machines, FluffyItems.AUTO_TABLE_SAW,

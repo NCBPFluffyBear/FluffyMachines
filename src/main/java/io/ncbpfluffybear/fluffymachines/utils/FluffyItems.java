@@ -247,6 +247,15 @@ public class FluffyItems {
             "&7鑄造廠的多重方塊一部份",
             "&c必須在鑄造廠上使用"
     );
+    public static final SlimefunItemStack AUTO_ENHANCED_CRAFTING_TABLE = new SlimefunItemStack("AUTO_ENHANCED_CRAFTING_TABLE",
+            Material.CRAFTING_TABLE,
+            "&e自動進階合成台",
+            "",
+            "&7自動製作&e進階合成台&7配方",
+            "",
+            LoreBuilderDynamic.powerBuffer(AutoCrafter.CAPACITY),
+            LoreBuilderDynamic.powerPerTick(AutoCrafter.ENERGY_CONSUMPTION)
+    );
     public static final SlimefunItemStack AUTO_MAGIC_WORKBENCH = new SlimefunItemStack("AUTO_MAGIC_WORKBENCH",
             Material.BOOKSHELF,
             "&6自動魔法合成台",
