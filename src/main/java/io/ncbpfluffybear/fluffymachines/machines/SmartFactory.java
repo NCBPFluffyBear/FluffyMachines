@@ -106,7 +106,7 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Re
 
             @Override
             public void newInstance(@Nonnull BlockMenu menu, @Nonnull Block b) {
-                SlimefunItem recipe = SlimefunItem.getByItem(BlockStorage.getInventory(b).getItemInSlot(RECIPE_SLOT));
+                SlimefunItem recipe = SlimefunItem.getByItem(menu.getItemInSlot(RECIPE_SLOT));
 
                 if (recipe == null) {
                     menu.replaceExistingItem(RECIPE_SLOT, new CustomItemStack(Material.BARRIER, "&bRecipe",

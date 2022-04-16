@@ -7,6 +7,7 @@ import io.github.thebusybiscuit.slimefun4.core.attributes.MachineType;
 import io.github.thebusybiscuit.slimefun4.utils.LoreBuilder;
 import io.github.thebusybiscuit.slimefun4.utils.itemstack.ColoredFireworkStar;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
+import io.ncbpfluffybear.fluffymachines.items.MiniBarrel;
 import io.ncbpfluffybear.fluffymachines.items.tools.FluffyWrench;
 import io.ncbpfluffybear.fluffymachines.items.tools.PortableCharger;
 import io.ncbpfluffybear.fluffymachines.machines.AdvancedAutoDisenchanter;
@@ -33,6 +34,17 @@ public class FluffyItems {
 
     private FluffyItems() {
     }
+
+    // Barrels
+    public static final SlimefunItemStack MINI_FLUFFY_BARREL = new SlimefunItemStack("MINI_FLUFFY_BARREL",
+            Material.COMPOSTER,
+            "&eMini Fluffy Barrel",
+            "",
+            "&7Stores a large amount of an item",
+            "&7Has a changeable capacity",
+            "",
+            "&bMax Capacity: &e" + MiniBarrel.getDisplayCapacity() + " Items"
+    );
 
     // Portable Chargers
     public static final SlimefunItemStack SMALL_PORTABLE_CHARGER = new SlimefunItemStack("SMALL_PORTABLE_CHARGER",

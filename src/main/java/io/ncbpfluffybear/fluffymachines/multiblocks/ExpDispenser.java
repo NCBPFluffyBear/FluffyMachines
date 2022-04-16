@@ -47,7 +47,7 @@ public class ExpDispenser extends MultiBlockMachine {
             if (sfBarrel.getStoredItem(barrel).getType() == Material.EXPERIENCE_BOTTLE) {
                 experience += sfBarrel.getStored(barrel) * EXP_PER_BOTTLE;
                 sfBarrel.setStored(barrel, 0);
-                sfBarrel.updateMenu(barrel, BlockStorage.getInventory(barrel), true);
+                sfBarrel.updateMenu(barrel, BlockStorage.getInventory(barrel), true, sfBarrel.getCapacity(b));
             }
         }
 
