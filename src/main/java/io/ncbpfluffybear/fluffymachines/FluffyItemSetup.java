@@ -13,6 +13,7 @@ import io.ncbpfluffybear.fluffymachines.items.EnderChestExtractionNode;
 import io.ncbpfluffybear.fluffymachines.items.EnderChestInsertionNode;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
+import io.ncbpfluffybear.fluffymachines.items.MiniBarrel;
 import io.ncbpfluffybear.fluffymachines.items.tools.ACBUpgradeCard;
 import io.ncbpfluffybear.fluffymachines.items.tools.CargoManipulator;
 import io.ncbpfluffybear.fluffymachines.items.tools.Dolly;
@@ -114,6 +115,12 @@ public final class FluffyItemSetup {
 
     public static void setupBarrels(@Nonnull FluffyMachines plugin) {
 
+        new MiniBarrel(fluffybarrels, FluffyItems.MINI_FLUFFY_BARREL, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+                new ItemStack(Material.OAK_SLAB), new ItemStack(Material.BARREL), new ItemStack(Material.OAK_SLAB),
+                new ItemStack(Material.OAK_SLAB), new ItemStack(Material.BARREL), new ItemStack(Material.OAK_SLAB),
+                SlimefunItems.STEEL_PLATE, SlimefunItems.STEEL_PLATE, SlimefunItems.STEEL_PLATE
+        }).register(plugin);
+
         ItemStack previousBarrel = new ItemStack(Material.BARREL);
 
         for (Barrel.BarrelType barrelType : Barrel.BarrelType.values()) {
@@ -124,7 +131,7 @@ public final class FluffyItemSetup {
                     "",
                     "&7可存儲多個相同的物品",
                     "",
-                    "&b容量: &e" + Barrel.getBarrelCapacity(barrelType) + " 物品"
+                    "&b容量: &e" + Barrel.getDisplayCapacity(barrelType) + " 物品"
             );
 
             new Barrel(fluffybarrels, barrelStack, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
