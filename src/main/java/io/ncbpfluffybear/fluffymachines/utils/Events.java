@@ -1,7 +1,6 @@
 package io.ncbpfluffybear.fluffymachines.utils;
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.ncbpfluffybear.fluffymachines.items.Barrel;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
 import io.ncbpfluffybear.fluffymachines.items.HelicopterHat;
 import io.ncbpfluffybear.fluffymachines.items.tools.WateringCan;
@@ -182,13 +181,6 @@ public class Events implements Listener {
     public void onDollyDispense(BlockDispenseEvent e) {
         SlimefunItem sfItem = SlimefunItem.getByItem(e.getItem());
         if (sfItem != null && sfItem.getId().equals(FluffyItems.DOLLY.getItemId())) {
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onBarrelBurn(BlockBurnEvent e) {
-        if (BlockStorage.check(e.getBlock()) instanceof Barrel) {
             e.setCancelled(true);
         }
     }

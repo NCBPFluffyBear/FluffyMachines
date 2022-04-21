@@ -5,6 +5,7 @@ import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.collections.Pair;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.updater.GitHubBuildsUpdater;
+import io.ncbpfluffybear.fluffymachines.listeners.BarrelListener;
 import io.ncbpfluffybear.fluffymachines.listeners.KeyedCrafterListener;
 import io.ncbpfluffybear.fluffymachines.utils.Constants;
 import io.ncbpfluffybear.fluffymachines.utils.Events;
@@ -29,6 +30,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.RecipeChoice;
@@ -118,8 +120,9 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
         FluffyItemSetup.setupBarrels(this);
 
         // Register Events Class
-        getServer().getPluginManager().registerEvents(new Events(), this);
-        getServer().getPluginManager().registerEvents(new KeyedCrafterListener(), this);
+        registerEvents(new Events());
+        registerEvents(new KeyedCrafterListener());
+        registerEvents(new BarrelListener());
 
         final Metrics metrics = new Metrics(this, 8927);
 
@@ -219,6 +222,10 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
         if (Enchantment.getByKey(glowEnchantment.getKey()) == null) {
             Enchantment.registerEnchantment(glowEnchantment);
         }
+    }
+
+    private void registerEvents(Listener listener) {
+        getServer().getPluginManager().registerEvents(listener, this);
     }
 
     @Override

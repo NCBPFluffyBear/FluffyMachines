@@ -35,6 +35,8 @@ public final class Constants {
 
     public static final int MAX_STACK_SIZE = 64;
 
+    public static final NamespacedKey LOC_KEY = new NamespacedKey(FluffyMachines.getInstance(), "location");
+
     private Constants() {}
 
 }

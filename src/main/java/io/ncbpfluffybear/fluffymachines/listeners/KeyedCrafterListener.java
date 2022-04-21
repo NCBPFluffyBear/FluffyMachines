@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -49,6 +50,11 @@ public class KeyedCrafterListener implements Listener {
                 if (isCargoNode(key)) {
                     return;
                 }
+
+                if (item.getType() == Material.ITEM_FRAME || Tag.SIGNS.isTagged(item.getType())) {
+                    return;
+                }
+
                 e.cancel();
 
                 if (key == null) {

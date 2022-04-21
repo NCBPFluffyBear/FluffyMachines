@@ -465,6 +465,42 @@ public class FluffyItems {
             LoreBuilderDynamic.powerPerTick(SmartFactory.getEnergyConsumption())
     );
 
+    public static final SlimefunItemStack BARREL_INTERFACE = new SlimefunItemStack("BARREL_INTERFACE",
+            Material.SMOKER,
+            "&cSmart Factory",
+            "",
+            "&7An all-in-one machine that crafts",
+            "&7resources from raw materials",
+            "",
+            LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE),
+            LoreBuilder.speed(1),
+            LoreBuilderDynamic.powerBuffer(SmartFactory.getEnergyCapacity()),
+            LoreBuilderDynamic.powerPerTick(SmartFactory.getEnergyConsumption())
+    );
+
+    public static final SlimefunItemStack WIRELESS_BARREL_INTERFACE = new SlimefunItemStack("WIRELESS_BARREL_INTERFACE",
+            Material.SMOKER,
+            "&cSmart Factory",
+            "",
+            "&7An all-in-one machine that crafts",
+            "&7resources from raw materials",
+            "",
+            LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE),
+            LoreBuilder.speed(1),
+            LoreBuilderDynamic.powerBuffer(SmartFactory.getEnergyCapacity()),
+            LoreBuilderDynamic.powerPerTick(SmartFactory.getEnergyConsumption())
+    );
+
+    public static final SlimefunItemStack WIRELESS_BARREL_TRANSMITTER = new SlimefunItemStack("WIRELESS_BARREL_TRANSMITTER",
+            Material.HEAVY_WEIGHTED_PRESSURE_PLATE,
+            "&9Wireless Barrel Transmitter",
+            "",
+            "&7Bind inside of a Barrel Interface to",
+            "&7wirelessly access the barrel's contents",
+            "",
+            "&7Linked Transmitter: &cNone",
+            "&7Slot: None"
+    );
 
     private static final Enchantment glowEnchant = Enchantment.getByKey(Constants.GLOW_ENCHANT);
 
