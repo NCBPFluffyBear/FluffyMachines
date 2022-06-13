@@ -264,6 +264,9 @@ public class AutoCrafter extends SlimefunItem implements EnergyNetComponent {
         for (ItemStack[] input : RecipeType.getRecipeInputList(mblock)) {
             if (isCraftable(menu, input)) {
                 ItemStack output = RecipeType.getRecipeOutputList(mblock, input).clone();
+                if (!menu.fits(output, getOutputSlots())) {
+                    return;
+                }
                 craft(output, menu);
                 removeCharge(block.getLocation(), getEnergyConsumption());
                 return;
