@@ -9,6 +9,8 @@ import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import io.ncbpfluffybear.fluffymachines.items.Barrel;
+import io.ncbpfluffybear.fluffymachines.items.BarrelInterface;
+import io.ncbpfluffybear.fluffymachines.items.BarrelTransmitter;
 import io.ncbpfluffybear.fluffymachines.items.EnderChestExtractionNode;
 import io.ncbpfluffybear.fluffymachines.items.EnderChestInsertionNode;
 import io.ncbpfluffybear.fluffymachines.items.FireproofRune;
@@ -458,6 +460,18 @@ public final class FluffyItemSetup {
                 SlimefunItems.CARGO_MOTOR, SlimefunItems.ELECTRIC_SMELTERY_2, SlimefunItems.CARGO_MOTOR,
                 SlimefunItems.ENHANCED_AUTO_CRAFTER, SlimefunItems.CARBON_PRESS_3, SlimefunItems.VANILLA_AUTO_CRAFTER,
                 SlimefunItems.CRAFTING_MOTOR, SlimefunItems.ELECTRIC_INGOT_FACTORY_3, SlimefunItems.CRAFTING_MOTOR
+        }).register(plugin);
+
+        new BarrelInterface(fluffybarrels, FluffyItems.BARREL_INTERFACE, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+                null, SlimefunItems.GPS_TRANSMITTER_4, null,
+                SlimefunItems.CARGO_OUTPUT_NODE, new ItemStack(Material.LECTERN), SlimefunItems.CARGO_CONNECTOR_NODE,
+                SlimefunItems.CORINTHIAN_BRONZE_INGOT, SlimefunItems.GILDED_IRON, SlimefunItems.CORINTHIAN_BRONZE_INGOT
+        }).register(plugin);
+
+        new BarrelTransmitter(fluffybarrels, FluffyItems.WIRELESS_BARREL_TRANSMITTER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
+                null, SlimefunItems.GPS_TRANSMITTER_4, null,
+                SlimefunItems.CARGO_INPUT_NODE, new ItemStack(Material.HEAVY_WEIGHTED_PRESSURE_PLATE), SlimefunItems.CARGO_CONNECTOR_NODE,
+                SlimefunItems.CORINTHIAN_BRONZE_INGOT, SlimefunItems.GILDED_IRON, SlimefunItems.CORINTHIAN_BRONZE_INGOT
         }).register(plugin);
     }
 

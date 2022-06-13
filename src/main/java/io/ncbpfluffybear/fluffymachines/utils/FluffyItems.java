@@ -121,7 +121,7 @@ public class FluffyItems {
             "",
             "&fWaters Plants",
             "",
-            "&7> &eRight Click &7a water to fill your watering can",
+            "&7> &eRight Click &7a water block to fill your watering can",
             "&7> &eRight Click &7a plant to speed up growth.",
             "&7> &eRight Click &7a player to slow them down",
             "",
@@ -466,16 +466,11 @@ public class FluffyItems {
     );
 
     public static final SlimefunItemStack BARREL_INTERFACE = new SlimefunItemStack("BARREL_INTERFACE",
-            Material.SMOKER,
-            "&cSmart Factory",
+            Material.LECTERN,
+            "&9Barrel Interface",
             "",
-            "&7An all-in-one machine that crafts",
-            "&7resources from raw materials",
-            "",
-            LoreBuilder.machine(MachineTier.END_GAME, MachineType.MACHINE),
-            LoreBuilder.speed(1),
-            LoreBuilderDynamic.powerBuffer(SmartFactory.getEnergyCapacity()),
-            LoreBuilderDynamic.powerPerTick(SmartFactory.getEnergyConsumption())
+            "&7Allows wireless viewing and access to",
+            "&7Barrel inventories"
     );
 
     public static final SlimefunItemStack WIRELESS_BARREL_INTERFACE = new SlimefunItemStack("WIRELESS_BARREL_INTERFACE",
