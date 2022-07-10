@@ -84,6 +84,10 @@ public class WaterSprinkler extends AbstractGrowthAccelerator {
 
     @Override
     protected void tick(@Nonnull Block b) {
+        if (this.isDisabled()) {
+            return;
+        }
+
         final BlockMenu inv = BlockStorage.getInventory(b);
         boolean open = inv.hasViewer();
 
