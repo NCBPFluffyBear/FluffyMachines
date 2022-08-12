@@ -30,6 +30,7 @@ import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -48,27 +49,27 @@ import org.bukkit.util.Vector;
 
 public class Barrel extends NonHopperableBlock implements DoubleHologramOwner {
 
-    private final int[] inputBorder = {9, 10, 11, 12, 18, 21, 27, 28, 29, 30};
-    private final int[] outputBorder = {14, 15, 16, 17, 23, 26, 32, 33, 34, 35};
-    private final int[] plainBorder = {0, 1, 2, 3, 4, 5, 6, 7, 8, 13, 36, 37, 38, 39, 40, 41, 42, 43, 44};
+    private static final int[] inputBorder = {9, 10, 11, 12, 18, 21, 27, 28, 29, 30};
+    private static final int[] outputBorder = {14, 15, 16, 17, 23, 26, 32, 33, 34, 35};
+    private static final int[] plainBorder = {0, 1, 2, 3, 4, 5, 6, 7, 8, 13, 36, 37, 38, 39, 40, 41, 42, 43, 44};
 
-    protected final int[] INPUT_SLOTS = {19, 20};
-    protected final int[] OUTPUT_SLOTS = {24, 25};
+    protected static final int[] INPUT_SLOTS = {19, 20};
+    protected static final int[] OUTPUT_SLOTS = {24, 25};
 
-    private final int STATUS_SLOT = 22;
-    private final int DISPLAY_SLOT = 31;
-    private final int HOLOGRAM_TOGGLE_SLOT = 36;
-    private final int TRASH_TOGGLE_SLOT = 37;
+    private static final int STATUS_SLOT = 22;
+    private static final int DISPLAY_SLOT = 31;
+    private static final int HOLOGRAM_TOGGLE_SLOT = 36;
+    private static final int TRASH_TOGGLE_SLOT = 37;
 
-    private final int OVERFLOW_AMOUNT = 3240;
+    private static final int OVERFLOW_AMOUNT = 3240;
     public static final DecimalFormat STORAGE_INDICATOR_FORMAT = new DecimalFormat("###,###.####",
             DecimalFormatSymbols.getInstance(Locale.ROOT));
 
-    private final ItemStack HOLOGRAM_OFF_ITEM = new CustomItemStack(Material.QUARTZ_SLAB, "&3Toggle Hologram &c(Off)");
-    private final ItemStack HOLOGRAM_ON_ITEM = new CustomItemStack(Material.QUARTZ_SLAB, "&3Toggle Hologram &a(On)");
-    private final ItemStack TRASH_ON_ITEM = new CustomItemStack(SlimefunItems.TRASH_CAN, "&3Toggle Overfill Trash &a(On)",
+    private static final ItemStack HOLOGRAM_OFF_ITEM = new CustomItemStack(Material.QUARTZ_SLAB, "&3Toggle Hologram &c(Off)");
+    private static final ItemStack HOLOGRAM_ON_ITEM = new CustomItemStack(Material.QUARTZ_SLAB, "&3Toggle Hologram &a(On)");
+    private static final ItemStack TRASH_ON_ITEM = new CustomItemStack(SlimefunItems.TRASH_CAN, "&3Toggle Overfill Trash &a(On)",
             "&7Turn on to delete unstorable items");
-    private final ItemStack TRASH_OFF_ITEM = new CustomItemStack(SlimefunItems.TRASH_CAN, "&3Toggle Overfill Trash &c(Off)",
+    private static final ItemStack TRASH_OFF_ITEM = new CustomItemStack(SlimefunItems.TRASH_CAN, "&3Toggle Overfill Trash &c(Off)",
             "&7Turn on to delete unstorable items"
     );
 
@@ -617,15 +618,23 @@ public class Barrel extends NonHopperableBlock implements DoubleHologramOwner {
         }
     }
 
-    public int getStored(Block b) {
+    public static int getStored(Block b) {
         return Integer.parseInt(BlockStorage.getLocationInfo(b.getLocation(), "stored"));
     }
 
-    public void setStored(Block b, int amount) {
+    public static int getStored(Location l) {
+        return Integer.parseInt(BlockStorage.getLocationInfo(l, "stored"));
+    }
+
+    public static void setStored(Block b, int amount) {
         BlockStorage.addBlockInfo(b.getLocation(), "stored", String.valueOf(amount));
     }
 
-    public ItemStack getStoredItem(Block b) {
+    public static void setStored(Location l, int amount) {
+        BlockStorage.addBlockInfo(l, "stored", String.valueOf(amount));
+    }
+
+    public static ItemStack getStoredItem(Block b) {
         return Utils.unKeyItem(BlockStorage.getInventory(b).getItemInSlot(DISPLAY_SLOT));
     }
 

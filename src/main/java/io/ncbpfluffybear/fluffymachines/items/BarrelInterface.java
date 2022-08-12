@@ -1,17 +1,13 @@
 package io.ncbpfluffybear.fluffymachines.items;
 
-import io.github.thebusybiscuit.slimefun4.api.gps.GPSNetwork;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
-import io.github.thebusybiscuit.slimefun4.core.networks.NetworkManager;
-import io.github.thebusybiscuit.slimefun4.core.services.localization.SlimefunLocalization;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.data.persistent.PersistentDataAPI;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
-import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import io.ncbpfluffybear.fluffymachines.utils.Constants;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
@@ -30,7 +26,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -42,7 +37,7 @@ public class BarrelInterface extends SlimefunItem {
             29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43
     };
     public static final NamespacedKey SLOT_KEY = new NamespacedKey(FluffyMachines.getInstance(), "slot");
-    private final ItemStack EMPTY_ITEM = new CustomItemStack(Material.BARRIER, "&cUnconfigured Slot",
+    private static final ItemStack EMPTY_ITEM = new CustomItemStack(Material.BARRIER, "&cUnconfigured Slot",
             "&7> Click this slot with a Wireless Barrel Transmitter", "&7to connect it"
     );
 
@@ -92,21 +87,46 @@ public class BarrelInterface extends SlimefunItem {
                                 cursor.setItemMeta(transmitterMeta);
                                 cursor.setType(Material.LIGHT_WEIGHTED_PRESSURE_PLATE);
                             } else {
+                                Location barrelLoc;
+                                Block transmitter;
+
                                 switch (e.getClick()) {
                                     case MIDDLE: // Reset slot
-                                        Location barrelLoc = parseLocation(getLocationString(currentItem.getItemMeta()));
-                                        Block transmitter = barrelLoc.getBlock().getRelative(BlockFace.UP);
+                                        barrelLoc = parseLocation(getLocationString(currentItem.getItemMeta()));
+                                        transmitter = barrelLoc.getBlock().getRelative(BlockFace.UP);
                                         if (BlockStorage.check(transmitter) instanceof BarrelTransmitter) {
                                             transmitter.setType(Material.HEAVY_WEIGHTED_PRESSURE_PLATE); // Update texture
-                                            menu.replaceExistingItem(slot, EMPTY_ITEM); // Clear slot
-                                            Utils.send(p, "&aSlot has been unbound");
                                         }
+                                        menu.replaceExistingItem(slot, EMPTY_ITEM); // Clear slot
+                                        Utils.send(p, "&aSlot has been unbound");
                                         return false;
                                     case LEFT:
                                         // Extract 1
+                                        barrelLoc = parseLocation(getLocationString(currentItem.getItemMeta()));
+                                        if (BlockStorage.check(barrelLoc) instanceof Barrel) {
+                                            int barrelStorage = Barrel.getStored(barrelLoc);
+                                            if (barrelStorage > 0) {
+                                                Utils.giveOrDropItem(p, new CustomItemStack(Barrel.getStoredItem(barrelLoc.getBlock()), 1));
+                                                Barrel.setStored(barrelLoc, --barrelStorage);
+                                            }
+                                        } else { // No barrel at location for some reason
+                                            menu.replaceExistingItem(slot, EMPTY_ITEM); // Clear slot
+                                            Utils.send(p, "&aNo barrel was found at this location, clearing slot...");
+                                        }
                                         return false;
                                     case RIGHT:
                                         // Extract stack
+                                        barrelLoc = parseLocation(getLocationString(currentItem.getItemMeta()));
+                                        if (BlockStorage.check(barrelLoc) instanceof Barrel) {
+                                            int barrelStorage = Barrel.getStored(barrelLoc);
+                                            if (barrelStorage > 63) {
+                                                Utils.giveOrDropItem(p, new CustomItemStack(Barrel.getStoredItem(barrelLoc.getBlock()), 64));
+                                                Barrel.setStored(barrelLoc, --barrelStorage);
+                                            }
+                                        } else { // No barrel at location for some reason
+                                            menu.replaceExistingItem(slot, EMPTY_ITEM); // Clear slot
+                                            Utils.send(p, "&aNo barrel was found at this location, clearing slot...");
+                                        }
                                         return false;
                                 }
                             }
