@@ -178,11 +178,13 @@ public class AutoAncientAltar extends SlimefunItem implements EnergyNetComponent
             @Override
             public void onPlayerPlace(@Nonnull BlockPlaceEvent e) {
                 BlockStorage.addBlockInfo(e.getBlock(), "enabled", String.valueOf(false));
+                BlockStorage.addBlockInfo(e.getBlock(), "craftOnce", String.valueOf(false));
             }
 
             @Override
             public void onBlockPlacerPlace(@Nonnull BlockPlacerPlaceEvent e) {
                 BlockStorage.addBlockInfo(e.getBlock(), "enabled", String.valueOf(false));
+                BlockStorage.addBlockInfo(e.getBlock(), "craftOnce", String.valueOf(false));
             }
         };
     }

@@ -116,7 +116,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> implements C
                                 return;
                             blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
                             double random = ThreadLocalRandom.current().nextDouble();
-                            if (random <= sugarCaneSuccessChance.getValue()) {
+                            if (random < sugarCaneSuccessChance.getValue()) {
                                 above.setType(Material.SUGAR_CANE);
                                 blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
                             }
@@ -136,7 +136,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> implements C
                             if (updateUses(this, p, item, 1)) {
                                 blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
                                 double random = ThreadLocalRandom.current().nextDouble();
-                                if (random <= cropSuccessChance.getValue()) {
+                                if (random < cropSuccessChance.getValue()) {
                                     crop.setAge(currentAge + 1);
                                     blockLocation.getWorld().playEffect(blockLocation, Effect.VILLAGER_PLANT_GROW, 0);
                                 }
@@ -161,7 +161,11 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> implements C
                         Material saplingMaterial = b.getType();
 
                         if (BlockStorage.hasBlockInfo(b)) {
-                            if (random <= exoticGardenSuccessChance.getValue()) {
+                            if (exoticGardenSuccessChance.getValue() == 0) {
+                                Utils.send(p, "&cYou can not water Exotic Garden plants!");
+                                return;
+                            }
+                            if (random < exoticGardenSuccessChance.getValue()) {
                                 Bukkit.getPluginManager().callEvent(new StructureGrowEvent(
                                     b.getLocation(), getTreeFromSapling(saplingMaterial), false, p, Collections.singletonList(b.getState())
                                 ));
@@ -172,7 +176,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> implements C
                         } else {
 
                             if (Constants.SERVER_VERSION < 1163) {
-                                if (random <= treeSuccessChance.getValue()) {
+                                if (random < treeSuccessChance.getValue()) {
 
                                     b.setType(Material.AIR);
                                     if (!blockLocation.getWorld().generateTree(blockLocation,
