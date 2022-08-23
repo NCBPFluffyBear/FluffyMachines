@@ -26,6 +26,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
 
@@ -167,32 +168,36 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
                 backpack.getInventory().setItem(27, LOCK_ITEM); // Mark as single chest
             }
 
-            ItemStack[] bpContents = backpack.getInventory().getContents();
+            final ItemStack[][] bpContents = {backpack.getInventory().getContents()};
 
-            if (isLockItem(bpContents[0])) {
+            if (isLockItem(bpContents[0][0])) {
                 Utils.send(p, "&cYou must pick up a chest first!");
                 return;
             }
 
-            boolean singleChest = isLockItem(bpContents[27]);
+            boolean singleChest = isLockItem(bpContents[0][27]);
             if (!canChestFit(chestBlock, p, singleChest)) {
                 Utils.send(p, "&cYou can't fit your chest there!");
                 return;
             }
 
-            createChest(chestBlock, p, singleChest);
+            Utils.runSync(new BukkitRunnable() {
+                @Override
+                public void run() {
+                    createChest(chestBlock, p, singleChest);
+                    backpack.getInventory().clear();
+                    backpack.getInventory().setItem(0, LOCK_ITEM);
 
-            backpack.getInventory().clear();
-            backpack.getInventory().setItem(0, LOCK_ITEM);
+                    // Shrink contents size if single chest
+                    if (singleChest) {
+                        bpContents[0] = Arrays.copyOf(bpContents[0], 27);
+                    }
 
-            // Shrink contents size if single chest
-            if (singleChest) {
-                bpContents = Arrays.copyOf(bpContents, 27);
-            }
-
-            ((InventoryHolder) chestBlock.getState()).getInventory().setStorageContents(bpContents);
-            dolly.setType(Material.MINECART);
-            Utils.send(p, "&aChest has been placed");
+                    ((InventoryHolder) chestBlock.getState()).getInventory().setStorageContents(bpContents[0]);
+                    dolly.setType(Material.MINECART);
+                    Utils.send(p, "&aChest has been placed");
+                }
+            });
         });
     }
 
