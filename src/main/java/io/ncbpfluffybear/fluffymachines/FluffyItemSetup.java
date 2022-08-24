@@ -316,7 +316,7 @@ public final class FluffyItemSetup {
         new AdvancedAutoDisenchanter(machines, FluffyItems.ADVANCED_AUTO_DISENCHANTER,
                 RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[]{
                 SlimefunItems.REDSTONE_ALLOY, SlimefunItems.AUTO_ANVIL_2, SlimefunItems.REDSTONE_ALLOY,
-                SlimefunItems.BLISTERING_INGOT_3, SlimefunItems.AUTO_DISENCHANTER, SlimefunItems.BLISTERING_INGOT_3,
+                SlimefunItems.BLISTERING_INGOT_3, SlimefunItems.AUTO_DISENCHANTER_2, SlimefunItems.BLISTERING_INGOT_3,
                 SlimefunItems.WITHER_PROOF_OBSIDIAN, SlimefunItems.WITHER_PROOF_OBSIDIAN,
                 SlimefunItems.WITHER_PROOF_OBSIDIAN
         }).register(plugin);
