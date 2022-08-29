@@ -71,7 +71,12 @@ public class MiniBarrel extends Barrel {
 
     @Override
     public int getCapacity(Block b) {
-        return Integer.parseInt(BlockStorage.getLocationInfo(b.getLocation(), "max-size"));
+        String capacity = BlockStorage.getLocationInfo(b.getLocation(), "max-size");
+        if (capacity == null) {
+            BlockStorage.addBlockInfo(b, "max-size", String.valueOf(barrelCapacity.getValue()));
+            return barrelCapacity.getValue();
+        }
+        return Integer.parseInt(capacity);
     }
 
     public static int getDisplayCapacity() {
