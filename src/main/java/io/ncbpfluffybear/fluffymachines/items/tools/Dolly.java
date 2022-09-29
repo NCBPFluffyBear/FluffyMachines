@@ -10,10 +10,6 @@ import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicBoolean;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -28,14 +24,25 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
 
     private static final ItemStack LOCK_ITEM = Utils.buildNonInteractable(
             Material.DIRT, "&4&lDolly empty", "&cHow did you get in here?"
     );
 
+    private static final int DELAY = 500; // 500ms
+    private final Map<Player, Long> timeouts;
+
     public Dolly(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
+        this.timeouts = new HashMap<>();
     }
 
     @Nonnull
@@ -45,6 +52,14 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
             e.cancel();
 
             Player p = e.getPlayer();
+
+            if (timeouts.containsKey(p) && timeouts.get(p) + DELAY > System.currentTimeMillis()) {
+                Utils.send(p, "&cPlease wait before using the dolly again!");
+                return;
+            }
+
+            timeouts.put(p, System.currentTimeMillis());
+
             ItemStack dolly = e.getItem();
 
             if (!e.getClickedBlock().isPresent()) {
@@ -274,6 +289,5 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
                 || lockItem.getItemMeta().hasCustomModelData() // Remnants of when I didn't know what PDC was
                 && lockItem.getItemMeta().getCustomModelData() == 6969); // Leave in to maintain compatibility
     }
-
 
 }
