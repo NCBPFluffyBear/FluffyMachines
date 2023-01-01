@@ -19,7 +19,7 @@ public class GeneratorCore extends SlimefunItem implements EnergyNetComponent {
     @Nonnull
     @Override
     public EnergyNetComponentType getEnergyComponentType() {
-        return EnergyNetComponentType.CAPACITOR;
+        return EnergyNetComponentType.GENERATOR;
     }
 
     @Override
