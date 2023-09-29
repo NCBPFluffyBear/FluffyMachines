@@ -54,6 +54,10 @@ public class UpgradedLumberAxe extends SimpleSlimefunItem<ItemUseHandler> implem
                     return;
                 }
 
+                if (e instanceof AlternateBreakEvent) {
+                    return;
+                }
+
                 List<Block> logs = find(e.getBlock(), MAX_BROKEN, b -> Tag.LOGS.isTagged(b.getType()));
 
                 logs.remove(e.getBlock());
