@@ -166,17 +166,15 @@ class UpgradedExplosiveTool extends ExplosiveTool {
         // Don't break SF blocks
         if (sfItem != null) {
             return;
-        } else {
-            b.breakNaturally(item);
         }
-
-        damageItem(p, item);
 
         if (triggerOtherPlugins.getValue()) {
             AlternateBreakEvent breakEvent = new AlternateBreakEvent(b, p);
             Bukkit.getServer().getPluginManager().callEvent(breakEvent);
         }
 
-    }
+        b.breakNaturally(item);
 
+        damageItem(p, item);
+    }
 }
