@@ -91,10 +91,11 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Re
                 Utils.createBorder(this, ChestMenuUtils.getOutputSlotTexture(), BORDER_OUT);
                 this.addItem(PROGRESS_SLOT, PROGRESS_ITEM);
                 this.addItem(9, new CustomItemStack(Material.BLACK_STAINED_GLASS_PANE, "&7Coal Slots",
-                        "&eThis row is reserved for coal for cargo"
+                        "&eThis row is reserved for coal for cargo."
                 ));
                 this.addItem(18, new CustomItemStack(Material.YELLOW_STAINED_GLASS_PANE, "&bMisc Slots",
-                        "&eThe remaining rows accept any item", "&eCargo will only complete the stacks"
+                        "&eThe remaining rows accept any item.", "&eCargo will only fill stacks.",
+                        "&eNeed to keep one more item in", "&eeach stack as template."
                 ));
                 this.addMenuClickHandler(RECIPE_SLOT, ChestMenuUtils.getEmptyClickHandler());
             }
