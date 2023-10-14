@@ -1,6 +1,7 @@
 package io.ncbpfluffybear.fluffymachines.items.tools;
 
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerBackpack;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
@@ -9,9 +10,13 @@ import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
+import io.ncbpfluffybear.fluffymachines.FluffyMachines;
+import io.ncbpfluffybear.fluffymachines.items.Barrel;
+import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.DoubleChest;
@@ -22,10 +27,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,16 +38,25 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
 
+    // Because I didn't think things through properly beforehand,
+    // we are stuck with a pretty nasty implementation.
+    //
+    // The "LOCK_ITEM" is just a custom non-interactable item. No unique tags for dolly type identification.
+    // If the LOCK_ITEM is in slot 0, the dolly is EMPTY.
+    // If the LOCK_ITEM is in slot 27, the dolly is FULL but has SINGLE CHEST.
+    // If the LOCK_ITEM is in slot 1, the dolly is FULL and is carrying a BARREL. The LOCK_ITEM will be tagged with the item amount.
+    // Otherwise, the dolly is FULL with a DOUBLE CHEST.
     private static final ItemStack LOCK_ITEM = Utils.buildNonInteractable(
             Material.DIRT, "&4&lDolly empty", "&cHow did you get in here?"
     );
 
-    private static final int DELAY = 500; // 500ms
-    private final Map<Player, Long> timeouts;
+    private static final NamespacedKey STORED_KEY = new NamespacedKey(FluffyMachines.getInstance(), "barrel-stored-items");
+
+    private static final int DELAY = 500; // 500ms delay required between uses
+    private static final Map<Player, Long> timeouts = new HashMap<>();
 
     public Dolly(ItemGroup category, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(category, item, recipeType, recipe);
-        this.timeouts = new HashMap<>();
     }
 
     @Nonnull
@@ -53,7 +67,7 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
 
             Player p = e.getPlayer();
 
-            if (timeouts.containsKey(p) && timeouts.get(p) + DELAY > System.currentTimeMillis()) {
+            if (timeouts.containsKey(p) && timeouts.get(p) + DELAY > System.currentTimeMillis()) { // Prevent players from spamming dolly (Potential dupe)
                 Utils.send(p, "&cPlease wait before using the dolly again!");
                 return;
             }
@@ -68,15 +82,18 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
 
             Block b = e.getClickedBlock().get();
 
-            // Block usage on Slimefun Blocks
-            if (BlockStorage.hasBlockInfo(b)) {
+            if (!Utils.canModifyBlock(b.getLocation(), e.getPlayer())) {
+                Utils.send(p, "&cYou do not have permission to place or break here.");
                 return;
             }
 
-            if (b.getType() == Material.CHEST && Slimefun.getProtectionManager().hasPermission(
-                    e.getPlayer(), b.getLocation(), Interaction.BREAK_BLOCK)
-            ) {
+            if (BlockStorage.check(b) instanceof Barrel) { // Player right-clicked a barrel
+                // Create dolly if not already one
+                buildDolly(dolly, p);
 
+                pickupBarrel(dolly, b, p);
+
+            } else if (b.getType() == Material.CHEST) { // Player right-clicked a chest
                 // Create dolly if not already one
                 buildDolly(dolly, p);
 
@@ -84,17 +101,17 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
                 pickupChest(dolly, b, p);
 
 
-            } else if (Slimefun.getProtectionManager().hasPermission(
-                    e.getPlayer(), b.getLocation(), Interaction.PLACE_BLOCK)
-            ) {
-
+            } else { // Player right-clicked the ground
                 // Place new chest
-                placeChest(dolly, b.getRelative(e.getClickedFace()), p);
+                placeContents(dolly, b.getRelative(e.getClickedFace()), p);
             }
 
         };
     }
 
+    /**
+     * Registers a dolly under Slimefun's {@link PlayerBackpack} system
+     */
     private void buildDolly(ItemStack dolly, Player p) {
         // Build backpack if new
         ItemMeta dollyMeta = dolly.getItemMeta();
@@ -109,6 +126,30 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
         }
     }
 
+    private void pickupBarrel(ItemStack dolly, Block barrel, Player p) {
+        PlayerProfile.getBackpack(dolly, backpack -> {
+
+            if (backpack == null) {
+                return;
+            }
+
+            if (!isDollyEmpty(backpack, p)) {
+                return;
+            }
+
+            Inventory bpInventory = backpack.getInventory();
+            Barrel sfBarrel = (Barrel) BlockStorage.check(barrel);
+
+            ItemStack taggedLockItem = LOCK_ITEM.clone(); // Modified lock item to store barrel item amount.
+            ItemMeta taggedLockMeta = taggedLockItem.getItemMeta();
+            taggedLockMeta.getPersistentDataContainer().set(STORED_KEY, PersistentDataType.INTEGER, sfBarrel.getStored(barrel));
+            taggedLockItem.setItemMeta(taggedLockMeta);
+
+            bpInventory.setItem(1, taggedLockItem);
+            bpInventory.setItem(0, sfBarrel.getItem().clone());
+        });
+    }
+
     private void pickupChest(ItemStack dolly, Block chest, Player p) {
         Inventory chestInventory = ((InventoryHolder) chest.getState()).getInventory();
         AtomicBoolean validOperation = new AtomicBoolean(false); // Used to deal with async block replacement
@@ -120,16 +161,8 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
                 return;
             }
 
-            // Dolly full/empty status determined by lock item in first slot
-            // Make sure the dolly is empty
-            if (!isLockItem(backpack.getInventory().getItem(0))) {
-                Utils.send(p, "&cThis dolly is already carrying a chest!");
+            if (!isDollyEmpty(backpack, p)) {
                 return;
-            }
-
-            // Update old dollies to be able to store double chests
-            if (backpack.getSize() < 54) {
-                backpack.setSize(54);
             }
 
             backpack.getInventory().setStorageContents(chestInventory.getContents());
@@ -170,49 +203,71 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
         }
     }
 
-    private void placeChest(ItemStack dolly, Block chestBlock, Player p) {
-        PlayerProfile.getBackpack(dolly, backpack -> {
+    private boolean isDollyEmpty(PlayerBackpack backpack, Player p) {
+        // Dolly full/empty status determined by lock item in first slot
+        // Make sure the dolly is empty
+        if (!Utils.checkNonInteractable(backpack.getInventory().getItem(0))) {
+            Utils.send(p, "&cThis dolly is already carrying a chest!");
+            return false;
+        }
 
+        return true;
+    }
+
+    private void placeContents(ItemStack dolly, Block placeBlock, Player p) {
+        PlayerProfile.getBackpack(dolly, backpack -> {
             if (backpack == null) {
                 return;
             }
 
-            // Update backpack size to fit doublechests
-            if (backpack.getSize() == 27) {
-                backpack.setSize(54);
-                backpack.getInventory().setItem(27, LOCK_ITEM); // Mark as single chest
+            Inventory bpInventory = backpack.getInventory();
+            if (Utils.checkNonInteractable(bpInventory.getItem(1))) { // Holding a barrel
+                placeBarrel(backpack, dolly, placeBlock, p);
+            } else { // Holding a chest or nothing
+                placeChest(backpack, dolly, placeBlock, p);
             }
+        });
+    }
 
-            final ItemStack[][] bpContents = {backpack.getInventory().getContents()};
-
-            if (isLockItem(bpContents[0][0])) {
-                Utils.send(p, "&cYou must pick up a chest first!");
-                return;
+    private void placeBarrel(PlayerBackpack backpack, ItemStack dolly, Block chestBlock, Player p) {
+        Utils.runSync(new BukkitRunnable() {
+            @Override
+            public void run() {
+                
             }
+        });
+    }
 
-            boolean singleChest = isLockItem(bpContents[0][27]);
-            if (!canChestFit(chestBlock, p, singleChest)) {
-                Utils.send(p, "&cYou can't fit your chest there!");
-                return;
-            }
+    private void placeChest(PlayerBackpack backpack, ItemStack dolly, Block chestBlock, Player p) {
+        Utils.runSync(new BukkitRunnable() {
+            @Override
+            public void run() {
+                ItemStack[] bpContents = backpack.getInventory().getContents();
 
-            Utils.runSync(new BukkitRunnable() {
-                @Override
-                public void run() {
-                    createChest(chestBlock, p, singleChest);
-                    backpack.getInventory().clear();
-                    backpack.getInventory().setItem(0, LOCK_ITEM);
-
-                    // Shrink contents size if single chest
-                    if (singleChest) {
-                        bpContents[0] = Arrays.copyOf(bpContents[0], 27);
-                    }
-
-                    ((InventoryHolder) chestBlock.getState()).getInventory().setStorageContents(bpContents[0]);
-                    dolly.setType(Material.MINECART);
-                    Utils.send(p, "&aChest has been placed");
+                if (Utils.checkNonInteractable(bpContents[0])) { // Slot at 0 if no marker at all
+                    Utils.send(p, "&cYou must pick up a chest first!");
+                    return;
                 }
-            });
+
+                boolean singleChest = Utils.checkNonInteractable(bpContents[27]); // Single chests have a marker at slot 27
+                if (!canChestFit(chestBlock, p, singleChest)) {
+                    Utils.send(p, "&cYou can't fit your chest there!");
+                    return;
+                }
+
+                createChest(chestBlock, p, singleChest);
+                backpack.getInventory().clear();
+                backpack.getInventory().setItem(0, LOCK_ITEM);
+
+                // Shrink contents size if single chest
+                if (singleChest) {
+                    bpContents = Arrays.copyOf(bpContents, 27);
+                }
+
+                ((InventoryHolder) chestBlock.getState()).getInventory().setStorageContents(bpContents[0]);
+                dolly.setType(Material.MINECART);
+                Utils.send(p, "&aChest has been placed");
+            }
         });
     }
 
@@ -283,11 +338,4 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
         return b.getRelative(rightFace);
 
     }
-
-    private boolean isLockItem(@Nullable ItemStack lockItem) {
-        return lockItem != null && (Utils.checkNonInteractable(lockItem)
-                || lockItem.getItemMeta().hasCustomModelData() // Remnants of when I didn't know what PDC was
-                && lockItem.getItemMeta().getCustomModelData() == 6969); // Leave in to maintain compatibility
-    }
-
 }

@@ -18,6 +18,7 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
@@ -169,6 +170,11 @@ public final class Utils {
         return (p.hasPermission("slimefun.inventory.bypass")
                 || Slimefun.getProtectionManager().hasPermission(
                 p, b.getLocation(), Interaction.INTERACT_BLOCK));
+    }
+
+    public static boolean canModifyBlock(@Nonnull Location l, @Nonnull Player p) {
+        return Slimefun.getProtectionManager().hasPermission(p, l, Interaction.BREAK_BLOCK)
+                && Slimefun.getProtectionManager().hasPermission(p, l, Interaction.PLACE_BLOCK);
     }
 
     // Don't use Slimefun's runsync

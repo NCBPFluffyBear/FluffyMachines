@@ -233,7 +233,8 @@ public class Barrel extends NonHopperableBlock implements DoubleHologramOwner {
         int capacity = getCapacity(b);
 
         // Initialize an empty barrel
-        if (BlockStorage.getLocationInfo(b.getLocation(), "stored") == null) {
+        String stored = BlockStorage.getLocationInfo(b.getLocation(), "stored");
+        if (stored == null || stored.equals("0")) {
 
             menu.replaceExistingItem(STATUS_SLOT, new CustomItemStack(
                     Material.LIME_STAINED_GLASS_PANE, "&6Items Stored: &e0" + " / " + capacity, "&70%"));
