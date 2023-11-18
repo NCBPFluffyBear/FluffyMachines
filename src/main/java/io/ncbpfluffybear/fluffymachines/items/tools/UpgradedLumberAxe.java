@@ -54,6 +54,10 @@ public class UpgradedLumberAxe extends SimpleSlimefunItem<ItemUseHandler> implem
                     return;
                 }
 
+                if (e instanceof AlternateBreakEvent) {
+                    return;
+                }
+
                 List<Block> logs = find(e.getBlock(), MAX_BROKEN, b -> Tag.LOGS.isTagged(b.getType()));
 
                 logs.remove(e.getBlock());
@@ -61,10 +65,10 @@ public class UpgradedLumberAxe extends SimpleSlimefunItem<ItemUseHandler> implem
                 for (Block b : logs) {
                     if (Slimefun.getProtectionManager().hasPermission(e.getPlayer(), b,
                         Interaction.BREAK_BLOCK) && BlockStorage.checkID(b) == null) {
-                        b.breakNaturally(tool);
                         if (triggerOtherPlugins.getValue()) {
                             Bukkit.getPluginManager().callEvent(new AlternateBreakEvent(b, e.getPlayer()));
                         }
+                        b.breakNaturally(tool);
                     }
                 }
             }
