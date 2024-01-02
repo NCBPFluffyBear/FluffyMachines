@@ -27,5 +27,4 @@ jobs:
         with:
           project: FluffyMachines
           apiToken: ${{ secrets.BLOB_BUILDS_API_TOKEN }}
-          file: ./target/FluffyMachines.jar
           releaseNotes: ${{ github.event.head_commit.message }}
