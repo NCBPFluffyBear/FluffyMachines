@@ -136,7 +136,6 @@ public class BackpackUnloader extends SlimefunItem implements EnergyNetComponent
                 }
 
                 PlayerProfile.getBackpack(inputItem, backpack -> {
-
                     Inventory bpinv = backpack.getInventory();
                     for (int slot = 0; slot < bpinv.getSize(); slot++) {
                         if (bpinv.getItem(slot) != null) {
@@ -153,7 +152,6 @@ public class BackpackUnloader extends SlimefunItem implements EnergyNetComponent
                         }
                     }
                 });
-
             } else {
                 // Not a backpack
                 rejectInput(inv);

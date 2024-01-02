@@ -26,6 +26,8 @@ import io.ncbpfluffybear.fluffymachines.objects.AutoCrafter;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * Specifies all plugin items
@@ -466,14 +468,40 @@ public class FluffyItems {
     );
 
 
-    private static final Enchantment glowEnchant = Enchantment.getByKey(Constants.GLOW_ENCHANT);
+    // private static final Enchantment glowEnchant = Enchantment.getByKey(Constants.GLOW_ENCHANT);
 
     static {
         FireproofRune.setFireproof(FIREPROOF_RUNE);
-        SMALL_PORTABLE_CHARGER.addEnchantment(glowEnchant, 1);
-        MEDIUM_PORTABLE_CHARGER.addEnchantment(glowEnchant, 1);
-        BIG_PORTABLE_CHARGER.addEnchantment(glowEnchant, 1);
-        LARGE_PORTABLE_CHARGER.addEnchantment(glowEnchant, 1);
-        CARBONADO_PORTABLE_CHARGER.addEnchantment(glowEnchant, 1);
+//        SMALL_PORTABLE_CHARGER.addEnchantment(glowEnchant, 1);
+//        MEDIUM_PORTABLE_CHARGER.addEnchantment(glowEnchant, 1);
+//        BIG_PORTABLE_CHARGER.addEnchantment(glowEnchant, 1);
+//        LARGE_PORTABLE_CHARGER.addEnchantment(glowEnchant, 1);
+//        CARBONADO_PORTABLE_CHARGER.addEnchantment(glowEnchant, 1);
+
+        SMALL_PORTABLE_CHARGER.addUnsafeEnchantment(Enchantment.BINDING_CURSE, 1);
+        MEDIUM_PORTABLE_CHARGER.addUnsafeEnchantment(Enchantment.BINDING_CURSE, 1);
+        BIG_PORTABLE_CHARGER.addUnsafeEnchantment(Enchantment.BINDING_CURSE, 1);
+        LARGE_PORTABLE_CHARGER.addUnsafeEnchantment(Enchantment.BINDING_CURSE, 1);
+        CARBONADO_PORTABLE_CHARGER.addUnsafeEnchantment(Enchantment.BINDING_CURSE, 1);
+
+        ItemMeta SPCMeta = SMALL_PORTABLE_CHARGER.getItemMeta();
+        SPCMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        SMALL_PORTABLE_CHARGER.setItemMeta(SPCMeta);
+
+        ItemMeta MPCMeta = MEDIUM_PORTABLE_CHARGER.getItemMeta();
+        MPCMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        MEDIUM_PORTABLE_CHARGER.setItemMeta(MPCMeta);
+
+        ItemMeta BPCMeta = BIG_PORTABLE_CHARGER.getItemMeta();
+        BPCMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        BIG_PORTABLE_CHARGER.setItemMeta(BPCMeta);
+
+        ItemMeta LPCMeta = LARGE_PORTABLE_CHARGER.getItemMeta();
+        LPCMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        LARGE_PORTABLE_CHARGER.setItemMeta(LPCMeta);
+
+        ItemMeta CPCMeta = CARBONADO_PORTABLE_CHARGER.getItemMeta();
+        CPCMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        CARBONADO_PORTABLE_CHARGER.setItemMeta(CPCMeta);
     }
 }

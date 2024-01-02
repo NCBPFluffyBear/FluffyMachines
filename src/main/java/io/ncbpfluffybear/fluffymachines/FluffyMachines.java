@@ -8,7 +8,6 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.updater.GitHubBuildsUp
 import io.ncbpfluffybear.fluffymachines.listeners.KeyedCrafterListener;
 import io.ncbpfluffybear.fluffymachines.utils.Constants;
 import io.ncbpfluffybear.fluffymachines.utils.Events;
-import io.ncbpfluffybear.fluffymachines.utils.GlowEnchant;
 import io.ncbpfluffybear.fluffymachines.utils.McMMOEvents;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import java.lang.reflect.Field;
@@ -25,9 +24,11 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Registry;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -58,16 +59,16 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
         // Register Glow
 
         try {
-            if (!Enchantment.isAcceptingRegistrations()) {
-                Field accepting = Enchantment.class.getDeclaredField("acceptingNew");
-                accepting.setAccessible(true);
+            Field accepting = Enchantment.class.getDeclaredField("acceptingNew");
+            accepting.setAccessible(true);
+            if (!accepting.getBoolean(null)) {
                 accepting.set(null, true);
             }
         } catch (IllegalAccessException | NoSuchFieldException ignored) {
             getLogger().warning("Failed to register enchantment.");
         }
 
-        registerGlow();
+        // registerGlow();
 
         // Register ACT Recipes
         Iterator<Recipe> recipeIterator = Bukkit.recipeIterator();
@@ -210,15 +211,16 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
     }
 
     private void registerGlow() {
-        Enchantment glowEnchantment = new GlowEnchant(Constants.GLOW_ENCHANT, new String[]{
-                "SMALL_PORTABLE_CHARGER", "MEDIUM_PORTABLE_CHARGER", "BIG_PORTABLE_CHARGER",
-                "LARGE_PORTABLE_CHARGER", "CARBONADO_PORTABLE_CHARGER", "PAXEL"
-        });
+//        Enchantment glowEnchantment = new GlowEnchant(Constants.GLOW_ENCHANT, new String[]{
+//                "SMALL_PORTABLE_CHARGER", "MEDIUM_PORTABLE_CHARGER", "BIG_PORTABLE_CHARGER",
+//                "LARGE_PORTABLE_CHARGER", "CARBONADO_PORTABLE_CHARGER", "PAXEL"
+//        });
 
         // Prevent double-registration errors
-        if (Enchantment.getByKey(glowEnchantment.getKey()) == null) {
-            Enchantment.registerEnchantment(glowEnchantment);
-        }
+        // Disabled indefinitely due to 1.20.2 enchantment changes
+//        if (Enchantment.getByKey(glowEnchantment.getKey()) == null) {
+//            Enchantment.registerEnchantment(glowEnchantment);
+//        }
     }
 
     @Override

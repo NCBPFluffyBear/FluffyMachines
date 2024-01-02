@@ -18,14 +18,18 @@ import java.util.Set;
  *
  * @author NCBPFluffyBear
  * @author J3fftw1
+ *
+ * @deprecated Disabled indefinitely due to 1.20.2 enchantment changes
  */
 @SuppressWarnings("NullableProblems")
 public class GlowEnchant extends Enchantment {
 
     private final Set<String> ids = new HashSet<>();
+    private final NamespacedKey key;
 
     public GlowEnchant(@Nonnull NamespacedKey key, @Nonnull String[] applicableItems) {
         super(key);
+        this.key = key;
         ids.addAll(Arrays.asList(applicableItems));
     }
 
@@ -81,4 +85,8 @@ public class GlowEnchant extends Enchantment {
         return false;
     }
 
+    @Override
+    public NamespacedKey getKey() {
+        return this.key;
+    }
 }
