@@ -4,6 +4,7 @@ import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.collections.Pair;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.updater.BlobBuildUpdater;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.updater.GitHubBuildsUpdater;
 import io.ncbpfluffybear.fluffymachines.listeners.KeyedCrafterListener;
 import io.ncbpfluffybear.fluffymachines.utils.Constants;
@@ -53,20 +54,20 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
         Config cfg = new Config(this);
 
         if (cfg.getBoolean("options.auto-update") && getDescription().getVersion().startsWith("DEV - ")) {
-            new GitHubBuildsUpdater(this, getFile(), "NCBPFluffyBear/FluffyMachines/master/").start();
+            new BlobBuildUpdater(this, getFile(), "FluffyMachines", "Dev").start();
         }
 
         // Register Glow
 
-        try {
-            Field accepting = Enchantment.class.getDeclaredField("acceptingNew");
-            accepting.setAccessible(true);
-            if (!accepting.getBoolean(null)) {
-                accepting.set(null, true);
-            }
-        } catch (IllegalAccessException | NoSuchFieldException ignored) {
-            getLogger().warning("Failed to register enchantment.");
-        }
+//        try {
+//            Field accepting = Enchantment.class.getDeclaredField("acceptingNew");
+//            accepting.setAccessible(true);
+//            if (!accepting.getBoolean(null)) {
+//                accepting.set(null, true);
+//            }
+//        } catch (IllegalAccessException | NoSuchFieldException ignored) {
+//            getLogger().warning("Failed to register enchantment.");
+//        }
 
         // registerGlow();
 
