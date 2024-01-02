@@ -3,7 +3,7 @@ name: Publish build
 on:
   push:
     branches:
-      - main # Only publish when pushing to "main"
+      - master # Only publish when pushing to "main"
 
 jobs:
   publish:
@@ -27,5 +27,4 @@ jobs:
         with:
           project: FluffyMachines
           apiToken: ${{ secrets.BLOB_BUILDS_API_TOKEN }}
-          file: ./target/FluffyMachines.jar
           releaseNotes: ${{ github.event.head_commit.message }}
