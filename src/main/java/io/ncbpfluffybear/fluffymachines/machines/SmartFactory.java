@@ -306,7 +306,13 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Re
     private Pair<HashMap<Material, Integer>, HashMap<SlimefunItem, Integer>> reduceRecipe(SlimefunItem key) {
         HashMap<Material, Integer> rawVanilla = new HashMap<>();
         HashMap<SlimefunItem, Integer> rawSlimefun = new HashMap<>();
-        for (ItemStack item : key.getRecipe()) {
+
+        ItemStack[] recipe = key.getRecipe();
+        if (key == SlimefunItems.COPPER_WIRE.getItem()) {
+            recipe = new SlimefunItemStack[] {SlimefunItems.COPPER_DUST};
+        }
+
+        for (ItemStack item : recipe) {
             if (item == null) {
                 continue;
             }
