@@ -17,13 +17,7 @@ public final class Constants {
     public static final int SERVER_VERSION = Integer.parseInt(Bukkit.getVersion().replaceFirst(".*MC: ", "").replace(
         ")", "").replace(".", ""));
 
-    public static final String SLIMEFUN_VERSION = Slimefun.getVersion();
-    public static boolean SLIMEFUN_UPDATED = false;
-
     public static final Pattern VERSION_PATTERN = Pattern.compile("(DEV - )([0-9]+)");
-
-    public static final NamespacedKey GLOW_ENCHANT = new NamespacedKey(FluffyMachines.getInstance(),
-        "fm_glow_enchant");
 
     public static final boolean isSoulJarsInstalled = Bukkit.getPluginManager().isPluginEnabled("SoulJars");
 
