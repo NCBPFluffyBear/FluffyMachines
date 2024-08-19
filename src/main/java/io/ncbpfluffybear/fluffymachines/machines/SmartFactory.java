@@ -69,13 +69,36 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Re
             SlimefunItems.GOLD_10K, SlimefunItems.GOLD_12K, SlimefunItems.GOLD_14K, SlimefunItems.GOLD_16K,
             SlimefunItems.GOLD_18K, SlimefunItems.GOLD_20K, SlimefunItems.GOLD_22K, SlimefunItems.GOLD_24K
     ));
-    private final Map<SlimefunItem, ItemStack[]> ITEM_RECIPES = new HashMap<>();
+
+    // Hidden recipes for items that can use magma blocks instead of netherrack. Must exist in ACCEPTED_ITEMS as well
+    private static final List<SlimefunItemStack> MAGMA_ALTERNATIVES = new ArrayList<>(Arrays.asList(
+            SlimefunItems.ELECTRO_MAGNET, SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.HEATING_COIL
+    ));
+
+    private final Map<SlimefunItem, List<ItemStack[]>> ITEM_RECIPES = new HashMap<>(); // Items may have multiple recipe variations
 
     public SmartFactory(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(itemGroup, item, recipeType, recipe);
 
         for (SlimefunItemStack sfItem : ACCEPTED_ITEMS) {
-            ITEM_RECIPES.put(sfItem.getItem(), collectRawRecipe(sfItem.getItem()));
+            List<ItemStack[]> variationList = new ArrayList<>();
+            variationList.add(collectRawRecipe(sfItem.getItem()));
+            ITEM_RECIPES.put(sfItem.getItem(), variationList);
+        }
+
+        for (SlimefunItemStack alternative : MAGMA_ALTERNATIVES) {
+            ItemStack[] original = ITEM_RECIPES.get(alternative.getItem()).get(0);
+            ItemStack[] variation = new ItemStack[original.length];
+            for (int i = 0; i < original.length; i++) {
+                if (original[i].getType() == Material.NETHERRACK && original[i].getAmount() % 16 == 0) {
+                    variation[i] = new ItemStack(Material.MAGMA_BLOCK, original[i].getAmount() / 16);
+                } else {
+                    variation[i] = original[i].clone();
+                }
+            }
+
+            List<ItemStack[]> variations = ITEM_RECIPES.get(alternative.getItem());
+            variations.add(variation);
         }
 
         buildPreset();
@@ -91,10 +114,12 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Re
                 Utils.createBorder(this, ChestMenuUtils.getOutputSlotTexture(), BORDER_OUT);
                 this.addItem(PROGRESS_SLOT, PROGRESS_ITEM);
                 this.addItem(9, new CustomItemStack(Material.BLACK_STAINED_GLASS_PANE, "&7Coal Slots",
-                        "&eThis row is reserved for coal for cargo"
+                        "&eThis row is reserved for coal for cargo."
                 ));
                 this.addItem(18, new CustomItemStack(Material.YELLOW_STAINED_GLASS_PANE, "&bMisc Slots",
-                        "&eThe remaining rows accept any item", "&eCargo will only complete the stacks"
+                        "&eThe remaining rows accept any item.", "&eCargo will fill stacks after",
+                        "&eat least one of each recipe", "&erequirement has been inserted.",
+                        "&eNeed to keep one more item in", "&eeach stack as template."
                 ));
                 this.addMenuClickHandler(RECIPE_SLOT, ChestMenuUtils.getEmptyClickHandler());
             }
@@ -199,7 +224,7 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Re
         int currentProgress = progress.getOrDefault(pos, 0); // Get current progress from map
 
         // Check if we are ready to send the output
-        HashMap<Integer, Integer> ingredients = getIngredientSlots(b, inv);
+        HashMap<Integer, Integer> ingredients = getIngredientSlots(inv);
         if (ingredients == null) {
             resetProgress(pos, inv);
             return;
@@ -226,7 +251,7 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Re
         resetProgress(pos, inv);
     }
 
-    private HashMap<Integer, Integer> getIngredientSlots(Block b, BlockMenu inv) {
+    private HashMap<Integer, Integer> getIngredientSlots(BlockMenu inv) {
         SlimefunItem key = SlimefunItem.getByItem(inv.getItemInSlot(RECIPE_SLOT));
         if (key == null) {
             return null;
@@ -238,34 +263,41 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Re
 
         HashMap<Integer, Integer> ingredientSlots = new HashMap<>();
 
-        for (ItemStack recipeItem : ITEM_RECIPES.get(key)) {
-            boolean exists = false;
+        for (ItemStack[] variation : ITEM_RECIPES.get(key)) {
+            boolean validVariation = true;
+            for (ItemStack recipeItem : variation) {
+                boolean exists = false;
 
-            for (int slot : getInputSlots()) {
-                ItemStack slotItem = inv.getItemInSlot(slot);
+                for (int slot : getInputSlots()) {
+                    ItemStack slotItem = inv.getItemInSlot(slot);
 
-                // Match item and amount
-                if (slotItem != null && SlimefunUtils.isItemSimilar(recipeItem, slotItem, true, false)) {
-                    if (recipeItem.getType() == Material.COAL) {
-                        if (slotItem.getAmount() < recipeItem.getAmount()) {
-                            continue; // Don't leave 1 for coal
+                    // Match item and amount
+                    if (slotItem != null && SlimefunUtils.isItemSimilar(recipeItem, slotItem, true, false)) {
+                        if (recipeItem.getType() == Material.COAL) {
+                            if (slotItem.getAmount() < recipeItem.getAmount()) {
+                                continue; // Don't leave 1 for coal
+                            }
+                        } else if (slotItem.getAmount() < recipeItem.getAmount() + 1) {
+                            continue; // Make sure misc items have 1 item left
                         }
-                    } else if (slotItem.getAmount() < recipeItem.getAmount() + 1) {
-                        continue; // Make sure misc items have 1 item left
-                    }
 
-                    exists = true;
-                    ingredientSlots.put(slot, recipeItem.getAmount()); // Save slots and amounts of ingredients
-                    break;
+                        exists = true;
+                        ingredientSlots.put(slot, recipeItem.getAmount()); // Save slots and amounts of ingredients
+                        break;
+                    }
+                }
+
+                if (!exists) {
+                    ingredientSlots.clear();
+                    validVariation = false;
+                    break; // Next variation
                 }
             }
 
-            if (!exists) {
-                return null;
-            }
+            if (validVariation) return ingredientSlots;
         }
 
-        return ingredientSlots;
+        return null;
     }
 
     private void craft(Block b) {
@@ -306,7 +338,13 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Re
     private Pair<HashMap<Material, Integer>, HashMap<SlimefunItem, Integer>> reduceRecipe(SlimefunItem key) {
         HashMap<Material, Integer> rawVanilla = new HashMap<>();
         HashMap<SlimefunItem, Integer> rawSlimefun = new HashMap<>();
-        for (ItemStack item : key.getRecipe()) {
+
+        ItemStack[] recipe = key.getRecipe();
+        if (key == SlimefunItems.COPPER_WIRE.getItem()) {
+            recipe = new SlimefunItemStack[] {SlimefunItems.COPPER_DUST};
+        }
+
+        for (ItemStack item : recipe) {
             if (item == null) {
                 continue;
             }
@@ -382,8 +420,14 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Re
             ItemMeta displayMeta = display.getItemMeta();
 
             List<String> lore = new ArrayList<>();
-            for (ItemStack item : ITEM_RECIPES.get(sfStack.getItem())) {
+            // Display the first variation of the recipe to avoid clutter
+            for (ItemStack item : ITEM_RECIPES.get(sfStack.getItem()).get(0)) {
                 lore.add(Utils.color("&e" + item.getAmount() + "x " + Utils.getViewableName(item)));
+            }
+
+            if (ITEM_RECIPES.get(sfStack.getItem()).size() > 1) {
+                lore.add("");
+                lore.add(Utils.color("&7This recipe has a Magma Block alternative"));
             }
 
             displayMeta.setLore(lore);

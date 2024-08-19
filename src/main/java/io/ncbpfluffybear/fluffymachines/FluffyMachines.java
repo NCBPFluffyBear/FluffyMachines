@@ -4,11 +4,11 @@ import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.collections.Pair;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.updater.BlobBuildUpdater;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.updater.GitHubBuildsUpdater;
 import io.ncbpfluffybear.fluffymachines.listeners.KeyedCrafterListener;
 import io.ncbpfluffybear.fluffymachines.utils.Constants;
 import io.ncbpfluffybear.fluffymachines.utils.Events;
-import io.ncbpfluffybear.fluffymachines.utils.GlowEnchant;
 import io.ncbpfluffybear.fluffymachines.utils.McMMOEvents;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
 import java.lang.reflect.Field;
@@ -25,9 +25,11 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Registry;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -51,23 +53,9 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
         // Read something from your config.yml
         Config cfg = new Config(this);
 
-        if (cfg.getBoolean("options.auto-update") && getDescription().getVersion().startsWith("DEV - ")) {
-            new GitHubBuildsUpdater(this, getFile(), "NCBPFluffyBear/FluffyMachines/master/").start();
+        if (cfg.getBoolean("options.auto-update") && getDescription().getVersion().startsWith("Dev - ")) {
+            new BlobBuildUpdater(this, getFile(), "FluffyMachines", "Dev").start();
         }
-
-        // Register Glow
-
-        try {
-            if (!Enchantment.isAcceptingRegistrations()) {
-                Field accepting = Enchantment.class.getDeclaredField("acceptingNew");
-                accepting.setAccessible(true);
-                accepting.set(null, true);
-            }
-        } catch (IllegalAccessException | NoSuchFieldException ignored) {
-            getLogger().warning("Failed to register enchantment.");
-        }
-
-        registerGlow();
 
         // Register ACT Recipes
         Iterator<Recipe> recipeIterator = Bukkit.recipeIterator();
@@ -122,11 +110,6 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
         getServer().getPluginManager().registerEvents(new KeyedCrafterListener(), this);
 
         final Metrics metrics = new Metrics(this, 8927);
-
-        getLogger().log(Level.INFO, ChatColor.GREEN + "Hi there! Want to share your server with the " +
-                "Slimefun community?");
-        getLogger().log(Level.INFO, ChatColor.GREEN + "Join the official Slimefun Discord server at " +
-                "https://discord.gg/slimefun");
     }
 
     @Override
@@ -206,18 +189,6 @@ public class FluffyMachines extends JavaPlugin implements SlimefunAddon {
 
         if (players > 0) {
             Bukkit.getLogger().log(Level.INFO, "Auto-saved all player data for {0} player(s)!", players);
-        }
-    }
-
-    private void registerGlow() {
-        Enchantment glowEnchantment = new GlowEnchant(Constants.GLOW_ENCHANT, new String[]{
-                "SMALL_PORTABLE_CHARGER", "MEDIUM_PORTABLE_CHARGER", "BIG_PORTABLE_CHARGER",
-                "LARGE_PORTABLE_CHARGER", "CARBONADO_PORTABLE_CHARGER", "PAXEL"
-        });
-
-        // Prevent double-registration errors
-        if (Enchantment.getByKey(glowEnchantment.getKey()) == null) {
-            Enchantment.registerEnchantment(glowEnchantment);
         }
     }
 

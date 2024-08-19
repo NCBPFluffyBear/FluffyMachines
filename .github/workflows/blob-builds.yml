@@ -1,0 +1,30 @@
+name: Publish build
+
+on:
+  push:
+    branches:
+      - master # Only publish when pushing to "main"
+
+jobs:
+  publish:
+    name: Upload build
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, '[ci skip]') == false
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK 16
+        uses: actions/setup-java@v1
+        with:
+          java-version: 16
+
+      - name: Build with Maven
+        run: mvn -B package
+
+      - name: Upload to Blob Builds
+        uses: WalshyDev/blob-builds/gh-action@main
+        with:
+          project: FluffyMachines
+          apiToken: ${{ secrets.BLOB_BUILDS_API_TOKEN }}
+          releaseNotes: ${{ github.event.head_commit.message }}
