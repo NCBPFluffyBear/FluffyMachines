@@ -9,12 +9,12 @@ import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import io.ncbpfluffybear.fluffymachines.items.Barrel;
-import io.ncbpfluffybear.fluffymachines.utils.FluffyItems;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
+import lombok.Getter;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
@@ -23,6 +23,7 @@ import org.bukkit.block.DoubleChest;
 import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.type.Chest;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -33,6 +34,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -50,6 +52,7 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
             Material.DIRT, "&4&lDolly empty", "&cHow did you get in here?"
     );
 
+    private static final NamespacedKey DOLLY_MODE = new NamespacedKey(FluffyMachines.getInstance(), "dolly-mode");
     private static final NamespacedKey STORED_KEY = new NamespacedKey(FluffyMachines.getInstance(), "barrel-stored-items");
 
     private static final int DELAY = 500; // 500ms delay required between uses
@@ -120,7 +123,7 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
                 PlayerProfile.get(p, profile -> {
                     int backpackId = profile.createBackpack(54).getId();
                     Slimefun.getBackpackListener().setBackpackId(p, dolly, 3, backpackId);
-                    PlayerProfile.getBackpack(dolly, backpack -> backpack.getInventory().setItem(0, LOCK_ITEM));
+                    setMode(dolly, DollyMode.EMPTY);
                 });
             }
         }
@@ -133,20 +136,29 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
                 return;
             }
 
-            if (!isDollyEmpty(backpack, p)) {
+            if (isDollyUsed(dolly, backpack)) {
+                Utils.send(p, "&cThis dolly is already loaded!");
                 return;
             }
 
             Inventory bpInventory = backpack.getInventory();
             Barrel sfBarrel = (Barrel) BlockStorage.check(barrel);
+            BlockMenu barrelInv = BlockStorage.getInventory(barrel);
 
-            ItemStack taggedLockItem = LOCK_ITEM.clone(); // Modified lock item to store barrel item amount.
-            ItemMeta taggedLockMeta = taggedLockItem.getItemMeta();
-            taggedLockMeta.getPersistentDataContainer().set(STORED_KEY, PersistentDataType.INTEGER, sfBarrel.getStored(barrel));
-            taggedLockItem.setItemMeta(taggedLockMeta);
+            ItemStack barrelItem = sfBarrel.getItem().clone();
+            Utils.setItemData(barrelItem, STORED_KEY, PersistentDataType.INTEGER, sfBarrel.getStored(barrel));
 
-            bpInventory.setItem(1, taggedLockItem);
-            bpInventory.setItem(0, sfBarrel.getItem().clone());
+            bpInventory.setItem(0, barrelItem); // Barrel with stored value in PD
+            bpInventory.setItem(1, sfBarrel.getStoredItem(barrel).clone());
+            bpInventory.setItem(2, barrelInv.getItemInSlot(Barrel.INPUT_SLOTS[0]));
+            bpInventory.setItem(3, barrelInv.getItemInSlot(Barrel.INPUT_SLOTS[1]));
+            bpInventory.setItem(4, barrelInv.getItemInSlot(Barrel.OUTPUT_SLOTS[0]));
+            bpInventory.setItem(5, barrelInv.getItemInSlot(Barrel.OUTPUT_SLOTS[1]));
+
+            setMode(dolly, DollyMode.BARREL);
+
+            BlockStorage.clearBlockInfo(barrel);
+            barrel.setType(Material.AIR);
         });
     }
 
@@ -161,17 +173,16 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
                 return;
             }
 
-            if (!isDollyEmpty(backpack, p)) {
+            if (isDollyUsed(dolly, backpack)) {
+                Utils.send(p, "&cThis dolly is already loaded!");
                 return;
             }
 
             backpack.getInventory().setStorageContents(chestInventory.getContents());
-
-            // Add marker for single chests
-            if (chestInventory.getSize() == 54) { // Double chest (Avoid instanceof because of weird chest class setup)
-                isDoubleChest.set(true);
+            if (chestInventory instanceof DoubleChestInventory) {
+                setMode(dolly, DollyMode.DOUBLE_CHEST);
             } else {
-                backpack.getInventory().setItem(27, LOCK_ITEM);
+                setMode(dolly, DollyMode.SINGLE_CHEST);
             }
 
             // Clear chest
@@ -203,14 +214,58 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
         }
     }
 
-    private boolean isDollyEmpty(PlayerBackpack backpack, Player p) {
-        // Dolly full/empty status determined by lock item in first slot
-        // Make sure the dolly is empty
-        if (!Utils.checkNonInteractable(backpack.getInventory().getItem(0))) {
-            Utils.send(p, "&cThis dolly is already carrying a chest!");
+    // Mode stored in dolly's key item
+    @Getter
+    private enum DollyMode {
+        EMPTY("&7Empty"), // 0
+        SINGLE_CHEST("&6Chest"), // 1
+        DOUBLE_CHEST("&6Double Chest"), // 2
+        BARREL("&6Barrel"); // 3
+
+        private final String name;
+
+        DollyMode(String name) {
+            this.name = name;
+        }
+    }
+
+    private void setMode(ItemStack dolly, DollyMode mode) {
+        Utils.setItemData(dolly, DOLLY_MODE, PersistentDataType.INTEGER, mode.ordinal());
+        ItemMeta meta = dolly.getItemMeta();
+        List<String> lore = meta.getLore();
+        if (lore.size() < 5) {
+            lore.add(Utils.color(mode.getName()));
+        } else {
+            lore.set(5, mode.getName());
+        }
+        dolly.setItemMeta(meta);
+    }
+
+    private DollyMode getMode(ItemStack dolly) {
+        Integer mode = Utils.getItemData(dolly, DOLLY_MODE, PersistentDataType.INTEGER);
+        if (mode == null) return null;
+        return DollyMode.values()[mode];
+    }
+
+    private boolean isDollyUsed(ItemStack dolly, PlayerBackpack backpack) {
+        DollyMode mode = getMode(dolly);
+        if (mode != null && mode != DollyMode.EMPTY) {
             return false;
         }
 
+        // Handle legacy dolly
+        // Dolly empty status determined by presence of lock item in first slot
+        ItemStack lockItem = backpack.getInventory().getItem(0);
+        if (Utils.checkNonInteractable(lockItem)) {
+            setMode(dolly, DollyMode.EMPTY);
+            return false;
+        }
+
+        if (Utils.checkNonInteractable(backpack.getInventory().getItem(27))) {
+            setMode(dolly, DollyMode.SINGLE_CHEST);
+        } else {
+            setMode(dolly, DollyMode.DOUBLE_CHEST);
+        }
         return true;
     }
 
@@ -220,36 +275,80 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
                 return;
             }
 
-            Inventory bpInventory = backpack.getInventory();
-            if (Utils.checkNonInteractable(bpInventory.getItem(1))) { // Holding a barrel
+            DollyMode mode = getMode(dolly);
+            mode = Utils.replaceNull(mode, DollyMode.SINGLE_CHEST);
+            if (mode == DollyMode.EMPTY) {
+                Utils.send(p, "&cYou must pick up a chest or barrel first!");
+                return;
+            }
+
+            if (mode == DollyMode.SINGLE_CHEST || mode == DollyMode.DOUBLE_CHEST) {
+                // Holding a chest or nothing
+                placeChest(backpack, dolly, placeBlock, p, mode);
+            } else if (mode == DollyMode.BARREL) {
                 placeBarrel(backpack, dolly, placeBlock, p);
-            } else { // Holding a chest or nothing
-                placeChest(backpack, dolly, placeBlock, p);
             }
         });
     }
 
-    private void placeBarrel(PlayerBackpack backpack, ItemStack dolly, Block chestBlock, Player p) {
+    private void placeBarrel(PlayerBackpack backpack, ItemStack dolly, Block barrelBlock, Player p) {
         Utils.runSync(new BukkitRunnable() {
             @Override
             public void run() {
-                
+                if (barrelBlock.getType() != Material.AIR) {
+                    Utils.send(p, "&cA barrel can not fit here!");
+                    return;
+                }
+
+                Inventory bpInventory = backpack.getInventory();
+                ItemStack barrelItem = bpInventory.getItem(0);
+                Integer stored = Utils.getItemData(barrelItem, STORED_KEY, PersistentDataType.INTEGER);
+
+                barrelBlock.setType(barrelItem.getType());
+                if (barrelBlock.getBlockData() instanceof Directional) {
+                    ((Directional) barrelBlock.getBlockData()).setFacing(p.getFacing().getOppositeFace());
+                }
+                BlockStorage.store(barrelBlock, barrelItem);
+
+                Barrel barrel = (Barrel) SlimefunItem.getByItem(barrelItem);
+                BlockMenu barrelMenu = BlockStorage.getInventory(barrelBlock);
+
+                // Set output
+                ItemStack out1 = bpInventory.getItem(4);
+                if (out1 != null) barrelMenu.pushItem(out1, Barrel.OUTPUT_SLOTS[0]);
+                ItemStack out2 = bpInventory.getItem(5);
+                if (out2 != null) barrelMenu.pushItem(out2, Barrel.OUTPUT_SLOTS[1]);
+
+                // Set main content
+                ItemStack storedItem = bpInventory.getItem(1);
+                if (storedItem != null) {
+                    barrelMenu.pushItem(storedItem, Barrel.INPUT_SLOTS[0]);
+                    barrel.acceptInput(barrelMenu, barrelBlock, Barrel.INPUT_SLOTS[0], barrel.getCapacity(barrelBlock));
+                    barrel.setStored(barrelBlock, stored);
+                }
+
+                // Set inputs
+                ItemStack in1 = bpInventory.getItem(2);
+                if (in1 != null) barrelMenu.pushItem(out1, Barrel.INPUT_SLOTS[0]);
+                ItemStack in2 = bpInventory.getItem(3);
+                if (in2 != null) barrelMenu.pushItem(out2, Barrel.INPUT_SLOTS[1]);
+
+                dolly.setType(Material.MINECART);
+                Utils.send(p, "&Barrel has been placed");
+
+                bpInventory.clear();
+                setMode(dolly, DollyMode.EMPTY);
             }
         });
     }
 
-    private void placeChest(PlayerBackpack backpack, ItemStack dolly, Block chestBlock, Player p) {
+    private void placeChest(PlayerBackpack backpack, ItemStack dolly, Block chestBlock, Player p, DollyMode mode) {
         Utils.runSync(new BukkitRunnable() {
             @Override
             public void run() {
                 ItemStack[] bpContents = backpack.getInventory().getContents();
 
-                if (Utils.checkNonInteractable(bpContents[0])) { // Slot at 0 if no marker at all
-                    Utils.send(p, "&cYou must pick up a chest first!");
-                    return;
-                }
-
-                boolean singleChest = Utils.checkNonInteractable(bpContents[27]); // Single chests have a marker at slot 27
+                boolean singleChest = mode == DollyMode.SINGLE_CHEST;
                 if (!canChestFit(chestBlock, p, singleChest)) {
                     Utils.send(p, "&cYou can't fit your chest there!");
                     return;
@@ -257,14 +356,14 @@ public class Dolly extends SimpleSlimefunItem<ItemUseHandler> {
 
                 createChest(chestBlock, p, singleChest);
                 backpack.getInventory().clear();
-                backpack.getInventory().setItem(0, LOCK_ITEM);
+                setMode(dolly, DollyMode.EMPTY);
 
                 // Shrink contents size if single chest
                 if (singleChest) {
                     bpContents = Arrays.copyOf(bpContents, 27);
                 }
 
-                ((InventoryHolder) chestBlock.getState()).getInventory().setStorageContents(bpContents[0]);
+                ((InventoryHolder) chestBlock.getState()).getInventory().setStorageContents(bpContents);
                 dolly.setType(Material.MINECART);
                 Utils.send(p, "&aChest has been placed");
             }

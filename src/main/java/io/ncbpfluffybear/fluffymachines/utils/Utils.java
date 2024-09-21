@@ -5,6 +5,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.handlers.SimpleBlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.common.ChatColors;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
+import io.github.thebusybiscuit.slimefun4.utils.ChatUtils;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.ncbpfluffybear.fluffymachines.FluffyMachines;
 import java.util.ArrayList;
@@ -175,6 +176,36 @@ public final class Utils {
     public static boolean canModifyBlock(@Nonnull Location l, @Nonnull Player p) {
         return Slimefun.getProtectionManager().hasPermission(p, l, Interaction.BREAK_BLOCK)
                 && Slimefun.getProtectionManager().hasPermission(p, l, Interaction.PLACE_BLOCK);
+    }
+
+    public static <T, Z> void setItemData(@Nonnull ItemStack item, NamespacedKey key, PersistentDataType<T, Z> dataType, Z data) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) {
+            Bukkit.getLogger().warning("Failed to set persistent data for " + item.getType().name());
+            return;
+        }
+        setItemData(meta, key, dataType, data);
+    }
+
+    public static <T, Z> void setItemData(ItemMeta meta, NamespacedKey key, PersistentDataType<T, Z> dataType, Z data) {
+        meta.getPersistentDataContainer().set(key, dataType, data);
+    }
+
+    public static <T, Z> Z getItemData(@Nonnull ItemStack item, NamespacedKey key, PersistentDataType<T, Z> dataType) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) {
+            Bukkit.getLogger().warning("Failed to get persistent data for " + item.getType().name());
+            return null;
+        }
+        return getItemData(meta, key, dataType);
+    }
+
+    public static <T, Z> Z getItemData(ItemMeta meta, NamespacedKey key, PersistentDataType<T, Z> dataType) {
+        return meta.getPersistentDataContainer().get(key, dataType);
+    }
+
+    public static <T> T replaceNull(T given, T replacement) {
+        return given == null ? replacement : given;
     }
 
     // Don't use Slimefun's runsync

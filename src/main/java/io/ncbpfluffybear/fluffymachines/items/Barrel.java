@@ -48,17 +48,17 @@ import org.bukkit.util.Vector;
 
 public class Barrel extends NonHopperableBlock implements DoubleHologramOwner {
 
-    private final int[] inputBorder = {9, 10, 11, 12, 18, 21, 27, 28, 29, 30};
-    private final int[] outputBorder = {14, 15, 16, 17, 23, 26, 32, 33, 34, 35};
-    private final int[] plainBorder = {0, 1, 2, 3, 4, 5, 6, 7, 8, 13, 36, 37, 38, 39, 40, 41, 42, 43, 44};
+    private static final int[] inputBorder = {9, 10, 11, 12, 18, 21, 27, 28, 29, 30};
+    private static final int[] outputBorder = {14, 15, 16, 17, 23, 26, 32, 33, 34, 35};
+    private static final int[] plainBorder = {0, 1, 2, 3, 4, 5, 6, 7, 8, 13, 36, 37, 38, 39, 40, 41, 42, 43, 44};
 
-    protected final int[] INPUT_SLOTS = {19, 20};
-    protected final int[] OUTPUT_SLOTS = {24, 25};
+    public static final int[] INPUT_SLOTS = {19, 20};
+    public static final int[] OUTPUT_SLOTS = {24, 25};
 
-    private final int STATUS_SLOT = 22;
-    private final int DISPLAY_SLOT = 31;
-    private final int HOLOGRAM_TOGGLE_SLOT = 36;
-    private final int TRASH_TOGGLE_SLOT = 37;
+    private static final int STATUS_SLOT = 22;
+    private static final int DISPLAY_SLOT = 31;
+    private static final int HOLOGRAM_TOGGLE_SLOT = 36;
+    private static final int TRASH_TOGGLE_SLOT = 37;
 
     private final int OVERFLOW_AMOUNT = 3240;
     public static final DecimalFormat STORAGE_INDICATOR_FORMAT = new DecimalFormat("###,###.####",
@@ -331,7 +331,8 @@ public class Barrel extends NonHopperableBlock implements DoubleHologramOwner {
         }
     }
 
-    void acceptInput(BlockMenu inv, Block b, int slot, int capacity) {
+    // Public to allow force acceptance
+    public void acceptInput(BlockMenu inv, Block b, int slot, int capacity) {
         if (inv.getItemInSlot(slot) == null) {
             return;
         }

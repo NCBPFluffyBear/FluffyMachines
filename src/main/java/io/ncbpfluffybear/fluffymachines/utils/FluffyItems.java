@@ -319,7 +319,8 @@ public class FluffyItems {
             "",
             "&7Right click a chest to pick it up",
             "",
-            "&7ID: <ID>"
+            "&7ID: <ID>",
+            "&7Empty"
     );
 
     public static final SlimefunItemStack WARP_PAD = new SlimefunItemStack("WARP_PAD",
