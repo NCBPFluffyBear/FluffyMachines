@@ -37,7 +37,7 @@ public class MiniBarrel extends Barrel {
     @Override
     protected void buildMenu(BlockMenu menu, Block b) {
         super.buildMenu(menu, b);
-        menu.replaceExistingItem(13, new CustomItemStack(Material.YELLOW_STAINED_GLASS_PANE,
+        menu.replaceExistingItem(13, CustomItemStack.create(Material.YELLOW_STAINED_GLASS_PANE,
                 "&eChange barrel size", "&7> Click to change max size", "&eCurrent size: " + getCapacity(b),
                 "&eSize limit: " + barrelCapacity.getValue()
         ));
@@ -59,7 +59,7 @@ public class MiniBarrel extends Barrel {
                 }
 
                 BlockStorage.addBlockInfo(b, "max-size", String.valueOf(renameSize));
-                menu.replaceExistingItem(13, new CustomItemStack(Material.YELLOW_STAINED_GLASS_PANE,
+                menu.replaceExistingItem(13, CustomItemStack.create(Material.YELLOW_STAINED_GLASS_PANE,
                         "&eChange barrel size", "&7> Click to change max size", "&eCurrent size: " + renameSize,
                         "&eSize limit: " + barrelCapacity.getValue()
                 ));

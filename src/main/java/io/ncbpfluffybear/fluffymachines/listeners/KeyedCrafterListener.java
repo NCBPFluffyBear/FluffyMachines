@@ -56,7 +56,7 @@ public class KeyedCrafterListener implements Listener {
                     return;
                 }
 
-                if (SmartFactory.getAcceptedItems().contains((SlimefunItemStack) key.getItem())) {
+                if (SmartFactory.getAcceptedItems().contains(key.getItem())) {
 
                     BlockStorage.addBlockInfo(b, "recipe", key.getId());
                     BlockStorage.getInventory(b).replaceExistingItem(SmartFactory.RECIPE_SLOT,
@@ -91,7 +91,7 @@ public class KeyedCrafterListener implements Listener {
     }
 
     private boolean isCargoNode(@Nullable SlimefunItem recipe) {
-        return recipe != null && (recipe.getItem() == SlimefunItems.CARGO_INPUT_NODE
-                || recipe.getItem() == SlimefunItems.CARGO_OUTPUT_NODE || recipe.getItem() == SlimefunItems.CARGO_OUTPUT_NODE_2);
+        return recipe != null && (recipe.getItem() == SlimefunItems.CARGO_INPUT_NODE.item()
+                || recipe.getItem() == SlimefunItems.CARGO_OUTPUT_NODE.item() || recipe.getItem() == SlimefunItems.CARGO_OUTPUT_NODE_2.item());
     }
 }

@@ -114,7 +114,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> implements C
 
                             if (!updateUses(this, p, item, 1))
                                 return;
-                            blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
+                            blockLocation.getWorld().spawnParticle(Particle.FALLING_WATER, blockLocation, 0);
                             double random = ThreadLocalRandom.current().nextDouble();
                             if (random < sugarCaneSuccessChance.getValue()) {
                                 above.setType(Material.SUGAR_CANE);
@@ -134,7 +134,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> implements C
 
                         if (currentAge < maxAge) {
                             if (updateUses(this, p, item, 1)) {
-                                blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
+                                blockLocation.getWorld().spawnParticle(Particle.FALLING_WATER, blockLocation, 0);
                                 double random = ThreadLocalRandom.current().nextDouble();
                                 if (random < cropSuccessChance.getValue()) {
                                     crop.setAge(currentAge + 1);
@@ -156,7 +156,7 @@ public class WateringCan extends SimpleSlimefunItem<ItemUseHandler> implements C
                             return;
                         }
 
-                        blockLocation.getWorld().spawnParticle(Particle.WATER_SPLASH, blockLocation, 0);
+                        blockLocation.getWorld().spawnParticle(Particle.FALLING_WATER, blockLocation, 0);
                         double random = ThreadLocalRandom.current().nextDouble();
                         Material saplingMaterial = b.getType();
 

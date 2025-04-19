@@ -28,7 +28,7 @@ public class CrankGenerator extends MultiBlockMachine {
 
     public CrankGenerator(ItemGroup category, SlimefunItemStack item) {
         super(category, item, new ItemStack[] {null, null, null, null, new ItemStack(Material.LEVER), null, null,
-            FluffyItems.GENERATOR_CORE, null}, BlockFace.SELF);
+            FluffyItems.GENERATOR_CORE.item(), null}, BlockFace.SELF);
     }
 
     public void onInteract(Player p, Block b) {
