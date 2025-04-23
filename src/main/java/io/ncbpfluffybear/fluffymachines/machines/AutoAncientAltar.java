@@ -60,8 +60,7 @@ public class AutoAncientAltar extends SlimefunItem implements EnergyNetComponent
     private final AncientAltar altarItem = (AncientAltar) SlimefunItems.ANCIENT_ALTAR.getItem();
 
     private final ItemStack ironBars = new ItemStack(Material.IRON_BARS);
-    private final ItemStack earthRune = new SlimefunItemStack(SlimefunItems.EARTH_RUNE.getItemId(),
-            SlimefunItems.EARTH_RUNE);
+    private final ItemStack earthRune = SlimefunItems.EARTH_RUNE.item();
     private final List<ItemStack> jarInputs = new ArrayList<>(Arrays.asList(ironBars, earthRune, ironBars, earthRune,
             ironBars, earthRune, ironBars, earthRune));
 
@@ -82,7 +81,7 @@ public class AutoAncientAltar extends SlimefunItem implements EnergyNetComponent
                 if (!BlockStorage.hasBlockInfo(b)
                         || BlockStorage.getLocationInfo(b.getLocation(), "enabled") == null
                         || BlockStorage.getLocationInfo(b.getLocation(), "enabled").equals(String.valueOf(false))) {
-                    menu.replaceExistingItem(6, new CustomItemStack(Material.GUNPOWDER, "&7Enabled: &4\u2718", "",
+                    menu.replaceExistingItem(6, CustomItemStack.create(Material.GUNPOWDER, "&7Enabled: &4\u2718", "",
                             "&e> Click to enable this Machine")
                     );
                     menu.addMenuClickHandler(6, (p, slot, item, action) -> {
@@ -91,7 +90,7 @@ public class AutoAncientAltar extends SlimefunItem implements EnergyNetComponent
                         return false;
                     });
                 } else {
-                    menu.replaceExistingItem(6, new CustomItemStack(Material.REDSTONE, "&7Enabled: &2\u2714",
+                    menu.replaceExistingItem(6, CustomItemStack.create(Material.REDSTONE, "&7Enabled: &2\u2714",
                             "", "&e> Click to disable this Machine")
                     );
                     menu.addMenuClickHandler(6, (p, slot, item, action) -> {
@@ -101,7 +100,7 @@ public class AutoAncientAltar extends SlimefunItem implements EnergyNetComponent
                     });
                 }
 
-                menu.replaceExistingItem(7, new CustomItemStack(Material.ENCHANTING_TABLE, "&cCraft Once",
+                menu.replaceExistingItem(7, CustomItemStack.create(Material.ENCHANTING_TABLE, "&cCraft Once",
                         "", "&e> Click to craft recipe once")
                 );
                 menu.addMenuClickHandler(7, (p, slot, item, action) -> {
@@ -214,7 +213,7 @@ public class AutoAncientAltar extends SlimefunItem implements EnergyNetComponent
             });
         }
 
-        preset.addItem(2, new CustomItemStack(new ItemStack(Material.ENCHANTING_TABLE), "&eRecipe",
+        preset.addItem(2, CustomItemStack.create(new ItemStack(Material.ENCHANTING_TABLE), "&eRecipe",
                         "", "&bPut in the Recipe you want to craft", "&4Ancient Altar Recipes ONLY"
                 ),
                 (p, slot, item, action) -> false);
@@ -308,7 +307,7 @@ public class AutoAncientAltar extends SlimefunItem implements EnergyNetComponent
             if (sfPedestalItem != null) {
                 pedestalItems.add(sfPedestalItem.getItem());
             } else {
-                pedestalItems.add(new CustomItemStack(pedestalItem, 1));
+                pedestalItems.add(CustomItemStack.create(pedestalItem, 1));
             }
         }
 
@@ -318,8 +317,7 @@ public class AutoAncientAltar extends SlimefunItem implements EnergyNetComponent
         SlimefunItem sfCatalyst = SlimefunItem.getByItem(catalystItem);
         ItemStack catalyst;
         if (sfCatalyst != null) {
-            SlimefunItemStack catalystStack = new SlimefunItemStack(sfCatalyst.getId(), catalystItem);
-            catalyst = new SlimefunItemStack(catalystStack, 1);
+            catalyst = sfCatalyst.getItem();
         } else if (!catalystItem.hasItemMeta()) {
             catalyst = new ItemStack(catalystItem.getType(), 1);
         } else {
@@ -352,9 +350,9 @@ public class AutoAncientAltar extends SlimefunItem implements EnergyNetComponent
             } catch (IllegalArgumentException ignored) {
             }
 
-        } else if (SlimefunUtils.isItemSimilar(catalystItem, SlimefunItems.BROKEN_SPAWNER, false, false)) {
+        } else if (SlimefunUtils.isItemSimilar(catalystItem, SlimefunItems.BROKEN_SPAWNER.item(), false, false)) {
 
-            Optional<ItemStack> result = checkRecipe(SlimefunItems.BROKEN_SPAWNER, pedestalItems);
+            Optional<ItemStack> result = checkRecipe(SlimefunItems.BROKEN_SPAWNER.item(), pedestalItems);
             if (result.isPresent()) {
                 RepairedSpawner spawner = (RepairedSpawner) SlimefunItems.REPAIRED_SPAWNER.getItem();
                 ItemStack spawnerResult = spawner.getItemForEntityType(spawner.getEntityType(catalystItem).orElse(EntityType.PIG));
@@ -394,17 +392,17 @@ public class AutoAncientAltar extends SlimefunItem implements EnergyNetComponent
 
     static void borders(BlockMenuPreset preset, int[] border, int[] inputBorder, int[] outputBorder) {
         for (int i : border) {
-            preset.addItem(i, new CustomItemStack(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
+            preset.addItem(i, CustomItemStack.create(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
                     (p, slot, item, action) -> false);
         }
 
         for (int i : inputBorder) {
-            preset.addItem(i, new CustomItemStack(new ItemStack(Material.CYAN_STAINED_GLASS_PANE), " "),
+            preset.addItem(i, CustomItemStack.create(new ItemStack(Material.CYAN_STAINED_GLASS_PANE), " "),
                     (p, slot, item, action) -> false);
         }
 
         for (int i : outputBorder) {
-            preset.addItem(i, new CustomItemStack(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "),
+            preset.addItem(i, CustomItemStack.create(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "),
                     (p, slot, item, action) -> false);
         }
     }

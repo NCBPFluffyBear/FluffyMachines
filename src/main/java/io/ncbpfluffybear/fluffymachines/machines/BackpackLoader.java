@@ -58,7 +58,7 @@ public class BackpackLoader extends SlimefunItem implements EnergyNetComponent {
                 buildBorder(this, PLAIN_BORDER, INPUT_BORDER, OUTPUT_BORDER);
 
                 for (int i : BACKPACK_BORDER) {
-                    this.addItem(i, new CustomItemStack(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE), " "),
+                    this.addItem(i, CustomItemStack.create(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE), " "),
                         (p, slot, item, action) -> false
                     );
                 }
@@ -226,19 +226,19 @@ public class BackpackLoader extends SlimefunItem implements EnergyNetComponent {
 
     static void buildBorder(BlockMenuPreset preset, int[] plainBorder, int[] inputBorder, int[] outputBorder) {
         for (int i : plainBorder) {
-            preset.addItem(i, new CustomItemStack(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
+            preset.addItem(i, CustomItemStack.create(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
                 (p, slot, item, action) -> false
             );
         }
 
         for (int i : inputBorder) {
-            preset.addItem(i, new CustomItemStack(new ItemStack(Material.CYAN_STAINED_GLASS_PANE), " "),
+            preset.addItem(i, CustomItemStack.create(new ItemStack(Material.CYAN_STAINED_GLASS_PANE), " "),
                 (p, slot, item, action) -> false
             );
         }
 
         for (int i : outputBorder) {
-            preset.addItem(i, new CustomItemStack(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "),
+            preset.addItem(i, CustomItemStack.create(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "),
                 (p, slot, item, action) -> false
             );
         }

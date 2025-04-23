@@ -52,22 +52,22 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Re
     private static final int[] INPUT_SLOTS = new int[]{10, 11, 12, 19, 20, 21, 28, 29, 30, 37, 38, 39};
     private static final int PROGRESS_SLOT = 42;
     public static final int RECIPE_SLOT = 43;
-    private static final ItemStack PROGRESS_ITEM = new CustomItemStack(Material.FLINT_AND_STEEL, "&aProgress");
+    private static final ItemStack PROGRESS_ITEM = CustomItemStack.create(Material.FLINT_AND_STEEL, "&aProgress");
 
     private static final Map<BlockPosition, Integer> progress = new HashMap<>();
     private static final int PROCESS_TIME_TICKS = 10; // "Number of seconds", except 1 Slimefun "second" = 1.6 IRL seconds
 
-    private static final List<SlimefunItemStack> ACCEPTED_ITEMS = new ArrayList<>(Arrays.asList(
-            SlimefunItems.BILLON_INGOT, SlimefunItems.SOLDER_INGOT, SlimefunItems.NICKEL_INGOT,
-            SlimefunItems.COBALT_INGOT, SlimefunItems.DURALUMIN_INGOT, SlimefunItems.BRONZE_INGOT,
-            SlimefunItems.BRASS_INGOT, SlimefunItems.ALUMINUM_BRASS_INGOT, SlimefunItems.STEEL_INGOT,
-            SlimefunItems.DAMASCUS_STEEL_INGOT, SlimefunItems.ALUMINUM_BRONZE_INGOT,
-            SlimefunItems.CORINTHIAN_BRONZE_INGOT, SlimefunItems.GILDED_IRON, SlimefunItems.REDSTONE_ALLOY,
-            SlimefunItems.HARDENED_METAL_INGOT, SlimefunItems.REINFORCED_ALLOY_INGOT, SlimefunItems.FERROSILICON,
-            SlimefunItems.ELECTRO_MAGNET, SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.HEATING_COIL,
-            SlimefunItems.SYNTHETIC_EMERALD, SlimefunItems.GOLD_4K, SlimefunItems.GOLD_6K, SlimefunItems.GOLD_8K,
-            SlimefunItems.GOLD_10K, SlimefunItems.GOLD_12K, SlimefunItems.GOLD_14K, SlimefunItems.GOLD_16K,
-            SlimefunItems.GOLD_18K, SlimefunItems.GOLD_20K, SlimefunItems.GOLD_22K, SlimefunItems.GOLD_24K
+    private static final List<SlimefunItem> ACCEPTED_ITEMS = new ArrayList<>(Arrays.asList(
+            SlimefunItems.BILLON_INGOT.getItem(), SlimefunItems.SOLDER_INGOT.getItem(), SlimefunItems.NICKEL_INGOT.getItem(),
+            SlimefunItems.COBALT_INGOT.getItem(), SlimefunItems.DURALUMIN_INGOT.getItem(), SlimefunItems.BRONZE_INGOT.getItem(),
+            SlimefunItems.BRASS_INGOT.getItem(), SlimefunItems.ALUMINUM_BRASS_INGOT.getItem(), SlimefunItems.STEEL_INGOT.getItem(),
+            SlimefunItems.DAMASCUS_STEEL_INGOT.getItem(), SlimefunItems.ALUMINUM_BRONZE_INGOT.getItem(),
+            SlimefunItems.CORINTHIAN_BRONZE_INGOT.getItem(), SlimefunItems.GILDED_IRON.getItem(), SlimefunItems.REDSTONE_ALLOY.getItem(),
+            SlimefunItems.HARDENED_METAL_INGOT.getItem(), SlimefunItems.REINFORCED_ALLOY_INGOT.getItem(), SlimefunItems.FERROSILICON.getItem(),
+            SlimefunItems.ELECTRO_MAGNET.getItem(), SlimefunItems.ELECTRIC_MOTOR.getItem(), SlimefunItems.HEATING_COIL.getItem(),
+            SlimefunItems.SYNTHETIC_EMERALD.getItem(), SlimefunItems.GOLD_4K.getItem(), SlimefunItems.GOLD_6K.getItem(), SlimefunItems.GOLD_8K.getItem(),
+            SlimefunItems.GOLD_10K.getItem(), SlimefunItems.GOLD_12K.getItem(), SlimefunItems.GOLD_14K.getItem(), SlimefunItems.GOLD_16K.getItem(),
+            SlimefunItems.GOLD_18K.getItem(), SlimefunItems.GOLD_20K.getItem(), SlimefunItems.GOLD_22K.getItem(), SlimefunItems.GOLD_24K.getItem()
     ));
 
     // Hidden recipes for items that can use magma blocks instead of netherrack. Must exist in ACCEPTED_ITEMS as well
@@ -80,10 +80,10 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Re
     public SmartFactory(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(itemGroup, item, recipeType, recipe);
 
-        for (SlimefunItemStack sfItem : ACCEPTED_ITEMS) {
+        for (SlimefunItem sfItem : ACCEPTED_ITEMS) {
             List<ItemStack[]> variationList = new ArrayList<>();
-            variationList.add(collectRawRecipe(sfItem.getItem()));
-            ITEM_RECIPES.put(sfItem.getItem(), variationList);
+            variationList.add(collectRawRecipe(sfItem));
+            ITEM_RECIPES.put(sfItem, variationList);
         }
 
         for (SlimefunItemStack alternative : MAGMA_ALTERNATIVES) {
@@ -113,10 +113,10 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Re
                 Utils.createBorder(this, ChestMenuUtils.getInputSlotTexture(), BORDER_IN);
                 Utils.createBorder(this, ChestMenuUtils.getOutputSlotTexture(), BORDER_OUT);
                 this.addItem(PROGRESS_SLOT, PROGRESS_ITEM);
-                this.addItem(9, new CustomItemStack(Material.BLACK_STAINED_GLASS_PANE, "&7Coal Slots",
+                this.addItem(9, CustomItemStack.create(Material.BLACK_STAINED_GLASS_PANE, "&7Coal Slots",
                         "&eThis row is reserved for coal for cargo."
                 ));
-                this.addItem(18, new CustomItemStack(Material.YELLOW_STAINED_GLASS_PANE, "&bMisc Slots",
+                this.addItem(18, CustomItemStack.create(Material.YELLOW_STAINED_GLASS_PANE, "&bMisc Slots",
                         "&eThe remaining rows accept any item.", "&eCargo will fill stacks after",
                         "&eat least one of each recipe", "&erequirement has been inserted.",
                         "&eNeed to keep one more item in", "&eeach stack as template."
@@ -134,7 +134,7 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Re
                 SlimefunItem recipe = SlimefunItem.getByItem(menu.getItemInSlot(RECIPE_SLOT));
 
                 if (recipe == null) {
-                    menu.replaceExistingItem(RECIPE_SLOT, new CustomItemStack(Material.BARRIER, "&bRecipe",
+                    menu.replaceExistingItem(RECIPE_SLOT, CustomItemStack.create(Material.BARRIER, "&bRecipe",
                             "&cSneak and Right Click the", "&cfactory with a supported resource", "&cto set the recipe"
                     ));
                 } else {
@@ -302,7 +302,7 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Re
 
     private void craft(Block b) {
         SlimefunItem key = SlimefunItem.getByItem(BlockStorage.getInventory(b).getItemInSlot(RECIPE_SLOT));
-        BlockStorage.getInventory(b).pushItem(key.getItem().clone(), getOutputSlots());
+        BlockStorage.getInventory(b).pushItem(key.getItem(), getOutputSlots());
     }
 
     private void resetProgress(BlockPosition pos, BlockMenu inv) {
@@ -324,7 +324,7 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Re
         }
 
         for (Map.Entry<SlimefunItem, Integer> sfItemEntry : ingredients.getSecondValue().entrySet()) {
-            rawRecipe[index] = new CustomItemStack(sfItemEntry.getKey().getItem(), sfItemEntry.getValue());
+            rawRecipe[index] = CustomItemStack.create(sfItemEntry.getKey().getItem(), sfItemEntry.getValue());
             index++;
         }
 
@@ -341,7 +341,7 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Re
 
         ItemStack[] recipe = key.getRecipe();
         if (key == SlimefunItems.COPPER_WIRE.getItem()) {
-            recipe = new SlimefunItemStack[] {SlimefunItems.COPPER_DUST};
+            recipe = new ItemStack[] {SlimefunItems.COPPER_DUST.item()};
         }
 
         for (ItemStack item : recipe) {
@@ -359,7 +359,7 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Re
                     rawSlimefun.put(recipeItem, rawSlimefun.getOrDefault(recipeItem, 0) + amt * item.getAmount());
                 });
             } else {
-                if (item instanceof SlimefunItemStack) {
+                if (SlimefunItem.getByItem(item) != null) {
                     rawSlimefun.put(SlimefunItem.getByItem(item), rawSlimefun.getOrDefault(SlimefunItem.getByItem(item), 0) + item.getAmount());
                 } else {
                     // Replace some vanilla items
@@ -396,7 +396,7 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Re
      * Adds the selection instructions onto display recipe
      */
     public static ItemStack getDisplayItem(SlimefunItem key, List<ItemStack> displayRecipes) {
-        ItemStack item = displayRecipes.get(ACCEPTED_ITEMS.indexOf(key.getItem())).clone(); // Get item with ingredients
+        ItemStack item = displayRecipes.get(ACCEPTED_ITEMS.indexOf(key)).clone(); // Get item with ingredients
         ItemMeta displayMeta = item.getItemMeta();
 
         List<String> lore = displayMeta.getLore();
@@ -415,17 +415,17 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Re
     public List<ItemStack> getDisplayRecipes() {
         List<ItemStack> recipes = new ArrayList<>();
 
-        for (SlimefunItemStack sfStack : ACCEPTED_ITEMS) {
-            ItemStack display = sfStack.clone();
+        for (SlimefunItem sfStack : ACCEPTED_ITEMS) {
+            ItemStack display = sfStack.getItem();
             ItemMeta displayMeta = display.getItemMeta();
 
             List<String> lore = new ArrayList<>();
             // Display the first variation of the recipe to avoid clutter
-            for (ItemStack item : ITEM_RECIPES.get(sfStack.getItem()).get(0)) {
+            for (ItemStack item : ITEM_RECIPES.get(sfStack).get(0)) {
                 lore.add(Utils.color("&e" + item.getAmount() + "x " + Utils.getViewableName(item)));
             }
 
-            if (ITEM_RECIPES.get(sfStack.getItem()).size() > 1) {
+            if (ITEM_RECIPES.get(sfStack).size() > 1) {
                 lore.add("");
                 lore.add(Utils.color("&7This recipe has a Magma Block alternative"));
             }
@@ -459,7 +459,7 @@ public class SmartFactory extends SlimefunItem implements EnergyNetComponent, Re
         return new int[]{24, 25};
     }
 
-    public static List<SlimefunItemStack> getAcceptedItems() {
+    public static List<SlimefunItem> getAcceptedItems() {
         return ACCEPTED_ITEMS;
     }
 

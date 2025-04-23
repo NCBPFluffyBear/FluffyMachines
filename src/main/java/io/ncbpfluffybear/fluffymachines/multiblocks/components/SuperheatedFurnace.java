@@ -92,9 +92,9 @@ public class SuperheatedFurnace extends NonHopperableBlock {
             public void newInstance(@Nonnull BlockMenu menu, @Nonnull Block b) {
                 if (BlockStorage.getLocationInfo(b.getLocation(), "stored") == null) {
 
-                    menu.replaceExistingItem(4, new CustomItemStack(Material.GUNPOWDER, "&6Dust Available: &e0", "&a> &eLeft Click &ahere to retrieve 1", "&a> &eLeft Click &ahere to retrieve 64"));
-                    menu.replaceExistingItem(7, new CustomItemStack(Material.IRON_INGOT, "&6Ingots Available: &e0", "&a> &eRight Click &ahere to retrieve 1", "&a> &eLeft Click &ahere to retrieve 64"));
-                    menu.replaceExistingItem(1, new CustomItemStack(Material.CHEST, "&6Melted Dust: &e0 &7(0%)", "&bType: None",  "&7Stacks: 0"));
+                    menu.replaceExistingItem(4, CustomItemStack.create(Material.GUNPOWDER, "&6Dust Available: &e0", "&a> &eLeft Click &ahere to retrieve 1", "&a> &eLeft Click &ahere to retrieve 64"));
+                    menu.replaceExistingItem(7, CustomItemStack.create(Material.IRON_INGOT, "&6Ingots Available: &e0", "&a> &eRight Click &ahere to retrieve 1", "&a> &eLeft Click &ahere to retrieve 64"));
+                    menu.replaceExistingItem(1, CustomItemStack.create(Material.CHEST, "&6Melted Dust: &e0 &7(0%)", "&bType: None",  "&7Stacks: 0"));
 
                     BlockStorage.addBlockInfo(b, "stored", "0");
                 }
@@ -188,13 +188,13 @@ public class SuperheatedFurnace extends NonHopperableBlock {
                             int toRemove = OVERFLOW_AMOUNT;
                             while (toRemove >= stackSize) {
 
-                                b.getWorld().dropItemNaturally(b.getLocation(), new CustomItemStack(dust, stackSize));
+                                b.getWorld().dropItemNaturally(b.getLocation(), CustomItemStack.create(dust, stackSize));
 
                                 toRemove = toRemove - stackSize;
                             }
 
                             if (toRemove > 0) {
-                                b.getWorld().dropItemNaturally(b.getLocation(), new CustomItemStack(dust, toRemove));
+                                b.getWorld().dropItemNaturally(b.getLocation(), CustomItemStack.create(dust, toRemove));
                             }
 
                             BlockStorage.addBlockInfo(b, "stored", String.valueOf(stored - OVERFLOW_AMOUNT));
@@ -207,14 +207,14 @@ public class SuperheatedFurnace extends NonHopperableBlock {
                             // Everything greater than 1 stack
                             while (stored >= stackSize) {
 
-                                b.getWorld().dropItemNaturally(b.getLocation(), new CustomItemStack(dust, stackSize));
+                                b.getWorld().dropItemNaturally(b.getLocation(), CustomItemStack.create(dust, stackSize));
 
                                 stored = stored - stackSize;
                             }
 
                             // Drop remaining, if there is any
                             if (stored > 0) {
-                                b.getWorld().dropItemNaturally(b.getLocation(), new CustomItemStack(dust, stored));
+                                b.getWorld().dropItemNaturally(b.getLocation(), CustomItemStack.create(dust, stored));
                             }
 
                             if (BlockStorage.getLocationInfo(b.getLocation(), "stand") != null) {
@@ -240,15 +240,15 @@ public class SuperheatedFurnace extends NonHopperableBlock {
 
     protected void constructMenu(BlockMenuPreset preset) {
         for (int i : dustOutputBorder) {
-            preset.addItem(i, new CustomItemStack(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
+            preset.addItem(i, CustomItemStack.create(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
         }
 
         for (int i : inputBorder) {
-            preset.addItem(i, new CustomItemStack(new ItemStack(Material.CYAN_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
+            preset.addItem(i, CustomItemStack.create(new ItemStack(Material.CYAN_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
         }
 
         for (int i : ingotOutputBorder) {
-            preset.addItem(i, new CustomItemStack(new ItemStack(Material.RED_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
+            preset.addItem(i, CustomItemStack.create(new ItemStack(Material.RED_STAINED_GLASS_PANE), " "), (p, slot, item, action) -> false);
         }
 
 
@@ -353,13 +353,13 @@ public class SuperheatedFurnace extends NonHopperableBlock {
 
         if (stored.equals("0")) {
             setBlockInfo(b, "type", null);
-            inv.replaceExistingItem(INPUT_INDICATOR, new CustomItemStack(new ItemStack(Material.CHEST), "&6Melted Dust: &e0 &7(0%)", "&bType: None",  "&7Stacks: 0"));
+            inv.replaceExistingItem(INPUT_INDICATOR, CustomItemStack.create(new ItemStack(Material.CHEST), "&6Melted Dust: &e0 &7(0%)", "&bType: None",  "&7Stacks: 0"));
         } else {
-            inv.replaceExistingItem(INPUT_INDICATOR, new CustomItemStack(new ItemStack(Material.CHEST), "&6Melted Dust: &e" + stored + " &7(" + Double.parseDouble(stored) / MAX_STORAGE * 100 + "%)", "&bType: " + type, "&7Stacks: " + Double.parseDouble(stored) / 64));
+            inv.replaceExistingItem(INPUT_INDICATOR, CustomItemStack.create(new ItemStack(Material.CHEST), "&6Melted Dust: &e" + stored + " &7(" + Double.parseDouble(stored) / MAX_STORAGE * 100 + "%)", "&bType: " + type, "&7Stacks: " + Double.parseDouble(stored) / 64));
 
         }
-        inv.replaceExistingItem(DUST_INDICATOR, new CustomItemStack(new ItemStack(Material.GUNPOWDER), "&6Dust Available: &e" + stored, "&a> &eLeft Click &ahere to retrieve 1", "&a> &eRight Click &ahere to retrieve 64"));
-        inv.replaceExistingItem(INGOT_INDICATOR, new CustomItemStack(new ItemStack(Material.IRON_INGOT), "&6Ingots Available: &e" + stored, "&a> &eLeft Click &ahere to retrieve 1", "&a> &eRight Click &ahere to retrieve 64"));
+        inv.replaceExistingItem(DUST_INDICATOR, CustomItemStack.create(new ItemStack(Material.GUNPOWDER), "&6Dust Available: &e" + stored, "&a> &eLeft Click &ahere to retrieve 1", "&a> &eRight Click &ahere to retrieve 64"));
+        inv.replaceExistingItem(INGOT_INDICATOR, CustomItemStack.create(new ItemStack(Material.IRON_INGOT), "&6Ingots Available: &e" + stored, "&a> &eLeft Click &ahere to retrieve 1", "&a> &eRight Click &ahere to retrieve 64"));
 
 
     }
@@ -387,7 +387,7 @@ public class SuperheatedFurnace extends NonHopperableBlock {
                 amount = MAX_STACK_SIZE - menu.getItemInSlot(DUST_OUTPUT_SLOT).getAmount();
             }
 
-            ItemStack dustItem = new CustomItemStack(SlimefunItem.getById(type + "_DUST").getItem().clone(), amount);
+            ItemStack dustItem = CustomItemStack.create(SlimefunItem.getById(type + "_DUST").getItem().clone(), amount);
             if (menu.fits(dustItem, DUST_OUTPUT_SLOT)) {
                 setBlockInfo(b, "stored", String.valueOf(stored - amount));
                 menu.pushItem(dustItem, DUST_OUTPUT_SLOT);
@@ -423,11 +423,11 @@ public class SuperheatedFurnace extends NonHopperableBlock {
 
             ItemStack ingotItem;
             if (type.equals("GOLD")) {
-                ingotItem = new CustomItemStack(SlimefunItems.GOLD_4K.getItem().getItem().clone(), amount);
+                ingotItem = CustomItemStack.create(SlimefunItems.GOLD_4K.getItem().getItem().clone(), amount);
             } else if (type.equals("IRON")) {
                 ingotItem = new ItemStack(Material.IRON_INGOT, amount);
             } else {
-                ingotItem = new CustomItemStack(SlimefunItem.getById(type + "_INGOT").getItem().clone(), amount);
+                ingotItem = CustomItemStack.create(SlimefunItem.getById(type + "_INGOT").getItem().clone(), amount);
             }
 
             if (menu.fits(ingotItem, INGOT_OUTPUT_SLOT)) {

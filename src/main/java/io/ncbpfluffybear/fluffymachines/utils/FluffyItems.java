@@ -248,7 +248,7 @@ public class FluffyItems {
     );
     public static final SlimefunItemStack FIREPROOF_RUNE = new SlimefunItemStack(
             "FIREPROOF_RUNE",
-            new ColoredFireworkStar(Color.fromRGB(255, 165, 0),
+            ColoredFireworkStar.create(Color.fromRGB(255, 165, 0),
                     "&7Ancient Rune &8&l[&c&lFireproof&8&l]",
                     "",
                     "&eDrop this rune onto a dropped item to",
@@ -469,7 +469,10 @@ public class FluffyItems {
     );
 
     static {
-        FireproofRune.setFireproof(FIREPROOF_RUNE);
+        ItemStack runeClone = FIREPROOF_RUNE.item();
+        FireproofRune.setFireproof(runeClone);
+        FIREPROOF_RUNE.setItemMeta(runeClone.getItemMeta());
+
         addGlow(SMALL_PORTABLE_CHARGER);
         addGlow(MEDIUM_PORTABLE_CHARGER);
         addGlow(BIG_PORTABLE_CHARGER);
@@ -477,7 +480,7 @@ public class FluffyItems {
         addGlow(CARBONADO_PORTABLE_CHARGER);
     }
 
-    private static void addGlow(ItemStack item) {
+    private static void addGlow(SlimefunItemStack item) {
         item.addUnsafeEnchantment(Enchantment.BINDING_CURSE, 1);
         ItemMeta meta = item.getItemMeta();
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
