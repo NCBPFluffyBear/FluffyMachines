@@ -10,8 +10,11 @@ import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.inventory.InvUtils;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
+import io.github.thebusybiscuit.slimefun4.utils.itemstack.ItemStackWrapper;
 import io.ncbpfluffybear.fluffymachines.objects.DoubleHologramOwner;
 import io.ncbpfluffybear.fluffymachines.objects.NonHopperableBlock;
 import io.ncbpfluffybear.fluffymachines.utils.Utils;
@@ -20,6 +23,8 @@ import java.text.DecimalFormatSymbols;
 import java.util.List;
 import java.util.Locale;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
@@ -368,6 +373,74 @@ public class Barrel extends NonHopperableBlock implements DoubleHologramOwner {
         }
     }
 
+    // DirtyChestMenu#fits() does not check for nbt data...
+    public boolean fits(DirtyChestMenu inv, @Nonnull ItemStack item, int... slots) {
+        int metaMismatches = 0;
+        for (int slot : slots) {
+            ItemStack slotItem = inv.getItemInSlot(slot);
+            // A small optimization for empty slots
+            if (inv.getItemInSlot(slot) == null) {
+                return true;
+            }
+
+            // Heavy but foolproof check
+            if (!matchMeta(item, slotItem)) {
+                metaMismatches++;
+            }
+        }
+
+        if (metaMismatches == slots.length) {
+            return false;
+        }
+
+        // This still performs other config based checks to see if insertion is valid...
+        return InvUtils.fits(inv.toInventory(), ItemStackWrapper.wrap(item), slots);
+    }
+
+    // DirtyChestMenu#pushItem() does not check for nbt data...
+    @Nullable
+    public ItemStack pushItem(DirtyChestMenu inv, ItemStack item, int... slots) {
+        if (item == null || item.getType() == Material.AIR) {
+            throw new IllegalArgumentException("Cannot push null or AIR");
+        }
+
+        ItemStackWrapper wrapper = null;
+        int amount = item.getAmount();
+
+        for (int slot : slots) {
+            if (amount <= 0) {
+                break;
+            }
+
+            ItemStack stack = inv.getItemInSlot(slot);
+
+            if (stack == null) {
+                inv.replaceExistingItem(slot, item);
+                return null;
+            } else {
+                int maxStackSize = Math.min(stack.getMaxStackSize(), inv.toInventory().getMaxStackSize());
+                if (stack.getAmount() < maxStackSize) {
+                    if (wrapper == null) {
+                        wrapper = ItemStackWrapper.wrap(item);
+                    }
+
+                    // Patched with a meta check
+                    if (ItemUtils.canStack(wrapper, stack) && matchMeta(wrapper, stack)) {
+                        amount -= (maxStackSize - stack.getAmount());
+                        stack.setAmount(Math.min(stack.getAmount() + item.getAmount(), maxStackSize));
+                        item.setAmount(amount);
+                    }
+                }
+            }
+        }
+
+        if (amount > 0) {
+            return new CustomItemStack(item, amount);
+        } else {
+            return null;
+        }
+    }
+
     void pushOutput(BlockMenu inv, Block b, int capacity) {
         ItemStack displayItem = inv.getItemInSlot(DISPLAY_SLOT);
         if (displayItem != null && displayItem.getType() != Material.BARRIER) {
@@ -380,11 +453,11 @@ public class Barrel extends NonHopperableBlock implements DoubleHologramOwner {
                 ItemStack clone = new CustomItemStack(Utils.unKeyItem(displayItem), displayItem.getMaxStackSize());
 
 
-                if (inv.fits(clone, OUTPUT_SLOTS)) {
+                if (fits(inv, clone, OUTPUT_SLOTS)) {
                     int amount = clone.getMaxStackSize();
 
                     setStored(b, stored - amount);
-                    inv.pushItem(clone, OUTPUT_SLOTS);
+                    pushItem(inv, clone, OUTPUT_SLOTS);
                     updateMenu(b, inv, false, capacity);
                 }
 
@@ -392,9 +465,9 @@ public class Barrel extends NonHopperableBlock implements DoubleHologramOwner {
 
                 ItemStack clone = new CustomItemStack(Utils.unKeyItem(displayItem), stored);
 
-                if (inv.fits(clone, OUTPUT_SLOTS)) {
+                if (fits(inv, clone, OUTPUT_SLOTS)) {
                     setStored(b, 0);
-                    inv.pushItem(clone, OUTPUT_SLOTS);
+                    pushItem(inv, clone, OUTPUT_SLOTS);
                     updateMenu(b, inv, false, capacity);
                 }
             }
@@ -435,7 +508,15 @@ public class Barrel extends NonHopperableBlock implements DoubleHologramOwner {
      */
     private boolean matchMeta(ItemStack item1, ItemStack item2) {
         // It seems the meta comparisons are heavier than type checks
-        return item1.getType().equals(item2.getType()) && item1.getItemMeta().equals(item2.getItemMeta());
+        if (!item1.getType().equals(item2.getType())) {
+            return false;
+        }
+
+        if (!item1.hasItemMeta() || !item2.hasItemMeta()) {
+            return true; // Match by type
+        }
+
+        return item1.getItemMeta().equals(item2.getItemMeta());
     }
 
     /**
