@@ -100,9 +100,7 @@ public class PortableCharger extends SimpleSlimefunItem<ItemUseHandler> implemen
                     if (sfItem instanceof PortableCharger) {
                         p.closeInventory();
                         Utils.send(p, "&cYou can not charge a portable charger");
-                    }
-
-                    if (sfItem instanceof Rechargeable) {
+                    } else if (sfItem instanceof Rechargeable) {
 
                         Rechargeable device = (Rechargeable) sfItem;
                         float neededCharge = device.getMaxItemCharge(deviceItem)
