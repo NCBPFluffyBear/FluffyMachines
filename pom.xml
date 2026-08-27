@@ -4,7 +4,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.ncbpfluffybear</groupId>
-    <artifactId>FluffyMachines</artifactId>
+    <artifactId>BetterFluffyMachines</artifactId>
     <version>1.0.0</version>
 
     <properties>
